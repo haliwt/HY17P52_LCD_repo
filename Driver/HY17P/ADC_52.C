@@ -95,9 +95,9 @@ void ADC_Open(unsigned char ck,    //Selector of SD18 peripheral operating clock
 long ADC_GetData(void)
 {
     long ADCData;
-    ((char *)(&ADCData))[0] = AD1L;
-    ((char *)(&ADCData))[1] = AD1M;
-    ((char *)(&ADCData))[2] = AD1H;
+    ((char *)(&ADCData))[0] = AD1L; /* ADC low byte register*/
+    ((char *)(&ADCData))[1] = AD1M; /* ADC middle byte*/
+    ((char *)(&ADCData))[2] = AD1H; /* ADC high byte register */
 
     if (ADCData&0x800000L)
         ((char *)(&ADCData))[3] = 0xFF;
