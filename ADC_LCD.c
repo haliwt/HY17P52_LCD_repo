@@ -64,6 +64,7 @@ void ADCAccuracyMode(void);
 void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
+void GPIO_Init(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -102,14 +103,13 @@ void main(void)
 	LCD_ChargePumpClk(SELPCLK_14KHZ);
 	//LCDCN2 = 0x00;
 	LCD_DisplayOn();
-//	LCD_DisplayOff();
 
  	//LCDCN3 = 0x00;
-	LCD_PT60Mode(LCD);
-	LCD_PT61Mode(LCD);
-	LCD_PT62Mode(LCD);
-	LCD_PT63Mode(LCD);
-
+	LCD_PT60Mode(LCD);   //COM0
+	LCD_PT61Mode(LCD);	 //COM1
+	LCD_PT62Mode(LCD);   //COM2
+	LCD_PT63Mode(LCD);   //COM3
+/*
 	//LCDCN4 = 0x00;
 	LCD_PT80Mode(LCD);
 	LCD_PT81Mode(LCD);
@@ -119,6 +119,7 @@ void main(void)
 	LCD_PT85Mode(LCD);
 	LCD_PT86Mode(LCD);
 	LCD_PT87Mode(LCD);
+*/
 /*
 	//LCDCN6 = 0x00;
 	LCD_PT64Mode(LCD);
@@ -145,9 +146,9 @@ void main(void)
 	TMA1_ClearTMA1();
 	TMA1Enable();
 */
-	ADIF_ClearFlag();  /* 清除中断标志位 */
+	ADIF_ClearFlag();
 	ADIE_Enable();
-	GIE_Enable(); //
+	GIE_Enable();
 
 	while(1)
 	{
@@ -172,26 +173,17 @@ void ShowADC (void)
 	DisplayNum(ADC);
 }
 
-/**************************************************************************
-	*	
-	* Function Name:void Delay(unsigned int ms) 
-	*
-	*
-***************************************************************************/
+/*----------------------------------------------------------------------------*/
+/* Software Delay Subroutines                                                 */
+/*----------------------------------------------------------------------------*/
 void Delay(unsigned int ms)
 {
   for(;ms>0;ms--)
     __asm__("NOP");
 }
-/**************************************************************************
-	*	
-	* Interrupt Service Routines 
-	*
-	*
-	*
-	*
-	*
-***************************************************************************/
+/*----------------------------------------------------------------------------*/
+/* Interrupt Service Routines                                                 */
+/*----------------------------------------------------------------------------*/
 void ISR(void) __interrupt
 {
 

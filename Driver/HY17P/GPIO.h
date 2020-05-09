@@ -21,7 +21,7 @@
 #define P58_PT11_MSK                 (1 << P58_PT11)
 #define P58_PT11_H                   (1 << P58_PT11)
 #define P58_PT11_L                   (0 << P58_PT11)
-#else                                                                               //FOR other serials
+#else /*USE_HY17P52_2M*/                                                                              //FOR other serials
 #define PT10                      0
 #define PT10_MSK                 (1 << PT10)
 #define PT10_H                   (1 << PT10)
@@ -37,7 +37,7 @@
 #define P48_PT12_MSK                 (1 << P48_PT12)
 #define P48_PT12_H                   (1 << P48_PT12)
 #define P48_PT12_L                   (0 << P48_PT12)
-#else
+#else /*USE_HY17P52_2M*/    
 #define PT12                      2               //FOR other serials
 #define PT12_MSK                 (1 << PT12)
 #define PT12_H                   (1 << PT12)

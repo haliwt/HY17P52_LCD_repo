@@ -151,7 +151,7 @@ extern volatile signed long ADCR;
 #define TBLDL (*((volatile unsigned char *)0x20))
 #define PRODH (*((volatile unsigned char *)0x21))
 #define PRODL (*((volatile unsigned char *)0x22))
-#define INTE0 (*((volatile unsigned char *)0x23))   /*HY17P52 地址是0x23 */
+#define INTE0 (*((volatile unsigned char *)0x23))
 #define INTE1 (*((volatile unsigned char *)0x24))
 #define INTE2 (*((volatile unsigned char *)0x25))
 #define INTF0 (*((volatile unsigned char *)0x26))
@@ -167,7 +167,7 @@ extern volatile signed long ADCR;
 #define BIEARL (*((volatile unsigned char *)0x30))
 #define BIEDRH (*((volatile unsigned char *)0x31))
 #define BIEDRL (*((volatile unsigned char *)0x32))
-#define PWRCN (*((volatile unsigned char *)0x33))     /* HY15S50 编程手册地址 ，HY17 编程手册地址 0x2eh*/
+#define PWRCN (*((volatile unsigned char *)0x33))
 #define OSCCN0 (*((volatile unsigned char *)0x34))
 #define OSCCN1 (*((volatile unsigned char *)0x35))
 #define OSCCN2 (*((volatile unsigned char *)0x36))
@@ -176,7 +176,7 @@ extern volatile signed long ADCR;
 #define WDTCN (*((volatile unsigned char *)0x39))
 #define AD1H (*((volatile unsigned char *)0x3A))
 #define AD1M (*((volatile unsigned char *)0x3B))
-#define AD1L (*((volatile unsigned char *)0x3C)) /* HY17P52 address*/
+#define AD1L (*((volatile unsigned char *)0x3C))
 #define AD1CN0 (*((volatile unsigned char *)0x3D))
 #define AD1CN1 (*((volatile unsigned char *)0x3E))
 #define AD1CN2 (*((volatile unsigned char *)0x3F))
@@ -212,9 +212,9 @@ extern volatile signed long ADCR;
 #define TX0R (*((volatile unsigned char *)0x59))
 #define RC0REG (*((volatile unsigned char *)0x5A))
 
-#define LCDCN1 (*((volatile unsigned char *)0x5B)) /*LCD 控制寄存器 1*/
+#define LCDCN1 (*((volatile unsigned char *)0x5B))
 #define LCDCN2 (*((volatile unsigned char *)0x5C))
-#define LCDCN3 (*((volatile unsigned char *)0x5D))
+#define LCDCN3 (*((volatile unsigned char *)0x5D)) /* COM0 ,COM1,COM2,COM3 register*/
 #define LCDCN4 (*((volatile unsigned char *)0x5E))
 
 #define LCD0 (*((volatile unsigned char *)0x5F))
@@ -222,7 +222,7 @@ extern volatile signed long ADCR;
 #define LCD2 (*((volatile unsigned char *)0x61))
 #define LCD3 (*((volatile unsigned char *)0x62))
 #define LCD4 (*((volatile unsigned char *)0x63))
-#define LCD5 (*((volatile unsigned char *)0x64)) /* HY17P52 地址*/
+#define LCD5 (*((volatile unsigned char *)0x64))
 #define LCD6 (*((volatile unsigned char *)0x65))
 
 #define Filter  (*((volatile unsigned char *)0x66))

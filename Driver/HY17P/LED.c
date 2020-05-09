@@ -1,3 +1,4 @@
+#define  USE_HY17P52_2M
 /**************************************************************************************************|
 |* Copyright 2019 Hycon Technology, Corp.                                                         *|
 |* http://www.hycontek.com/                                                                       *|
@@ -20,7 +21,7 @@
 /*----------------------------------------------------------------------------------------------------------------------------------------------------|
 |  Function: LEDSetting                                                                      			     				   											|
 |                                                                                                 																					|
-|  Parameters:                                                                                                                                                         		     |	
+|  Parameters:                                                                                                                                                         		     |
 |         cclevel         - [in]	CCLevel_2mA / CCLevel_3mA / CCLevel_5mA / CCLevel_7mA / CCLevel_9mA	              |
 |                                        CCLevel_11mA / CCLevel_13mA / CCLevel_15mA
 |  Returns:                                                                               		                                                                                  |
@@ -42,9 +43,9 @@ void LEDSetting(unsigned char cclevel)
 /*----------------------------------------------------------------------------------------------------------------------------------------------------|
 |  Function: GetDisplay                                                                      			     				   											|
 |                                                                                                 																					|
-|  Parameters:                                                                                                                                                         		     |	
+|  Parameters:                                                                                                                                                         		     |
 |         show         - [in]	LED show data                                                                                                        	              |
-|         ledx           - [in]   LED show ledx 
+|         ledx           - [in]   LED show ledx
 |  Returns:                                                                               		                                                                                  |
 |         None               		                   		                   		                   		                   		                   		                       |
 |                                                                                       		                   		                   		                                        |

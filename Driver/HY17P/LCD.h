@@ -19,7 +19,7 @@
 #define ENLCP_DISABLE            (0 << ENLCP)
 
 #define LCDV                      4
-#define LCDV_MSK                 (7 << LCDV) /*0b00000000*/
+#define LCDV_MSK                 (7 << LCDV)
 #define LCDV_2V4                 (7 << LCDV)
 #define LCDV_2V6                 (6 << LCDV)
 #define LCDV_2V8                 (5 << LCDV)
@@ -347,7 +347,7 @@
 |-------------------------------------------------------------------------------------------------*/
 #define LCD_CLK_ClkSelect(ClkSel)       (OSCCN1 = ((OSCCN1 & (~LCDS_MSK)) | ClkSel))
 #define LCD_CLK_DivSelect(DivSel)       (OSCCN2 = ((OSCCN2 & (~DLCD_MSK)) | DivSel))
-//下面?��??�CLK.H 定義?��?
+//涓嬮潰?╁€??糃LK.H 瀹氱京?庝?
 //#define CLK_LCDCKSelect(LCDCKSel)         (OSCCN1 = ((OSCCN1 & (~LCDS_MSK)) | LCDCKSel))
 //#define CLK_LCDCKDivSelect(LCDCKSel)      (OSCCN2 = ((OSCCN2 & (~DLCD_MSK)) | LCDCKSel))
 
@@ -368,10 +368,10 @@
 
 #define LCD                              1
 #define IO                               0
-#define LCD_PT60Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xFC) |  Sel | (Sel<<1))
-#define LCD_PT61Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xF3) | (Sel<<2) | (Sel<<3))
-#define LCD_PT62Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xCF) | (Sel<<4) | (Sel<<5))
-#define LCD_PT63Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0x3F) | (Sel<<6) | (Sel<<7))
+#define LCD_PT60Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xFC) |  Sel | (Sel<<1))      /*com0*/
+#define LCD_PT61Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xF3) | (Sel<<2) | (Sel<<3))  /*com1*/
+#define LCD_PT62Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xCF) | (Sel<<4) | (Sel<<5))  /*com2*/
+#define LCD_PT63Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0x3F) | (Sel<<6) | (Sel<<7))   /*com3*/
 
 #define LCD_PT80Mode(Sel)				(LCDCN4 =  (LCDCN4 & 0xFE) | Sel)
 #define LCD_PT81Mode(Sel)				(LCDCN4 =  (LCDCN4 & 0xFD) | (Sel<<1))
