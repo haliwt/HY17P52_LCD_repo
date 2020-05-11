@@ -37,6 +37,7 @@
 unsigned char ADCData,ADCData1,ADCData2;
 unsigned char Flag;
 long	ADC;
+unsigned char  g_char;
 volatile typedef union _MCUSTATUS
 {
   char  _byte;
@@ -74,12 +75,12 @@ void main(void)
 //CLK Setting
 	CLK_CPUCKSelect(CPUS_DHSCK) ;
 //GPIO Setting
-    TRISC1 = 0x00;
-    TRISC2 = 0x00;
-    PT1 = 0x00;
-    PT1DA = 0x00;
-	GPIO_PT1SETPUAll();
-	GPIO_PT2SETPUAll();
+ //   TRISC1 = 0x00;
+ //   TRISC2 = 0x00;
+ //   PT1 = 0x00;
+ //   PT1DA = 0x00;
+//	GPIO_PT1SETPUAll();
+//	GPIO_PT2SETPUAll();
 
 //VDDA Setting
 	PWR_BGREnable();
@@ -109,49 +110,14 @@ void main(void)
 	LCD_PT61Mode(LCD);	 //COM1
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
-/*
-	//LCDCN4 = 0x00;
-	LCD_PT80Mode(LCD);
-	LCD_PT81Mode(LCD);
-	LCD_PT82Mode(LCD);
-	LCD_PT83Mode(LCD);
-	LCD_PT84Mode(LCD);
-	LCD_PT85Mode(LCD);
-	LCD_PT86Mode(LCD);
-	LCD_PT87Mode(LCD);
-*/
-/*
-	//LCDCN6 = 0x00;
-	LCD_PT64Mode(LCD);
-	LCD_PT65Mode(LCD);
-	LCD_PT66Mode(LCD);
-	LCD_PT67Mode(LCD);
 
-	//LCDCN7 = 0x00;
-	LCD_PT70Mode(LCD);
-	LCD_PT71Mode(LCD);
-	LCD_PT72Mode(LCD);
-	LCD_PT73Mode(LCD);
-
-	//LCDCN8 = 0xff;
-	LCD_PT74Mode(LCD);
-	LCD_PT75Mode(LCD);
-	LCD_PT76Mode(LCD);
-	LCD_PT77Mode(LCD);
-*/
-//TMA Setting
-/*
-	TMA1_CLKSelect ( TMAS1_DMSCK );
-	TMA1_CLKDiv (DTMA1_TMA1CKDIV8);
-	TMA1_ClearTMA1();
-	TMA1Enable();
-*/
 	ADIF_ClearFlag();
 	ADIE_Enable();
 	GIE_Enable();
 
 	while(1)
 	{
+		#if 0
 		if(MCUSTATUSbits.b_ADCdone==1)
 		{
 			MCUSTATUSbits.b_ADCdone=0;
@@ -159,6 +125,17 @@ void main(void)
 			ShowADC();
             Delay(20000);
 	    }
+	    #endif 
+	  //  DisplayHex(255);
+	   // ADC = 2Er;
+	  
+	 // 	DisplayNum(g_char);
+	//  DisplayHex(g_char);
+	 //   ShowADC();
+	   // DisplayHycon();
+	    Display2Er();
+        Delay(20000);
+
     }
 }
 
@@ -171,8 +148,8 @@ void main(void)
 void ShowADC (void)
 {
 	DisplayNum(ADC);
+	
 }
-
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
 /*----------------------------------------------------------------------------*/

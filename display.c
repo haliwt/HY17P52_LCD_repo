@@ -9,21 +9,24 @@
 void ClearLCD(void)
 {
 	unsigned char count;
-  	FSR0=&LCD0;
-  	for(count=6;count>0;count--)
-    	POINC0=0;
+  	FSR0=&LCD0; /* */
+  	for(count=5;count>0;count--)//for(count=6;count>0;count--)
+    	POINC0=0;  /*pointer add one then point to next address*/
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* Display HYcon Char                                                         */
-/*----------------------------------------------------------------------------*/
+/***************************************************************************
+  *
+  *Display char "HYCon"
+  *
+  *                                                        
+****************************************************************************/
 void DisplayHycon(void)
 {
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD1,Char_H);
   LCD_WriteData(&LCD2,Char_Y);
-  LCD_WriteData(&LCD3,Char_C);
+  LCD_WriteData(&LCD3,Char_C);   /*HY17P52 com3 */
   LCD_WriteData(&LCD4,Char_O);
   LCD_WriteData(&LCD5,Char_N);
   LCD_WriteData(&LCD6,0x00);
@@ -53,18 +56,19 @@ void DisplayNum(long Num)
     MINUS=0;
   }
 
-  LCDAddr=&LCD5;
-  for(count=0;count<6;count++)
+  //LCDAddr=&LCD5;
+  LCDAddr = &LCD4;  /*HY17P52 for LCD FTP1625SX01*/
+  for(count=0;count<5;count++)//for(count=0;count<6;count++) /* has 6 register for "LCD0 ~LCD5" */
   {
-    LCDData=seg[Num%10];
+    LCDData=seg[Num%10]; /*取余数*/
     LCD_WriteData(LCDAddr,LCDData);
     Num=Num/10 ;
     LCDAddr--;
   }
   if(MINUS==1)
-    LCD_WriteData(&LCD6,S_Minus);
+    LCD_WriteData(&LCD0,S_Minus);//LCD_WriteData(&LCD6,S_Minus);
   else
-    LCD_WriteData(&LCD6,0);
+    LCD_WriteData(&LCD0,0);//LCD_WriteData(&LCD6,0);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -74,7 +78,8 @@ void DisplayHex(unsigned int Num)
 {
   unsigned char count,*LCDAddr,LCDData;
 
-  LCDAddr=&LCD5;
+ // LCDAddr=&LCD5;
+  LCDAddr = &LCD4; /*HY17P52 for LCD FTP1625SX01*/
   for(count=0;count<6;count++)
   {
     LCDData=seg[Num%0x10];
@@ -82,4 +87,20 @@ void DisplayHex(unsigned int Num)
     Num=Num/0x10 ;
     LCDAddr--;
   }
+}
+/*****************************************************************************
+  *
+  *Function Name :void Display2Er(void)
+  *Function :LCD display "2Er"
+  *
+  *
+******************************************************************************/
+void Display2Er(void)
+{
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD1,Char_2);
+  LCD_WriteData(&LCD2,Char_E);
+  LCD_WriteData(&LCD3,Char_R);   
+ 
+
 }

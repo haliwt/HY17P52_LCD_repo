@@ -44,6 +44,7 @@ const unsigned char seg[]={
          seg_b+seg_c+seg_d+seg_f+seg_g               // char "y"  0x1b
 };
 
+#define  Char_2  seg_a+seg_b+seg_d+seg_e+seg_g       // char "2"
 #define  Char_A  seg_a+seg_b+seg_c+seg_e+seg_f+seg_g // char "A"
 #define  Char_B  seg_c+seg_d+seg_e+seg_f+seg_g       // char "b"
 #define  Char_C  seg_a+seg_d+seg_e+seg_f             // char "C"

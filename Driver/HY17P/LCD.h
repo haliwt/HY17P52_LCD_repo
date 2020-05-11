@@ -368,9 +368,9 @@
 
 #define LCD                              1
 #define IO                               0
-#define LCD_PT60Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xFC) |  Sel | (Sel<<1))      /*com0*/
-#define LCD_PT61Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xF3) | (Sel<<2) | (Sel<<3))  /*com1*/
-#define LCD_PT62Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xCF) | (Sel<<4) | (Sel<<5))  /*com2*/
+#define LCD_PT60Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xFC) |  Sel | (Sel<<1))       /*com0*/
+#define LCD_PT61Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xF3) | (Sel<<2) | (Sel<<3))   /*com1*/
+#define LCD_PT62Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0xCF) | (Sel<<4) | (Sel<<5))   /*com2*/
 #define LCD_PT63Mode(Sel)			    (LCDCN3 =  (LCDCN3 & 0x3F) | (Sel<<6) | (Sel<<7))   /*com3*/
 
 #define LCD_PT80Mode(Sel)				(LCDCN4 =  (LCDCN4 & 0xFE) | Sel)
