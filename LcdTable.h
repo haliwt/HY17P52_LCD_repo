@@ -41,7 +41,9 @@ const unsigned char seg[]={
          seg_e+seg_g,                                // char "r"  0x18
          seg_d+seg_e+seg_f+seg_g,                    // char "t"  0x19
          seg_c+seg_e+seg_d,                          // char "u"  0x1a
-         seg_b+seg_c+seg_d+seg_f+seg_g               // char "y"  0x1b
+         seg_b+seg_c+seg_d+seg_f+seg_g,              // char "y"  0x1b
+         seg_b+seg_c+seg_e+seg_d+seg_f               // char "U"  0x1c    //WT.EDIT 2020-05-11
+
 };
 
 #define  Char_2  seg_a+seg_b+seg_d+seg_e+seg_g       // char "2"
@@ -64,8 +66,10 @@ const unsigned char seg[]={
 #define  Char_Q  seg_a+seg_b+seg_c+seg_f+seg_g       // char "q"
 #define  Char_R  seg_e+seg_g                         // char "r"
 #define  Char_S  seg_a+seg_c+seg_d+seg_f+seg_g       // char "S"
-#define  Char_T  seg_d+seg_e+seg_f+seg_g             // char "t"
-#define  Char_U  seg_c+seg_e+seg_d                   // char "u"
+#define  Char_T  seg_d+seg_e+seg_f+seg_g                          // char "t"
+#define  Char_U  seg_c+seg_e+seg_d                                // char "u"
+#define  Char_CAP_U  seg_b+seg_c+seg_e+seg_d+seg_f                // cahr "U"
+
 //Char_V                                             // char "V"
 //Char_W                                             // char "W"
 //Char_X                                             // char "X"

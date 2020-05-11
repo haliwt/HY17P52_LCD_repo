@@ -4,3 +4,4 @@ void DisplayHycon(void);
 void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);
+void DisplayUnit(void);

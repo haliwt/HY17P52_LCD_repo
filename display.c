@@ -104,3 +104,17 @@ void Display2Er(void)
  
 
 }
+/*****************************************************************************
+  *
+  *Function Name :void DisplayUnit(void)
+  *Function :LCD display "Uni"
+  *
+  *
+******************************************************************************/
+void DisplayUnit(void)
+{
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD1,Char_CAP_U);
+  LCD_WriteData(&LCD2,Char_N);
+  LCD_WriteData(&LCD3,Char_I); 
+}

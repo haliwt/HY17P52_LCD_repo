@@ -41,7 +41,11 @@
 unsigned char ADCData,ADCData1,ADCData2;
 unsigned char Flag;
 long	ADC;
-unsigned char  g_char;
+
+unsigned long Second_real_3=0;
+unsigned long firstSecond=0;
+unsigned char getLastSecond =0 ;
+
 volatile typedef union _MCUSTATUS
 {
   char  _byte;
@@ -73,9 +77,7 @@ typedef struct _adc_wrks_
    
 }adc_works_t;
 adc_works_t adS; 
-unsigned long Second_real_3=0;
-unsigned long firstSecond=0;
-unsigned char getLastSecond =0 ;
+
 
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -143,38 +145,20 @@ void main(void)
     TMA1_ClearTMA1();    //Clear TMA count
     TMA1Enable();
    
-
 	ADIF_ClearFlag();
 	ADIE_Enable();
 	GIE_Enable();
 
 	while(1)
 	{
-		#if 0
-		if(MCUSTATUSbits.b_ADCdone==1)
-		{
-			MCUSTATUSbits.b_ADCdone=0;
-			ADC=ADC>>6;
-			ShowADC();
-            Delay(20000);
-	    }
-	    #endif 
-	  //  DisplayHex(255);
-	   // ADC = 2Er;
-	  
-	 // 	DisplayNum(g_char);
-	//  DisplayHex(g_char);
-	 //   ShowADC();
-	   // DisplayHycon();
-	    Display2Er();
-        Delay(20000);
-        
-		if(GPIO_READ_PT10())
+		
+	 
+	  if(GPIO_READ_PT10())
 		{
 		  
 		  adS.key_flag=adS.key_flag ^ 0x01;
 
-		 if(adS.second_5_over >= 1){
+		 if(adS.second_5_over >= 1){ /*unit set mode*/
 			   adS.key_flag = 0;
 			 if(GPIO_READ_PT10()){
 				adS.second_5_over =0;
@@ -182,13 +166,15 @@ void main(void)
 				adS.zero_point_mode =0;
 				adS.measure_mode =1;
 				adS.key_flag = 0;
+				DisplayUnit();
+				Delay(20000);
 				GPIO_PT15_HIGH();	
 				Delay(10000);
 				Delay(10000);
 				Delay(10000);
 			}
 		 }
-		 if(adS.second_3_over >=1 && adS.second_5_over < 1){
+		 if(adS.second_3_over >=1 && adS.second_5_over < 1){ /* zero point mode*/
 
 			
 			   if(GPIO_READ_PT10()){
@@ -212,37 +198,33 @@ void main(void)
 			
 		}
 		else{
-		   GPIO_PT16_LOW();
-		   GPIO_PT15_LOW();
-		   adS.key_flag = 0;
-		   if(adS.second_3_over>1){
-			 adS.second_3_over =0;
-			 adS.measure_mode = 0;
+		   	GPIO_PT16_LOW();
+		   	GPIO_PT15_LOW();
+		   	adS.key_flag = 0;
+		   	if(adS.second_3_over>1){
+			adS.second_3_over =0;
+			adS.measure_mode = 0;
 
 		   }
-		   if(adS.measure_mode == 0){
-
-			   	
-				GPIO_PT16_HIGH();	
-				GPIO_PT15_HIGH();
-				Delay(20000);
-				GPIO_PT16_LOW();
-				GPIO_PT15_LOW();
-				Delay(20000);
-				GPIO_PT16_HIGH();
-				GPIO_PT15_HIGH();
-				Delay(20000);
-				GPIO_PT16_LOW();
-				GPIO_PT15_LOW();
-				Delay(20000);
-		   }
-		   if(adS.zero_point_mode == 1){
+		   if(adS.measure_mode == 0){ /* measure mode */
+				if(MCUSTATUSbits.b_ADCdone==1)
+				{
+					MCUSTATUSbits.b_ADCdone=0;
+					ADC=ADC>>4;
+					ShowADC();
+		            Delay(20000);
+			    }
+	   		}
+		   if(adS.zero_point_mode == 1){ /*zero point mode */
 
 			   adS.zero_point_mode =0;
 			   adS.measure_mode=0;
 			   //display LCD "2Er"
-			   GPIO_PT16_LOW();	
-			   GPIO_PT15_HIGH();
+			     Display2Er();
+                 Delay(20000);
+                 Delay(20000);
+                 Delay(20000);
+                 Delay(20000);
 		   }
 		
 		}
