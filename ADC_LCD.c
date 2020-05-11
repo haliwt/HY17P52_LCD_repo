@@ -13,6 +13,10 @@
 #include <TMR_52.h>
 #include "display.h"
 
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
@@ -55,6 +59,23 @@ volatile typedef union _MCUSTATUS
 } MCUSTATUS;
 
 MCUSTATUS  MCUSTATUSbits;
+typedef struct _adc_wrks_
+{
+   unsigned char save_mode;
+   unsigned char uint_set_mode;
+   unsigned char measure_mode;
+   unsigned char zero_point_mode;
+   unsigned char error_mode;
+   unsigned char key_flag;
+   unsigned char second_5_over;
+   unsigned char second_3_over;
+   unsigned char extend_t;   /*measure mode */
+   
+}adc_works_t;
+adc_works_t adS; 
+unsigned long Second_real_3=0;
+unsigned long firstSecond=0;
+unsigned char getLastSecond =0 ;
 
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -73,14 +94,15 @@ void GPIO_Init(void);
 void main(void)
 {
 //CLK Setting
-	CLK_CPUCKSelect(CPUS_DHSCK) ;
-//GPIO Setting
- //   TRISC1 = 0x00;
- //   TRISC2 = 0x00;
- //   PT1 = 0x00;
- //   PT1DA = 0x00;
-//	GPIO_PT1SETPUAll();
-//	GPIO_PT2SETPUAll();
+	//CLK_CPUCKSelect(CPUS_DHSCK) ;
+	//CLK Setting
+	CLK_OSCSelect(OSCS_HAO); //OSCS_HAO = 3.686MHz
+	CLK_CPUCK_Sel(DHS_HSCKDIV1,CPUS_HSCK); //fre = 3.686Mhz /2 =1.843Mhz
+ 	//GPIO Setting
+	GPIO_PT15_OUTUT();  // SETTING PT4.4 OUTPUT
+    GPIO_PT16_OUTUT();  // SETTING PT4.3 OUTPUT
+    GPIO_PT17_OUTUT();	
+	GPIO_PT10_INPUT();
 
 //VDDA Setting
 	PWR_BGREnable();
@@ -111,6 +133,17 @@ void main(void)
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
 
+	TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
+    TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
+    TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
+    TA1IE_Enable();
+
+    TA1IF_ClearFlag();
+
+    TMA1_ClearTMA1();    //Clear TMA count
+    TMA1Enable();
+   
+
 	ADIF_ClearFlag();
 	ADIE_Enable();
 	GIE_Enable();
@@ -135,6 +168,84 @@ void main(void)
 	   // DisplayHycon();
 	    Display2Er();
         Delay(20000);
+        
+		if(GPIO_READ_PT10())
+		{
+		  
+		  adS.key_flag=adS.key_flag ^ 0x01;
+
+		 if(adS.second_5_over >= 1){
+			   adS.key_flag = 0;
+			 if(GPIO_READ_PT10()){
+				adS.second_5_over =0;
+				adS.uint_set_mode =1;
+				adS.zero_point_mode =0;
+				adS.measure_mode =1;
+				adS.key_flag = 0;
+				GPIO_PT15_HIGH();	
+				Delay(10000);
+				Delay(10000);
+				Delay(10000);
+			}
+		 }
+		 if(adS.second_3_over >=1 && adS.second_5_over < 1){
+
+			
+			   if(GPIO_READ_PT10()){
+				adS.second_3_over =0;
+				adS.zero_point_mode =1;
+				adS.uint_set_mode = 0;
+				adS.measure_mode =1;
+				GPIO_PT16_HIGH();	
+				Delay(20000);  // 1/4 period 20000/4 = 50000 = 500ms
+				GPIO_PT16_HIGH();	
+				Delay(20000);
+				GPIO_PT16_LOW();	
+				Delay(20000);
+				GPIO_PT16_HIGH();	
+				Delay(20000);
+				GPIO_PT16_LOW();
+				Delay(20000);
+				GPIO_PT16_HIGH();
+			}
+		 }
+			
+		}
+		else{
+		   GPIO_PT16_LOW();
+		   GPIO_PT15_LOW();
+		   adS.key_flag = 0;
+		   if(adS.second_3_over>1){
+			 adS.second_3_over =0;
+			 adS.measure_mode = 0;
+
+		   }
+		   if(adS.measure_mode == 0){
+
+			   	
+				GPIO_PT16_HIGH();	
+				GPIO_PT15_HIGH();
+				Delay(20000);
+				GPIO_PT16_LOW();
+				GPIO_PT15_LOW();
+				Delay(20000);
+				GPIO_PT16_HIGH();
+				GPIO_PT15_HIGH();
+				Delay(20000);
+				GPIO_PT16_LOW();
+				GPIO_PT15_LOW();
+				Delay(20000);
+		   }
+		   if(adS.zero_point_mode == 1){
+
+			   adS.zero_point_mode =0;
+			   adS.measure_mode=0;
+			   //display LCD "2Er"
+			   GPIO_PT16_LOW();	
+			   GPIO_PT15_HIGH();
+		   }
+		
+		}
 
     }
 }
@@ -170,13 +281,41 @@ void ISR(void) __interrupt
 		ADC=ADC_GetData();
 		MCUSTATUSbits.b_ADCdone=1;
 	}
-	/*
-	if(TA1IF_IsFlag())
+	if(TA1IF_IsFlag())  //PT1.0  Timer A1 interrupt flag 
 	{
-		TA1IF_ClearFlag();
-		//TMR_RS ();
+		firstSecond++ ;
+		Second_real_3 ++;
+		 if(adS.key_flag ==1||adS.key_flag==0) {
+			adS.second_5_over = 0;
+			firstSecond=0 ;
+		    Second_real_3 =0;
+			adS.key_flag =2;
+		}
+		if(Second_real_3 ==5600) // 3 second
+	    {
+	            Second_real_3 =0;
+				adS.second_3_over ++ ;
+		}
+        
+		if(firstSecond ==9300) // 5 second
+	    {
+	        firstSecond=0;
+		    getLastSecond ++ ;
+			adS.second_5_over ++ ;
+			if(getLastSecond == 12){ //60 sec
+				getLastSecond =0;
+				GPIO_PT16_HIGH();	
+			    Delay(10000);
+				GPIO_PT15_HIGH();	
+			    Delay(10000);
+			    Delay(10000);
+			}	
+	      
+	       GPIO_PT16_LOW()	;	
+	    }
+		 
+	    TA1IF_ClearFlag();
 	}
-	*/
 }
 
 /*----------------------------------------------------------------------------*/

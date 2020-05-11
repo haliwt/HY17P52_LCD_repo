@@ -21,11 +21,12 @@
 #define P58_PT11_MSK                 (1 << P58_PT11)
 #define P58_PT11_H                   (1 << P58_PT11)
 #define P58_PT11_L                   (0 << P58_PT11)
-#else /*USE_HY17P52_2M*/                                                                              //FOR other serials
+#else  /* HY17P52 */ //FOR other serials
 #define PT10                      0
 #define PT10_MSK                 (1 << PT10)
 #define PT10_H                   (1 << PT10)
 #define PT10_L                   (0 << PT10)
+
 #define PT11                      1
 #define PT11_MSK                 (1 << PT11)
 #define PT11_H                   (1 << PT11)
@@ -37,13 +38,17 @@
 #define P48_PT12_MSK                 (1 << P48_PT12)
 #define P48_PT12_H                   (1 << P48_PT12)
 #define P48_PT12_L                   (0 << P48_PT12)
-#else /*USE_HY17P52_2M*/    
-#define PT12                      2               //FOR other serials
+#else /* HY17P52 */   //FOR other serials
+#define PT12        
 #define PT12_MSK                 (1 << PT12)
 #define PT12_H                   (1 << PT12)
 #define PT12_L                   (0 << PT12)
 #endif
-
+/************************************************
+ * 
+ * FOR other serials
+ * 
+ ***********************************************/
 #define PT13                      3
 #define PT13_MSK                 (1 << PT13)
 #define PT13_H                   (1 << PT13)
@@ -60,32 +65,38 @@
 #define PT16_MSK                 (1 << PT16)
 #define PT16_H                   (1 << PT16)
 #define PT16_L                   (0 << PT16)
+
 #define PT17                      7
 #define PT17_MSK                 (1 << PT17)
 #define PT17_H                   (1 << PT17)
 #define PT17_L                   (0 << PT17)
 
 //// TRISC1 //
-#define TC10                      0
+#define TC10                      0               /*PT1.0  TC1.0*/
 #define TC10_MSK                 (1 << TC10)
 #define TC10_H                   (1 << TC10)
 #define TC10_L                   (0 << TC10)
+
 #define TC11                      1
 #define TC11_MSK                 (1 << TC11)
 #define TC11_H                   (1 << TC11)
 #define TC11_L                   (0 << TC11)
+
 #define TC12                      2
 #define TC12_MSK                 (1 << TC12)
 #define TC12_H                   (1 << TC12)
 #define TC12_L                   (0 << TC12)
+
 #define TC13                      3
 #define TC13_MSK                 (1 << TC13)
 #define TC13_H                   (1 << TC13)
 #define TC13_L                   (0 << TC13)
+
 #define TC14                      4
 #define TC14_MSK                 (1 << TC14)
 #define TC14_H                   (1 << TC14)
 #define TC14_L                   (0 << TC14)
+
 #define TC15                      5
 #define TC15_MSK                 (1 << TC15)
 #define TC15_H                   (1 << TC15)
@@ -104,14 +115,17 @@
 #define PU10_MSK                 (1 << PU10)
 #define PU10_H                   (1 << PU10)
 #define PU10_L                   (0 << PU10)
+
 #define PU11                      1
 #define PU11_MSK                 (1 << PU11)
 #define PU11_H                   (1 << PU11)
 #define PU11_L                   (0 << PU11)
+
 #define PU12                      2
 #define PU12_MSK                 (1 << PU12)
 #define PU12_H                   (1 << PU12)
 #define PU12_L                   (0 << PU12)
+
 #define PU13                      3
 #define PU13_MSK                 (1 << PU13)
 #define PU13_H                   (1 << PU13)
@@ -138,22 +152,27 @@
 #define DA10_MSK                 (1 << DA10)
 #define DA10_H                   (1 << DA10)
 #define DA10_L                   (0 << DA10)
+
 #define DA11                      1
 #define DA11_MSK                 (1 << DA11)
 #define DA11_H                   (1 << DA11)
 #define DA11_L                   (0 << DA11)
+
 #define DA12                      2
 #define DA12_MSK                 (1 << DA12)
 #define DA12_H                   (1 << DA12)
 #define DA12_L                   (0 << DA12)
+
 #define DA13                      3
 #define DA13_MSK                 (1 << DA13)
 #define DA13_H                   (1 << DA13)
 #define DA13_L                   (0 << DA13)
+
 #define DA14                      4
 #define DA14_MSK                 (1 << DA14)
 #define DA14_H                   (1 << DA14)
 #define DA14_L                   (0 << DA14)
+
 #define DA15                      5
 #define DA15_MSK                 (1 << DA15)
 #define DA15_H                   (1 << DA15)
@@ -303,14 +322,15 @@
 #define DA27_H                   (1 << DA27)
 #define DA27_L                   (0 << DA27)
 
-#define INTEG0                    0
+/*PT1M1 output model selection */
+#define INTEG0                    0       /* HY17P52 */
 #define INTEG0_MSK               (3 << INTEG0)
 #define INTEG0_LEV               (3 << INTEG0)
 //#define INTEG0_LEV             (2 << INTEG0)
 #define INTEG0_EDGERISE          (1 << INTEG0)
 #define INTEG0_EDGEFALL          (0 << INTEG0)
 
-#define INTEG1                    2
+#define INTEG1                    2      /* HY17P52 */
 #define INTEG1_MSK               (3 << INTEG1)
 #define INTEG1_LEV               (3 << INTEG1)
 //#define INTEG1_LEV             (2 << INTEG1)
@@ -377,9 +397,9 @@
 |-------------------------------------------------------------------------------------------------*/
 // Peripherals/GPIO Multiplexing Config for Peripherals were placed in each peripheral module
 // individually GPIO Config were declared/defined below
-
-#define GPIO_PT1OutputMode(BitSet)           (TRISC1 |= (1 << BitSet))
-#define GPIO_PT1InputMode(BitSet)            (TRISC1 &= ~(1 << BitSet))
+#if 0
+#define GPIO_PT1OutputMode(BitSet)           (TRISC1 |= (1 << BitSet)) //output
+#define GPIO_PT1InputMode(BitSet)            (TRISC1 &= ~(1 << BitSet)) //input 
 #define GPIO_PT1SETPU(BitSet)                (PT1PU |= (1 << BitSet))
 #define GPIO_PT1CLRPU(BitSet)                (PT1PU &= ~(1 << BitSet))
 #define GPIO_PT1SETDA(BitSet)                (PT1DA |= (1 << BitSet))
@@ -387,6 +407,7 @@
 #define GPIO_PT1GET(BitSet)                  (PT1 & (1 <<BitSet))
 #define GPIO_PT1SET(BitSet)                  (PT1 |= (1 << BitSet))
 #define GPIO_PT1CLR(BitSet)                  (PT1 &= ~(1 << BitSet))
+#endif 
 
 #define GPIO_INTEG0Sel(EG0Sel)               (PT1M1 = ((PT1M1 & (~INTEG0_MSK)) | EG0Sel))
 #define GPIO_INTEG1Sel(EG1Sel)               (PT1M1 = ((PT1M1 & (~INTEG1_MSK)) | EG1Sel))
@@ -414,3 +435,95 @@
 #define GPIO_PT1SETPUAll()                   (PT1PU = 0xff)
 #define GPIO_PT2SETPUAll()                   (PT2PU = 0xff)
 
+
+// PT1.x // x=0~6
+#define GPIO_PT1OutputMode(BitSet)           (TRISC1 |= BitSet)
+#define GPIO_PT1OutputHigh(BitSet)           (PT1 |= BitSet)
+#define GPIO_PT1OutputLow(BitSet)            (PT1 &= ~BitSet)    // Valid only when PT is Output mode
+
+#define GPIO_PT1InputMode(BitSet)            (TRISC1 &= ~ BitSet)
+#define GPIO_PT1InputEnable(BitSet)          (PT1IN |= BitSet)
+#define GPIO_PT1InputDisable(BitSet)         (PT1IN &= ~BitSet)
+#define GPIO_PT1SETPU(BitSet)                (PT1PU |= BitSet)
+#define GPIO_PT1CLRPU(BitSet)                (PT1PU &= ~ BitSet)
+#define GPIO_PT1SETPUAll()                   (PT1PU = 0xff)
+
+#define GPIO_PT1SETDA(BitSet)                (PT1DA |= BitSet)
+#define GPIO_PT1CLRDA(BitSet)                (PT1DA &= ~ BitSet)
+
+#define GPIO_PT1GET(BitSet)                  (PT1 & BitSet)
+#define GPIO_PT1SET(BitSet)                  (PT1 |=  BitSet)
+#define GPIO_PT1CLR(BitSet)                  (PT1 &= ~BitSet)
+
+// PT1.7 
+#define GPIO_PT17_INPUT()                           (TRISC1=(TRISC1&(~TC15_MSK))| TC17_L ) //PT1.7
+#define	GPIO_PT17_OUTUT()							(TRISC1=(TRISC1&(~TC17_MSK ))| TC17_H )
+#define	GPIO_PT17_HIGH()							(PT1=(PT1&(~PT17_MSK))|PT17_H)
+#define	GPIO_PT17_LOW()								(PT1=(PT1&(~PT17_MSK))|PT17_L)
+
+// PT8.x // x=0~1
+#define GPIO_PT8OutputMode(BitSet)           (TRISC8 |= BitSet)
+#define GPIO_PT8OutputHigh(BitSet)           (PT8 |= BitSet)
+#define GPIO_PT8OutputLow(BitSet)            (PT8 &= ~BitSet)    // Valid only when PT is Output mode
+
+#define GPIO_PT81InputMode(BitSet)            (TRISC8 &= ~ BitSet)
+#define GPIO_PT81InputEnable(BitSet)          (PT8IN |= BitSet)
+#define GPIO_PT81InputDisable(BitSet)         (PT8IN &= ~BitSet)
+#define GPIO_PT81SETPU(BitSet)                (PT8PU |= BitSet)
+#define GPIO_PT81CLRPU(BitSet)                (PT8PU &= ~ BitSet)
+#define GPIO_PT81SETPUAll()                   (PT8PU = 0xff)
+
+#define GPIO_PT8CLRPU(BitSet)					 (PT8PU &= ~ BitSet)
+#define GPIO_PT8CLR(BitSet)						 (PT8 &= ~(1 << BitSet))
+
+#define	PT44			4
+	#define PT44_MASK			(1<<PT44)
+	#define PT44_HIGH			 (1<<PT44)
+	#define	PT44_LOW			 (0<<PT44)
+
+#define	GPIO_PT10_HIGH()				(PT1=(PT1&(~PT10_MSK))|PT10_H)
+#define	GPIO_PT10_LOW()					(PT1=(PT1&(~PT10_MASK))|PT10_L)
+
+#define	PT44			4
+	#define PT44_MASK			(1<<PT44)
+	#define PT44_HIGH			 (1<<PT44)
+	#define	PT44_LOW			 (0<<PT44)
+
+
+#define	GPIO_PT15_HIGH()				(PT1=(PT1&(~PT15_MSK))|PT15_H)
+#define	GPIO_PT15_LOW()					(PT1=(PT1&(~PT15_MSK))|PT15_L)
+
+#define	GPIO_PT16_HIGH()				(PT1=(PT1&(~PT16_MSK))|PT16_H)
+#define	GPIO_PT16_LOW()					(PT1=(PT1&(~PT16_MSK))|PT16_L)
+
+#define TC44						4
+	#define TC44_MASK				(1<<TC44)
+	#define TC44_OUTPUT				(1<<TC44)
+	#define TC44_INPUT				(0<<TC44)
+
+#define	GPIO_PT15_INPUT()				(TRISC1=(TRISC1&(~TC15_MSK))| TC15_L )
+#define	GPIO_PT15_OUTUT()				(TRISC1=(TRISC1&(~TC15_MSK ))| TC15_H )
+
+#define	GPIO_PT16_INPUT()				(TRISC1=(TRISC1&(~TC16_MSK))| TC16_L )
+#define	GPIO_PT16_OUTUT()				(TRISC1=(TRISC1&(~TC16_MSK ))| TC16_H )
+
+#define	GPIO_PT10_INPUT()				(TRISC1=(TRISC1&(~TC10_MSK))| TC10_L )
+#define	GPIO_PT10_OUTUT()				(TRISC1=(TRISC1&(~TC10_MSK ))| TC10_H )
+#define	GPIO_READ_PT10()			    ((PT1>>PT10)&0x1)
+//#define	GPIO_PT10_HIGH()				(PT1=(PT1&(~PT10_MASK))|PT10_HIGH)
+//#define	GPIO_PT10_LOW()					(PT1=(PT1&(~PT10_MASK))|PT10_LOW)
+
+#define	GPIO_PT10_INTTrig(uinteg)	(PT1M1=(PT1M1&(~INTEG10_MASK))| uinteg)
+	
+#define	GPIO_PT10_INT(uinteg)	(PT1M1=(PT1M1&(~INTEG0_MSK))| uinteg)
+
+//#define INTEG10		0
+	#define INTEG10_MASK			(3<<INTEG10)
+	#define	INTEG10_FALL_EDGE		(0<<INTEG10)
+	#define	INTEG10_RICE_EDGE		(1<<INTEG10)
+	#define	INTEG10_HIG_LOW			 (2<<INTEG10)
+
+//demo code
+#define	GPIO_READ_PT4x(upt4x)		((PT4>>upt4x)&0x1)
+#define GPIO_READ_PT4PORTS()	(PT4)
+#define GPIO_WRITE_PT4PROTS(UDATA)	(PT4=UDATA&0xF8)
