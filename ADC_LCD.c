@@ -176,14 +176,14 @@ void main(void)
 			
 			}
 		 }
-		 if(adS.second_3_over >=1 && adS.second_3_over <=2 && adS.uint_set_mode !=1){ /* zero point mode*/
+		 if(adS.second_3_over >=1 && adS.second_5_over < 1 && adS.uint_set_mode !=1){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
 				
 				adS.zero_point_mode =1;
 				adS.uint_set_mode = 0;
 				adS.measure_mode =1;
-			
+			    adS.second_3_over=0;
 				//display LCD "2Er"
 			     Display2Er();
                  Delay(20000);
@@ -195,18 +195,17 @@ void main(void)
 		else{
 		   	GPIO_PT16_LOW();
 		   	GPIO_PT15_LOW();
-		    adS.key_flag =0;
+		   
 		   if(adS.measure_mode == 0){ /* measure mode */
+		         
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
 					ADC=ADC>>4;
 					ShowADC();
 					GPIO_PT16_HIGH();
-		            
-		           	adS.second_3_over =0;
-			        Second_real_3 =0;
-			        Delay(20000);
+		            adS.key_flag =0;
+		        	Delay(20000);
 		           	GPIO_PT16_LOW(); 
 
 			    }
@@ -215,16 +214,12 @@ void main(void)
 
 			   adS.zero_point_mode =0;
 			   adS.measure_mode=0;
-			   adS.second_3_over =0;
-			   Second_real_3 =0;
-			   
-		   }
+			}
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
 		   	   adS.measure_mode = 0;
-		   	  
-		   	   adS.second_3_over =0;
-			   Second_real_3 =0;
-		   }
+		   	   adS.uint_set_mode=0;
+			   adS.key_flag =0;
+			}
 		
 		}
 
@@ -275,7 +270,7 @@ void ISR(void) __interrupt
 			
 		}
 		if(Second_real_3 ==5600){
-		    
+		    Second_real_3 =0;
 			adS.second_3_over ++ ;
 		}
 		if(firstSecond ==9300) // 5 second
