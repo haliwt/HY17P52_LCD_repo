@@ -2,16 +2,17 @@
 #include <SFRType.h>
 #include "lcdTable.h"
 #include <LCD.h>
-
+#include "display.h"
+adc_works_t adS; 
 
 //unsigned char n,count,*LCDAddr,LCDData;
 
 void ClearLCD(void)
 {
 	unsigned char count;
-  	FSR0=&LCD0; /* */
-  	for(count=5;count>0;count--)//for(count=6;count>0;count--)
-    	POINC0=0;  /*pointer add one then point to next address*/
+  	FSR0=&LCD0;
+  	for(count=6;count>0;count--)
+    	POINC0=0;
 }
 
 
@@ -56,19 +57,19 @@ void DisplayNum(long Num)
     MINUS=0;
   }
 
-  //LCDAddr=&LCD5;
-  LCDAddr = &LCD4;  /*HY17P52 for LCD FTP1625SX01*/
-  for(count=0;count<5;count++)//for(count=0;count<6;count++) /* has 6 register for "LCD0 ~LCD5" */
+  LCDAddr=&LCD5;
+ // LCDAddr = &LCD4;  /*HY17P52 for LCD FTP1625SX01*/
+   for(count=0;count<6;count++) /* has 6 register for "LCD0 ~LCD5" */
   {
-    LCDData=seg[Num%10]; /*取余数*/
+    LCDData=seg[Num%10]; 
     LCD_WriteData(LCDAddr,LCDData);
     Num=Num/10 ;
     LCDAddr--;
   }
-  if(MINUS==1)
-    LCD_WriteData(&LCD0,S_Minus);//LCD_WriteData(&LCD6,S_Minus);
+  if(adS.S_Plus==1)//if(MINUS==1)
+      LCD_WriteData(&LCD6,S_Minus);// LCD_WriteData(&LCD0,S_Minus);
   else
-    LCD_WriteData(&LCD0,0);//LCD_WriteData(&LCD6,0);
+      LCD_WriteData(&LCD6,0);//LCD_WriteData(&LCD0,0);
 }
 
 /*---------------------------------------------------------------------------*/

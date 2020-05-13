@@ -8,33 +8,19 @@
 #include <CLK.h>
 #include <PWR.h>
 #include <ADC_52.h>
-#include <GPIO.h>
+#include <GPIO.h>S
 #include <LCD.h>
 #include <TMR_52.h>
 #include "display.h"
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
-//#define  TPSTEST
-/*
-#define ADGN                      0
-#define ADGN_MSK                 (7 << ADGN)
-//FOR ICE
-#define ADGN_RSVD              (7 << ADGN)
-#define ADGN_16                    (6 << ADGN)
-#define ADGN_4                      (4 << ADGN)
-#define ADGN_1                      (2 << ADGN)
-//FOR BODY
-#define ADGN_RSVD        (7 << ADGN)
-#define ADGN_16              (6 << ADGN)
-#define ADGN_1                (5 << ADGN)
-#define ADGN_4                (4 << ADGN)
-*/
+#define abs(value)            (value >0 ? value : -value )
+#define VoltageToPSi(vuint)		(3.75 * (vuint-40000))
+#define PSiTobar(psi)   	(14.5 * psi)
+#define barTokgf(psi)	 	(14.22 * psi)
+#define kgfTokPa(psi)		(0.145 *psi)
+#define kPaToMPa(psi)		(145 * psi)
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -64,20 +50,7 @@ volatile typedef union _MCUSTATUS
 } MCUSTATUS;
 
 MCUSTATUS  MCUSTATUSbits;
-typedef struct _adc_wrks_
-{
-   unsigned char save_mode;
-   unsigned char uint_set_mode;
-   unsigned char measure_mode;
-   unsigned char zero_point_mode;
-   unsigned char error_mode;
-   unsigned char key_flag;
-   unsigned char second_5_over;
-   unsigned char second_3_over;
-   unsigned char extend_t;   /*measure mode */
-   
-}adc_works_t;
-adc_works_t adS; 
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +174,15 @@ void main(void)
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
-					ADC=ADC>>4;
+					ADC=ADC>>6;
+					
+				
+						
+						 
+					
+					//adS.ADC_value = VoltageToPSi(ADC);
+					
+				//	ADC =  adS.ADC_value;
 					ShowADC();
 					GPIO_PT16_HIGH();
 		            adS.key_flag =0;

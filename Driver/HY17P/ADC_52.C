@@ -99,7 +99,7 @@ long ADC_GetData(void)
     ((char *)(&ADCData))[1] = AD1M; /* ADC middle byte*/
     ((char *)(&ADCData))[2] = AD1H; /* ADC high byte register */
 
-    if (ADCData&0x800000L)
+    if (ADCData&0x800000L)  //2^(24-1) -1 = 8388607  
         ((char *)(&ADCData))[3] = 0xFF;
     else
         ((char *)(&ADCData))[3] = 0x00;
