@@ -66,7 +66,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr--;
   }
-  if(adS.S_Plus==1)//if(MINUS==1)
+  if(MINUS==1)//if(adS.S_Plus==1)//if(MINUS==1)
       LCD_WriteData(&LCD6,S_Minus);// LCD_WriteData(&LCD0,S_Minus);
   else
       LCD_WriteData(&LCD6,0);//LCD_WriteData(&LCD0,0);

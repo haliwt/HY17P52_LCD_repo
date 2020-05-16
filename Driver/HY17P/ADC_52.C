@@ -56,9 +56,9 @@ void ADC_Open(unsigned char ck,    //Selector of SD18 peripheral operating clock
               unsigned char vrh,   //VR+ voltage signal selector
               unsigned char vrl,   //VR- voltage signal selector
               unsigned char adgn,  //AD amplification adjuster
-              unsigned char pgagn, //PGA amplification adjuster
+              unsigned char pgagn, //PGA amplification adjuster 
               unsigned char vrgn,  //VR amplification adjuster
-              unsigned char dcset, //SI+/- bias adjuster
+              unsigned char dcset, //SI+/- bias adjuster 
               unsigned char osr,  //SD18 over-sampling rate divider
               unsigned char vcms)  //VCMS signal selector
               
