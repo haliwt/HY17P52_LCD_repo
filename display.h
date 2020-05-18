@@ -1,8 +1,7 @@
 
-
-
 #define TableNumber 115
-typedef struct _adc_wrks_
+enum unit_t{psi,bar,kgf,mpa};
+struct _adc_works_
 {
    unsigned char save_mode;
    unsigned char uint_set_mode;
@@ -14,11 +13,12 @@ typedef struct _adc_wrks_
    unsigned char second_3_over;
    unsigned char extend_t;   /*measure mode */
    unsigned long ADC_value;  
-   unsigned char S_Plus ;
+   unsigned char u_plus ;
+   unsigned char  plus_uint ;
 
-}adc_works_t;
+};
 
-extern adc_works_t adS; 
+extern struct _adc_works_ adS; 
 #if 0
 unsigned int pressTable[TableNumber ] = {
  1123,1684,1703,1986

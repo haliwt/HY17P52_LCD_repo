@@ -154,7 +154,6 @@ void main(void)
 				adS.uint_set_mode =1;
 				adS.zero_point_mode =0;
 				adS.measure_mode =1;
-			
 				DisplayUnit();
 				Delay(20000);
 				Delay(20000);
@@ -162,6 +161,24 @@ void main(void)
 				Delay(10000);
 				Delay(10000);
 				Delay(10000);
+				switch(adS.plus_uint){
+					case psi: 
+					     adS.plus_uint++;
+						 adS.u_plus = psi;
+					    break;
+					case bar:
+						adS.plus_uint++;
+						 adS.u_plus = bar;
+					     break;
+					case kgf:
+						adS.plus_uint++;
+						adS.u_plus = kgf;
+					     break;
+				    case mpa:
+					     adS.plus_uint=0;
+						 adS.u_plus = mpa;
+					     break;
+				}
 			
 			}
 		 }
@@ -210,6 +227,23 @@ void main(void)
 		   	   adS.uint_set_mode=0;
 			   adS.key_flag =0;
 			}
+			if(adS.uint_set_mode ==1){
+
+				switch(adS.u_plus){
+					case psi:
+					break;
+					case bar:
+					break;
+					case kgf:
+					break;
+					case mpa:
+					break;
+					default :
+					break;
+
+				}
+
+			}
 		
 		}
 
@@ -224,7 +258,7 @@ void main(void)
 /*----------------------------------------------------------------------------*/
 void ShowADC (void)
 {
-	
+	Index_Subsection(ADC); /* judge ADC value region*/
 	DisplayNum(ADC);
 	
 }

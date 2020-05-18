@@ -3,7 +3,7 @@
 #include "lcdTable.h"
 #include <LCD.h>
 #include "display.h"
-adc_works_t adS; 
+struct _adc_works_ adS;  
 
 //unsigned char n,count,*LCDAddr,LCDData;
 
@@ -31,6 +31,64 @@ void DisplayHycon(void)
   LCD_WriteData(&LCD4,Char_O);
   LCD_WriteData(&LCD5,Char_N);
   LCD_WriteData(&LCD6,0x00);
+}
+/***************************************************************************
+  *
+  *Function Name:Index_Subsection()
+  *Function : serch table be responds psi volue,voltage transition psi
+  *
+  *                                                        
+****************************************************************************/
+void Index_Subsection(long Sub)
+{
+    if(Sub >=6505 && Sub<= 6509){
+      switch(Sub){
+            case 6505 :
+                  Sub = 146;
+                  break;
+            case 6506 :
+                 Sub = 146;
+                 break;
+            case 6507 :
+                 Sub = 145;
+                 break;
+            case 6508 :
+                 Sub = 144;
+                 break;
+            case 6509 :
+                Sub = 144;
+                break;
+          }   
+      }
+      if(Sub >=6510 && Sub<= 6521){
+       switch(Sub){
+             case 6521:
+                  Sub = 131;
+                  break;
+            case 6520:
+                 Sub = 132;
+                 break;
+            case 6519 :
+                  Sub = 130;
+                  break;
+            case 6518:
+                 Sub = 134;
+                 break;
+            case 6517 :
+                 Sub = 135;
+                 break;
+            case 6516 :
+                 Sub = 135;
+                 break;
+            case 6515 :
+                 Sub = 138;
+                 break;
+            case 6514 :
+                Sub = 139;
+                break;
+          }    
+
+      }
 }
 
 /*---------------------------------------------------------------------------
