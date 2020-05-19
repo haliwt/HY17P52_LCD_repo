@@ -5,8 +5,13 @@
 #include "display.h"
 struct _adc_works_ adS;  
 
-//unsigned char n,count,*LCDAddr,LCDData;
 
+/************************************************************
+ * 
+ * unsigned char n,count,*LCDAddr,LCDData;
+ * 
+ * 
+ ************************************************************/
 void ClearLCD(void)
 {
 	unsigned char count;

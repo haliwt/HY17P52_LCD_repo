@@ -15,6 +15,8 @@ struct _adc_works_
    unsigned long ADC_value;  
    unsigned char u_plus ;
    unsigned char  plus_uint ;
+   int m_offset_value;
+   int p_offset_value;
 
 };
 
