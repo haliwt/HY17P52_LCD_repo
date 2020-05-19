@@ -8,19 +8,19 @@
 #include <CLK.h>
 #include <PWR.h>
 #include <ADC_52.h>
-#include <GPIO.h>S
+#include <GPIO.h>
 #include <LCD.h>
 #include <TMR_52.h>
 #include "display.h"
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
-#define abs(value)            (value >0 ? value : -value )
-#define VoltageToPSi(vuint)		(3.75 * (vuint-40000))
-#define PSiTobar(psi)   	(14.5 * psi)
-#define barTokgf(psi)	 	(14.22 * psi)
-#define kgfTokPa(psi)		(0.145 *psi)
-#define kPaToMPa(psi)		(145 * psi)
+#define abs(value)            ((value) >0 ? (value) : (-value) )
+
+#define PSITokgf(kgf)       (0.145 * (kgf))
+#define BARTokgf(kgf)   	(2.1 * (kgf))
+#define MPATokgf(kgf)	 	(0.1 * (kgf))
+
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -51,23 +51,41 @@ volatile typedef union _MCUSTATUS
 
 MCUSTATUS  MCUSTATUSbits;
 
-
-unsigned int pressTable[TableNumber ] = {
- 1123,1684,1703,1986
-,2227,2258,2548,2816,2824,3383,3392,3665,3934,4002
-,4210,4496,4503,4570,4632,4712,4766,4778,4836,4896
-,4993,5054,5058,5107,5165,5285,5326,5385,5442,5496
-,5606,5633,5700,5766,5840,5888,5896,5943,6001,6050
-,6120,6203,6208,6250,6265,6284,6314,6316,6336,6355
-,6359,6361,6362,6363,6365,6405,6465,6500,6500,6505
-,6506,6507,6508,6509,6510,6511,6512,6513,6514,6515
-,6516,6517,6518,6519,6520,6521,6522,6523,6524,6525
-,6526,6527,6528,6529,6530,6531,6532,6533,6534,6535
-,6536,6537,6538,6539,6540,6541,6542,6543,6544,6545
-,6546,6547,6548,6549,6550,6551,6552,6553,6554,6555
-
+unsigned int table_Getkgf_100_90[]={
+	6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812
 };
- 
+unsigned int table_Getkgf_90_80[]={ 
+	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524
+};
+unsigned int table_Getkgf_80_70[]={ 
+	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536
+};
+unsigned int table_Getkgf_70_60[]={ 
+	6537,6538,6539,6540,6541,6542,6543,6544,6545,6546,5647,6548
+};
+unsigned int table_Getkgf_60_50[]={ 6540, 6120 };
+unsigned int table_Getkgf_50_40[]={ 6120, 5320 };
+unsigned int table_Getkgf_40_30[]={ 5321, 4481 };
+unsigned int table_Getkgf_30_20[]={ 4480, 3668};
+unsigned int table_Getkgf_20_10[]={ 3667, 2847};
+unsigned int table_Getkgf_10_0[]= { 2846, 2010 };
+/*minus kfg value array m --minus */
+unsigned int m_table_Getkgf_100_90[]={6270,5435};
+unsigned int m_table_Getkgf_90_80[]={5436,4615};
+unsigned int m_table_Getkgf_80_70[]={4617,3784};
+unsigned int m_table_Getkgf_70_60[]={3785,2948};
+unsigned int m_table_Getkgf_60_50[]={2949,2123};
+unsigned int m_table_Getkgf_50_40[]={2124,1307};
+unsigned int m_table_Getkgf_40_30[]={1308,469};
+unsigned int m_table_Getkgf_30_20[]={470,375};
+unsigned int m_table_Getkgf_20_10[]={376,1156};
+unsigned int m_table_Getkgf_10_0[]={1157,1997};
+unsigned char Flag;
+/*----------------------------------------------------------------------------*/
+/* Function PROTOTYPES                                                        */
+/*----------------------------------------------------------------------------*/
+unsigned char HY17P52WR3(unsigned char Addr,unsigned char DataH,unsigned char DataL);
+void HY17P52WR3Delay(char ms);
 
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -85,7 +103,9 @@ void GPIO_Init(void);
 
 void main(void)
 {
-//CLK Setting
+    unsigned int read_t,read_h; 
+	static unsigned int index_offset ;
+   //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
 	CLK_OSCSelect(OSCS_HAO); //OSCS_HAO = 3.686MHz
@@ -141,7 +161,9 @@ void main(void)
 
 	while(1)
 	{
-	    if(GPIO_READ_PT10())
+	    
+		
+		if(GPIO_READ_PT10())
 		{
 		  
 		  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
@@ -157,6 +179,44 @@ void main(void)
 				DisplayUnit();
 				Delay(20000);
 				Delay(20000);
+
+				    //BIE Read   
+					BIEARL=0;                                //addr=0
+					BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+					while((BIECN& 0x01)==1);   
+					read_t = BIEDRL;
+					read_h = BIEDRH;
+					if(read_h == 0x00){
+							GPIO_PT16_HIGH();
+								
+							Delay(20000);
+							GPIO_PT16_LOW(); 
+							Delay(20000);
+							GPIO_PT16_HIGH();
+							Delay(20000);
+							GPIO_PT16_LOW(); 
+								//BIE Write
+							HY17P52WR3(0,0xAA,0x11);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+							if(Flag== 1)
+							{
+								while(1);    //fail
+							}
+					}
+					if(read_t == 0x11){
+
+							GPIO_PT15_HIGH();
+								
+							Delay(20000);
+							GPIO_PT15_LOW(); 
+							Delay(20000);
+							GPIO_PT15_HIGH();
+							Delay(20000);
+							GPIO_PT15_LOW(); 
+
+					}
+				
+			
+			
 				GPIO_PT15_HIGH();	
 				Delay(10000);
 				Delay(10000);
@@ -209,6 +269,7 @@ void main(void)
 					MCUSTATUSbits.b_ADCdone=0;
 					
 					ADC=ADC>>6;
+
 					ShowADC();
 					GPIO_PT16_HIGH();
 		            adS.key_flag =0;
@@ -231,6 +292,7 @@ void main(void)
 
 				switch(adS.u_plus){
 					case psi:
+						
 					break;
 					case bar:
 					break;
