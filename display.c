@@ -37,6 +37,7 @@ void DisplayHycon(void)
   LCD_WriteData(&LCD5,Char_N);
   LCD_WriteData(&LCD6,0x00);
 }
+
 /***************************************************************************
   *
   *Function Name:Index_Subsection()
@@ -44,58 +45,34 @@ void DisplayHycon(void)
   *
   *                                                        
 ****************************************************************************/
-void Index_Subsection(long Sub)
+#if 0
+long Index_Subsection()
 {
-    if(Sub >=6505 && Sub<= 6509){
-      switch(Sub){
-            case 6505 :
-                  Sub = 146;
-                  break;
-            case 6506 :
-                 Sub = 146;
-                 break;
-            case 6507 :
-                 Sub = 145;
-                 break;
-            case 6508 :
-                 Sub = 144;
-                 break;
-            case 6509 :
-                Sub = 144;
-                break;
-          }   
-      }
-      if(Sub >=6510 && Sub<= 6521){
-       switch(Sub){
-             case 6521:
-                  Sub = 131;
-                  break;
-            case 6520:
-                 Sub = 132;
-                 break;
-            case 6519 :
-                  Sub = 130;
-                  break;
-            case 6518:
-                 Sub = 134;
-                 break;
-            case 6517 :
-                 Sub = 135;
-                 break;
-            case 6516 :
-                 Sub = 135;
-                 break;
-            case 6515 :
-                 Sub = 138;
-                 break;
-            case 6514 :
-                Sub = 139;
-                break;
-          }    
+    
+     int i =12;
+    
+    //adS.ADC_DAT = adS.ADC_DAT * 0.1;
+	 if(adS.ADC_DAT< 6508 && adS.ADC_DAT > 6500) {
+        adS.ADC_DAT = 66666;
+     return adS.ADC_DAT;
+   }
+	 if(adS.ADC_DAT <=6500){
+       
+		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
+        adS.ADC_DAT = 6501;
+        while(i--){
+          
+           if(table_Getkgf_100_90[i] == adS.ADC_DAT) {
+                   
+                return i;
+           }
+           else 
+               return -1;
+           };
+     }
 
-      }
 }
-
+#endif 
 /*---------------------------------------------------------------------------
 	*
 	* Function Name:DisplayNum(long Num)

@@ -15,16 +15,18 @@
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
+
 #define abs(value)            ((value) >0 ? (value) : (-value) )
 
 #define PSITokgf(kgf)       (0.145 * (kgf))
 #define BARTokgf(kgf)   	(2.1 * (kgf))
 #define MPATokgf(kgf)	 	(0.1 * (kgf))
 
+#define STD_VALUE           65000
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
-unsigned char ADCData,ADCData1,ADCData2;
+static  int index_offset ;
 unsigned char Flag;
 long	ADC;
 
@@ -50,10 +52,15 @@ volatile typedef union _MCUSTATUS
 } MCUSTATUS;
 
 MCUSTATUS  MCUSTATUSbits;
-
-unsigned int table_Getkgf_100_90[]={
+#if 1
+const unsigned int table_Getkgf_100_90[]={
 	6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812
 };
+#endif 
+const unsigned int display_Unitkgf_100_90[]={
+    100,990,980,970,960,950,940,930,920,910,910,900,900
+};
+/******************************************************/
 unsigned int table_Getkgf_90_80[]={ 
 	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524
 };
@@ -97,14 +104,15 @@ void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
+long Index_Subsection(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
 
 void main(void)
 {
-    unsigned int read_t,read_h; 
-	static unsigned int index_offset ;
+    unsigned int read_t,read_h,n; 
+    int LCDDisplay;
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -158,7 +166,7 @@ void main(void)
 	ADIF_ClearFlag();
 	ADIE_Enable();
 	GIE_Enable();
-
+    
 	while(1)
 	{
 	    
@@ -269,8 +277,20 @@ void main(void)
 					MCUSTATUSbits.b_ADCdone=0;
 					
 					ADC=ADC>>6;
+					adS.ADC_DAT = ADC * 0.1;
+					#if 1
+					n = Index_Subsection(); /* judge ADC value region*/
+			
+					DisplayNum(n);
+					if(n <0){
+                       LCDDisplay = 12345; 
 
-					ShowADC();
+					}
+					else{
+                       LCDDisplay = display_Unitkgf_100_90[n];
+					}
+					#endif 
+					//DisplayNum(LCDDisplay);
 					GPIO_PT16_HIGH();
 		            adS.key_flag =0;
 		        	Delay(20000);
@@ -282,11 +302,15 @@ void main(void)
 
 			   adS.zero_point_mode =0;
 			   adS.measure_mode=0;
+			   ADC=ADC>>6;
+			   adS.m_offset_value = ADC - STD_VALUE;
+
 			}
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
 		   	   adS.measure_mode = 0;
 		   	   adS.uint_set_mode=0;
 			   adS.key_flag =0;
+
 			}
 			if(adS.uint_set_mode ==1){
 
@@ -312,15 +336,46 @@ void main(void)
     }
 }
 
-/*----------------------------------------------------------------------------*/
-/* Subroutine Function                                                        */
-/*----------------------------------------------------------------------------*/
+/***************************************************************************
+  *
+  *Function Name:Index_Subsection()
+  *Function : serch table be responds psi volue,voltage transition psi
+  *
+  *                                                        
+****************************************************************************/
+long Index_Subsection()
+{
+    
+     int i =13;
+    adS.ADC_DAT = 6510;
+    //adS.ADC_DAT = adS.ADC_DAT * 0.1;
+	 if(adS.ADC_DAT > 6549 && adS.ADC_DAT < 6500) {
+        adS.ADC_DAT = 66666;
+     return adS.ADC_DAT;
+   }
+	 if(adS.ADC_DAT >=6500){
+       
+		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
+      
+        while(i--){
+          
+           if(table_Getkgf_100_90[i] == (unsigned int)adS.ADC_DAT) {
+                   
+                return i;
+           }
+         
+        };
+     }
+	 return -1;
+
+}
+
 /*----------------------------------------------------------------------------*/
 /*          LCD Show ADC                                                        */
 /*----------------------------------------------------------------------------*/
 void ShowADC (void)
 {
-	Index_Subsection(ADC); /* judge ADC value region*/
+	//Index_Subsection(ADC); /* judge ADC value region*/
 	DisplayNum(ADC);
 	
 }
