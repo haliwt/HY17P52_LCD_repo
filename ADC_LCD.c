@@ -54,14 +54,14 @@ volatile typedef union _MCUSTATUS
 MCUSTATUS  MCUSTATUSbits;
 #if 1
 const unsigned int table_Getkgf_100_60[]={
-	6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812,
+	6520,6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812,
 	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524,
 	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536,
 	6537,6538,6539,6540,6541,6542,6543,6544,6545,6546,5647,6548
 };
 #endif 
 const unsigned int display_Unitkgf_100_60[]={
-    100,99,98,97,96,95,94,93,92,91,91,90,90,
+        100,100,99,98,97,96,95,94,93,92,91,91,90,90,
         89,88,87,86,85,84,83,82,81,81,80,80,
         79,78,77,76,75,74,73,72,71,71,70,70,
         69,68,67,66,65,64,63,62,61,61,60,60
@@ -125,7 +125,7 @@ void main(void)
 {
     unsigned int read_t,read_h,n; 
     long  LCDDisplay;
-	int delta;
+	long delta;
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -284,7 +284,7 @@ void main(void)
 		   	GPIO_PT15_LOW();
 		   
 		   if(adS.measure_mode == 0){ /* measure mode */
-		         
+		        adS.zero_point_mode=0;
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
@@ -296,12 +296,14 @@ void main(void)
 					n = Index_Subsection(ADC); /* judge ADC value region*/
 			        
 					//DisplayNum(n);
-					if(n ==0){
-                       DisplayHycon();
-					   Delay(20000);
-					}
-					else if(n== -1){
-						  ADC = ADC + adS.m_offset_value;	
+				
+					if(n== -1){
+						   if(adS.delta_v==1){
+								ADC = abs(ADC) - adS.p_offset_value;
+							}
+							else if(adS.delta_v ==2) {
+								ADC = abs(ADC) + adS.m_offset_value;	
+							}
 						  LCDDisplay = ADC;
 					      DisplayNum(LCDDisplay);
 						  Delay(20000);
@@ -316,8 +318,8 @@ void main(void)
 						
 					}
 					#endif 
-					//LCDDisplay = adS.m_offset_value;
-					//DisplayNum(LCDDisplay);
+					
+					DisplayNum(ADC);
 					Delay(20000);
 					GPIO_PT16_HIGH();
 		            adS.key_flag =0;
@@ -333,37 +335,33 @@ void main(void)
 			   ADC=ADC>>6;
 			   ADC = ADC * 0.1;
 			   delta = abs(ADC) - STD_VALUE; 
-			   if(delta >= 0) {
+			   if((delta<0)||(delta>0x80000000))
+				{
+					adS.m_offset_value = delta ;
+				   adS.delta_v=2222 ;
+				   DisplayNum(adS.delta_v);
+				    Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+				}
+				else
+				{
 				   adS.p_offset_value=delta;
-				   adS.delta_v=1 ;
+				   adS.delta_v=1111 ;
 				   DisplayNum(adS.delta_v);
 				    Delay(20000);
 					Delay(20000);
+					
+					DisplayNum(adS.p_offset_value);
+					 Delay(20000);
 					Delay(20000);
 					Delay(20000);
-					Delay(20000);
-			   }
-			   else{
-				   adS.m_offset_value = delta ;
-				   adS.delta_v=2 ;
-				   DisplayNum(adS.delta_v);
-				    Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-			   }
+				}
 			 
-			    DisplayNum(ADC);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-				 DisplayNum(delta);
-				    Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
+			  
+				  
 			  
 
 			}
@@ -406,18 +404,16 @@ void main(void)
 ****************************************************************************/
 long Index_Subsection(long SubValue)
 {
-    
-     int i =50;
+     long Read_ADC;
+     int i =51;
     //SubValue = 6510;
     if(adS.delta_v==1){
-	   SubValue = abs(SubValue) - adS.p_offset_value;
+	   Read_ADC = abs(SubValue)- abs(adS.p_offset_value);
 	 }
-	 else if(adS.delta_v ==2) {
-		SubValue = abs(SubValue) + adS.m_offset_value;	
+	 else  {
+		Read_ADC = abs(SubValue) + abs(adS.m_offset_value);	
 	}
-	else{
 
-	}
     #if 0
 	
 	    DisplayNum(SubValue);
@@ -427,26 +423,32 @@ long Index_Subsection(long SubValue)
 				Delay(20000);
 				Delay(20000);
 	#endif 
-    //adS.ADC_DAT = adS.ADC_DAT * 0.1;
-	if( SubValue < 6495 && SubValue > 6490 ) {
+     #if 0
+	if( SubValue < 6560 && SubValue > 6550 ) {
            
            SubValue = 0;
            return SubValue;
    	}
-	else{
+	#endif 
+	
        
 		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
       
-        while(i--){
-          
-           if(table_Getkgf_100_60[i] == SubValue|| ((table_Getkgf_100_60[i] -1) == SubValue)\
-		                       ||((table_Getkgf_100_60[i]+1) ==SubValue)) {
+        do{
+            
+           if(Read_ADC >= 6500 && Read_ADC <=6520){
+			   i=0;
+			   return i;
+		   }
+		   if(table_Getkgf_100_60[i] == Read_ADC|| ((table_Getkgf_100_60[i] -1) == Read_ADC)\
+		                       ||((table_Getkgf_100_60[i]+1) ==Read_ADC)) {
                    
                 return i;
            }
+		   i++;
          
-        };
-     }
+        }while(i<51);
+     
 	 return -1;
 
 }
