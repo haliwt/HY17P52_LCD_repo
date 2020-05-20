@@ -13,11 +13,12 @@ struct _adc_works_
    unsigned char second_3_over;
    unsigned char extend_t;   /*measure mode */
    unsigned long ADC_value;  
-   unsigned char u_plus ;
+   unsigned char unit_plus ;
    unsigned char  plus_uint ;
    int m_offset_value;
    int p_offset_value;
    long ADC_DAT ;
+   unsigned int delta_v;
 
 
 };
