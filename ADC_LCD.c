@@ -439,7 +439,8 @@ long Index_Subsection(long SubValue)
       
         while(i--){
           
-           if(table_Getkgf_100_60[i] == SubValue) {
+           if(table_Getkgf_100_60[i] == SubValue|| ((table_Getkgf_100_60[i] -1) == SubValue)\
+		                       ||((table_Getkgf_100_60[i]+1) ==SubValue)) {
                    
                 return i;
            }
