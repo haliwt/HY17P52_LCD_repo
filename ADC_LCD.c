@@ -123,9 +123,9 @@ long Index_Subsection(long SubValue);
 
 void main(void)
 {
-    unsigned int read_t,read_h,n; 
-    long  LCDDisplay;
-	long delta;
+    unsigned int read_t,read_h;
+    float LCDDisplay,v;
+	long delta,n,p,q;
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -293,33 +293,68 @@ void main(void)
 					ADC = ADC * 0.1; /* 4 byte significance byte */
 					adS.ADC_DAT = ADC;
 					#if 1
-					n = Index_Subsection(ADC); /* judge ADC value region*/
+				//	n = Index_Subsection(ADC); /* judge ADC value region*/
 			        
 					//DisplayNum(n);
-				
-					if(n== -1){
-						   if(adS.delta_v==1){
-								ADC = abs(ADC) - adS.p_offset_value;
+					
+					//DisplayNum(ADC);
+					//Delay(20000);
+					//Delay(20000);
+					//Delay(20000);
+					if(adS.delta_v==1){
+								n = ADC- adS.p_offset_value;
+								p=n;
 							}
 							else if(adS.delta_v ==2) {
-								ADC = abs(ADC) + adS.m_offset_value;	
+								n= ADC + adS.m_offset_value  ;	
 							}
-						  LCDDisplay = ADC;
-					      DisplayNum(LCDDisplay);
-						  Delay(20000);
+							else {
+								n = ADC;
+							}
+					// n = ADC- adS.p_offset_value;
+					if(adS.delta_v !=0){
+					   LCDDisplay= 5495  - (0.83 * n) ;
+					
+					// LCDDisplay = abs(n * 0.1);
+		             v = abs(LCDDisplay * 10 -0.5 );
+					}
+					else v = n ;
+				
+					DisplayNum(v);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+				    DisplayNum(p);
+					Delay(20000);
+					Delay(20000);
+					if(n== -1){
+						   if(adS.delta_v==1){
+								ADC = abs(ADC) - adS.p_offset_value- 15;
+							}
+							else if(adS.delta_v ==2) {
+								ADC = abs(ADC) + adS.m_offset_value +15 ;	
+							}
+							else {
+
+							}
+						
+							LCDDisplay = ADC;
+							DisplayNum(LCDDisplay);
+							Delay(20000);
+							
 						  
 					}
 					else{
               
-                         LCDDisplay =display_Unitkgf_100_60[n];
-					     DisplayNum(LCDDisplay);
-						 Delay(20000);
-						 Delay(20000);
+                       
+					   //  DisplayNum(n);
+						// Delay(20000);
+						// Delay(20000);
 						
 					}
 					#endif 
 					
-					DisplayNum(ADC);
+					//DisplayNum(ADC);
 					Delay(20000);
 					GPIO_PT16_HIGH();
 		            adS.key_flag =0;
@@ -335,10 +370,11 @@ void main(void)
 			   ADC=ADC>>6;
 			   ADC = ADC * 0.1;
 			   delta = abs(ADC) - STD_VALUE; 
+			  
 			   if((delta<0)||(delta>0x80000000))
 				{
-					adS.m_offset_value = delta ;
-				   adS.delta_v=2222 ;
+				   adS.m_offset_value = delta ;
+				   adS.delta_v=2 ;
 				   DisplayNum(adS.delta_v);
 				    Delay(20000);
 					Delay(20000);
@@ -348,8 +384,8 @@ void main(void)
 				}
 				else
 				{
-				   adS.p_offset_value=delta;
-				   adS.delta_v=1111 ;
+				   adS.p_offset_value= delta ;
+				   adS.delta_v=1 ;
 				   DisplayNum(adS.delta_v);
 				    Delay(20000);
 					Delay(20000);
@@ -405,13 +441,13 @@ void main(void)
 long Index_Subsection(long SubValue)
 {
      long Read_ADC;
-     int i =51;
+
     //SubValue = 6510;
     if(adS.delta_v==1){
-	   Read_ADC = abs(SubValue)- abs(adS.p_offset_value);
+	   Read_ADC = abs(SubValue)- abs(adS.p_offset_value) - 15;
 	 }
 	 else  {
-		Read_ADC = abs(SubValue) + abs(adS.m_offset_value);	
+		Read_ADC = abs(SubValue) + abs(adS.m_offset_value) + 15;	
 	}
 
     #if 0
@@ -423,33 +459,25 @@ long Index_Subsection(long SubValue)
 				Delay(20000);
 				Delay(20000);
 	#endif 
-     #if 0
-	if( SubValue < 6560 && SubValue > 6550 ) {
-           
-           SubValue = 0;
-           return SubValue;
-   	}
-	#endif 
-	
-       
-		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
-      
-        do{
-            
-           if(Read_ADC >= 6500 && Read_ADC <=6520){
-			   i=0;
-			   return i;
-		   }
-		   if(table_Getkgf_100_60[i] == Read_ADC|| ((table_Getkgf_100_60[i] -1) == Read_ADC)\
-		                       ||((table_Getkgf_100_60[i]+1) ==Read_ADC)) {
-                   
-                return i;
-           }
-		   i++;
-         
-        }while(i<51);
      
-	 return -1;
+	
+
+	if( Read_ADC <= 6548 && Read_ADC >=6533) {
+           
+           Read_ADC = 549500  - (83 * Read_ADC) ;
+		   Read_ADC = abs(Read_ADC * 0.1);
+		   
+           return Read_ADC;
+   	}
+	if(Read_ADC <= 6512 && Read_ADC > 6497){
+
+		   Read_ADC = 549500  - (83 * Read_ADC) ;
+		   Read_ADC = abs(Read_ADC * 0.1 );
+		   
+           return Read_ADC;
+	}
+	
+    return -1;
 
 }
 
