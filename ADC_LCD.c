@@ -61,15 +61,18 @@ const unsigned int display_Unitkgf_100_90[]={
     100,990,980,970,960,950,940,930,920,910,910,900,900
 };
 /******************************************************/
-unsigned int table_Getkgf_90_80[]={ 
+const unsigned int table_Getkgf_90_80[]={ 
 	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524
 };
-unsigned int table_Getkgf_80_70[]={ 
+/******************************************************/
+const unsigned int table_Getkgf_80_70[]={ 
 	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536
 };
-unsigned int table_Getkgf_70_60[]={ 
+/******************************************************/
+const unsigned int table_Getkgf_70_60[]={ 
 	6537,6538,6539,6540,6541,6542,6543,6544,6545,6546,5647,6548
 };
+/******************************************************/
 unsigned int table_Getkgf_60_50[]={ 6540, 6120 };
 unsigned int table_Getkgf_50_40[]={ 6120, 5320 };
 unsigned int table_Getkgf_40_30[]={ 5321, 4481 };
@@ -104,7 +107,7 @@ void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
-long Index_Subsection(void);
+long Index_Subsection(long SubValue);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -112,7 +115,7 @@ long Index_Subsection(void);
 void main(void)
 {
     unsigned int read_t,read_h,n; 
-    int LCDDisplay;
+    long  LCDDisplay;
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -277,23 +280,34 @@ void main(void)
 					MCUSTATUSbits.b_ADCdone=0;
 					
 					ADC=ADC>>6;
-					adS.ADC_DAT = ADC * 0.1;
+					ADC = ADC * 0.1; /* 4 byte significance byte */
+					adS.ADC_DAT = ADC;
 					#if 1
-					n = Index_Subsection(); /* judge ADC value region*/
+					n = Index_Subsection(adS.ADC_DAT); /* judge ADC value region*/
 			
-					DisplayNum(n);
-					if(n <0){
-                       LCDDisplay = 12345; 
-
+					//DisplayNum(n);
+					if(n ==0){
+                       DisplayHycon();
+					   Delay(20000);
+					}
+					else if(n== -1){
+						 LCDDisplay = ADC;
+					      DisplayNum(LCDDisplay);
+						  Delay(20000);
 					}
 					else{
-                       LCDDisplay = display_Unitkgf_100_90[n];
+                         LCDDisplay =display_Unitkgf_100_90[n];
+					     DisplayNum(LCDDisplay);
+						 Delay(20000);
+						 Delay(20000);
 					}
 					#endif 
+					//LCDDisplay = ADC;
 					//DisplayNum(LCDDisplay);
+					Delay(20000);
 					GPIO_PT16_HIGH();
 		            adS.key_flag =0;
-		        	Delay(20000);
+		        	Delay(10000);
 		           	GPIO_PT16_LOW(); 
 
 			    }
@@ -343,23 +357,23 @@ void main(void)
   *
   *                                                        
 ****************************************************************************/
-long Index_Subsection()
+long Index_Subsection(long SubValue)
 {
     
      int i =13;
-    adS.ADC_DAT = 6510;
+	 SubValue = SubValue + adS.m_offset_value;
     //adS.ADC_DAT = adS.ADC_DAT * 0.1;
-	 if(adS.ADC_DAT > 6549 && adS.ADC_DAT < 6500) {
-        adS.ADC_DAT = 66666;
-     return adS.ADC_DAT;
-   }
-	 if(adS.ADC_DAT >=6500){
+	 if(SubValue> 6549 && SubValue < 6500) {
+           SubValue = 0;
+     return SubValue;
+   	}
+	 if(SubValue >=6500){
        
 		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
       
         while(i--){
           
-           if(table_Getkgf_100_90[i] == (unsigned int)adS.ADC_DAT) {
+           if(table_Getkgf_100_90[i] == (unsigned int)SubValue) {
                    
                 return i;
            }
@@ -370,15 +384,6 @@ long Index_Subsection()
 
 }
 
-/*----------------------------------------------------------------------------*/
-/*          LCD Show ADC                                                        */
-/*----------------------------------------------------------------------------*/
-void ShowADC (void)
-{
-	//Index_Subsection(ADC); /* judge ADC value region*/
-	DisplayNum(ADC);
-	
-}
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
 /*----------------------------------------------------------------------------*/

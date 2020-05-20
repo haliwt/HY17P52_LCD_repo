@@ -31,10 +31,10 @@ void DisplayHycon(void)
 {
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD1,Char_H);
-  LCD_WriteData(&LCD2,Char_Y);
-  LCD_WriteData(&LCD3,Char_C);   /*HY17P52 com3 */
-  LCD_WriteData(&LCD4,Char_O);
-  LCD_WriteData(&LCD5,Char_N);
+  LCD_WriteData(&LCD2,Char_H);
+  LCD_WriteData(&LCD3,Char_H);   /*HY17P52 com3 */
+  LCD_WriteData(&LCD4,Char_H);
+  LCD_WriteData(&LCD5,Char_H);
   LCD_WriteData(&LCD6,0x00);
 }
 
