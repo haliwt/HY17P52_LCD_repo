@@ -287,7 +287,9 @@ void main(void)
 									adS.m_InitADC_flag =1;
 									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
 							   		LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
-
+									DisplayNum(LCDDisplay);
+									Delay(20000);
+								    Delay(20000);
 								}
 								else{
 									
@@ -295,13 +297,16 @@ void main(void)
 									adS.p_InitADC_flag =1;
 									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
 							   		LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4舍5入 */
+									DisplayNum(LCDDisplay);
+									Delay(20000);
+								    Delay(20000);
 								}
 								
 						}
 						else{
-					   		   LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
-								// LCDDisplay = abs(n * 0.1);
+					   		    LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
 		                        v = abs(LCDDisplay);
+								DisplayNum(v);
 								Delay(20000);
 								Delay(20000);
 								 p = InitADC[0] ;
