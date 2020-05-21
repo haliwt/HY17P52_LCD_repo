@@ -23,6 +23,8 @@
 #define MPATokgf(kgf)	 	(0.1 * (kgf))
 
 #define STD_VALUE           6500
+#define INITADC_VALUE		2000
+#define STD_DEVIATION       81 
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -67,38 +69,8 @@ const unsigned int display_Unitkgf_100_60[]={
         69,68,67,66,65,64,63,62,61,61,60,60
 
 };
-#if 0
-/******************************************************/
-const unsigned int table_Getkgf_90_80[]={ 
-	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524
-};
-/******************************************************/
-const unsigned int table_Getkgf_80_70[]={ 
-	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536
-};
-/******************************************************/
-const unsigned int table_Getkgf_70_60[]={ 
-	6537,6538,6539,6540,6541,6542,6543,6544,6545,6546,5647,6548
-};
-#endif 
-/******************************************************/
-unsigned int table_Getkgf_60_50[]={ 6540, 6120 };
-unsigned int table_Getkgf_50_40[]={ 6120, 5320 };
-unsigned int table_Getkgf_40_30[]={ 5321, 4481 };
-unsigned int table_Getkgf_30_20[]={ 4480, 3668};
-unsigned int table_Getkgf_20_10[]={ 3667, 2847};
-unsigned int table_Getkgf_10_0[]= { 2846, 2010 };
-/*minus kfg value array m --minus */
-unsigned int m_table_Getkgf_100_90[]={6270,5435};
-unsigned int m_table_Getkgf_90_80[]={5436,4615};
-unsigned int m_table_Getkgf_80_70[]={4617,3784};
-unsigned int m_table_Getkgf_70_60[]={3785,2948};
-unsigned int m_table_Getkgf_60_50[]={2949,2123};
-unsigned int m_table_Getkgf_50_40[]={2124,1307};
-unsigned int m_table_Getkgf_40_30[]={1308,469};
-unsigned int m_table_Getkgf_30_20[]={470,375};
-unsigned int m_table_Getkgf_20_10[]={376,1156};
-unsigned int m_table_Getkgf_10_0[]={1157,1997};
+
+
 unsigned char Flag;
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -125,7 +97,8 @@ void main(void)
 {
     unsigned int read_t,read_h;
     float LCDDisplay,v;
-	long delta,n,p,q;
+	long delta,theta,n,p,q;
+	long InitADC[1];
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -292,22 +265,48 @@ void main(void)
 					
 					ADC=ADC>>6;
 					ADC = ADC * 0.1; /* 4 byte significance byte */
-					adS.ADC_DAT = ADC;
+				
+					
 					#if 1
 			
 					if(adS.delta_v==1){
 								n = ADC- adS.p_offset_value;
 								p=n;
+							
 							}
 							else if(adS.delta_v ==2) {
 								n= ADC + adS.m_offset_value  ;	
 							}
 							else {
 								n = ADC;
+								InitADC[0]= ADC ;
 							}
 				
 					if(adS.delta_v !=0){
-					   LCDDisplay= 54280  - (8.2 * n) ; //b= 5495
+					    if(n <= 6440){
+								theta = InitADC[0] - INITADC_VALUE;
+								if((theta<0)||(theta>0x80000000)) {
+									adS.m_InitADC_DAT = theta;
+									adS.m_InitADC_flag =1;
+								}
+								else{
+									
+									adS.p_InitADC_DAT = theta;
+									adS.p_InitADC_flag =1;
+								}
+								if(adS.p_InitADC_flag==1){
+									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
+							   		LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4舍5入 */
+								}
+								else{
+
+									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
+							   		LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
+								}
+						}
+						else{
+					   		LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
+						}
 					   // LCDDisplay = abs(n * 0.1);
 		               v = abs(LCDDisplay);
 					}
@@ -337,10 +336,11 @@ void main(void)
 			   ADC=ADC>>6;
 			   ADC = ADC * 0.1;
 			   delta = abs(ADC) - STD_VALUE; 
-			  
+			 
 			   if((delta<0)||(delta>0x80000000))
 				{
 				   adS.m_offset_value = delta ;
+				  
 				   adS.delta_v=2 ;
 				   DisplayNum(adS.delta_v);
 				    Delay(20000);
@@ -362,11 +362,7 @@ void main(void)
 					Delay(20000);
 					Delay(20000);
 				}
-			 
-			  
-				  
-			  
-
+				
 			}
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
 		   	   adS.measure_mode = 0;

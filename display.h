@@ -18,6 +18,11 @@ struct _adc_works_
    int m_offset_value;
    int p_offset_value;
    long ADC_DAT ;
+   long p_InitADC_DAT;
+   long m_InitADC_DAT;
+   long BasisVoltage;
+   unsigned char p_InitADC_flag;
+   unsigned char m_InitADC_flag;
    unsigned int delta_v;
 
 
