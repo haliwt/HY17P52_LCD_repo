@@ -22,7 +22,9 @@
 #define BARTokgf(kgf)   	(2.1 * (kgf))
 #define MPATokgf(kgf)	 	(0.1 * (kgf))
 
-#define STD_VALUE           65000
+#define STD_VALUE           6500
+#define INITADC_VALUE		2000
+#define STD_DEVIATION       81 
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -53,40 +55,22 @@ volatile typedef union _MCUSTATUS
 
 MCUSTATUS  MCUSTATUSbits;
 #if 1
-const unsigned int table_Getkgf_100_90[]={
-	6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812
-};
-#endif 
-const unsigned int display_Unitkgf_100_90[]={
-    100,990,980,970,960,950,940,930,920,910,910,900,900
-};
-/******************************************************/
-unsigned int table_Getkgf_90_80[]={ 
-	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524
-};
-unsigned int table_Getkgf_80_70[]={ 
-	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536
-};
-unsigned int table_Getkgf_70_60[]={ 
+const unsigned int table_Getkgf_100_60[]={
+	6520,6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812,
+	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524,
+	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536,
 	6537,6538,6539,6540,6541,6542,6543,6544,6545,6546,5647,6548
 };
-unsigned int table_Getkgf_60_50[]={ 6540, 6120 };
-unsigned int table_Getkgf_50_40[]={ 6120, 5320 };
-unsigned int table_Getkgf_40_30[]={ 5321, 4481 };
-unsigned int table_Getkgf_30_20[]={ 4480, 3668};
-unsigned int table_Getkgf_20_10[]={ 3667, 2847};
-unsigned int table_Getkgf_10_0[]= { 2846, 2010 };
-/*minus kfg value array m --minus */
-unsigned int m_table_Getkgf_100_90[]={6270,5435};
-unsigned int m_table_Getkgf_90_80[]={5436,4615};
-unsigned int m_table_Getkgf_80_70[]={4617,3784};
-unsigned int m_table_Getkgf_70_60[]={3785,2948};
-unsigned int m_table_Getkgf_60_50[]={2949,2123};
-unsigned int m_table_Getkgf_50_40[]={2124,1307};
-unsigned int m_table_Getkgf_40_30[]={1308,469};
-unsigned int m_table_Getkgf_30_20[]={470,375};
-unsigned int m_table_Getkgf_20_10[]={376,1156};
-unsigned int m_table_Getkgf_10_0[]={1157,1997};
+#endif 
+const unsigned int display_Unitkgf_100_60[]={
+        100,100,99,98,97,96,95,94,93,92,91,91,90,90,
+        89,88,87,86,85,84,83,82,81,81,80,80,
+        79,78,77,76,75,74,73,72,71,71,70,70,
+        69,68,67,66,65,64,63,62,61,61,60,60
+
+};
+
+
 unsigned char Flag;
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -104,15 +88,17 @@ void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
-long Index_Subsection(void);
+long Index_Subsection(long SubValue);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
 
 void main(void)
 {
-    unsigned int read_t,read_h,n; 
-    int LCDDisplay;
+    unsigned int read_t,read_h;
+    float LCDDisplay,v;
+	long delta,theta,n,p,q;
+	long InitADC[1];
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -232,19 +218,19 @@ void main(void)
 				switch(adS.plus_uint){
 					case psi: 
 					     adS.plus_uint++;
-						 adS.u_plus = psi;
+						 adS.unit_plus = psi;
 					    break;
 					case bar:
 						adS.plus_uint++;
-						 adS.u_plus = bar;
+						 adS.unit_plus = bar;
 					     break;
 					case kgf:
 						adS.plus_uint++;
-						adS.u_plus = kgf;
+						adS.unit_plus = kgf;
 					     break;
 				    case mpa:
 					     adS.plus_uint=0;
-						 adS.u_plus = mpa;
+						 adS.unit_plus = mpa;
 					     break;
 				}
 			
@@ -271,40 +257,112 @@ void main(void)
 		   	GPIO_PT15_LOW();
 		   
 		   if(adS.measure_mode == 0){ /* measure mode */
-		         
+		        adS.zero_point_mode=0;
+				adS.key_flag =0;
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
 					
 					ADC=ADC>>6;
-					adS.ADC_DAT = ADC * 0.1;
+					ADC = ADC * 0.1; /* 4 byte significance byte */
+				
+					
 					#if 1
-					n = Index_Subsection(); /* judge ADC value region*/
 			
-					DisplayNum(n);
-					if(n <0){
-                       LCDDisplay = 12345; 
+					if(adS.delta_v==1){
+								n = ADC- adS.p_offset_value;
+								p=n;
+							
+							}
+							else if(adS.delta_v ==2) {
+								n= ADC + adS.m_offset_value  ;	
+							}
+							else {
+								n = ADC;
+								InitADC[0]= ADC ;
+							}
+				
+					if(adS.delta_v !=0){
+					    if(n <= 6440){
+								theta = InitADC[0] - INITADC_VALUE;
+								if((theta<0)||(theta>0x80000000)) {
+									adS.m_InitADC_DAT = theta;
+									adS.m_InitADC_flag =1;
+								}
+								else{
+									
+									adS.p_InitADC_DAT = theta;
+									adS.p_InitADC_flag =1;
+								}
+								if(adS.p_InitADC_flag==1){
+									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
+							   		LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4舍5入 */
+								}
+								else{
 
+									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
+							   		LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
+								}
+						}
+						else{
+					   		LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
+						}
+					   // LCDDisplay = abs(n * 0.1);
+		               v = abs(LCDDisplay);
 					}
-					else{
-                       LCDDisplay = display_Unitkgf_100_90[n];
-					}
-					#endif 
-					//DisplayNum(LCDDisplay);
+					else v = n ;
+				
+					DisplayNum(v);
 					GPIO_PT16_HIGH();
-		            adS.key_flag =0;
-		        	Delay(20000);
-		           	GPIO_PT16_LOW(); 
-
-			    }
+					Delay(20000);
+					GPIO_PT16_LOW(); 
+					Delay(20000);
+					GPIO_PT16_HIGH();
+					Delay(20000);
+					GPIO_PT16_LOW(); 
+				    DisplayNum(p);
+					Delay(20000);
+					GPIO_PT16_HIGH();
+					Delay(20000);
+					
+					#endif 
+					
+		        }
 	   		}
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
 
 			   adS.zero_point_mode =0;
 			   adS.measure_mode=0;
 			   ADC=ADC>>6;
-			   adS.m_offset_value = ADC - STD_VALUE;
-
+			   ADC = ADC * 0.1;
+			   delta = abs(ADC) - STD_VALUE; 
+			 
+			   if((delta<0)||(delta>0x80000000))
+				{
+				   adS.m_offset_value = delta ;
+				  
+				   adS.delta_v=2 ;
+				   DisplayNum(adS.delta_v);
+				    Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+				}
+				else
+				{
+				   adS.p_offset_value= delta ;
+				   adS.delta_v=1 ;
+				   DisplayNum(adS.delta_v);
+				    Delay(20000);
+					Delay(20000);
+					
+					DisplayNum(adS.p_offset_value);
+					 Delay(20000);
+					Delay(20000);
+					Delay(20000);
+				}
+				
 			}
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
 		   	   adS.measure_mode = 0;
@@ -314,7 +372,7 @@ void main(void)
 			}
 			if(adS.uint_set_mode ==1){
 
-				switch(adS.u_plus){
+				switch(adS.unit_plus){
 					case psi:
 						
 					break;
@@ -343,42 +401,49 @@ void main(void)
   *
   *                                                        
 ****************************************************************************/
-long Index_Subsection()
+long Index_Subsection(long SubValue)
 {
-    
-     int i =13;
-    adS.ADC_DAT = 6510;
-    //adS.ADC_DAT = adS.ADC_DAT * 0.1;
-	 if(adS.ADC_DAT > 6549 && adS.ADC_DAT < 6500) {
-        adS.ADC_DAT = 66666;
-     return adS.ADC_DAT;
-   }
-	 if(adS.ADC_DAT >=6500){
-       
-		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
-      
-        while(i--){
-          
-           if(table_Getkgf_100_90[i] == (unsigned int)adS.ADC_DAT) {
-                   
-                return i;
-           }
-         
-        };
-     }
-	 return -1;
+     long Read_ADC;
 
-}
+    //SubValue = 6510;
+    if(adS.delta_v==1){
+	   Read_ADC = abs(SubValue)- abs(adS.p_offset_value) - 15;
+	 }
+	 else  {
+		Read_ADC = abs(SubValue) + abs(adS.m_offset_value) + 15;	
+	}
 
-/*----------------------------------------------------------------------------*/
-/*          LCD Show ADC                                                        */
-/*----------------------------------------------------------------------------*/
-void ShowADC (void)
-{
-	//Index_Subsection(ADC); /* judge ADC value region*/
-	DisplayNum(ADC);
+    #if 0
 	
+	    DisplayNum(SubValue);
+			    Delay(20000);
+				Delay(20000);
+				Delay(20000);
+				Delay(20000);
+				Delay(20000);
+	#endif 
+     
+	
+
+	if( Read_ADC <= 6548 && Read_ADC >=6533) {
+           
+           Read_ADC = 549500  - (83 * Read_ADC) ;
+		   Read_ADC = abs(Read_ADC * 0.1);
+		   
+           return Read_ADC;
+   	}
+	if(Read_ADC <= 6512 && Read_ADC > 6497){
+
+		   Read_ADC = 549500  - (83 * Read_ADC) ;
+		   Read_ADC = abs(Read_ADC * 0.1 );
+		   
+           return Read_ADC;
+	}
+	
+    return -1;
+
 }
+
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
 /*----------------------------------------------------------------------------*/
