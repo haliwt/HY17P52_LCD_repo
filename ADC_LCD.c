@@ -97,7 +97,7 @@ void main(void)
 {
     unsigned int read_t,read_h;
     float LCDDisplay,v;
-	long delta,theta,n,p,q;
+	long delta,theta,n,p;
 	long InitADC[1];
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
@@ -265,66 +265,67 @@ void main(void)
 					
 					ADC=ADC>>6;
 					ADC = ADC * 0.1; /* 4 byte significance byte */
-				
-					
 					#if 1
 			
 					if(adS.delta_v==1){
-								n = ADC- adS.p_offset_value;
-								p=n;
-							
-							}
-							else if(adS.delta_v ==2) {
-								n= ADC + adS.m_offset_value  ;	
-							}
-							else {
-								n = ADC;
-								InitADC[0]= ADC ;
-							}
+						n = ADC- adS.p_offset_value;
+						
+					}
+					else if(adS.delta_v ==2) {
+						n= ADC + adS.m_offset_value  ;	
+					}
+					else {
+							n = ADC;
+							InitADC[0]= ADC ;
+					}
 				
-					if(adS.delta_v !=0){
+					if(adS.delta_v !=0){/*check full scale of error*/
 					    if(n <= 6440){
 								theta = InitADC[0] - INITADC_VALUE;
 								if((theta<0)||(theta>0x80000000)) {
 									adS.m_InitADC_DAT = theta;
 									adS.m_InitADC_flag =1;
+									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
+							   		LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
+
 								}
 								else{
 									
 									adS.p_InitADC_DAT = theta;
 									adS.p_InitADC_flag =1;
-								}
-								if(adS.p_InitADC_flag==1){
 									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
 							   		LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4舍5入 */
 								}
-								else{
-
-									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
-							   		LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
-								}
+								
 						}
 						else{
-					   		LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
+					   		   LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
+								// LCDDisplay = abs(n * 0.1);
+		                        v = abs(LCDDisplay);
+								Delay(20000);
+								Delay(20000);
+								 p = InitADC[0] ;
+						         DisplayNum(p);
+								 Delay(20000);
+								 Delay(20000);
 						}
-					   // LCDDisplay = abs(n * 0.1);
-		               v = abs(LCDDisplay);
+					 
 					}
-					else v = n ;
-				
-					DisplayNum(v);
-					GPIO_PT16_HIGH();
-					Delay(20000);
-					GPIO_PT16_LOW(); 
-					Delay(20000);
-					GPIO_PT16_HIGH();
-					Delay(20000);
-					GPIO_PT16_LOW(); 
-				    DisplayNum(p);
-					Delay(20000);
-					GPIO_PT16_HIGH();
-					Delay(20000);
-					
+					else{
+						 v = n ;
+						DisplayNum(v);
+						GPIO_PT16_HIGH();
+						Delay(20000);
+						GPIO_PT16_LOW(); 
+						Delay(20000);
+						GPIO_PT16_HIGH();
+						Delay(20000);
+						GPIO_PT16_LOW(); 
+						DisplayNum(p);
+						Delay(20000);
+						GPIO_PT16_HIGH();
+						Delay(20000);
+					}
 					#endif 
 					
 		        }
