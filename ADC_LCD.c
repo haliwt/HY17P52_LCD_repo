@@ -285,6 +285,7 @@ void main(void)
 		   
 		   if(adS.measure_mode == 0){ /* measure mode */
 		        adS.zero_point_mode=0;
+				adS.key_flag =0;
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
@@ -293,14 +294,7 @@ void main(void)
 					ADC = ADC * 0.1; /* 4 byte significance byte */
 					adS.ADC_DAT = ADC;
 					#if 1
-				//	n = Index_Subsection(ADC); /* judge ADC value region*/
-			        
-					//DisplayNum(n);
-					
-					//DisplayNum(ADC);
-					//Delay(20000);
-					//Delay(20000);
-					//Delay(20000);
+			
 					if(adS.delta_v==1){
 								n = ADC- adS.p_offset_value;
 								p=n;
@@ -311,57 +305,30 @@ void main(void)
 							else {
 								n = ADC;
 							}
-					// n = ADC- adS.p_offset_value;
+				
 					if(adS.delta_v !=0){
-					   LCDDisplay= 5495  - (0.83 * n) ;
-					
-					// LCDDisplay = abs(n * 0.1);
-		             v = abs(LCDDisplay * 10 -0.5 );
+					   LCDDisplay= 54280  - (8.2 * n) ; //b= 5495
+					   // LCDDisplay = abs(n * 0.1);
+		               v = abs(LCDDisplay);
 					}
 					else v = n ;
 				
 					DisplayNum(v);
+					GPIO_PT16_HIGH();
 					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-				    DisplayNum(p);
-					Delay(20000);
-					Delay(20000);
-					if(n== -1){
-						   if(adS.delta_v==1){
-								ADC = abs(ADC) - adS.p_offset_value- 15;
-							}
-							else if(adS.delta_v ==2) {
-								ADC = abs(ADC) + adS.m_offset_value +15 ;	
-							}
-							else {
-
-							}
-						
-							LCDDisplay = ADC;
-							DisplayNum(LCDDisplay);
-							Delay(20000);
-							
-						  
-					}
-					else{
-              
-                       
-					   //  DisplayNum(n);
-						// Delay(20000);
-						// Delay(20000);
-						
-					}
-					#endif 
-					
-					//DisplayNum(ADC);
+					GPIO_PT16_LOW(); 
 					Delay(20000);
 					GPIO_PT16_HIGH();
-		            adS.key_flag =0;
-		        	Delay(10000);
-		           	GPIO_PT16_LOW(); 
-
-			    }
+					Delay(20000);
+					GPIO_PT16_LOW(); 
+				    DisplayNum(p);
+					Delay(20000);
+					GPIO_PT16_HIGH();
+					Delay(20000);
+					
+					#endif 
+					
+		        }
 	   		}
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
 
