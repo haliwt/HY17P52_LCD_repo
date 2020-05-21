@@ -24,13 +24,14 @@
 
 #define STD_VALUE           6500
 #define INITADC_VALUE		2000
-#define STD_DEVIATION       81 
+#define STD_NEGATIVE_VALUE   6270 
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
 static  int index_offset ;
 unsigned char Flag;
 long	ADC;
+
 
 unsigned long Second_real_3=0;
 unsigned long firstSecond=0;
@@ -88,17 +89,18 @@ void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
-long Index_Subsection(long SubValue);
+
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
 
 void main(void)
 {
-    unsigned int read_t,read_h;
+    unsigned int read_t,read_h,minuse_t;
     float LCDDisplay,v;
 	long delta,theta,n,p;
 	long InitADC[1];
+
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -153,301 +155,314 @@ void main(void)
 	ADIE_Enable();
 	GIE_Enable();
     
-	while(1)
-	{
+while(1)
+{
 	    
 		
-		if(GPIO_READ_PT10())
-		{
-		  
-		  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
+	if(GPIO_READ_PT10())
+	{
+		adS.Presskey_flag =0;
+		adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
 
-		 if(adS.second_5_over >= 1){ /*unit set mode*/
-			
-			 if(GPIO_READ_PT10()){
-	     
-				adS.second_5_over =0;
-				adS.uint_set_mode =1;
-				adS.zero_point_mode =0;
-				adS.measure_mode =1;
-				DisplayUnit();
-				Delay(20000);
-				Delay(20000);
+		if(adS.second_5_over >= 1){ /*unit set mode*/
+		
+			if(GPIO_READ_PT10()){
+		
+			adS.second_5_over =0;
+			adS.uint_set_mode =1;
+			adS.zero_point_mode =0;
+			adS.measure_mode =1;
+			DisplayUnit();
+			Delay(20000);
+			Delay(20000);
 
-				    //BIE Read   
-					BIEARL=0;                                //addr=0
-					BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-					while((BIECN& 0x01)==1);   
-					read_t = BIEDRL;
-					read_h = BIEDRH;
-					if(read_h == 0x00){
-							GPIO_PT16_HIGH();
-								
-							Delay(20000);
-							GPIO_PT16_LOW(); 
-							Delay(20000);
-							GPIO_PT16_HIGH();
-							Delay(20000);
-							GPIO_PT16_LOW(); 
-								//BIE Write
-							HY17P52WR3(0,0xAA,0x11);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-							if(Flag== 1)
-							{
-								while(1);    //fail
-							}
-					}
-					if(read_t == 0x11){
+				//BIE Read   
+				BIEARL=0;                                //addr=0
+				BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+				while((BIECN& 0x01)==1);   
+				read_t = BIEDRL;
+				read_h = BIEDRH;
+				if(read_h == 0x00){
+						GPIO_PT16_HIGH();
+							
+						Delay(20000);
+						GPIO_PT16_LOW(); 
+						Delay(20000);
+						GPIO_PT16_HIGH();
+						Delay(20000);
+						GPIO_PT16_LOW(); 
+							//BIE Write
+						HY17P52WR3(0,0xAA,0x11);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+						if(Flag== 1)
+						{
+							while(1);    //fail
+						}
+				}
+				if(read_t == 0x11){
 
-							GPIO_PT15_HIGH();
-								
-							Delay(20000);
-							GPIO_PT15_LOW(); 
-							Delay(20000);
-							GPIO_PT15_HIGH();
-							Delay(20000);
-							GPIO_PT15_LOW(); 
+						GPIO_PT15_HIGH();
+							
+						Delay(20000);
+						GPIO_PT15_LOW(); 
+						Delay(20000);
+						GPIO_PT15_HIGH();
+						Delay(20000);
+						GPIO_PT15_LOW(); 
 
-					}
-				
-			
-			
-				GPIO_PT15_HIGH();	
-				Delay(10000);
-				Delay(10000);
-				Delay(10000);
-				switch(adS.plus_uint){
-					case psi: 
-					     adS.plus_uint++;
-						 adS.unit_plus = psi;
-					    break;
-					case bar:
-						adS.plus_uint++;
-						 adS.unit_plus = bar;
-					     break;
-					case kgf:
-						adS.plus_uint++;
-						adS.unit_plus = kgf;
-					     break;
-				    case mpa:
-					     adS.plus_uint=0;
-						 adS.unit_plus = mpa;
-					     break;
 				}
 			
+		
+		
+			GPIO_PT15_HIGH();	
+			Delay(10000);
+			Delay(10000);
+			Delay(10000);
+			switch(adS.plus_uint){
+				case psi: 
+						adS.plus_uint++;
+						adS.unit_plus = psi;
+					break;
+				case bar:
+					adS.plus_uint++;
+						adS.unit_plus = bar;
+						break;
+				case kgf:
+					adS.plus_uint++;
+					adS.unit_plus = kgf;
+						break;
+				case mpa:
+						adS.plus_uint=0;
+						adS.unit_plus = mpa;
+						break;
 			}
-		 }
-		 if(adS.second_3_over >=1 && adS.second_5_over < 1 && adS.uint_set_mode !=1){ /* zero point mode*/
-
-			   if(GPIO_READ_PT10()){
-				
-				adS.zero_point_mode =1;
-				adS.uint_set_mode = 0;
-				adS.measure_mode =1;
-			    adS.second_3_over=0;
-				//display LCD "2Er"
-			     Display2Er();
-                 Delay(20000);
-                
-			}
-		 }
-		 
+		
 		}
-		else{
-		   	GPIO_PT16_LOW();
-		   	GPIO_PT15_LOW();
-		   
-		   if(adS.measure_mode == 0){ /* measure mode */
-		        adS.zero_point_mode=0;
-				adS.key_flag =0;
-				if(MCUSTATUSbits.b_ADCdone==1)
-				{
-					MCUSTATUSbits.b_ADCdone=0;
-					
-					ADC=ADC>>6;
-					ADC = ADC * 0.1; /* 4 byte significance byte */
-					#if 1
+		}
+		if(adS.second_3_over >=1 && adS.second_5_over < 1 && adS.uint_set_mode !=1){ /* zero point mode*/
+
+			if(GPIO_READ_PT10()){
 			
-					if(adS.delta_v==1){
-						n = ADC- adS.p_offset_value;
-						
-					}
-					else if(adS.delta_v ==2) {
-						n= ADC + adS.m_offset_value  ;	
-					}
-					else {
-							n = ADC;
-							InitADC[0]= ADC ;
-					}
+			adS.zero_point_mode =1;
+			adS.uint_set_mode = 0;
+			adS.measure_mode =1;
+			adS.second_3_over=0;
+			//display LCD "2Er"
+				Display2Er();
+				Delay(20000);
+			
+		}
+		}
+		
+	}
+	else if(adS.Presskey_flag != 1){
+		GPIO_PT16_LOW();
+		GPIO_PT15_LOW();
+		
+		if(adS.measure_mode == 0){ /* measure mode */
+			adS.zero_point_mode=0;
+			adS.key_flag =0;
+			adS.uint_set_mode=0;
+			if(MCUSTATUSbits.b_ADCdone==1)
+			{
+				MCUSTATUSbits.b_ADCdone=0;
 				
+				ADC=ADC>>6;
+				if((ADC<0)||(ADC>0x80000000))
+				{
+					adS.Negative_sign =1;
+				}
+				else
+				{
+					adS.Positive_sign =1;
+				}
+				ADC = ADC * 0.1; /* 4 byte significance byte */
+				#if 1
+		
+				if(adS.delta_v==1){
+					n = ADC- adS.p_offset_value;
+					
+				}
+				else if(adS.delta_v ==2) {
+					n= ADC + adS.m_offset_value  ;	
+				}
+				else {
+						n = ADC;
+						InitADC[0]= ADC ;
+				}
+				if(adS.Positive_sign == 1){
 					if(adS.delta_v !=0){/*check full scale of error*/
-					    if(n <= 6440){
+						if(n <= 6440){
 								theta = InitADC[0] - INITADC_VALUE;
 								if((theta<0)||(theta>0x80000000)) {
 									adS.m_InitADC_DAT = theta;
 									adS.m_InitADC_flag =1;
 									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
-							   		LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
+									LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
 									DisplayNum(LCDDisplay);
 									Delay(20000);
-								    Delay(20000);
+									Delay(20000);
 								}
 								else{
 									
 									adS.p_InitADC_DAT = theta;
 									adS.p_InitADC_flag =1;
 									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
-							   		LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4èˆ5å…¥ */
+									LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4ï¿?ï¿?*/
 									DisplayNum(LCDDisplay);
 									Delay(20000);
-								    Delay(20000);
+									Delay(20000);
 								}
 								
 						}
 						else{
-					   		    LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
-		                        v = abs(LCDDisplay);
+								LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
+								v = abs(LCDDisplay);
 								DisplayNum(v);
 								Delay(20000);
 								Delay(20000);
-								 p = InitADC[0] ;
-						         DisplayNum(p);
-								 Delay(20000);
-								 Delay(20000);
+								p = InitADC[0] ;
+								DisplayNum(p);
+								Delay(20000);
+								Delay(20000);
 						}
-					 
-					}
-					else{
-						 v = n ;
-						DisplayNum(v);
-						GPIO_PT16_HIGH();
-						Delay(20000);
-						GPIO_PT16_LOW(); 
-						Delay(20000);
-						GPIO_PT16_HIGH();
-						Delay(20000);
-						GPIO_PT16_LOW(); 
-						DisplayNum(p);
-						Delay(20000);
-						GPIO_PT16_HIGH();
-						Delay(20000);
-					}
-					#endif 
 					
-		        }
-	   		}
-		   if(adS.zero_point_mode == 1){ /*zero point mode */
+					}
+				}
+				else if(adS.Negative_sign ==1){
+					if(adS.Negative_delta_flag==1){/* error value is over zero*/
+				    	
+					}
 
-			   adS.zero_point_mode =0;
-			   adS.measure_mode=0;
-			   ADC=ADC>>6;
-			   ADC = ADC * 0.1;
-			   delta = abs(ADC) - STD_VALUE; 
-			 
-			   if((delta<0)||(delta>0x80000000))
-				{
-				   adS.m_offset_value = delta ;
-				  
-				   adS.delta_v=2 ;
-				   DisplayNum(adS.delta_v);
-				    Delay(20000);
+				}
+				else{
+						v = n ;
+					DisplayNum(v);
+					GPIO_PT16_HIGH();
+					if(GPIO_READ_PT10()){
+						adS.Presskey_flag  = 1;
+					}
 					Delay(20000);
+					GPIO_PT16_LOW(); 
+					if(GPIO_READ_PT10()){
+						adS.Presskey_flag  = 1;
+					}
 					Delay(20000);
+					GPIO_PT16_HIGH();
 					Delay(20000);
+					GPIO_PT16_LOW(); 
+					if(GPIO_READ_PT10()){
+						adS.Presskey_flag  = 1;
+					}
+					DisplayNum(p);
+					Delay(20000);
+					GPIO_PT16_HIGH();
 					Delay(20000);
 				}
-				else
+				#endif 
+				
+			}
+		}
+		if(adS.zero_point_mode == 1){ /*zero point mode,check offset value */
+
+			adS.zero_point_mode =0;
+			adS.measure_mode=0;
+			ADC=ADC>>6;
+			if((ADC<0)||(ADC>0x80000000))
+			{
+				minuse_t = 1;
+			}
+			else
+			{
+				minuse_t =0;
+			}
+			ADC = ADC * 0.1;
+			if(minuse_t ==0){ /* positive pressure mode */
+				
+				delta = abs(ADC) - STD_VALUE;  /* error value */
+				if((delta<0)||(delta>0x80000000)){
+				adS.m_offset_value = delta ;
+				
+				adS.delta_v=2 ;
+				DisplayNum(adS.delta_v);
+				Delay(20000);
+				Delay(20000);
+				Delay(20000);
+				Delay(20000);
+				Delay(20000);
+				}
+				else  
 				{
-				   adS.p_offset_value= delta ;
-				   adS.delta_v=1 ;
-				   DisplayNum(adS.delta_v);
-				    Delay(20000);
+				adS.p_offset_value= delta ;
+				adS.delta_v=1 ;
+				DisplayNum(adS.delta_v);
+					Delay(20000);
 					Delay(20000);
 					
 					DisplayNum(adS.p_offset_value);
-					 Delay(20000);
+					Delay(20000);
 					Delay(20000);
 					Delay(20000);
 				}
-				
 			}
-		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
-		   	   adS.measure_mode = 0;
-		   	   adS.uint_set_mode=0;
-			   adS.key_flag =0;
+			else { /* negative pressure mode */
 
-			}
-			if(adS.uint_set_mode ==1){
-
-				switch(adS.unit_plus){
-					case psi:
+				delta =abs(ADC) - STD_NEGATIVE_VALUE; /* negative error value */
+				if((delta<0)||(delta>0x80000000)){ /* error value is less zero */
+					adS.minus_Negative_value = delta ;
+					
+					adS.Negative_delta_flag =2 ;
+					DisplayNum(adS.Negative_delta_flag);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+				}
+				else { /* error value is over zero */
+					adS.plus_Negative_value= delta ;
+					adS.Negative_delta_flag=1 ;
+					DisplayNum(adS.Negative_delta_flag);
+						Delay(20000);
+						Delay(20000);
 						
-					break;
-					case bar:
-					break;
-					case kgf:
-					break;
-					case mpa:
-					break;
-					default :
-					break;
-
+						DisplayNum(adS.p_offset_value);
+						Delay(20000);
+						Delay(20000);
+						Delay(20000);
 				}
 
 			}
-		
+			
+			
 		}
+		if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
+			adS.measure_mode = 0;
+			adS.uint_set_mode=0;
+			adS.key_flag =0;
 
-    }
-}
+		}
+		if(adS.uint_set_mode ==1){
 
-/***************************************************************************
-  *
-  *Function Name:Index_Subsection()
-  *Function : serch table be responds psi volue,voltage transition psi
-  *
-  *                                                        
-****************************************************************************/
-long Index_Subsection(long SubValue)
-{
-     long Read_ADC;
+			switch(adS.unit_plus){
+				case psi:
+					
+				break;
+				case bar:
+				break;
+				case kgf:
+				break;
+				case mpa:
+				break;
+				default :
+				break;
 
-    //SubValue = 6510;
-    if(adS.delta_v==1){
-	   Read_ADC = abs(SubValue)- abs(adS.p_offset_value) - 15;
-	 }
-	 else  {
-		Read_ADC = abs(SubValue) + abs(adS.m_offset_value) + 15;	
-	}
+			}
 
-    #if 0
+			}
 	
-	    DisplayNum(SubValue);
-			    Delay(20000);
-				Delay(20000);
-				Delay(20000);
-				Delay(20000);
-				Delay(20000);
-	#endif 
-     
-	
+	}//measure_mode = 1
 
-	if( Read_ADC <= 6548 && Read_ADC >=6533) {
-           
-           Read_ADC = 549500  - (83 * Read_ADC) ;
-		   Read_ADC = abs(Read_ADC * 0.1);
-		   
-           return Read_ADC;
-   	}
-	if(Read_ADC <= 6512 && Read_ADC > 6497){
-
-		   Read_ADC = 549500  - (83 * Read_ADC) ;
-		   Read_ADC = abs(Read_ADC * 0.1 );
-		   
-           return Read_ADC;
-	}
-	
-    return -1;
-
+ }//end while(1)
 }
 
 /*----------------------------------------------------------------------------*/
