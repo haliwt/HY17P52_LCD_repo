@@ -89,7 +89,7 @@ void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
-
+void NegativePressure_Display(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -278,20 +278,20 @@ while(1)
 				ADC = ADC * 0.1; /* 4 byte significance byte */
 				#if 1
 		
-				if(adS.delta_v==1){
-					n = ADC- adS.p_offset_value;
-					
-				}
-				else if(adS.delta_v ==2) {
-					n= ADC + adS.m_offset_value  ;	
-				}
-				else {
+				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
+					if(adS.delta_v==1){
+						n = ADC- adS.p_offset_value;
+				    }
+					else if(adS.delta_v ==2) {
+						n= ADC + adS.m_offset_value  ;	
+					}
+					else {
 						n = ADC;
 						InitADC[0]= ADC ;
-				}
-				if(adS.Positive_sign == 1){
+					}
+
 					if(adS.delta_v !=0){/*check full scale of error*/
-						if(n <= 6440){
+						if(n <= 6440){  /* arithmetic formula */
 								theta = InitADC[0] - INITADC_VALUE;
 								if((theta<0)||(theta>0x80000000)) {
 									adS.m_InitADC_DAT = theta;
@@ -307,13 +307,13 @@ while(1)
 									adS.p_InitADC_DAT = theta;
 									adS.p_InitADC_flag =1;
 									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
-									LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4ï¿?ï¿?*/
+									LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4ï¿½?ï¿½?*/
 									DisplayNum(LCDDisplay);
 									Delay(20000);
 									Delay(20000);
 								}
 								
-						}
+						} /*Input Positive Pressure run end */
 						else{
 								LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
 								v = abs(LCDDisplay);
@@ -328,14 +328,23 @@ while(1)
 					
 					}
 				}
-				else if(adS.Negative_sign ==1){
+				else if(adS.Negative_sign ==1){ /*Input Negative pressure mode*/
+					
 					if(adS.Negative_delta_flag==1){/* error value is over zero*/
-				    	
+							 /* arithmetic formula */
+						   adS.Negative_delta_value= ADC - adS.plus_Error_value;
+					}
+					else if(adS.Negative_delta_flag==2){
+							 /* arithmetic formula */
+							adS.Negative_delta_value = ADC + adS.minus_Error_value;
+					}
+					else{
+
 					}
 
 				}
 				else{
-						v = n ;
+					v = n ;
 					DisplayNum(v);
 					GPIO_PT16_HIGH();
 					if(GPIO_READ_PT10()){
@@ -408,7 +417,7 @@ while(1)
 
 				delta =abs(ADC) - STD_NEGATIVE_VALUE; /* negative error value */
 				if((delta<0)||(delta>0x80000000)){ /* error value is less zero */
-					adS.minus_Negative_value = delta ;
+					adS.minus_Error_value = delta ;
 					
 					adS.Negative_delta_flag =2 ;
 					DisplayNum(adS.Negative_delta_flag);
@@ -419,7 +428,7 @@ while(1)
 					Delay(20000);
 				}
 				else { /* error value is over zero */
-					adS.plus_Negative_value= delta ;
+					adS.plus_Error_value= delta ;
 					adS.Negative_delta_flag=1 ;
 					DisplayNum(adS.Negative_delta_flag);
 						Delay(20000);
@@ -463,8 +472,8 @@ while(1)
 	}//measure_mode = 1
 
  }//end while(1)
-}
 
+}
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
 /*----------------------------------------------------------------------------*/
@@ -473,6 +482,53 @@ void Delay(unsigned int ms)
   for(;ms>0;ms--)
     __asm__("NOP");
 }
+/******************************************************************************
+ * 
+ * Function Name : NegativePressure_Display(void)
+ * 
+ * 
+ ******************************************************************************/
+ void NegativePressure_Display(void)
+ {
+	long negative_v,display;
+	unsigned int Init = 75;
+	unsigned int diff_value = 75;
+	/*100~80*/
+	if(adS.Negative_delta_value < 6500 && adS.Negative_delta_value  >= 5440)
+	{
+		display = 0.13 * (adS.Negative_delta_value  - 75) +190;
+		DisplayNum(display);
+		Delay(20000);
+		Delay(20000);
+	}
+	/*90 ~80*/
+	if(adS.Negative_delta_value < 5440 && adS.Negative_delta_value  >= 4510)
+	{
+		display = 0.13 * (adS.Negative_delta_value  - 75) +210;
+		DisplayNum(display);
+		Delay(20000);
+		Delay(20000);
+	}
+	/*80 ~70*/
+	if(adS.Negative_delta_value < 4510 && adS.Negative_delta_value  >= 3790)
+	{
+		display = 0.13 * (adS.Negative_delta_value  - 75) +210;
+		DisplayNum(display);
+		Delay(20000);
+		Delay(20000);
+	}
+	/*70 ~60*/
+	if(adS.Negative_delta_value < 3790  && adS.Negative_delta_value  >= 2930)
+	{
+		display = (adS.Negative_delta_value  - 100) +210;
+		DisplayNum(display);
+		Delay(20000);
+		Delay(20000);
+	}
+
+
+
+ }
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/

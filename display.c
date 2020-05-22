@@ -5,7 +5,6 @@
 #include "display.h"
 struct _adc_works_ adS;  
 
-
 /************************************************************
  * 
  * unsigned char n,count,*LCDAddr,LCDData;
@@ -40,39 +39,27 @@ void DisplayHycon(void)
 
 /***************************************************************************
   *
-  *Function Name:Index_Subsection()
+  *Function Name:Negative_Pressure_Arithmetic(void)
   *Function : serch table be responds psi volue,voltage transition psi
   *
   *                                                        
 ****************************************************************************/
 #if 0
-long Index_Subsection()
+void Negative_Pressure_Arithmetic(long negativeValue)
 {
-    
-     int i =12;
-    
-    //adS.ADC_DAT = adS.ADC_DAT * 0.1;
-	 if(adS.ADC_DAT< 6508 && adS.ADC_DAT > 6500) {
-        adS.ADC_DAT = 66666;
-     return adS.ADC_DAT;
-   }
-	 if(adS.ADC_DAT <=6500){
-       
-		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
-        adS.ADC_DAT = 6501;
-        while(i--){
-          
-           if(table_Getkgf_100_90[i] == adS.ADC_DAT) {
-                   
-                return i;
-           }
-           else 
-               return -1;
-           };
-     }
+     long negative_v,display;
+     unsigned int Init = 75;
+     unsigned int diff_value = 75;
+    if(negativeValue < 6280 && negativeValue >= 5440)
+    {
+       display = 0.013 * (negativeValue - 75) +19;
+       DisplayNum(display);
+    }
+
 
 }
 #endif 
+
 /*---------------------------------------------------------------------------
 	*
 	* Function Name:DisplayNum(long Num)

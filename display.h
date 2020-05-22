@@ -27,9 +27,9 @@ struct _adc_works_
    unsigned char Presskey_flag;
    unsigned char Positive_sign ;
    unsigned char Negative_sign;
-   unsigned char plus_Negative_value;
-   unsigned char minus_Negative_value;
-   
+   unsigned char plus_Error_value;
+   unsigned char minus_Error_value;
+   long Negative_delta_value;
 
 
 };
@@ -45,5 +45,9 @@ void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);
 void DisplayUnit(void);
+void Negative_Pressure_Arithmetic(void);
+
+
+
 
 
