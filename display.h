@@ -9,8 +9,8 @@ struct _adc_works_
    unsigned char zero_point_mode;
    unsigned char error_mode;
    unsigned char key_flag;
-   unsigned char second_5_over;
-   unsigned char second_3_over;
+   unsigned int second_5_over;
+   unsigned int second_3_over;
    unsigned char extend_t;   /*measure mode */
    unsigned long ADC_value;  
    unsigned char unit_plus ;

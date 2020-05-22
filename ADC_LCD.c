@@ -97,7 +97,7 @@ void main(void)
 {
     unsigned int read_t,read_h;
     float LCDDisplay,v;
-	long delta,theta,n,p;
+	long delta=0,theta=0,n=0;
 	long InitADC[1];
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
@@ -139,15 +139,15 @@ void main(void)
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
 
-	//TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
-    //TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
-   // TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
-   // TA1IE_Enable();
+	TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
+    TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
+    TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
+    TA1IE_Enable();
 
-   // TA1IF_ClearFlag();
+    TA1IF_ClearFlag();
 
-   // TMA1_ClearTMA1();    //Clear TMA count
-   // TMA1Enable();
+    TMA1_ClearTMA1();    //Clear TMA count
+    TMA1Enable();
    
 	ADIF_ClearFlag();
 	ADIE_Enable();
@@ -159,23 +159,21 @@ void main(void)
 		
 		if(GPIO_READ_PT10())
 		{
-		  
+		
 		  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
-		    adS.second_5_over ++;
-			adS.second_3_over++;
-			Delay(20000);
+		    
 			
-		 if(adS.second_5_over >= 10){ /*unit set mode*/
+		 if(adS.second_5_over >= 50000){ /*unit set mode*/
 			
 			 if(GPIO_READ_PT10()){
 	     
 				adS.second_5_over =0;
 				adS.uint_set_mode =1;
-				adS.zero_point_mode =0;
+				//adS.zero_point_mode =0;
 				adS.measure_mode =1;
 				DisplayUnit();
 				Delay(20000);
-				Delay(20000);
+			
 
 				    //BIE Read   
 					BIEARL=0;                                //addr=0
@@ -189,9 +187,7 @@ void main(void)
 							Delay(20000);
 							GPIO_PT16_LOW(); 
 							Delay(20000);
-							GPIO_PT16_HIGH();
-							Delay(20000);
-							GPIO_PT16_LOW(); 
+						
 								//BIE Write
 							HY17P52WR3(0,0xAA,0x11);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
 							if(Flag== 1)
@@ -206,9 +202,7 @@ void main(void)
 							Delay(20000);
 							GPIO_PT15_LOW(); 
 							Delay(20000);
-							GPIO_PT15_HIGH();
-							Delay(20000);
-							GPIO_PT15_LOW(); 
+							 
 
 					}
 				
@@ -216,8 +210,7 @@ void main(void)
 			
 				GPIO_PT15_HIGH();	
 				Delay(10000);
-				Delay(10000);
-				Delay(10000);
+				
 				switch(adS.plus_uint){
 					case psi: 
 					     adS.plus_uint++;
@@ -239,12 +232,12 @@ void main(void)
 			
 			}
 		 }
-		 if(adS.second_3_over >=4){ /* zero point mode*/
+		 if(adS.second_3_over >=10000){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
 				
 				adS.zero_point_mode =1;
-				adS.uint_set_mode = 0;
+				//adS.uint_set_mode = 0;
 				adS.measure_mode =1;
 			    adS.second_3_over=0;
 				//display LCD "2Er"
@@ -256,8 +249,7 @@ void main(void)
 		 
 		}
 		else{
-		   	GPIO_PT16_LOW();
-		   	GPIO_PT15_LOW();
+		   	
 		   
 		   if(adS.measure_mode == 0){ /* measure mode */
 		       adS.zero_point_mode=0;
@@ -278,61 +270,61 @@ void main(void)
 				}
 				ADC = ADC * 0.1; /* 4 byte significance byte */
 				
-			   DisplayNum(ADC);
+			   //DisplayNum(ADC);
 		
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
 					if(adS.delta_v==1){
-						n = ADC- adS.p_offset_value;
-				    }
+
+					    theta = ADC- adS.p_offset_value;
+					    Delay(1000);
+					    delta = ADC- adS.p_offset_value;
+						
+					
+					    if(abs(delta- theta) ==1 || abs(delta -theta)==2||abs(delta -theta)==3\
+							||abs(delta -theta)==4){
+							
+							 
+							   n= delta;
+							  
+							
+						 }
+						 else n = theta ;
+							
+					}
 					else if(adS.delta_v ==2) {
+				    
 						n= ADC + adS.m_offset_value  ;	
 					}
 					else {
 						n = ADC;
 						InitADC[0]= ADC ;
 					}
-
-					if(adS.delta_v !=0){/*check full scale of error*/
-						if(n <= 6440){  /* arithmetic formula */
-								theta = InitADC[0] - INITADC_VALUE;
-								if(theta<0) {
-									adS.m_InitADC_DAT = theta;
-									adS.m_InitADC_flag =1;
-									adS.BasisVoltage = InitADC[0] + adS.p_InitADC_DAT;
-									LCDDisplay = 0.012 * (n - adS.BasisVoltage) + 5.5;
-									DisplayNum(LCDDisplay);
-									Delay(20000);
-									Delay(20000);
-								}
-								else{
-									
-									adS.p_InitADC_DAT = theta;
-									adS.p_InitADC_flag =1;
-									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
-									LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4ï¿?ï¿?*/
-									DisplayNum(LCDDisplay);
-									Delay(20000);
-									Delay(20000);
-								}
-								
-						} /*Input Positive Pressure run end */
-						else{
-								LCDDisplay= 54300  - (8.2 * n) ; //b= 5495
-								v = abs(LCDDisplay);
-								DisplayNum(v);
-								Delay(20000);
-								Delay(20000);
-								p = InitADC[0] ;
-								DisplayNum(p);
-								Delay(20000);
-								Delay(20000);
+                    if(adS.delta_v !=0){
+						LCDDisplay= 54298  - (8.2 * n) ; //b= 5495,54300
+						if(LCDDisplay > 30000){
+						  DisplayNum(0);
 						}
+						else{
+							v = abs(LCDDisplay);
+							DisplayNum(v);
+							Delay(20000);
+							Delay(20000);
+							Delay(20000);
+							
+						}
+                    }
+					else{
+						theta = InitADC[0] ;
+						DisplayNum(theta);
+						Delay(20000);
 					
 					}
+						
+								
 				}
 			
 				/* Input Negative pressure mode to run program*/
-				else { /*Input Negative pressure mode*/
+				else if(adS.Positive_sign ==1){ /*Input Negative pressure mode*/
 					
 					if(adS.Negative_delta_flag==1){/* error value is over zero*/
 							 /* arithmetic formula */
@@ -344,13 +336,14 @@ void main(void)
 							adS.Negative_delta_value = ADC + adS.minus_Error_value;
 							 NegativePressure_Display();
 					}
-					else{
-                         v = n ;
-					     DisplayNum(v);
-					}
 					
 
 				}
+				else{
+					    theta= InitADC[0] ;
+						DisplayNum(theta);
+						Delay(20000);
+					}
 				
 				
 				
@@ -360,23 +353,22 @@ void main(void)
 	   		}
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
 
-			   adS.zero_point_mode =0;
-			   adS.measure_mode=0;
+			  
 			   ADC=ADC>>6;
 			   ADC = ADC * 0.1;
 			   delta = abs(ADC) - STD_VALUE; 
 			 
-			   if((delta<0)||(delta>0x80000000))
+			   if(delta<0)
 				{
 				   adS.m_offset_value = delta ;
 				  
 				   adS.delta_v=2 ;
 				   DisplayNum(adS.delta_v);
 				    Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
+					DisplayNum(adS.p_offset_value);
+					 Delay(20000);
+					
+					
 				}
 				else
 				{
@@ -384,19 +376,20 @@ void main(void)
 				   adS.delta_v=1 ;
 				   DisplayNum(adS.delta_v);
 				    Delay(20000);
-					Delay(20000);
-					
 					DisplayNum(adS.p_offset_value);
 					 Delay(20000);
-					Delay(20000);
-					Delay(20000);
+					
+					
 				}
+				 adS.zero_point_mode =0;
+			   adS.measure_mode=0;
 				
 			}
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
 		   	   adS.measure_mode = 0;
 		   	   adS.uint_set_mode=0;
 			   adS.key_flag =0;
+			   adS.second_3_over =0;
 
 			}
 			if(adS.uint_set_mode ==1){
@@ -571,11 +564,12 @@ void ISR(void) __interrupt
 		ADC=ADC_GetData();
 		MCUSTATUSbits.b_ADCdone=1;
 	}
-	#if 0
+	#if 1
 	if(TA1IF_IsFlag())  //PT1.0  Timer A1 interrupt flag 
 	{
-		firstSecond++ ;
-		Second_real_3 ++;
+		adS.second_3_over ++;
+		adS.second_5_over++;
+	    TA1IF_ClearFlag();
 		if(adS.key_flag ==1||adS.key_flag==0) {
 			adS.second_5_over = 0;
 			firstSecond=0 ;
@@ -584,29 +578,12 @@ void ISR(void) __interrupt
 			adS.key_flag =2;
 			
 		}
-		if(Second_real_3 ==5600){
-		    Second_real_3 =0;
-			adS.second_3_over ++ ;
-		}
-		if(firstSecond ==9300) // 5 second
-	    {
-	        firstSecond=0;
-		    getLastSecond ++ ;
-			adS.second_5_over ++ ;
-			if(getLastSecond == 12){ //60 sec
-				getLastSecond =0;
-				GPIO_PT16_HIGH();	
-			    Delay(10000);
-				GPIO_PT15_HIGH();	
-			    Delay(10000);
-			    Delay(10000);
-			}	
+	
+		
 	      
-	       GPIO_PT16_LOW()	;	
-	    }
-	 
-		TA1IF_ClearFlag();
 	}
+	
+	
 	#endif 
 }
 
