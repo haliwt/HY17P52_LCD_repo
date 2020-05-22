@@ -139,15 +139,15 @@ void main(void)
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
 
-	TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
-    TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
-    TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
-    TA1IE_Enable();
+	//TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
+    //TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
+   // TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
+   // TA1IE_Enable();
 
-    TA1IF_ClearFlag();
+   // TA1IF_ClearFlag();
 
-    TMA1_ClearTMA1();    //Clear TMA count
-    TMA1Enable();
+   // TMA1_ClearTMA1();    //Clear TMA count
+   // TMA1Enable();
    
 	ADIF_ClearFlag();
 	ADIE_Enable();
@@ -161,8 +161,11 @@ void main(void)
 		{
 		  
 		  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
-
-		 if(adS.second_5_over >= 1){ /*unit set mode*/
+		    adS.second_5_over ++;
+			adS.second_3_over++;
+			Delay(20000);
+			
+		 if(adS.second_5_over >= 10){ /*unit set mode*/
 			
 			 if(GPIO_READ_PT10()){
 	     
@@ -236,7 +239,7 @@ void main(void)
 			
 			}
 		 }
-		 if(adS.second_3_over >=1 && adS.second_5_over < 1 && adS.uint_set_mode !=1){ /* zero point mode*/
+		 if(adS.second_3_over >=4){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
 				
@@ -274,7 +277,8 @@ void main(void)
 					adS.Positive_sign =1;
 				}
 				ADC = ADC * 0.1; /* 4 byte significance byte */
-				#if 1
+				
+			   DisplayNum(ADC);
 		
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
 					if(adS.delta_v==1){
@@ -305,7 +309,7 @@ void main(void)
 									adS.p_InitADC_DAT = theta;
 									adS.p_InitADC_flag =1;
 									adS.BasisVoltage = InitADC[0] - adS.p_InitADC_DAT;
-									LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4ï¿½?ï¿½?*/
+									LCDDisplay = 0.12 * (n - adS.BasisVoltage) + 5.5; /* 4ï¿?ï¿?*/
 									DisplayNum(LCDDisplay);
 									Delay(20000);
 									Delay(20000);
@@ -326,52 +330,30 @@ void main(void)
 					
 					}
 				}
-				#if 1
+			
 				/* Input Negative pressure mode to run program*/
 				else { /*Input Negative pressure mode*/
 					
 					if(adS.Negative_delta_flag==1){/* error value is over zero*/
 							 /* arithmetic formula */
 						   adS.Negative_delta_value= ADC - adS.plus_Error_value;
+							 NegativePressure_Display();
 					}
 					else if(adS.Negative_delta_flag==2){
 							 /* arithmetic formula */
 							adS.Negative_delta_value = ADC + adS.minus_Error_value;
+							 NegativePressure_Display();
 					}
 					else{
-
+                         v = n ;
+					     DisplayNum(v);
 					}
-					NegativePressure_Display();
+					
 
 				}
-				#endif 
-				#if 0
-				else{
-					v = n ;
-					DisplayNum(v);
-					GPIO_PT16_HIGH();
-					if(GPIO_READ_PT10()){
-						adS.Presskey_flag  = 1;
-					}
-					Delay(20000);
-					GPIO_PT16_LOW(); 
-					if(GPIO_READ_PT10()){
-						adS.Presskey_flag  = 1;
-					}
-					Delay(20000);
-					GPIO_PT16_HIGH();
-					Delay(20000);
-					GPIO_PT16_LOW(); 
-					if(GPIO_READ_PT10()){
-						adS.Presskey_flag  = 1;
-					}
-					DisplayNum(p);
-					Delay(20000);
-					GPIO_PT16_HIGH();
-					Delay(20000);
-				}
-				#endif 
-				#endif 
+				
+				
+				
 				
 			}
 

@@ -86,16 +86,7 @@ void DisplayNum(long Num)
   unsigned char count,MINUS;
   unsigned char *LCDAddr,LCDData;
 
-  if((Num<0)||(Num>0x80000000))
-  {
-    Num=~Num;
-    Num++;
-    MINUS=1;
-  }
-  else
-  {
-    MINUS=0;
-  }
+ 
 
   LCDAddr=&LCD5;
  // LCDAddr = &LCD4;  /*HY17P52 for LCD FTP1625SX01*/
@@ -106,7 +97,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr--;
   }
-  if(MINUS==1)//if(adS.S_Plus==1)//if(MINUS==1)
+  if(adS.Negative_sign ==1)//if(adS.S_Plus==1)//if(MINUS==1)
       LCD_WriteData(&LCD6,S_Minus);// LCD_WriteData(&LCD0,S_Minus);
   else
       LCD_WriteData(&LCD6,0);//LCD_WriteData(&LCD0,0);
