@@ -23,8 +23,8 @@
 #define MPATokgf(kgf)	 	(0.1 * (kgf))
 
 #define STD_VALUE           6500
-#define INITADC_VALUE		2000
-#define STD_DEVIATION       81 
+
+#define STD_NEGATIVE_VOLTAGE      6270
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ void Delay(unsigned int ms);
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
-void NegativePressure_Display(void);
+//void NegativePressure_Display(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -163,16 +163,19 @@ void main(void)
 		  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
 		    
 			
-		 if(adS.second_5_over >= 50000){ /*unit set mode*/
+		 if(adS.second_5_over >= 10000){ /*unit set mode*/
 			
 			 if(GPIO_READ_PT10()){
 	     
+				adS.Error_Positive_flag==2;
 				adS.second_5_over =0;
 				adS.uint_set_mode =1;
 				//adS.zero_point_mode =0;
 				adS.measure_mode =1;
 				DisplayUnit();
-				Delay(20000);
+				Delay(10000);
+				
+			 
 			
 
 				    //BIE Read   
@@ -184,9 +187,9 @@ void main(void)
 					if(read_h == 0x00){
 							GPIO_PT16_HIGH();
 								
-							Delay(20000);
+							Delay(10000);
 							GPIO_PT16_LOW(); 
-							Delay(20000);
+							Delay(10000);
 						
 								//BIE Write
 							HY17P52WR3(0,0xAA,0x11);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -199,9 +202,7 @@ void main(void)
 
 							GPIO_PT15_HIGH();
 								
-							Delay(20000);
-							GPIO_PT15_LOW(); 
-							Delay(20000);
+							
 							 
 
 					}
@@ -232,7 +233,7 @@ void main(void)
 			
 			}
 		 }
-		 if(adS.second_3_over >=10000){ /* zero point mode*/
+		 if(adS.second_3_over >=5000){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
 				
@@ -243,6 +244,7 @@ void main(void)
 				//display LCD "2Er"
 			     Display2Er();
                  Delay(20000);
+				 adS.Error_Positive_flag==1;
                 
 			}
 		 }
@@ -271,10 +273,11 @@ void main(void)
 					adS.Negative_sign =0;
 				}
 				ADC = ADC * 0.1; /* 4 byte significance byte */
+				
 		
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
-					if(adS.delta_v==1){
-
+					adS.Negative_sign =0;
+					
 					    theta = ADC- adS.p_offset_value;
 					    Delay(1000);
 					    delta = ADC- adS.p_offset_value;
@@ -290,19 +293,12 @@ void main(void)
 						 }
 						 else n = theta ;
 							
-					}
-					else if(adS.delta_v ==2) {
-				    
-						n= ADC + adS.m_offset_value  ;	
-					}
-					else {
-						n = ADC;
-						//InitADC[0]= ADC ;
-					}
-                    if(adS.delta_v !=0){
+					
+                   
 						LCDDisplay= 54298  - (8.2 * n) ; //b= 5495,54300
 						if(LCDDisplay > 30000){
-						  DisplayNum(0);
+						  //DisplayNum(0);
+						  DisplayNum(ADC);
 						}
 						else{
 							 LCDDisplay = abs(LCDDisplay);
@@ -312,85 +308,47 @@ void main(void)
 							Delay(20000);
 							
 						}
-                    }
-					else{
-						//theta = InitADC[0] ;
-						DisplayNum(ADC);
-						Delay(20000);
-					
-					}
+                       
 						
 								
 				}
 			
 				/* Input Negative pressure mode to run program*/
 				else { /*Input Negative pressure mode*/
+				
+					 theta= ADC - adS.plus_Error_value;
 					
-					if(adS.delta_v==1){/* error value is over zero*/
-							 /* arithmetic formula */
-						  theta= ADC - adS.plus_Error_value;
-					
-					}
-					else {
-							 /* arithmetic formula */
-							theta = ADC + adS.minus_Error_value;
-					
-					}
-					if(adS.delta_v !=0){
-						   LCDDisplay= 0.12*theta + 247.6;//LCDDisplay= 0.012*p + 24.76;
+						LCDDisplay= 0.012*theta + 24.76;//LCDDisplay= 0.012*p + 24.76;
 						
-						   LCDDisplay = abs(LCDDisplay);
+						LCDDisplay = abs(LCDDisplay * 10);
 								DisplayNum( LCDDisplay);
 								Delay(20000);
 								Delay(20000);
 								Delay(20000);
-					   	}
-						else{
-							//theta = InitADC[0] ;
-							DisplayNum(ADC);
-							Delay(20000);
-						
-					    }
-					 
+						       DisplayNum(ADC);
+							   Delay(20000);
 					  
-				
 				}
 
 	   		 }
 		   }
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
+     
+ 				ADC=ADC>>6;
+				ADC = ADC * 0.1;
+		   
+				adS.Error_Positive_flag++;
+		       /* 找误差�?*/ 
+				if(adS.Error_Positive_flag==1){
+					adS.p_offset_value= abs(ADC) - STD_VALUE; 
+					
+				}
+				else if(adS.Error_Positive_flag==2){
+					adS.Error_Positive_flag=0;
+					adS.plus_Error_value = abs(ADC) - STD_NEGATIVE_VOLTAGE ;
 
-			  
-			   ADC=ADC>>6;
-			   ADC = ADC * 0.1;
-			   delta = abs(ADC) - STD_VALUE; 
-			   theta = abs(ADC) - INITADC_VALUE;
-			   if(delta<0)
-				{
-					adS.delta_v=2 ;
-				   adS.m_offset_value = delta ;
-				   adS.minus_Error_value = theta;
-				   
-				 //  DisplayNum(adS.delta_v);
-				 //   Delay(10000);
-				//	DisplayNum(adS.p_offset_value);
-				//	 Delay(10000);
-					
-					
 				}
-				else
-				{
-					adS.delta_v=1 ;
-				   adS.p_offset_value= delta ;
-				   adS.plus_Error_value = theta;
-				  
-				 //  DisplayNum(adS.delta_v);
-				  //  Delay(10000);
-				//	DisplayNum(adS.p_offset_value);
-				 //   Delay(10000);
-					
-					
-				}
+			
 				 adS.zero_point_mode =0;
 			     adS.measure_mode=0;
 				
@@ -404,6 +362,9 @@ void main(void)
 			}
 			if(adS.uint_set_mode ==1){
 
+				adS.uint_set_mode =0 ;
+				adS.measure_mode = 0;
+		
 				switch(adS.unit_plus){
 					case psi:
 						
