@@ -175,7 +175,7 @@ void main(void)
 				DisplayUnit();
 				Delay(10000);
 				adS.second_3_over=0;
-				adS.Error_Positive_flag=2;
+				
 			 
 			
 
@@ -237,8 +237,7 @@ void main(void)
 		 if(adS.second_3_over >=5000){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
-				
-				adS.Error_Positive_flag==1;
+				 adS.zero_point_mode = 1;
 				//adS.uint_set_mode = 0;
 				adS.measure_mode =1;
 			    adS.second_3_over=0;
@@ -281,7 +280,7 @@ void main(void)
 					
 					    theta =abs(ADC)- adS.p_offset_value;
 					    Delay(1000);
-					    delta = ADC- adS.p_offset_value;
+					    delta = abs(ADC)- adS.p_offset_value;
 						
 					
 					    if(abs(delta- theta) ==1 || abs(delta -theta)==2||abs(delta -theta)==3\
@@ -296,7 +295,7 @@ void main(void)
 							
 					
                    
-						LCDDisplay= 54298  - (8.2 * n) ; //b= 5495,54300
+						LCDDisplay= 54300  - (8.2 * n) ; //b= 5495,54300
 						if(LCDDisplay > 30000){
 						  //DisplayNum(0);
 						  DisplayNum(ADC);
@@ -319,9 +318,8 @@ void main(void)
 				       #if 1
 					    theta= abs(ADC) - adS.plus_Error_value;
 					
-						LCDDisplay= 0.012*theta + 24.76;//LCDDisplay= 0.012*p + 24.76;
+						LCDDisplay= 0.12*theta + 247.6;//LCDDisplay= 0.012*p + 24.76;
 						
-						LCDDisplay = abs(LCDDisplay * 10);
 								DisplayNum( LCDDisplay);
 								Delay(20000);
 								Delay(20000);
@@ -336,25 +334,25 @@ void main(void)
 		   }
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
      
- 				ADC=ADC>>6;
+				adS.zero_point_mode =0;
+			     adS.measure_mode=0;
+				ADC=ADC>>6;
 				ADC = ADC * 0.1;
 		   
-				
+				adS.Error_Positive_flag++;
 		       /* 找误差�?*/ 
-				if(adS.Error_Positive_flag==1){
+				if(adS.Error_Positive_flag==1){ /*positive pressure +*/
 					adS.p_offset_value= abs(ADC) - STD_VALUE; 
 					
 				}
-				else if(adS.Error_Positive_flag==2){
+				if(adS.Error_Positive_flag==2){ /*negative pressure "-"*/
 					
 					adS.plus_Error_value = abs(ADC) - STD_NEGATIVE_VOLTAGE ;
-
+					adS.Error_Positive_flag=0;
 				}
 			
-				 adS.zero_point_mode =0;
-			     adS.measure_mode=0;
-				
 			}
+		   #if 0
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
 		   	   adS.measure_mode = 0;
 		   	   adS.uint_set_mode=0;
@@ -362,6 +360,7 @@ void main(void)
 			   adS.second_3_over =0;
 
 			}
+		   #endif 
 			if(adS.uint_set_mode ==1){
 
 				adS.uint_set_mode =0 ;
