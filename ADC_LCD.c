@@ -98,7 +98,7 @@ void main(void)
     unsigned int read_t,read_h;
     float LCDDisplay=0;
 	long delta=0,theta=0,n=0;
-	long InitADC[1];
+	//long InitADC[1];
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -263,14 +263,14 @@ void main(void)
 				if((ADC<0)||(ADC>0x80000000))
 				{
 					adS.Negative_sign =1;
+					adS.Positive_sign =0;
 				}
 				else
 				{
 					adS.Positive_sign =1;
+					adS.Negative_sign =0;
 				}
 				ADC = ADC * 0.1; /* 4 byte significance byte */
-				
-			   //DisplayNum(ADC);
 		
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
 					if(adS.delta_v==1){
@@ -297,7 +297,7 @@ void main(void)
 					}
 					else {
 						n = ADC;
-						InitADC[0]= ADC ;
+						//InitADC[0]= ADC ;
 					}
                     if(adS.delta_v !=0){
 						LCDDisplay= 54298  - (8.2 * n) ; //b= 5495,54300
@@ -314,8 +314,8 @@ void main(void)
 						}
                     }
 					else{
-						theta = InitADC[0] ;
-						DisplayNum(theta);
+						//theta = InitADC[0] ;
+						DisplayNum(ADC);
 						Delay(20000);
 					
 					}
@@ -326,29 +326,33 @@ void main(void)
 				/* Input Negative pressure mode to run program*/
 				else { /*Input Negative pressure mode*/
 					
-					if(adS.Negative_delta_flag==1){/* error value is over zero*/
+					if(adS.delta_v==1){/* error value is over zero*/
 							 /* arithmetic formula */
 						  theta= ADC - adS.plus_Error_value;
 					
-							
 					}
 					else {
 							 /* arithmetic formula */
 							theta = ADC + adS.minus_Error_value;
 					
 					}
-					  
-					   LCDDisplay= 0.12*theta + 247.6;//LCDDisplay= 0.012*p + 24.76;
-						if(LCDDisplay > 30000){
-						  DisplayNum(0);
-						}
+					if(adS.delta_v !=0){
+						   LCDDisplay= 0.12*theta + 247.6;//LCDDisplay= 0.012*p + 24.76;
+						
+						   LCDDisplay = abs(LCDDisplay);
+								DisplayNum( LCDDisplay);
+								Delay(20000);
+								Delay(20000);
+								Delay(20000);
+					   	}
 						else{
-							LCDDisplay = abs(LCDDisplay);
-							DisplayNum( LCDDisplay);
+							//theta = InitADC[0] ;
+							DisplayNum(ADC);
 							Delay(20000);
-							Delay(20000);
-							Delay(20000);
-					    }	
+						
+					    }
+					 
+					  
 				
 				}
 
@@ -360,32 +364,35 @@ void main(void)
 			   ADC=ADC>>6;
 			   ADC = ADC * 0.1;
 			   delta = abs(ADC) - STD_VALUE; 
-			 
+			   theta = abs(ADC) - INITADC_VALUE;
 			   if(delta<0)
 				{
+					adS.delta_v=2 ;
 				   adS.m_offset_value = delta ;
-				  
-				   adS.delta_v=2 ;
-				   DisplayNum(adS.delta_v);
-				    Delay(20000);
-					DisplayNum(adS.p_offset_value);
-					 Delay(20000);
+				   adS.minus_Error_value = theta;
+				   
+				 //  DisplayNum(adS.delta_v);
+				 //   Delay(10000);
+				//	DisplayNum(adS.p_offset_value);
+				//	 Delay(10000);
 					
 					
 				}
 				else
 				{
+					adS.delta_v=1 ;
 				   adS.p_offset_value= delta ;
-				   adS.delta_v=1 ;
-				   DisplayNum(adS.delta_v);
-				    Delay(20000);
-					DisplayNum(adS.p_offset_value);
-					 Delay(20000);
+				   adS.plus_Error_value = theta;
+				  
+				 //  DisplayNum(adS.delta_v);
+				  //  Delay(10000);
+				//	DisplayNum(adS.p_offset_value);
+				 //   Delay(10000);
 					
 					
 				}
 				 adS.zero_point_mode =0;
-			   adS.measure_mode=0;
+			     adS.measure_mode=0;
 				
 			}
 		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
