@@ -166,15 +166,16 @@ void main(void)
 		 if(adS.second_5_over >= 10000){ /*unit set mode*/
 			
 			 if(GPIO_READ_PT10()){
-	     
-				adS.Error_Positive_flag==2;
+	          
+			
 				adS.second_5_over =0;
 				adS.uint_set_mode =1;
 				//adS.zero_point_mode =0;
 				adS.measure_mode =1;
 				DisplayUnit();
 				Delay(10000);
-				
+				adS.second_3_over=0;
+				adS.Error_Positive_flag=2;
 			 
 			
 
@@ -237,14 +238,14 @@ void main(void)
 
 			   if(GPIO_READ_PT10()){
 				
-				adS.zero_point_mode =1;
+				adS.Error_Positive_flag==1;
 				//adS.uint_set_mode = 0;
 				adS.measure_mode =1;
 			    adS.second_3_over=0;
 				//display LCD "2Er"
 			     Display2Er();
                  Delay(20000);
-				 adS.Error_Positive_flag==1;
+				 
                 
 			}
 		 }
@@ -278,7 +279,7 @@ void main(void)
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
 					adS.Negative_sign =0;
 					
-					    theta = ADC- adS.p_offset_value;
+					    theta =abs(ADC)- adS.p_offset_value;
 					    Delay(1000);
 					    delta = ADC- adS.p_offset_value;
 						
@@ -315,8 +316,8 @@ void main(void)
 			
 				/* Input Negative pressure mode to run program*/
 				else { /*Input Negative pressure mode*/
-				
-					 theta= ADC - adS.plus_Error_value;
+				       #if 1
+					    theta= abs(ADC) - adS.plus_Error_value;
 					
 						LCDDisplay= 0.012*theta + 24.76;//LCDDisplay= 0.012*p + 24.76;
 						
@@ -325,8 +326,9 @@ void main(void)
 								Delay(20000);
 								Delay(20000);
 								Delay(20000);
-						       DisplayNum(ADC);
-							   Delay(20000);
+					#endif 
+						   //    DisplayNum(ADC);
+							//   Delay(20000);
 					  
 				}
 
@@ -337,14 +339,14 @@ void main(void)
  				ADC=ADC>>6;
 				ADC = ADC * 0.1;
 		   
-				adS.Error_Positive_flag++;
+				
 		       /* 找误差�?*/ 
 				if(adS.Error_Positive_flag==1){
 					adS.p_offset_value= abs(ADC) - STD_VALUE; 
 					
 				}
 				else if(adS.Error_Positive_flag==2){
-					adS.Error_Positive_flag=0;
+					
 					adS.plus_Error_value = abs(ADC) - STD_NEGATIVE_VOLTAGE ;
 
 				}
