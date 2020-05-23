@@ -96,7 +96,7 @@ void NegativePressure_Display(void);
 void main(void)
 {
     unsigned int read_t,read_h;
-    float LCDDisplay,v;
+    float LCDDisplay=0;
 	long delta=0,theta=0,n=0;
 	long InitADC[1];
    //CLK Setting
@@ -305,8 +305,8 @@ void main(void)
 						  DisplayNum(0);
 						}
 						else{
-							v = abs(LCDDisplay);
-							DisplayNum(v);
+							 LCDDisplay = abs(LCDDisplay);
+							DisplayNum( LCDDisplay);
 							Delay(20000);
 							Delay(20000);
 							Delay(20000);
@@ -324,33 +324,36 @@ void main(void)
 				}
 			
 				/* Input Negative pressure mode to run program*/
-				else if(adS.Positive_sign ==1){ /*Input Negative pressure mode*/
+				else { /*Input Negative pressure mode*/
 					
 					if(adS.Negative_delta_flag==1){/* error value is over zero*/
 							 /* arithmetic formula */
-						   adS.Negative_delta_value= ADC - adS.plus_Error_value;
-							 NegativePressure_Display();
-					}
-					else if(adS.Negative_delta_flag==2){
-							 /* arithmetic formula */
-							adS.Negative_delta_value = ADC + adS.minus_Error_value;
-							 NegativePressure_Display();
-					}
+						  theta= ADC - adS.plus_Error_value;
 					
-
-				}
-				else{
-					    theta= InitADC[0] ;
-						DisplayNum(theta);
-						Delay(20000);
+							
 					}
+					else {
+							 /* arithmetic formula */
+							theta = ADC + adS.minus_Error_value;
+					
+					}
+					  
+					   LCDDisplay= 0.12*theta + 247.6;//LCDDisplay= 0.012*p + 24.76;
+						if(LCDDisplay > 30000){
+						  DisplayNum(0);
+						}
+						else{
+							LCDDisplay = abs(LCDDisplay);
+							DisplayNum( LCDDisplay);
+							Delay(20000);
+							Delay(20000);
+							Delay(20000);
+					    }	
 				
-				
-				
-				
-			}
+				}
 
-	   		}
+	   		 }
+		   }
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
 
 			  
@@ -422,80 +425,14 @@ void main(void)
  * 
  * 
  ******************************************************************************/
+ #if 0
  void NegativePressure_Display(void)
 {
   
 	long negative_v,display;
 	unsigned int i = 0;
 	unsigned int diff_value = 75;
-	/*100~80*/
-	if(adS.Negative_delta_value < 6500 && adS.Negative_delta_value  >= 5440){
-		display = 0.13 * (adS.Negative_delta_value  - 75) +190;
-		DisplayNum(display);
-		Delay(20000);
-		Delay(20000);
-	}
-	/*90 ~80*/
-	if(adS.Negative_delta_value < 5440 && adS.Negative_delta_value  >= 4510)
-	{
-		display = 0.13 * (adS.Negative_delta_value  - 75) +210;
-		DisplayNum(display);
-		Delay(20000);
-		Delay(20000);
-	}
-	/*80 ~70*/
-	if(adS.Negative_delta_value < 4510 && adS.Negative_delta_value  >= 3790)
-	{
-		display = 0.13 * (adS.Negative_delta_value  - 75) +210;
-		DisplayNum(display);
-		Delay(20000);
-		Delay(20000);
-	}
-	/*70 ~60*/
-	if(adS.Negative_delta_value < 3790  && adS.Negative_delta_value  >= 2930)
-	{
-		display = 0.13*(adS.Negative_delta_value  - 75) +220;
-		DisplayNum(display);
-		Delay(20000);
-		Delay(20000);
-	}
-	/*60 ~50*/
-	if(adS.Negative_delta_value < 2930  && adS.Negative_delta_value  >= 2110)
-	{
-		display = 0.13*(adS.Negative_delta_value  - 75) +230;
-		DisplayNum(display);
-		Delay(20000);
-		Delay(20000);
-	}
-	/*50 ~40*/
-	if(adS.Negative_delta_value < 2110  && adS.Negative_delta_value  >= 1310)
-	{
-		display = 0.13*(adS.Negative_delta_value  - 75) +240;
-		DisplayNum(display);
-		Delay(20000);
-		Delay(20000);
-	}
-	/*40 ~30*/
-	if(adS.Negative_delta_value < 2110  && adS.Negative_delta_value  >= 390)
-	{
-		if(adS.Negative_delta_value >=900 ){
-			display = 0.016*(1307 - adS.Negative_delta_value );
-			display = (40-display) * 10 ;
-			DisplayNum(display);
-			Delay(20000);
-			Delay(20000);
-		}
-		if(adS.Negative_delta_value >=390 && adS.Negative_delta_value < 900){
-			display = 0.014 *(adS.Negative_delta_value  - 469 ) + 30;
-			    display = display * 10 ;
-			    DisplayNum(display);
-				Delay(20000);
-				Delay(20000);
-
-			
-		}		
-
-	  }
+	
 	/*30 ~20*/
 	if(adS.Negative_delta_value < 390  && adS.Negative_delta_value  >=360)
 	{
@@ -543,7 +480,7 @@ void main(void)
 }
 
 
-
+#endif 
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
 /*----------------------------------------------------------------------------*/

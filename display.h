@@ -30,7 +30,7 @@ struct _adc_works_
    unsigned char Negative_sign;
    unsigned char plus_Error_value;
    unsigned char minus_Error_value;
-   long Negative_delta_value;
+   
 
 
 
