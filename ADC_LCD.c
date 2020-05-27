@@ -287,26 +287,28 @@ void main(void)
 					     }
 						 else n = delta;
 
-						         LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 0.123 *n- 319.93;//y = 0.0123x - 31.993
-						         //LCDDisplay= 0.117*n-302.1;//LCDDisplay= 0.0116*n-29.575;
+						               LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 0.123 *n- 319.93;//y = 0.0123x - 31.993
+						              // LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
 						        
-                                 
+                                      
 						                // LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 54300  - (8.2 * n) ; //b= 5495,54300
 						                 if(n<2800)DisplayNum(0);
 									   
-										 else if((LCDDisplay <1200 && LCDDisplay >=500) &&(n< 6480 || n>6530)){
+										 else if(LCDDisplay <=615 ){
+											    LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
+										        DisplayNum(LCDDisplay);
+										 }
+										 else {
 											
+										    if(LCDDisplay>=1065) LCDDisplay= 0.125 *n- 202.86;
+											else 
 											LCDDisplay = abs(LCDDisplay);
 											DisplayNum( LCDDisplay);
 									      }
-									      else
-									      {
-									      		LCDDisplay= 0.123 *n- 319.93;
-										        DisplayNum(LCDDisplay);
-										}
+									    
+									
 									Delay(20000);
-									Delay(20000);
-									Delay(20000);
+								
 						         
 				}
 			    else { /*Input Negative pressure mode*/
@@ -319,8 +321,7 @@ void main(void)
 						
 								DisplayNum( LCDDisplay);
 								Delay(20000);
-								Delay(20000);
-								Delay(20000);
+								
 					#endif 
 						   //    DisplayNum(ADC);
 							//   Delay(20000);
@@ -337,10 +338,10 @@ void main(void)
 				ADC = ADC * 0.1;
 		   
 				adS.Error_Positive_flag++;
-		       /* 找误差?*/ 
+		       /* 找误�?*/
 				if(adS.Error_Positive_flag==1){ /*positive pressure +*/
 					adS.p_offset_value= abs(ADC) - STD_VALUE; 
-					
+					adS.delta_v =1;
 				}
 				if(adS.Error_Positive_flag==2){ /*negative pressure "-"*/
 					
