@@ -14,22 +14,19 @@ struct _adc_works_
    unsigned int second_5_over;
    unsigned int second_3_over;
    unsigned char extend_t;   /*measure mode */
-   unsigned long ADC_value;  
-
-   int m_offset_value;
-   int p_offset_value;
-   
    unsigned char  delta_v;
    unsigned char  theta_v;
   
    unsigned char Presskey_flag;
    unsigned char Positive_sign ;
    unsigned char Negative_sign;
-   int plus_Error_value;
-   int  minus_Error_value;
-
    unsigned char Error_Positive_flag;
 
+   int plus_Error_value;
+   int  minus_Error_value;
+    int m_offset_value;
+   int p_offset_value;
+    int  ADC_value;  
 
 
 };

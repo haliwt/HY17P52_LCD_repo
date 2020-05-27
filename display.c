@@ -85,6 +85,7 @@ void DisplayNum(long Num)
 {
   unsigned char count,MINUS;
   unsigned char *LCDAddr,LCDData;
+  #if 0
   if((Num<0)||(Num>0x80000000))
   {
     Num=~Num;
@@ -95,6 +96,7 @@ void DisplayNum(long Num)
   {
     MINUS=0;
   }
+  #endif 
   LCDAddr=&LCD5;
   for(count=0;count<6;count++)
   {
@@ -103,11 +105,12 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr--;
   }
+  #if 0
   if(MINUS==1)
     LCD_WriteData(&LCD6,S_Minus);
   else
     LCD_WriteData(&LCD6,0);
-
+#endif 
  
 }
 

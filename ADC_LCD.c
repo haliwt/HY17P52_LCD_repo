@@ -272,53 +272,50 @@ void main(void)
 					adS.Positive_sign =1;
 					adS.Negative_sign =0;
 				}
-				ADC = ADC * 0.1; /* 4 byte significance byte */
 				
-		
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
 					adS.Negative_sign =0;
-					
+					    ADC = ADC * 0.1;
 					    theta =abs(ADC)- adS.p_offset_value;
 					    Delay(1000);
-					    delta = abs(ADC)- adS.p_offset_value;
+					    delta =abs(ADC)- adS.p_offset_value;
 						
 					
-					    if(abs(delta- theta) ==1 || abs(delta -theta)==2||abs(delta -theta)==3\
-							||abs(delta -theta)==4){
-							
-							 
-							   n= delta;
-							  
-							
-						 }
-						 else n = theta ;
-							
-					
-                   
-						LCDDisplay= 54300  - (8.2 * n) ; //b= 5495,54300
-						if(LCDDisplay > 30000){
-						  //DisplayNum(0);
-						  DisplayNum(ADC);
-						}
-						else{
-							 LCDDisplay = abs(LCDDisplay);
-							DisplayNum( LCDDisplay);
-							Delay(20000);
-							Delay(20000);
-							Delay(20000);
-							
-						}
-                       
-						
-								
+					     if(abs(theta - delta) <= 3){
+						    Delay(1000);
+							n= theta ;
+					     }
+						 else n = delta;
+
+						         LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 0.123 *n- 319.93;//y = 0.0123x - 31.993
+						         //LCDDisplay= 0.117*n-302.1;//LCDDisplay= 0.0116*n-29.575;
+						        
+                                 
+						                // LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 54300  - (8.2 * n) ; //b= 5495,54300
+						                 if(n<2800)DisplayNum(0);
+									   
+										 else if((LCDDisplay <1200 && LCDDisplay >=500) &&(n< 6480 || n>6530)){
+											
+											LCDDisplay = abs(LCDDisplay);
+											DisplayNum( LCDDisplay);
+									      }
+									      else
+									      {
+									      		LCDDisplay= 0.123 *n- 319.93;
+										        DisplayNum(LCDDisplay);
+										}
+									Delay(20000);
+									Delay(20000);
+									Delay(20000);
+						         
 				}
-			
-				/* Input Negative pressure mode to run program*/
-				else { /*Input Negative pressure mode*/
+			    else { /*Input Negative pressure mode*/
+
+						ADC = ADC * 0.1;
 				       #if 1
 					    theta= abs(ADC) - adS.plus_Error_value;
 					
-						LCDDisplay= 0.12*theta + 247.6;//LCDDisplay= 0.012*p + 24.76;
+						LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
 						
 								DisplayNum( LCDDisplay);
 								Delay(20000);
@@ -340,7 +337,7 @@ void main(void)
 				ADC = ADC * 0.1;
 		   
 				adS.Error_Positive_flag++;
-		       /* 找误差�?*/ 
+		       /* 找误差?*/ 
 				if(adS.Error_Positive_flag==1){ /*positive pressure +*/
 					adS.p_offset_value= abs(ADC) - STD_VALUE; 
 					
