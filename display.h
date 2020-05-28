@@ -13,20 +13,19 @@ struct _adc_works_
    unsigned char key_flag;
    unsigned int second_5_over;
    unsigned int second_3_over;
-   unsigned char extend_t;   /*measure mode */
-   unsigned char  delta_v;
-   unsigned char  theta_v;
+  
+   unsigned char  plus_revise_flag;
+   unsigned char  minus_revise_flag;
   
    unsigned char Presskey_flag;
-   unsigned char Positive_sign ;
-   unsigned char Negative_sign;
-   unsigned char Error_Positive_flag;
+   unsigned char  Pressure_sign ;
 
-   int plus_Error_value;
-   int  minus_Error_value;
-    int m_offset_value;
+
+
+  
+   int m_offset_value;
    int p_offset_value;
-    int  ADC_value;  
+   int  ADC_value;  
 
 
 };
@@ -37,7 +36,6 @@ extern struct _adc_works_ adS;
 
 void ClearLCD(void);
 void DisplayHycon(void);
-// long Index_Subsection(void);
 void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);

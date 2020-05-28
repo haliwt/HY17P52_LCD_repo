@@ -24,7 +24,8 @@
 
 #define STD_VALUE                 6524
 
-#define STD_NEGATIVE_VOLTAGE      6270
+#define STD_NEGATIVE_VOLTAGE      6343
+
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -43,34 +44,18 @@ volatile typedef union _MCUSTATUS
   struct
   {
     unsigned b_ADCdone:1;
-    unsigned b_TMAdone:1;
-    unsigned b_TMBdone:1;
-    unsigned b_TMCdone:1;
-    unsigned b_Ext0done:1;
-    unsigned b_Ext1done:1;
-    unsigned b_UART_TxDone:1;
-    unsigned b_UART_RxDone:1;
+   // unsigned b_TMAdone:1;
+   // unsigned b_TMBdone:1;
+  //  unsigned b_TMCdone:1;
+  //  unsigned b_Ext0done:1;
+  //  unsigned b_Ext1done:1;
+  //  unsigned b_UART_TxDone:1;
+  //  unsigned b_UART_RxDone:1;
   };
 } MCUSTATUS;
 
 MCUSTATUS  MCUSTATUSbits;
-#if 0
-const unsigned int table_Getkgf_100_60[]={
-	6520,6500,6501,6502,6503,6504,6505,6506,6507,6508,6509,6510,6511,6812,
-	6513,6514,6515,6516,6517,6518,6519,6520,6521,6522,5623,6524,
-	6525,6526,6527,6528,6529,6530,6531,6532,6533,6534,5635,6536,
-	6537,6538,6539,6540,6541,6542,6543,6544,6545,6546,5647,6548
-};
 
-const unsigned int display_Unitkgf_100_60[]={
-        100,100,99,98,97,96,95,94,93,92,91,91,90,90,
-        89,88,87,86,85,84,83,82,81,81,80,80,
-        79,78,77,76,75,74,73,72,71,71,70,70,
-        69,68,67,66,65,64,63,62,61,61,60,60
-
-};
-
-#endif 
 
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -254,113 +239,122 @@ void main(void)
 		   	
 		   
 		   if(adS.measure_mode == 0){ /* measure mode */
-		       adS.zero_point_mode=0;
-			adS.key_flag =0;
-			adS.uint_set_mode=0;
-			if(MCUSTATUSbits.b_ADCdone==1)
-			{
-				MCUSTATUSbits.b_ADCdone=0;
-				
-				ADC=ADC>>6;
-				if((ADC<0)||(ADC>0x80000000))
+		       	adS.zero_point_mode=0;
+				adS.key_flag =0;
+				adS.uint_set_mode=0;
+				if(MCUSTATUSbits.b_ADCdone==1)
 				{
-					adS.Negative_sign =1;
-					adS.Positive_sign =0;
-				}
-				else
-				{
-					adS.Positive_sign =1;
-					adS.Negative_sign =0;
-				}
+					MCUSTATUSbits.b_ADCdone=0;
+					
+					ADC=ADC>>6;
+					if((ADC<0)||(ADC>0x80000000))
+					{
+						
+						adS.Pressure_sign =1;
+					}
+					else
+					{
+						adS.Pressure_sign =0;
+						
+					}
 				
-				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
-					adS.Negative_sign =0;
+				if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
+	
 					    ADC = ADC * 0.1;
 					    n = ADC ;
 				 
 
-						                 LCDDisplay= (0.18 * n)-364.95 ;  //y = 0.0175x - 36.495   
-						           
-                                      
-						                 if(adS.delta_v ==1){
-						                 if(n<2000)DisplayNum(ADC);
-									   
-										 else if( LCDDisplay < 807){
-											    LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
-										        DisplayNum(LCDDisplay);
+		                 LCDDisplay= (0.1 * n)-364 ;  //y = 0.0175x - 36.495  //= 0.0175x - 36.495 
+		           
+	                  
+		                 if(adS.plus_revise_flag ==1){
+		                 if(n<2000)DisplayNum(ADC);
+					   
+						 else if( (LCDDisplay *10) < 2875){
+							    LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
+						        DisplayNum(LCDDisplay);
 
-													Delay(20000);
-								
-										 }
-										 else {
-											
-										        if(adS.p_offset_value >=0) //WT.EDIT 2020-05-28
-											    n =abs(ADC)- abs(adS.p_offset_value);
-											    else  n =abs(ADC) + abs(adS.p_offset_value);
-
-												 LCDDisplay= 56193  - (8.47 * n) ;//y=-0.846x + 5619.3
-											
-											     DisplayNum( LCDDisplay);
-												
-														Delay(20000);
-												}
-													
-											}
-											else
-											{
-												DisplayNum(ADC);
-												Delay(20000);
-
-											}
-										
-										
+									Delay(20000);
+				
+						 }
+						 else {
+							
+						        if(adS.p_offset_value >=0) //WT.EDIT 2020-05-28
+							    n =abs(ADC)- abs(adS.p_offset_value);
+							    else  n =abs(ADC) + abs(adS.p_offset_value);
+							    LCDDisplay= 56193  - (8.47 * n) ;//y=-0.846x + 5619.3
+							     
+								DisplayNum( LCDDisplay);
+								Delay(20000);
 									
-											
-										   
-									      
-									    
+								}
 									
-						         
-				}
+							}
+							else
+							{
+								DisplayNum(ADC);
+								Delay(20000);
+
+							}
+										
+				}//end else 
 			    else { /*Input Negative pressure mode*/
 
 						ADC = ADC * 0.1;
-				       #if 1
-					    theta= abs(ADC) - adS.plus_Error_value;
+                        
+					    theta= abs(ADC) - adS.m_offset_value;  
+					   if(adS.minus_revise_flag==1){
 					
-						LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
+						//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
+						  LCDDisplay= 0.125*theta + 200; //y = 0.0125x + 19.849
 						
 								DisplayNum( LCDDisplay);
 								Delay(20000);
-								
-					#endif 
-						   //    DisplayNum(ADC);
-							//   Delay(20000);
-					  
-				}
+									
+						}
+						else{
 
-	   		 }
-		   }
+							DisplayNum(ADC);
+							Delay(20000);
+						}
+					  
+				      }
+
+	   		         
+				    }
+		        }
+		    
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
      
 				adS.zero_point_mode =0;
 			     adS.measure_mode=0;
 				ADC=ADC>>6;
 				ADC = ADC * 0.1;
-		   
-				adS.Error_Positive_flag++;
-		       /* 找误�?*/
-				if(adS.Error_Positive_flag==1){ /*positive pressure +*/
-					adS.p_offset_value= abs(STD_VALUE) -abs(ADC) + 2; 
-					adS.delta_v =1;
-					DisplayNum( adS.p_offset_value);
-					Delay(20000);
+				if((ADC<0)||(ADC>0x80000000))
+				{
+					
+					adS.Pressure_sign =1;
+				}
+				else
+				{
+					adS.Pressure_sign =0;
 					
 				}
-				if(adS.Error_Positive_flag==2){ /*negative pressure "-"*/
+		   
+			//	adS.Error_Positive_flag++; //cyclic 
+		       /* 找误�?*/
+				if(adS.Pressure_sign==1){ /*negative pressure "-"*/
+					adS.m_offset_value = abs(ADC) - STD_NEGATIVE_VOLTAGE + 1;
+					adS.minus_revise_flag=1;
 					
-					adS.plus_Error_value = abs(ADC) - STD_NEGATIVE_VOLTAGE ;
-					adS.Error_Positive_flag=0;
+				}
+				else{ /*positive pressure +*/
+					
+					
+					adS.p_offset_value= abs(STD_VALUE) -abs(ADC) + 1; 
+					adS.plus_revise_flag =1;
+					DisplayNum( adS.p_offset_value);
+					Delay(20000);
 				}
 			
 			}
@@ -400,68 +394,7 @@ void main(void)
     }
 }
 
-/******************************************************************************
- * 
- * Function Name : NegativePressure_Display(void)
- * 
- * 
- ******************************************************************************/
- #if 0
- void NegativePressure_Display(void)
-{
-  
-	long negative_v,display;
-	unsigned int i = 0;
-	unsigned int diff_value = 75;
-	
-	/*30 ~20*/
-	if(adS.Negative_delta_value < 390  && adS.Negative_delta_value  >=360)
-	{
-		/*output 30~25*/
-		if(adS.Negative_delta_value <390 && adS.Negative_delta_value>= 345){
-			display = 0.16*(adS.Negative_delta_value  - 75) + 25;
-			display = display * 10 ;
-			DisplayNum(display);
-			Delay(20000);
-			Delay(20000);
-		}
-		/*outup 25 ~20 */
-		if(adS.Negative_delta_value < 357 && adS.Negative_delta_value > 75 ){
-			display = 0.0213*(357 -adS.Negative_delta_value)  + 21;
-			if(display - 21 < 0.06)display = display + 20 ;
-			display = display * 10 ;
-			DisplayNum(display);
-			Delay(20000);
-			Delay(20000);
-		}
-		
-	}
-	/*20 ~10*/
-	if(adS.Negative_delta_value < 1170 && adS.Negative_delta_value  >= 400)
-	{
-		if(adS.Negative_delta_value <=375 && adS.Negative_delta_value >=345){
-			display = 0.015*(1156-adS.Negative_delta_value) + 10;
-			display = display * 10 ;
-			DisplayNum(display);
-			Delay(20000);
-			Delay(20000);
-		}
-	}
-	/*10 ~0*/
-	if(adS.Negative_delta_value < 2000 && adS.Negative_delta_value  > 1170)
-	{
-		if(adS.Negative_delta_value <=375 && adS.Negative_delta_value >=345){
-			display = 0.013*(2000- adS.Negative_delta_value) ;
-			display = display * 10 ;
-			DisplayNum(display);
-			Delay(20000);
-			Delay(20000);
-		}
-	}
-}
 
-
-#endif 
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
 /*----------------------------------------------------------------------------*/

@@ -45,34 +45,7 @@ void DisplayHycon(void)
   *
   *                                                        
 ****************************************************************************/
-#if 0
-long Index_Subsection()
-{
-    
-     int i =12;
-    
-    //adS.ADC_DAT = adS.ADC_DAT * 0.1;
-	 if(adS.ADC_DAT< 6508 && adS.ADC_DAT > 6500) {
-        adS.ADC_DAT = 66666;
-     return adS.ADC_DAT;
-   }
-	 if(adS.ADC_DAT <=6500){
-       
-		  //  adS.ADC_DAT= adS.ADC_DAT + adS.m_offset_value ;
-        adS.ADC_DAT = 6501;
-        while(i--){
-          
-           if(table_Getkgf_100_90[i] == adS.ADC_DAT) {
-                   
-                return i;
-           }
-           else 
-               return -1;
-           };
-     }
 
-}
-#endif 
 /*---------------------------------------------------------------------------
 	*
 	* Function Name:DisplayNum(long Num)
@@ -85,18 +58,7 @@ void DisplayNum(long Num)
 {
   unsigned char count,MINUS;
   unsigned char *LCDAddr,LCDData;
-  #if 0
-  if((Num<0)||(Num>0x80000000))
-  {
-    Num=~Num;
-    Num++;
-    MINUS=1;
-  }
-  else
-  {
-    MINUS=0;
-  }
-  #endif 
+  
   LCDAddr=&LCD5;
   for(count=0;count<6;count++)
   {
@@ -105,12 +67,12 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr--;
   }
-  #if 0
-  if(MINUS==1)
+  
+  if(adS.Pressure_sign==1)
     LCD_WriteData(&LCD6,S_Minus);
   else
     LCD_WriteData(&LCD6,0);
-#endif 
+ 
  
 }
 
