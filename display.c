@@ -71,9 +71,7 @@ void EEPROM_WriteWord(void)
           if(read_h == 0x00){
               GPIO_PT16_HIGH();
                 
-              Delay(10000);
-              GPIO_PT16_LOW(); 
-              Delay(10000);
+
             
                 //BIE Write
               HY17P52WR3(0,0xAA,0x11);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -115,9 +113,10 @@ void DisplayNum(long Num)
   }
   
   if(adS.Pressure_sign==1)
-    LCD_WriteData(&LCD0,S_Minus);
+    LCD_WriteData(&LCD0,0X08);
   else
-    LCD_WriteData(&LCD0,S_One);
+  LCD_WriteData(&LCD0,0);
+  LCD_WriteData(&LCD0,symbol_t0);
 
  
  
@@ -130,15 +129,21 @@ void DisplayHex(unsigned int Num)
 {
   unsigned char count,*LCDAddr,LCDData;
 
- // LCDAddr=&LCD5;
-  LCDAddr = &LCD4; /*HY17P52 for LCD FTP1625SX01*/
-  for(count=0;count<6;count++)
+
+  LCDAddr = &LCD3; 
+  for(count=1;count<4;count++)
   {
     LCDData=seg[Num%0x10];
     LCD_WriteData(LCDAddr,LCDData);
     Num=Num/0x10 ;
     LCDAddr--;
   }
+   
+  if(adS.Pressure_sign==1)
+    LCD_WriteData(&LCD0,0X08);
+  else
+  LCD_WriteData(&LCD0,0);
+  LCD_WriteData(&LCD4,symbol_t0);
 }
 /*****************************************************************************
   *

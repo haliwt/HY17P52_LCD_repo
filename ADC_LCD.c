@@ -200,7 +200,7 @@ void main(void)
 		       	adS.zero_point_mode=0;
 				adS.key_flag =0;
 				adS.uint_set_mode=0;
-				LCD_WriteData(&LCD4,symbol_t0);
+				
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
