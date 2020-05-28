@@ -11,6 +11,8 @@
 /**************************************************************************************************|
 |*                               Peripheral Register Bits field                                   *|
 |**************************************************************************************************/
+#ifndef __GPIO_H__
+#define __GPIO_H__
 //// PT1 //
 #if defined(USE_HY17P58_2M) || defined(USE_HY17P58_4M) || defined(USE_HY17P58_8M)
 #define P58_PT10                      2                                    //PT1.0 for P58 
@@ -527,3 +529,7 @@
 #define	GPIO_READ_PT4x(upt4x)		((PT4>>upt4x)&0x1)
 #define GPIO_READ_PT4PORTS()	(PT4)
 #define GPIO_WRITE_PT4PROTS(UDATA)	(PT4=UDATA&0xF8)
+
+
+
+#endif 

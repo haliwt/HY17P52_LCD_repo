@@ -12,6 +12,7 @@
 #include <LCD.h>
 #include <TMR_52.h>
 #include "display.h"
+
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
@@ -24,18 +25,16 @@
 
 #define STD_VALUE                 6524
 
-#define STD_NEGATIVE_VOLTAGE      6343
+#define STD_NEGATIVE_VOLTAGE      6346//6344//6343
 
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
-static  int index_offset ;
+
 unsigned char Flag;
 long	ADC;
 
-long Second_real_3=0;
-long firstSecond=0;
-unsigned char getLastSecond =0 ;
+
 
 
 volatile typedef union _MCUSTATUS
@@ -57,11 +56,6 @@ volatile typedef union _MCUSTATUS
 MCUSTATUS  MCUSTATUSbits;
 
 
-/*----------------------------------------------------------------------------*/
-/* Function PROTOTYPES                                                        */
-/*----------------------------------------------------------------------------*/
-unsigned char HY17P52WR3(unsigned char Addr,unsigned char DataH,unsigned char DataL);
-void HY17P52WR3Delay(char ms);
 
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -69,7 +63,7 @@ void HY17P52WR3Delay(char ms);
 void PGAandADCAccuracyMode(void);
 void AccuracyModeADCOFF(void);
 void ADCAccuracyMode(void);
-void Delay(unsigned int ms);
+
 void ShowADC (void);
 void DisplayNum(long Num);
 void GPIO_Init(void);
@@ -80,20 +74,16 @@ void GPIO_Init(void);
 
 void main(void)
 {
-    unsigned int read_t,read_h;
+   
     float LCDDisplay=0;
 	long delta=0,theta=0,n=0;
-	long InitDelta[2];
+
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
 	CLK_OSCSelect(OSCS_HAO); //OSCS_HAO = 3.686MHz
 	CLK_CPUCK_Sel(DHS_HSCKDIV1,CPUS_HSCK); //fre = 3.686Mhz /2 =1.843Mhz
- 	//GPIO Setting
-	GPIO_PT15_OUTUT();  // SETTING PT4.4 OUTPUT
-    GPIO_PT16_OUTUT();  // SETTING PT4.3 OUTPUT
- //   GPIO_PT17_OUTUT();	
-	GPIO_PT10_INPUT();
+   void GPIO_Iint() ;
 
 //VDDA Setting
 	PWR_BGREnable();
@@ -164,39 +154,7 @@ void main(void)
 			 
 			
 
-				    //BIE Read   
-					BIEARL=0;                                //addr=0
-					BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-					while((BIECN& 0x01)==1);   
-					read_t = BIEDRL;
-					read_h = BIEDRH;
-					if(read_h == 0x00){
-							GPIO_PT16_HIGH();
-								
-							Delay(10000);
-							GPIO_PT16_LOW(); 
-							Delay(10000);
-						
-								//BIE Write
-							HY17P52WR3(0,0xAA,0x11);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-							if(Flag== 1)
-							{
-								while(1);    //fail
-							}
-					}
-					if(read_t == 0x11){
-
-							GPIO_PT15_HIGH();
-								
-							
-							 
-
-					}
-				
 			
-			
-				GPIO_PT15_HIGH();	
-				Delay(10000);
 				
 				switch(adS.plus_uint){
 					case psi: 
@@ -242,6 +200,7 @@ void main(void)
 		       	adS.zero_point_mode=0;
 				adS.key_flag =0;
 				adS.uint_set_mode=0;
+				LCD_WriteData(&LCD4,symbol_t0);
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
@@ -260,11 +219,11 @@ void main(void)
 					{
 						if( ADC < 1600 && ADC >=0 ) {
 							adS.Pressure_sign =1;
-							adS.NegativePressure_plus =1;
+						
 						}
 				        else{
 						       adS.Pressure_sign =0;
-						       adS.NegativePressure_plus =0;
+						      
 						}
 					}
 				   
@@ -324,23 +283,27 @@ void main(void)
 
 					   	   }
 					   	   else{
-						         LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
-						
-								DisplayNum( LCDDisplay);
-								Delay(20000);
-							}
-									
+						            #if 0
+						     		if(abs(delta)> 6343){
+										DisplayHycon();
+										Delay(20000);
+						     		}
+						       
+						    		#endif 
+									LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
+									DisplayNum( LCDDisplay);
+									Delay(20000);
+								
+						    }
 						}
+					
+									
 						else{
 							ADC = abs(ADC);
 							DisplayNum(ADC);
 							Delay(20000);
 						}
-					  
-				      
-
-	   		         
-				    }
+					}
 		     }
 		    
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
@@ -414,14 +377,7 @@ void main(void)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* Software Delay Subroutines                                                 */
-/*----------------------------------------------------------------------------*/
-void Delay(unsigned int ms)
-{
-  for(;ms>0;ms--)
-    __asm__("NOP");
-}
+
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/
@@ -442,9 +398,9 @@ void ISR(void) __interrupt
 	    TA1IF_ClearFlag();
 		if(adS.key_flag ==1||adS.key_flag==0) {
 			adS.second_5_over = 0;
-			firstSecond=0 ;
+		
 			adS.second_3_over =0;
-			Second_real_3 =0;
+		
 			adS.key_flag =2;
 			
 		}

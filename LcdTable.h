@@ -2,7 +2,34 @@
 | 7-segment display for LCD0 ~ LCD5                                            |
 | ----------------------------------------------------------------------------*/
 
+#define BATTERY_LCD  1
+
+
+#if BATTERY_LCD 
                              //                a
+#define  seg_a  0x80          //            ---------
+#define  seg_b  0x08          //           |         |
+#define  seg_c  0x02          //         f |         | b
+#define  seg_d  0x10          //           |    g    |
+#define  seg_e  0x20          //            ---------
+#define  seg_f  0x40          //           |         |
+#define  seg_g  0x04          //         e |         | c
+#define  seg_p  0x01          //           |    d    |        //P2P3 =0X10
+                              //            ---------   O <- h
+#define   seg_kgf    0x01
+#define   seg_bar    0x02
+#define   seg_psi    0x04
+#define   seg_MPa    0x08
+
+#define   symbol_c      0x02
+#define   symbol_b      0x04
+#define   symbol_g      0x08
+#define   symbol_t1     0x10     //battery value t1 
+#define   symbol_t3     0x20  
+#define   symbol_t2     0x40
+#define   symbol_t0     0x80   //battery outline 
+
+#else                          //                a
 #define  seg_a 0x10          //            ---------
 #define  seg_b 0x20          //           |         |
 #define  seg_c 0x40          //         f |         | b
@@ -12,7 +39,7 @@
 #define  seg_g 0x02          //         e |         | c
 #define  seg_h 0x80          //           |    d    |
                              //            ---------   O <- h
-
+#endif 
 const unsigned char seg[]={
          seg_a+seg_b+seg_c+seg_d+seg_e+seg_f,        // char "0"  0x00
          seg_b+seg_c,                                // char "1"  0x01
@@ -90,7 +117,8 @@ const unsigned char seg[]={
 #define  S_Ohm       0x40  //&LCD7  Ohm
 #define  S_Zero      0x40  //&LCD6  Zero
 #define  S_Tare      0x20  //&LCD6  Tare
-#define  S_Minus     0x10  //&LCD6  Minus
+#define  S_Minus     0x08  //&LCD0  Minus
+#define  S_One       (0x02+0x04)
 #define  S_Temp      0x02  //&LCD7  Temp
 #define  S_Temp_C    0x08  //&LCD7  Temp_C
 #define  S_Temp_F    0x04  //&LCD7  Temp_F
