@@ -247,6 +247,10 @@ void main(void)
 					MCUSTATUSbits.b_ADCdone=0;
 					
 					ADC=ADC>>6;
+					
+					ADC = ADC * 0.1 ;
+					
+					
 					if((ADC<0)||(ADC>0x80000000))
 					{
 						
@@ -254,17 +258,21 @@ void main(void)
 					}
 					else
 					{
-						adS.Pressure_sign =0;
-						
+						if( ADC < 1600 && ADC >=0 ) {
+							adS.Pressure_sign =1;
+							adS.NegativePressure_plus =1;
+						}
+				        else{
+						       adS.Pressure_sign =0;
+						       adS.NegativePressure_plus =0;
+						}
 					}
+				   
 				
 				if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
-	
-					    ADC = ADC * 0.1;
-					    n = ADC ;
-				 
 
-		                 LCDDisplay= (0.1 * n)-364 ;  //y = 0.0175x - 36.495  //= 0.0175x - 36.495 
+				         n = ADC ;
+				         LCDDisplay= (0.1 * n)-364 ;  //y = 0.0175x - 36.495  //= 0.0175x - 36.495 
 		           
 	                  
 		                 if(adS.plus_revise_flag ==1){
@@ -296,33 +304,44 @@ void main(void)
 								Delay(20000);
 
 							}
+						}
 										
 				}//end else 
 			    else { /*Input Negative pressure mode*/
-
-						ADC = ADC * 0.1;
+						adS.Pressure_sign =1;
+						delta  = ADC ;
                         
 					    theta= abs(ADC) - adS.m_offset_value;  
 					   if(adS.minus_revise_flag==1){
+
+					   	 
 					
 						//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
-						  LCDDisplay= 0.125*theta + 200; //y = 0.0125x + 19.849
+					   	   if(delta >=0 ){
+					   	   	 LCDDisplay= 0.126*theta + 200.75;//y = -0.0126x + 20.075
+							 DisplayNum( LCDDisplay);
+							 Delay(20000);
+
+					   	   }
+					   	   else{
+						         LCDDisplay= 0.125*theta + 199; //y = 0.0125x + 19.849
 						
 								DisplayNum( LCDDisplay);
 								Delay(20000);
+							}
 									
 						}
 						else{
-
+							ADC = abs(ADC);
 							DisplayNum(ADC);
 							Delay(20000);
 						}
 					  
-				      }
+				      
 
 	   		         
 				    }
-		        }
+		     }
 		    
 		   if(adS.zero_point_mode == 1){ /*zero point mode */
      

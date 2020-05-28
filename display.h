@@ -17,15 +17,13 @@ struct _adc_works_
    unsigned char  plus_revise_flag;
    unsigned char  minus_revise_flag;
   
-   unsigned char Presskey_flag;
+   unsigned char  Presskey_flag;
    unsigned char  Pressure_sign ;
+   unsigned char  NegativePressure_plus;
 
-
-
-  
    int m_offset_value;
    int p_offset_value;
-   int  ADC_value;  
+    
 
 
 };
