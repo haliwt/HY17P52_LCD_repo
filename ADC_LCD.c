@@ -318,7 +318,7 @@ void main(void)
 					
 						//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
 					   	   if(delta >=0 ){
-					   	   	 LCDDisplay= 0.126*theta + 200.75;//y = -0.0126x + 20.075
+					   	   	 LCDDisplay= 200 - 0.126*theta ;//y = -0.0126x + 20.075
 							 DisplayNum( LCDDisplay);
 							 Delay(20000);
 
