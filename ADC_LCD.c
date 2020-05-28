@@ -324,7 +324,7 @@ void main(void)
 
 					   	   }
 					   	   else{
-						         LCDDisplay= 0.125*theta + 199; //y = 0.0125x + 19.849
+						         LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
 						
 								DisplayNum( LCDDisplay);
 								Delay(20000);
