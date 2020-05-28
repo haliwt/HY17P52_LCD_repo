@@ -22,7 +22,7 @@
 #define BARTokgf(kgf)   	(2.1 * (kgf))
 #define MPATokgf(kgf)	 	(0.1 * (kgf))
 
-#define STD_VALUE           6500
+#define STD_VALUE                 6524
 
 #define STD_NEGATIVE_VOLTAGE      6270
 /*----------------------------------------------------------------------------*/
@@ -98,7 +98,7 @@ void main(void)
     unsigned int read_t,read_h;
     float LCDDisplay=0;
 	long delta=0,theta=0,n=0;
-	//long InitADC[1];
+	long InitDelta[2];
    //CLK Setting
 	//CLK_CPUCKSelect(CPUS_DHSCK) ;
 	//CLK Setting
@@ -276,39 +276,50 @@ void main(void)
 				if(adS.Positive_sign == 1){/*Input positive Pressure mode*/
 					adS.Negative_sign =0;
 					    ADC = ADC * 0.1;
-					    theta =abs(ADC)- adS.p_offset_value;
-					    Delay(1000);
-					    delta =abs(ADC)- adS.p_offset_value;
-						
-					
-					     if(abs(theta - delta) <= 3){
-						    Delay(1000);
-							n= theta ;
-					     }
-						 else n = delta;
+					    n = ADC ;
+				 
 
-						               LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 0.123 *n- 319.93;//y = 0.0123x - 31.993
-						              // LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
-						        
+						                 LCDDisplay= (0.18 * n)-364.95 ;  //y = 0.0175x - 36.495   
+						           
                                       
-						                // LCDDisplay= 54310  - (8.2 * n) ; //LCDDisplay= 54300  - (8.2 * n) ; //b= 5495,54300
-						                 if(n<2800)DisplayNum(0);
+						                 if(adS.delta_v ==1){
+						                 if(n<2000)DisplayNum(ADC);
 									   
-										 else if(LCDDisplay <=615 ){
+										 else if( LCDDisplay < 807){
 											    LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
 										        DisplayNum(LCDDisplay);
+
+													Delay(20000);
+								
 										 }
 										 else {
 											
-										    if(LCDDisplay>=1065) LCDDisplay= 0.125 *n- 202.86;
-											else 
-											LCDDisplay = abs(LCDDisplay);
-											DisplayNum( LCDDisplay);
-									      }
+										        if(adS.p_offset_value >=0) //WT.EDIT 2020-05-28
+											    n =abs(ADC)- abs(adS.p_offset_value);
+											    else  n =abs(ADC) + abs(adS.p_offset_value);
+
+												 LCDDisplay= 56193  - (8.47 * n) ;//y=-0.846x + 5619.3
+											
+											     DisplayNum( LCDDisplay);
+												
+														Delay(20000);
+												}
+													
+											}
+											else
+											{
+												DisplayNum(ADC);
+												Delay(20000);
+
+											}
+										
+										
+									
+											
+										   
+									      
 									    
 									
-									Delay(20000);
-								
 						         
 				}
 			    else { /*Input Negative pressure mode*/
@@ -340,8 +351,11 @@ void main(void)
 				adS.Error_Positive_flag++;
 		       /* 找误�?*/
 				if(adS.Error_Positive_flag==1){ /*positive pressure +*/
-					adS.p_offset_value= abs(ADC) - STD_VALUE; 
+					adS.p_offset_value= abs(STD_VALUE) -abs(ADC) + 2; 
 					adS.delta_v =1;
+					DisplayNum( adS.p_offset_value);
+					Delay(20000);
+					
 				}
 				if(adS.Error_Positive_flag==2){ /*negative pressure "-"*/
 					
