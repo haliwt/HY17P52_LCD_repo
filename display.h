@@ -18,24 +18,27 @@ enum unit_t{psi,bar,kgf,mpa};
 
 struct _adc_works_
 {
-   unsigned char save_mode;
-   unsigned char uint_set_mode;
+   unsigned char save_mode: 1;
+   unsigned char unit_setMode:1;
    unsigned char plus_uint;
-   unsigned char unit_plus;
-   unsigned char measure_mode;
-   unsigned char zero_point_mode;
-   unsigned char error_mode;
+   unsigned char unitChoose;
+   unsigned char testMode:1;
+   unsigned char zeroPoint_Mode:1;
+   unsigned char error_mod:1;
    unsigned char key_flag;
-   unsigned int second_5_over;
-   unsigned int second_3_over;
+   unsigned char resetZeroDisplay;
   
-   unsigned char  plus_revise_flag;
-   unsigned char  minus_revise_flag;
   
-   unsigned char  Presskey_flag;
-   unsigned char  Pressure_sign ;
-  // unsigned char  NegativePressure_plus;
+   unsigned char  plus_revise_flag:1;
+   unsigned char  minus_revise_flag:1;
+  
+   unsigned char  Presskey_flag:1;
+   unsigned char  Pressure_sign :1;
+   unsigned char  eepromRead_high_bit ; 
+   unsigned char  eepromRead_low_bit ;
+   unsigned char  reload_ADCInterrupt :1; 
 
+   
    int m_offset_value;
    int p_offset_value;
     
@@ -45,12 +48,6 @@ struct _adc_works_
 
 extern struct _adc_works_ adS; 
 
-/*----------------------------------------------------------------------------*/
-/* Function PROTOTYPES                                                        */
-/*----------------------------------------------------------------------------*/
-unsigned char HY17P52WR3(unsigned char Addr,unsigned char DataH,unsigned char DataL);
-void HY17P52WR3Delay(char ms);
-
 
 void ClearLCD(void);
 void DisplayHycon(void);
@@ -58,6 +55,8 @@ void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);
 void DisplayUnit(void);
-void EEPROM_WriteWord(void);
+
 void Delay(unsigned int ms);
 void GPIO_Iint(void) ;
+
+long Reverse_Data(long number);

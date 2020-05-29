@@ -27,6 +27,13 @@
 
 #define STD_NEGATIVE_VOLTAGE      6346//6344//6343
 
+
+/*----------------------------------------------------------------------------*/
+/* Function PROTOTYPES                                                        */
+/*----------------------------------------------------------------------------*/
+unsigned char HY17P52WR3(unsigned char Addr,unsigned char DataH,unsigned char DataL);
+void HY17P52WR3Delay(char ms);
+
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -43,13 +50,13 @@ volatile typedef union _MCUSTATUS
   struct
   {
     unsigned b_ADCdone:1;
-   // unsigned b_TMAdone:1;
-   // unsigned b_TMBdone:1;
-  //  unsigned b_TMCdone:1;
-  //  unsigned b_Ext0done:1;
-  //  unsigned b_Ext1done:1;
-  //  unsigned b_UART_TxDone:1;
-  //  unsigned b_UART_RxDone:1;
+    unsigned b_TMAdone:1;
+   unsigned b_TMBdone:1;
+   unsigned b_TMCdone:1;
+  unsigned b_Ext0done:1;
+   unsigned b_Ext1done:1;
+   unsigned b_UART_TxDone:1;
+   unsigned b_UART_RxDone:1;
   };
 } MCUSTATUS;
 
@@ -66,7 +73,7 @@ void ADCAccuracyMode(void);
 
 void ShowADC (void);
 void DisplayNum(long Num);
-void GPIO_Init(void);
+
 //void NegativePressure_Display(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
@@ -85,12 +92,12 @@ void main(void)
 	CLK_CPUCK_Sel(DHS_HSCKDIV1,CPUS_HSCK); //fre = 3.686Mhz /2 =1.843Mhz
     GPIO_Iint() ;
 
-//VDDA Setting
+  //VDDA Setting
 	PWR_BGREnable();
 	PWR_LDOPLEnable();
 	PWR_LDOEnable();
 	PWR_LDOSel(LDOC_2V4);
-//ADC Setting
+  //ADC Setting
 	ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
 
 
@@ -99,7 +106,7 @@ void main(void)
 	//AccuracyModeADCOFF();
 
 
-//LCD Setting
+  //LCD Setting
 	//LCDCN1 = 0xc8 ;
 	LCD_Enable();
 	LCD_ChargePumpSelect(LCDV_3V0);
@@ -114,15 +121,7 @@ void main(void)
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
 
-	TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
-    TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
-    TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
-    TA1IE_Enable();
-
-    TA1IF_ClearFlag();
-
-    TMA1_ClearTMA1();    //Clear TMA count
-    TMA1Enable();
+	
    
 	ADIF_ClearFlag();
 	ADIE_Enable();
@@ -136,74 +135,103 @@ void main(void)
 		{
 		
 		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
-		    
-			
-		 if(adS.second_5_over >= 10000){ /*unit set mode*/
-			
-			 if(GPIO_READ_PT10()){
-	          
-			    adS.second_5_over=8000;
-				adS.second_5_over =0;
-				adS.uint_set_mode =1;
-				//adS.zero_point_mode =0;
-				adS.measure_mode =1;
+		      	GIE_Disable();
+				
+				if(adS.Presskey_flag==0){
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					adS.resetZeroDisplay++;
+					Delay(20000);
+					Delay(20000);
+					Delay(20000);
+					adS.resetZeroDisplay++;
+					adS.Presskey_flag=1;
+
+			    }
+			    else{
+
+			        Delay(20000);	
+			        Delay(10000);
+
+			    	//Delay(5000);	
+			    }
+		
+	            adS.unit_setMode =1;
+				adS.zeroPoint_Mode =0;
+				adS.testMode =1;
 				DisplayUnit();
 				
-				adS.second_3_over=0;
+				
 				
 			     switch(adS.plus_uint){
 					case psi: 
 					     adS.plus_uint++;
-						 adS.unit_plus = psi;
-						 LCD_WriteData(&LCD4,seg_psi);
-						  adS.second_5_over=8000;
+						 adS.unitChoose = psi;
+						// EEPROM_WriteWord(0,0,0x00);
+						 
+					     GPIO_PT15_HIGH();
+						LCD_WriteData(&LCD4,seg_psi);
+					     Delay(20000);	
+					     Delay(10000);
 					    break;
 					case bar:
-						adS.plus_uint++;
-						 adS.unit_plus = bar;
+						 adS.plus_uint++;
+						 adS.unitChoose = bar;
+						 GPIO_PT15_LOW();
+						 // EEPROM_WriteWord(0 ,0,0x01);
 						  LCD_WriteData(&LCD4,seg_bar);
-						  adS.second_5_over=8000;
+						  Delay(20000);	
+						  Delay(10000);
 					     break;
 					case kgf:
 						adS.plus_uint++;
-						adS.unit_plus = kgf;
+						adS.unitChoose = kgf;
+						 GPIO_PT15_HIGH();
+						 //EEPROM_WriteWord(0 ,0,0x03);
 						 LCD_WriteData(&LCD4,seg_kgf);
-						  adS.second_5_over=8000;
+					     Delay(20000);
+					     Delay(10000);	
+					
 					     break;
 				    case mpa:
 					     adS.plus_uint=0;
-						 adS.unit_plus = mpa;
+						 adS.unitChoose = mpa;
+						 GPIO_PT15_LOW();
+						 // EEPROM_WriteWord(0 ,0,0x04);
 						  LCD_WriteData(&LCD4,seg_mpa);
-						   adS.second_5_over=8000;
+						  
+						 Delay(20000);
+						 Delay(10000);	
 					     break;
-				}
+				    }
 			
-			}
-		 }
-		 if(adS.second_3_over >=5000){ /* zero point mode*/
+		      if(adS.resetZeroDisplay==1 &&adS.resetZeroDisplay <2 ){ /* zero point mode*/
 
-			   if(GPIO_READ_PT10()){
-				 adS.zero_point_mode = 1;
-				//adS.uint_set_mode = 0;
-				adS.measure_mode =1;
-			    adS.second_3_over=0;
-				//display LCD "2Er"
-			     Display2Er();
-                // Delay(20000);
-				 
-                
-			}
-		 }
-		 
-		}
+					adS.zeroPoint_Mode = 1;
+					adS.testMode =1;
+					//display LCD "2Er"
+					Display2Er();
+					// Delay(20000);
+				}
+		 }//end key
 		else{
 		   	
-		   
-		   if(adS.measure_mode == 0){ /* measure mode */
-		       	adS.zero_point_mode=0;
-				adS.key_flag =0;
-				adS.uint_set_mode=0;
-				
+		    #if 1  
+         
+		   if(adS.testMode == 0){ /* measure mode */
+		       	adS.zeroPoint_Mode=0;
+				adS.unit_setMode=0;
+				if(adS.reload_ADCInterrupt == 1){
+					adS.reload_ADCInterrupt =0;
+					ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
+					ADIF_ClearFlag();
+					ADIE_Enable();
+					GIE_Enable();
+
+				}
+			
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
@@ -212,7 +240,6 @@ void main(void)
 					
 					ADC = ADC * 0.1 ;
 					
-					
 					if((ADC<0)||(ADC>0x80000000))
 					{
 						
@@ -220,17 +247,16 @@ void main(void)
 					}
 					else
 					{
-						if( ADC < 1600 && ADC >=0 ) {
-							adS.Pressure_sign =1;
-						
-						}
-				        else{
-						       adS.Pressure_sign =0;
+						adS.Pressure_sign =0;
 						      
-						}
 					}
-				   
-				
+				    GPIO_PT15_HIGH();
+				    Delay(20000);
+				    GPIO_PT15_LOW();
+				    Delay(20000);
+				    GPIO_PT15_HIGH();
+				    Delay(20000);
+				     GPIO_PT15_LOW();
 				if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
 
 				         n = ADC ;
@@ -242,9 +268,10 @@ void main(void)
 					   
 						 else if( (LCDDisplay *10) < 2875){
 							    LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
+						        LCDDisplay=Reverse_Data(LCDDisplay);
 						        DisplayNum(LCDDisplay);
 
-									Delay(20000);
+								Delay(20000);
 				
 						 }
 						 else {
@@ -253,7 +280,7 @@ void main(void)
 							    n =abs(ADC)- abs(adS.p_offset_value);
 							    else  n =abs(ADC) + abs(adS.p_offset_value);
 							    LCDDisplay= 56193  - (8.47 * n) ;//y=-0.846x + 5619.3
-							     
+							    LCDDisplay=Reverse_Data(LCDDisplay);
 								DisplayNum( LCDDisplay);
 								Delay(20000);
 									
@@ -262,13 +289,13 @@ void main(void)
 							}
 							else
 							{
+								ADC=Reverse_Data(ADC);
 								DisplayNum(ADC);
 								Delay(20000);
 
 							}
 						}
 										
-				}//end else 
 			    else { /*Input Negative pressure mode*/
 						adS.Pressure_sign =1;
 						delta  = ADC ;
@@ -281,7 +308,8 @@ void main(void)
 						//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
 					   	   if(delta >=0 ){
 					   	   	 LCDDisplay= 200 - 0.126*theta ;//y = -0.0126x + 20.075
-							 DisplayNum( LCDDisplay);
+					   	   	 LCDDisplay=Reverse_Data(LCDDisplay);
+							 DisplayNum(LCDDisplay);
 							 Delay(20000);
 
 					   	   }
@@ -294,25 +322,27 @@ void main(void)
 						       
 						    		#endif 
 									LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
+								    LCDDisplay=Reverse_Data(LCDDisplay);
 									DisplayNum( LCDDisplay);
 									Delay(20000);
 								
 						    }
 						}
-					
-									
 						else{
+
 							ADC = abs(ADC);
+							ADC=Reverse_Data(ADC);
 							DisplayNum(ADC);
 							Delay(20000);
 						}
 					}
-		     }
-		    
-		   if(adS.zero_point_mode == 1){ /*zero point mode */
+		        } 
+		    }//end ---testMode 
+		   if(adS.zeroPoint_Mode == 1){ /*zero point mode */
      
-				adS.zero_point_mode =0;
-			     adS.measure_mode=0;
+				adS.resetZeroDisplay=0;
+				adS.zeroPoint_Mode =0;
+			    adS.testMode=0;
 				ADC=ADC>>6;
 				ADC = ADC * 0.1;
 				if((ADC<0)||(ADC>0x80000000))
@@ -327,7 +357,7 @@ void main(void)
 				}
 		   
 			//	adS.Error_Positive_flag++; //cyclic 
-		       /* 找误�?*/
+		       /* 找误�?*/
 				if(adS.Pressure_sign==1){ /*negative pressure "-"*/
 					adS.m_offset_value = abs(ADC) - STD_NEGATIVE_VOLTAGE + 1;
 					adS.minus_revise_flag=1;
@@ -338,48 +368,58 @@ void main(void)
 					
 					adS.p_offset_value= abs(STD_VALUE) -abs(ADC) + 1; 
 					adS.plus_revise_flag =1;
+					adS.p_offset_value=Reverse_Data(adS.p_offset_value);
 					DisplayNum( adS.p_offset_value);
 					Delay(20000);
 				}
 			
-			}
-		   #if 0
-		   if(adS.second_3_over >=1){ /* over 3 seconds don't press key return measure_mode*/
-		   	   adS.measure_mode = 0;
-		   	   adS.uint_set_mode=0;
-			   adS.key_flag =0;
-			   adS.second_3_over =0;
+			}//end ----zeroPointMode
+			#endif 
+			if(adS.unit_setMode ==1){
 
-			}
-		   #endif 
-			if(adS.uint_set_mode ==1){
-
-				adS.uint_set_mode =0 ;
-				adS.measure_mode = 0;
-		
-				switch(adS.unit_plus){
-					case psi:
-						
-					break;
-					case bar:
-					break;
-					case kgf:
-					break;
-					case mpa:
-					break;
-					default :
-					break;
-
-				}
+			    adS.Presskey_flag=0;
+			    adS.unit_setMode =0 ;
+				adS.testMode = 0;
+				adS.reload_ADCInterrupt = 1;
+				adS.resetZeroDisplay=0;
+			      
+			     GPIO_PT16_HIGH();
+			     Delay(20000);
+			      GPIO_PT16_LOW();
+			      Delay(20000);
+			      GPIO_PT16_HIGH();
+			      Delay(20000);
+			      GPIO_PT16_LOW();
+				#if 1
+				 //BIE Write
+							HY17P52WR3(0,0xAA,adS.unitChoose);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+						    if(Flag== 1)
+						    {
+						       GPIO_PT16_HIGH();
+						        while(1);    //fail
+						    }
+						    	
+													    //BIE Read   
+								BIEARL=0;                                //addr=0
+							    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+							    while((BIECN& 0x01)==1); 
+							    adS.eepromRead_low_bit=BIEDRL;
+							 
+							  if(adS.eepromRead_low_bit==0)  LCD_WriteData(&LCD4, seg_bar) ; 
+							  else if(adS.eepromRead_low_bit==1)LCD_WriteData(&LCD4, seg_kgf) ; 
+							  else if(adS.eepromRead_low_bit==2)LCD_WriteData(&LCD4, seg_mpa) ; 
+							  else if(adS.eepromRead_low_bit==3)LCD_WriteData(&LCD4, seg_psi) ; 
+				#endif 
+				
+				
 
 			}
 		
 		}
-
+     
     }
+
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
@@ -387,35 +427,16 @@ void main(void)
 void ISR(void) __interrupt
 {
 
-	if(ADIF_IsFlag())
+
+	#if 1
+	if(ADIF_IsFlag()&&(adS.Presskey_flag !=1))
 	{
 		ADIF_ClearFlag();
 		ADC=ADC_GetData();
 		MCUSTATUSbits.b_ADCdone=1;
 	}
-	#if 1
-	if(TA1IF_IsFlag())  //PT1.0  Timer A1 interrupt flag 
-	{
-		TA1IF_ClearFlag();
-		adS.second_3_over ++;
-		adS.second_5_over++;
-	 #if 1
-		if(adS.key_flag ==1||adS.key_flag==0) {
-			adS.second_5_over = 0;
-		
-			adS.second_3_over =0;
-		
-			adS.key_flag =2;
-			GPIO_PT15_HIGH();
-			
-		}
-	  #endif 
-		
-	      
-	}
-	
-	
 	#endif 
+	
 }
 
 /*----------------------------------------------------------------------------*/
