@@ -50,13 +50,13 @@ volatile typedef union _MCUSTATUS
   struct
   {
     unsigned b_ADCdone:1;
-    unsigned b_TMAdone:1;
-   unsigned b_TMBdone:1;
-   unsigned b_TMCdone:1;
-  unsigned b_Ext0done:1;
-   unsigned b_Ext1done:1;
-   unsigned b_UART_TxDone:1;
-   unsigned b_UART_RxDone:1;
+   // unsigned b_TMAdone:1;
+   //unsigned b_TMBdone:1;
+  // unsigned b_TMCdone:1;
+  //unsigned b_Ext0done:1;
+  // unsigned b_Ext1done:1;
+  // unsigned b_UART_TxDone:1;
+  // unsigned b_UART_RxDone:1;
   };
 } MCUSTATUS;
 
@@ -129,12 +129,12 @@ void main(void)
     
 	while(1)
 	{
-	    
+	    zeroPoint:  
 		
 		if(GPIO_READ_PT10())
 		{
 		
-		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
+		  //  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
 		      	GIE_Disable();
 				
 				if(adS.Presskey_flag==0){
@@ -142,27 +142,45 @@ void main(void)
 					Delay(20000);
 					Delay(20000);
 					Delay(20000);
-					adS.resetZeroDisplay++;
-					Delay(20000);
-					Delay(20000);
-					Delay(20000);
-					adS.resetZeroDisplay++;
-					adS.Presskey_flag=1;
+					
+				    if(adS.resetZeroDisplay==0 ){ /* zero point mode*/
 
-			    }
-			    else{
+							     adS.resetZeroDisplay++;
+							     adS.zeroPoint_Mode =1;
+							     adS.unit_setMode =0;
+			                     adS.testMode=0;
+							     Display2Er();
+								 Delay(20000);
+								 Delay(10000);
+							     goto zeroPoint ;
+						}
 
-			        Delay(20000);	
-			        Delay(10000);
+						        Delay(20000);
+								Delay(20000);
+								Delay(20000);
+								Delay(20000);
+								adS.Presskey_flag=1;
+								adS.zeroPoint_Mode =0;
+							    
+					           
+					 }
+		             else {
+
+				      
+				    
+				        Delay(20000);	
+				        Delay(10000);
+				       
+				    }
 
 			    	//Delay(5000);	
-			    }
-		
-	            adS.unit_setMode =1;
-				adS.zeroPoint_Mode =0;
-				adS.testMode =1;
-				DisplayUnit();
-				
+			     
+		       
+		            adS.unit_setMode =1;
+					adS.zeroPoint_Mode =0;
+					adS.testMode =1;
+					DisplayUnit();
+				 
 				
 				
 			     switch(adS.plus_uint){
@@ -205,17 +223,12 @@ void main(void)
 						 Delay(20000);
 						 Delay(10000);	
 					     break;
-				    }
-			
-		      if(adS.resetZeroDisplay==1 &&adS.resetZeroDisplay <2 ){ /* zero point mode*/
-
-					adS.zeroPoint_Mode = 1;
-					adS.testMode =1;
-					//display LCD "2Er"
-					Display2Er();
-					// Delay(20000);
-				}
-		 }//end key
+				     }
+			    
+		        
+		        
+		}
+	    
 		else{
 		   	
 		    #if 1  
@@ -338,9 +351,10 @@ void main(void)
 					}
 		        } 
 		    }//end ---testMode 
+  
 		   if(adS.zeroPoint_Mode == 1){ /*zero point mode */
-     
-				adS.resetZeroDisplay=0;
+   	        
+   	            adS.resetZeroDisplay=0;
 				adS.zeroPoint_Mode =0;
 			    adS.testMode=0;
 				ADC=ADC>>6;
@@ -382,6 +396,7 @@ void main(void)
 				adS.testMode = 0;
 				adS.reload_ADCInterrupt = 1;
 				adS.resetZeroDisplay=0;
+              
 			      
 			     GPIO_PT16_HIGH();
 			     Delay(20000);

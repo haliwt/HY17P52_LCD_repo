@@ -27,6 +27,7 @@ struct _adc_works_
    unsigned char error_mod:1;
    unsigned char key_flag;
    unsigned char resetZeroDisplay;
+   unsigned char quitCurrentMode: 1;
   
   
    unsigned char  plus_revise_flag:1;
