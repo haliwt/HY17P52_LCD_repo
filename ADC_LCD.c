@@ -142,13 +142,13 @@ void main(void)
 			
 			 if(GPIO_READ_PT10()){
 	          
-			
+			    adS.second_5_over=9000;
 				adS.second_5_over =0;
 				adS.uint_set_mode =1;
 				//adS.zero_point_mode =0;
 				adS.measure_mode =1;
 				DisplayUnit();
-				Delay(10000);
+			//	Delay(10000);
 				adS.second_3_over=0;
 				
 			     switch(adS.plus_uint){
@@ -156,21 +156,25 @@ void main(void)
 					     adS.plus_uint++;
 						 adS.unit_plus = psi;
 						 LCD_WriteData(&LCD4,seg_psi);
+						  adS.second_5_over=9000;
 					    break;
 					case bar:
 						adS.plus_uint++;
 						 adS.unit_plus = bar;
 						  LCD_WriteData(&LCD4,seg_bar);
+						  adS.second_5_over=9000;
 					     break;
 					case kgf:
 						adS.plus_uint++;
 						adS.unit_plus = kgf;
 						 LCD_WriteData(&LCD4,seg_kgf);
+						  adS.second_5_over=9000;
 					     break;
 				    case mpa:
 					     adS.plus_uint=0;
 						 adS.unit_plus = mpa;
 						  LCD_WriteData(&LCD4,seg_mpa);
+						   adS.second_5_over=9000;
 					     break;
 				}
 			
@@ -185,7 +189,7 @@ void main(void)
 			    adS.second_3_over=0;
 				//display LCD "2Er"
 			     Display2Er();
-                 Delay(20000);
+                // Delay(20000);
 				 
                 
 			}
