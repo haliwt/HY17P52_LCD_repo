@@ -155,9 +155,9 @@ void DisplayHex(unsigned int Num)
 void Display2Er(void)
 {
   LCD_WriteData(&LCD0,0x00);
-  LCD_WriteData(&LCD1,Char_2);
+  LCD_WriteData(&LCD3,Char_2);
   LCD_WriteData(&LCD2,Char_E);
-  LCD_WriteData(&LCD3,Char_R);   
+  LCD_WriteData(&LCD1,Char_R);   
  
 
 }
@@ -171,9 +171,9 @@ void Display2Er(void)
 void DisplayUnit(void)
 {
   LCD_WriteData(&LCD0,0x00);
-  LCD_WriteData(&LCD1,Char_CAP_U);
+  LCD_WriteData(&LCD1,Char_I);
   LCD_WriteData(&LCD2,Char_N);
-  LCD_WriteData(&LCD3,Char_I); 
+  LCD_WriteData(&LCD3,Char_CAP_U); 
 }
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
