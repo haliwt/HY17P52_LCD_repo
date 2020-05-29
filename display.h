@@ -1,7 +1,7 @@
 #define   seg_kgf    0x01
 #define   seg_bar    0x02
 #define   seg_psi    0x04
-#define   seg_MPa    0x08
+#define   seg_mpa    0x08
 
 #define   symbol_c      0x02
 #define   symbol_b      0x04

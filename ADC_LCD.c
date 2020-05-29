@@ -83,7 +83,7 @@ void main(void)
 	//CLK Setting
 	CLK_OSCSelect(OSCS_HAO); //OSCS_HAO = 3.686MHz
 	CLK_CPUCK_Sel(DHS_HSCKDIV1,CPUS_HSCK); //fre = 3.686Mhz /2 =1.843Mhz
-   void GPIO_Iint() ;
+    GPIO_Iint() ;
 
 //VDDA Setting
 	PWR_BGREnable();
@@ -135,7 +135,7 @@ void main(void)
 		if(GPIO_READ_PT10())
 		{
 		
-		  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
+		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
 		    
 			
 		 if(adS.second_5_over >= 10000){ /*unit set mode*/
@@ -151,27 +151,26 @@ void main(void)
 				Delay(10000);
 				adS.second_3_over=0;
 				
-			 
-			
-
-			
-				
-				switch(adS.plus_uint){
+			     switch(adS.plus_uint){
 					case psi: 
 					     adS.plus_uint++;
 						 adS.unit_plus = psi;
+						 LCD_WriteData(&LCD4,seg_psi);
 					    break;
 					case bar:
 						adS.plus_uint++;
 						 adS.unit_plus = bar;
+						  LCD_WriteData(&LCD4,seg_bar);
 					     break;
 					case kgf:
 						adS.plus_uint++;
 						adS.unit_plus = kgf;
+						 LCD_WriteData(&LCD4,seg_kgf);
 					     break;
 				    case mpa:
 					     adS.plus_uint=0;
 						 adS.unit_plus = mpa;
+						  LCD_WriteData(&LCD4,seg_mpa);
 					     break;
 				}
 			
@@ -393,18 +392,20 @@ void ISR(void) __interrupt
 	#if 1
 	if(TA1IF_IsFlag())  //PT1.0  Timer A1 interrupt flag 
 	{
+		TA1IF_ClearFlag();
 		adS.second_3_over ++;
 		adS.second_5_over++;
-	    TA1IF_ClearFlag();
+	 #if 1
 		if(adS.key_flag ==1||adS.key_flag==0) {
 			adS.second_5_over = 0;
 		
 			adS.second_3_over =0;
 		
 			adS.key_flag =2;
+			GPIO_PT15_HIGH();
 			
 		}
-	
+	  #endif 
 		
 	      
 	}
