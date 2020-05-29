@@ -19,9 +19,9 @@
 
 #define abs(value)            ((value) >0 ? (value) : (-value) )
 
-#define PSITokgf(kgf)       (0.145 * (kgf))
-#define BARTokgf(kgf)   	(2.1 * (kgf))
-#define MPATokgf(kgf)	 	(0.1 * (kgf))
+#define kgfTOpsi(kgf)       (0.145 * (kgf))
+#define kgfTObar(kgf)   	(0.01 * (kgf))
+#define kgfTOmpa(kgf)	 	(0.1 * (kgf))
 
 #define STD_VALUE                 6524
 
@@ -73,7 +73,7 @@ void ADCAccuracyMode(void);
 
 void ShowADC (void);
 void DisplayNum(long Num);
-
+long UnitConverter(long data);
 //void NegativePressure_Display(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
@@ -224,12 +224,8 @@ void main(void)
 						 Delay(10000);	
 					     break;
 				     }
-			    
-		        
-		        
-		}
-	    
-		else{
+			 }
+		     else{
 		   	
 		    #if 1  
          
@@ -264,13 +260,6 @@ void main(void)
 						adS.Pressure_sign =0;
 						      
 					}
-				    GPIO_PT15_HIGH();
-				    Delay(20000);
-				    GPIO_PT15_LOW();
-				    Delay(20000);
-				    GPIO_PT15_HIGH();
-				    Delay(20000);
-				     GPIO_PT15_LOW();
 				if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
 
 				         n = ADC ;
@@ -278,11 +267,13 @@ void main(void)
 		           
 	                  
 		                 if(adS.plus_revise_flag ==1){
+		                 
 		                 if(n<2000)DisplayNum(ADC);
 					   
 						 else if( (LCDDisplay *10) < 2875){
 							    LCDDisplay= 0.125 *n- 202.86; //y = 0.0125x - 20.286
 						        LCDDisplay=Reverse_Data(LCDDisplay);
+						        LCDDisplay=UnitConverter(LCDDisplay);
 						        DisplayNum(LCDDisplay);
 
 								Delay(20000);
@@ -295,6 +286,7 @@ void main(void)
 							    else  n =abs(ADC) + abs(adS.p_offset_value);
 							    LCDDisplay= 56193  - (8.47 * n) ;//y=-0.846x + 5619.3
 							    LCDDisplay=Reverse_Data(LCDDisplay);
+							    LCDDisplay=UnitConverter(LCDDisplay);
 								DisplayNum( LCDDisplay);
 								Delay(20000);
 									
@@ -317,12 +309,11 @@ void main(void)
 					    theta= abs(ADC) - adS.m_offset_value;  
 					   if(adS.minus_revise_flag==1){
 
-					   	 
-					
-						//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
+					   	    //LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
 					   	   if(delta >=0 ){
 					   	   	 LCDDisplay= 200 - 0.126*theta ;//y = -0.0126x + 20.075
 					   	   	 LCDDisplay=Reverse_Data(LCDDisplay);
+					   	   	 LCDDisplay=UnitConverter(LCDDisplay);
 							 DisplayNum(LCDDisplay);
 							 Delay(20000);
 
@@ -337,6 +328,7 @@ void main(void)
 						    		#endif 
 									LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
 								    LCDDisplay=Reverse_Data(LCDDisplay);
+								    LCDDisplay=UnitConverter(LCDDisplay);
 									DisplayNum( LCDDisplay);
 									Delay(20000);
 								
@@ -436,7 +428,32 @@ void main(void)
     }
 
 }
+/******************************************************************************
+	*
+	*Function Name: long UnitConverter(long data)
+	*
+	*
+******************************************************************************/
+long UnitConverter(long data)
+{
+     if(adS.eepromRead_low_bit==0){ /*psi*/
+        
+         return  kgfTOpsi(data) ;
+     } 
+	 else if(adS.eepromRead_low_bit==1){ /*unit bar*/
+     	 
+     	 return	kgfTObar(data);
+	 }
+	 else if(adS.eepromRead_low_bit==2){ /* unit kgf*/
+          
+         return data;
+	 } 
+	 else if(adS.eepromRead_low_bit==3){ /*uint mpa*/
 
+	 	 return kgfTOmpa(data);
+	 }
+
+}
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/
