@@ -236,6 +236,7 @@ void main(void)
 		   if(adS.testMode == 0){ /* measure mode */
 		       	adS.zeroPoint_Mode=0;
 				adS.unit_setMode=0;
+				adS.resetZeroDisplay=0;
 				if(adS.reload_ADCInterrupt == 1){
 					adS.reload_ADCInterrupt =0;
 					ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
