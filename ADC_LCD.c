@@ -331,9 +331,11 @@ void main(void)
 				}
 			
 			}
-		 
-		 
-			if(adS.unit_setMode ==1){
+		    if(adS.zeroPoint_Mode ==1){
+				
+					SetupZeroPoint_Mode();
+			}
+		    if(adS.unit_setMode ==1){
 
 				adS.unit_setMode =0 ;
 				adS.testMode = 0;
@@ -501,7 +503,7 @@ void LowVoltageDisplay(void)
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-	                adS.key_flag =0;
+	              //  adS.key_flag =0;
 	                adS.resetZeroDisplay=0;
 					adS.zeroPoint_Mode =0;
 					adS.testMode=0;
