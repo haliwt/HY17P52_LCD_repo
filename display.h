@@ -1,3 +1,6 @@
+#ifndef __DISPLAY_H__
+#define __DISPLAY_H__
+
 #define   seg_kgf    0x01
 #define   seg_bar    0x02
 #define   seg_psi    0x04
@@ -28,7 +31,8 @@ struct _adc_works_
    unsigned char key_flag;
    unsigned char resetZeroDisplay;
    unsigned char quitCurrentMode: 1;
-  
+   unsigned char LVD_2V4_flag : 1;
+   unsigned char LVD_3V_flag : 1;
   
    unsigned char  plus_revise_flag:1;
    unsigned char  minus_revise_flag:1;
@@ -56,8 +60,14 @@ void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);
 void DisplayUnit(void);
-
+void DisplayHHH(void);
+void DisplayLLL(void);
 void Delay(unsigned int ms);
 void GPIO_Iint(void) ;
-
 long Reverse_Data(long number);
+void DisplayBatteryCapacityFull(void);
+void DisplayBatteryCapacityHalf(void);
+void DispalyBatteryCapacityLow(void);
+
+
+#endif 

@@ -13,6 +13,7 @@
 #include <TMR_52.h>
 #include "display.h"
 
+
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
@@ -74,6 +75,9 @@ void ADCAccuracyMode(void);
 void ShowADC (void);
 void DisplayNum(long Num);
 long UnitConverter(long data);
+unsigned char LowVoltageDetect_3V(void);
+unsigned char LowVoltageDetect_2V4(void);
+void LowVoltageDisplay(void);
 //void NegativePressure_Display(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
@@ -241,10 +245,13 @@ void main(void)
 					GIE_Enable();
 
 				}
-			
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
+					
+
 					MCUSTATUSbits.b_ADCdone=0;
+
+					
 					
 					ADC=ADC>>6;
 					
@@ -275,7 +282,7 @@ void main(void)
 						        LCDDisplay=Reverse_Data(LCDDisplay);
 						        LCDDisplay=UnitConverter(LCDDisplay);
 						        DisplayNum(LCDDisplay);
-
+                                LowVoltageDisplay();
 								Delay(20000);
 				
 						 }
@@ -288,6 +295,7 @@ void main(void)
 							    LCDDisplay=Reverse_Data(LCDDisplay);
 							    LCDDisplay=UnitConverter(LCDDisplay);
 								DisplayNum( LCDDisplay);
+								LowVoltageDisplay();
 								Delay(20000);
 									
 								}
@@ -297,6 +305,7 @@ void main(void)
 							{
 								ADC=Reverse_Data(ADC);
 								DisplayNum(ADC);
+							    LowVoltageDisplay();
 								Delay(20000);
 
 							}
@@ -315,6 +324,7 @@ void main(void)
 					   	   	 LCDDisplay=Reverse_Data(LCDDisplay);
 					   	   	 LCDDisplay=UnitConverter(LCDDisplay);
 							 DisplayNum(LCDDisplay);
+							 LowVoltageDisplay();
 							 Delay(20000);
 
 					   	   }
@@ -330,6 +340,7 @@ void main(void)
 								    LCDDisplay=Reverse_Data(LCDDisplay);
 								    LCDDisplay=UnitConverter(LCDDisplay);
 									DisplayNum( LCDDisplay);
+									LowVoltageDisplay();
 									Delay(20000);
 								
 						    }
@@ -339,6 +350,7 @@ void main(void)
 							ADC = abs(ADC);
 							ADC=Reverse_Data(ADC);
 							DisplayNum(ADC);
+							LowVoltageDisplay();
 							Delay(20000);
 						}
 					}
@@ -428,9 +440,11 @@ void main(void)
     }
 
 }
+
 /******************************************************************************
 	*
-	*Function Name: long UnitConverter(long data)
+	*Function Name: long UnitConverter_2V4(long data)
+	*
 	*
 	*
 ******************************************************************************/
@@ -454,6 +468,80 @@ long UnitConverter(long data)
 	 }
 
 }
+/******************************************************************************
+	*
+	*Function Name: long UnitConverter_3V(long data)
+	*
+	*
+	*
+******************************************************************************/
+unsigned char LowVoltageDetect_3V(void)
+{
+    unsigned char flag;
+    LVD_VolSelect(VLDX_30 );  
+    LVD_PWRSelect(PWRS_VDD);    
+    Delay(10);
+  if(LVD_GetLVDO())
+  {
+      flag= 0;    //Higher than detection voltage
+  }
+  else
+  {
+      flag= 1;    //Lower than detection voltage
+  }
+    return flag;
+}
+
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : unsigned char LowVoltageDetect
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+unsigned char LowVoltageDetect_2V4(void)
+{
+    unsigned char flag;
+    LVD_VolSelect(VLDX_24);  
+    LVD_PWRSelect(PWRS_VDD);    
+    Delay(10);
+  if(LVD_GetLVDO())
+  {
+      flag= 0;    //Higher than detection voltage
+  }
+  else
+  {
+      flag= 1;    //Lower than detection voltage
+  }
+    return flag;
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : unsigned char LowVoltageDisplay(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void LowVoltageDisplay(void)
+{
+	
+	adS.LVD_3V_flag = LowVoltageDetect_3V();
+	if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
+	   
+	    // LCD_WriteData(&LCD0,symbol_t0);
+	     DisplayBatteryCapacityFull(); 
+	}
+	else{
+	       adS.LVD_2V4_flag = LowVoltageDetect_2V4();
+	       if(adS.LVD_2V4_flag == 0){
+
+	       			//LCD_WriteData(&LCD0,symbol_t0);
+	       			DisplayBatteryCapacityHalf();
+	       }
+	       else{
+	       	//	LCD_WriteData(&LCD0,symbol_t0);
+	       		DispalyBatteryCapacityLow();
+	       }
+	}
+}
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/
@@ -471,6 +559,8 @@ void ISR(void) __interrupt
 	#endif 
 	
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /* End Of File                                                                */
