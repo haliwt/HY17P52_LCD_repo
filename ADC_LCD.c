@@ -269,29 +269,7 @@ void main(void)
 			}
 		    if(adS.unit_setMode ==1){
 
-				adS.unit_setMode =0 ;
-				adS.testMode = 0;
-		
-										#if 1
-								//BIE Write
-								HY17P52WR3(0,0xAA,0x02);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-								if(Flag== 1)
-								{
-									GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-							
-								//BIE Read   
-								BIEARL=0;                                //addr=0
-								BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-								while((BIECN& 0x01)==1); 
-								delta=BIEDRL;
-							
-								if(delta==0)  LCD_WriteData(&LCD4, seg_bar) ; 
-								else if(delta==1)LCD_WriteData(&LCD4, seg_kgf) ; 
-								else if(delta==2)LCD_WriteData(&LCD4, seg_mpa) ; 
-								else if(delta==3)LCD_WriteData(&LCD4, seg_psi) ; 
-							#endif 
+				 SetupUnit_Mode();
 
 				
 
