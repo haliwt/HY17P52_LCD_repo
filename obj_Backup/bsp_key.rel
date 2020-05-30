@@ -1,0 +1,10 @@
+$MOD:bsp_key:".\obj\bsp_key.rel"
+$VER:SDASHYA_201
+$ASFROM:"D:\NZSE20A_Soft_proj\DemoCode\HY17P\HY17P52\ADC_LCD"
+$SRC:"D:\NZSE20A_Soft_proj\DemoCode\HY17P\HY17P52\ADC_LCD\obj\bsp_key.asm"
+$AREA:_CODE:1:0:0:0
+$AREA:CCODE:1:0:0:0
+$AREA:IDATA:2:0:0:0
+$AREA:IDATAROM:1:0:0:0
+$AREA:UDATA:2:0:0:0
+$ENDMOD:bsp_key:".\obj\bsp_key.rel"

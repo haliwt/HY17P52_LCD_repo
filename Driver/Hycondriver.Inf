@@ -1,0 +1,96 @@
+;Hycon Technology Corporation. All Rights Reserved.
+;Pamers, Inc. Hank_Wei@pamer.com.tw
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36fc9e60-c465-11cf-8056-444553540000} 
+provider=%Hycon%
+DriverVer=20/10/2008,1.3.0.0.0
+LayoutFile=layout.inf
+
+[DestinationDirs]
+DefaultDestDir=12 
+
+
+[DefaultInstall]
+HyconFiles.Ext = 10, system32\Drivers
+HyconFiles.Inf = 10, INF
+CopyFiles = HyconFiles.Ext, HyconFiles.Inf
+
+[Manufacturer]
+%Hycon%=HYCON
+
+[HYCON]
+%USB\VID_0547&PID_1003.DeviceDesc%=HyconD1, USB\VID_0547&PID_1003
+%USB\VID_0547&PID_1002.DeviceDesc%=HyconD2, USB\VID_0547&PID_1002
+%USB\VID_0547&PID_1004.DeviceDesc%=HyconD2, USB\VID_0547&PID_1004
+
+[HyconD1]
+AddReg = Hycon.AddReg
+HyconFiles.Ext = 10, system32\Drivers
+HyconFiles.Inf = 10, INF
+CopyFiles = HyconFiles.Ext, HyconFiles.Inf
+
+[HyconD2]
+AddReg = HyconD2.AddReg
+HyconFiles.Ext = 10, system32\Drivers
+HyconFiles.Inf = 10, INF
+CopyFiles = HyconFiles.Ext, HyconFiles.Inf
+
+[HyconD1.NT]
+AddReg = Hycon.AddReg
+HyconFiles.Ext = 10, system32\Drivers
+HyconFiles.Inf = 10, INF
+CopyFiles = HyconFiles.Ext, HyconFiles.Inf
+
+
+[HyconD2.NT]
+AddReg = HyconD2.AddReg
+HyconFiles.Ext = 10, System32\Drivers
+HyconFiles.Inf = 10, INF
+CopyFiles = HyconFiles.Ext, HyconFiles.Inf
+
+[HyconD1.NT.Services]
+Addservice = Hycon, 0x00000002, Hycon.AddService
+
+[HyconD2.NT.Services]
+Addservice = Hycon, 0x00000002, HyconD2.AddService
+
+[Hycon.AddService]
+DisplayName    = %Hycon.SvcDesc%
+ServiceType    = 1
+StartType      = 2
+ErrorControl   = 1
+ServiceBinary  = %10%\System32\Drivers\Hycondrv.sys
+LoadOrderGroup = Base
+
+[HyconD2.AddService]
+DisplayName    = %HyconD2.SvcDesc%
+ServiceType    = 1
+StartType      = 2
+ErrorControl   = 1
+ServiceBinary  = %10%\System32\Drivers\HyconEnobdrv.sys
+LoadOrderGroup = Base
+
+[Hycon.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,Hycondrv.sys
+
+[HyconD2.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,HyconEnobdrv.sys
+
+[HyconFiles.Ext]
+Hycondrv.sys
+HyconEnobdrv.sys
+HyParallel.sys
+
+[HyconFiles.Inf]
+Hycondriver.Inf
+
+[Strings]
+Hycon="Hycon Technology Corporation"
+USB\VID_0547&PID_1003.DeviceDesc="HYCON HY-IDE USB Control Board"
+USB\VID_0547&PID_1004.DeviceDesc="HYCON USB ENOB TOOL"
+Hycon.SvcDesc="Hycon General Purpose USB Driver (Hycondrv.sys)"
+HyconD2.SvcDesc="Hycon General Purpose USB Driver (Hycondrv.sys)"

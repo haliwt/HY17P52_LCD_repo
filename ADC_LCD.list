@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><Project>
+<ItemGroup Name="Source Files">
+<File>ADC_LCD.c</File>
+<File>..\..\..\..\Driver\HY17P\ADC_52.c</File>
+<File>display.c</File>
+<File>Driver\HY17P\LED.c</File>
+<File>Driver\HY17P\GPIO.c</File>
+</ItemGroup>
+<ItemGroup Name="Header Files">
+<File>..\..\..\..\Driver\SFRType.h</File>
+<File>..\..\..\..\Driver\HY17P\INT.h</File>
+<File>..\..\..\..\Driver\HY17P\CLK.h</File>
+<File>..\..\..\..\Driver\HY17P\PWR.h</File>
+<File>..\..\..\..\Driver\HY17P\ADC_52.h</File>
+<File>..\..\..\..\Driver\HY17P\GPIO.h</File>
+<File>..\..\..\..\Driver\HY17P\LCD.h</File>
+<File>display.h</File>
+<File>lcdTable.h</File>
+<File>C:\HYCON\H08 CIDE\Driver\HY17P\TMR_52.h</File>
+<File>HY17M_head\hy17p52sfr.h</File>
+<File>bsp_key\bsp_key.h</File>
+<File>Driver\HY17P\LED.h</File>
+<File>Driver\HY17P\UART_52.h</File>
+</ItemGroup>
+</Project>

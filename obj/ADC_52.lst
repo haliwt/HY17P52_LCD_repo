@@ -1,0 +1,681 @@
+0001                       ;--------------------------------------------------------
+0002                       ; File Created by SDCC : open source ANSI-C Compiler modified for HYCON CPU
+0003                       ; Version 3.9.3 #4ad52972e (MSVC)
+0004                       ;--------------------------------------------------------
+0005                       ; Port for HYCON CPU
+0006                       ;--------------------------------------------------------
+0007                       ;	;CCFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
+0008                       ;;	.file	"E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"
+0009                       	.module ADC_52
+0010                       	;.list	p=HY17P52
+0011                       	;--cdb--S:G$ADC_GetData$0$0({2}DF,SL:SL),C,0,0
+0012                       	;--cdb--F:ADC_52:G$ADC_GetData$0$0({2}DF,SL:SL),C,0,0,0,0,0
+0013                       	;--cdb--S:G$ADC_Open$0$0({2}DF,SV:S),C,0,0
+0014                       	;--cdb--F:ADC_52:G$ADC_Open$0$0({2}DF,SV:S),C,0,0,0,0,0
+0015                       	;--cdb--S:G$ADC_SDRVEnable$0$0({2}DF,SV:S),C,0,0
+0016                       	;--cdb--S:G$ADC_SDRVDisable$0$0({2}DF,SV:S),C,0,0
+0017                       	;--cdb--S:G$ENSDRVEnable$0$0({2}DF,SV:S),C,0,0
+0018                       	;--cdb--F:ADC_52:G$ENSDRVEnable$0$0({2}DF,SV:S),C,0,0,0,0,0
+0019                       	;--cdb--S:G$ENSDRVDisable$0$0({2}DF,SV:S),C,0,0
+0020                       	;--cdb--F:ADC_52:G$ENSDRVDisable$0$0({2}DF,SV:S),C,0,0,0,0,0
+0021                       ;--------------------------------------------------------
+0022                       ; overlayable items in internal ram 
+0023                       ;--------------------------------------------------------
+0024                       ;	udata_ovr
+0025                       .area CCODE (code,REL,CON) ; ADC_52-code 
+0026                       .globl _ENSDRVDisable
+0027                       
+0028                       ;--------------------------------------------------------
+0029 0000 --              	.FUNC _ENSDRVDisable:0
+0030                       ;--------------------------------------------------------
+0031                       ;	;.line	120; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONEnable();
+0032 0000                  _ENSDRVDisable:	;Function start
+0033 0000 9033             	BSF	_PWRCN,0
+0034                       ;	;.line	121; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CSFCN1 &= 0x7F;
+0035 0001 8E38             	BCF	_CSFCN1,7
+0036                       ;	;.line	122; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONDisable();
+0037 0002 8033             	BCF	_PWRCN,0
+0038                       ;	;.line	123; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0039 0003 000A             	RET	
+0040                       ; exit point of _ENSDRVDisable
+0041 0004 --              	.ENDFUNC	_ENSDRVDisable
+0042                       ;--------------------------------------------------------
+0043                       
+0044                       .globl _ENSDRVEnable
+0045                       
+0046                       ;--------------------------------------------------------
+0047 0004 --              	.FUNC _ENSDRVEnable:0
+0048                       ;--------------------------------------------------------
+0049                       ;	;.line	114; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONEnable();
+0050 0004                  _ENSDRVEnable:	;Function start
+0051 0004 9033             	BSF	_PWRCN,0
+0052                       ;	;.line	115; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CSFCN1 |= 0x80;
+0053 0005 9E38             	BSF	_CSFCN1,7
+0054                       ;	;.line	116; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONDisable();
+0055 0006 8033             	BCF	_PWRCN,0
+0056                       ;	;.line	117; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0057 0007 000A             	RET	
+0058                       ; exit point of _ENSDRVEnable
+0059 0008 --              	.ENDFUNC	_ENSDRVEnable
+0060                       ;--------------------------------------------------------
+0061                       
+0062                       .globl _ADC_GetData
+0063                       
+0064                       ;--------------------------------------------------------
+0065 0008 --              	.FUNC _ADC_GetData:0:$L:_ADC_GetData_ADCData_65536_8
+0066                       ;--------------------------------------------------------
+0067                       ;	;.line	98; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[0] = AD1L; /* ADC low byte register*/
+0068 0008                  _ADC_GetData:	;Function start
+0069 0008 643C             	MVF	_AD1L,0,0
+0070 0009 6600             	MVF	(_ADC_GetData_ADCData_65536_8 + 0),1,0
+0071                       ;	;.line	99; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[1] = AD1M; /* ADC middle byte*/
+0072 000A 643B             	MVF	_AD1M,0,0
+0073 000B 6600             	MVF	(_ADC_GetData_ADCData_65536_8 + 1),1,0
+0074                       ;	;.line	100; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[2] = AD1H; /* ADC high byte register */
+0075 000C 643A             	MVF	_AD1H,0,0
+0076 000D 6600             	MVF	(_ADC_GetData_ADCData_65536_8 + 2),1,0
+0077                       ;	;.line	102; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	if (ADCData&0x800000L)  //2^(24-1) -1 = 8388607  
+0078 000E BE00             	BTSS	(_ADC_GetData_ADCData_65536_8 + 2),7
+0079 000F C200 F000        	JMP	_00110_DS_
+0080                       ;	;.line	103; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[3] = 0xFF;
+0081 0011 0A00             	SETF	(_ADC_GetData_ADCData_65536_8 + 3),0
+0082 0012 C200 F000        	JMP	_00111_DS_
+0083 0014                  _00110_DS_:
+0084                       ;	;.line	105; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[3] = 0x00;
+0085 0014 0C00             	CLRF	(_ADC_GetData_ADCData_65536_8 + 3),0
+0086 0015                  _00111_DS_:
+0087                       ;	;.line	106; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	return ADCData;
+0088 0015 6400             	MVF	_ADC_GetData_ADCData_65536_8,0,0
+0089 0016 6600             	MVF	STK02,1,0
+0090 0017 6400             	MVF	(_ADC_GetData_ADCData_65536_8 + 1),0,0
+0091 0018 6600             	MVF	STK01,1,0
+0092 0019 6400             	MVF	(_ADC_GetData_ADCData_65536_8 + 2),0,0
+0093 001A 6600             	MVF	STK00,1,0
+0094 001B 6400             	MVF	(_ADC_GetData_ADCData_65536_8 + 3),0,0
+0095                       ;	;.line	107; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0096 001C 000A             	RET	
+0097                       ; exit point of _ADC_GetData
+0098 001D --              	.ENDFUNC	_ADC_GetData
+0099                       ;--------------------------------------------------------
+0100                       
+0101                       .globl _ADC_Open
+0102                       
+0103                       ;--------------------------------------------------------
+0104                       	.FUNC _ADC_Open:12:$L:r0x113F:$L:_ADC_Open_STK00:$L:_ADC_Open_STK01:$L:_ADC_Open_STK02:$L:_ADC_Open_STK03\
+0105                       :$L:_ADC_Open_STK04:$L:_ADC_Open_STK05:$L:_ADC_Open_STK06:$L:_ADC_Open_STK07:$L:_ADC_Open_STK08\
+0106 001D --              :$L:_ADC_Open_STK09:$L:_ADC_Open_STK10
+0107                       ;--------------------------------------------------------
+0108                       ;	;.line	52; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	void ADC_Open(unsigned char ck,    //Selector of SD18 peripheral operating clock source
+0109 001D                  _ADC_Open:	;Function start
+0110 001D 6600             	MVF	r0x113F,1,0
+0111                       ;	;.line	67; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_CLK_DivSelect(ck);
+0112 001E 06CF             	MVL	0xcf
+0113 001F 2835             	ANDF	_OSCCN1,0,0
+0114 0020 2C00             	IORF	r0x113F,0,0
+0115 0021 6635             	MVF	_OSCCN1,1,0
+0116                       ;	;.line	68; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CLK_DHSCKSelect(cks);
+0117 0022 06CF             	MVL	0xcf
+0118 0023 2834             	ANDF	_OSCCN0,0,0
+0119 0024 2C00             	IORF	_ADC_Open_STK00,0,0
+0120 0025 6634             	MVF	_OSCCN0,1,0
+0121                       ;	;.line	71; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VINSelect(inh,inl);             // Config ADC Input Channel
+0122 0026 6400             	MVF	_ADC_Open_STK02,0,0
+0123 0027 2C00             	IORF	_ADC_Open_STK01,0,0
+0124 0028 6640             	MVF	_AD1CN3,1,0
+0125                       ;	;.line	72; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VRINSelect(vrh,vrl);            // Config ADC Ref. Voltage Input Channel
+0126 0029 060F             	MVL	0x0f
+0127 002A 2841             	ANDF	_AD1CN4,0,0
+0128 002B 6600             	MVF	r0x113F,1,0
+0129 002C 6400             	MVF	_ADC_Open_STK04,0,0
+0130 002D 2E00             	IORF	_ADC_Open_STK03,1,0
+0131 002E 6400             	MVF	_ADC_Open_STK03,0,0
+0132 002F 2C00             	IORF	r0x113F,0,0
+0133 0030 6641             	MVF	_AD1CN4,1,0
+0134                       ;	;.line	73; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_GainSelect(adgn,pgagn);         // Config PGA Gain and AD Gain
+0135 0031 06E0             	MVL	0xe0
+0136 0032 283E             	ANDF	_AD1CN1,0,0
+0137 0033 6600             	MVF	r0x113F,1,0
+0138 0034 6400             	MVF	_ADC_Open_STK06,0,0
+0139 0035 2E00             	IORF	_ADC_Open_STK05,1,0
+0140 0036 6400             	MVF	_ADC_Open_STK05,0,0
+0141 0037 2C00             	IORF	r0x113F,0,0
+0142 0038 663E             	MVF	_AD1CN1,1,0
+0143                       ;	;.line	74; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VRXSelect(vrgn);             // Config Ref. Gain and DC offset
+0144 0039 06DF             	MVL	0xdf
+0145 003A 283E             	ANDF	_AD1CN1,0,0
+0146 003B 2C00             	IORF	_ADC_Open_STK07,0,0
+0147 003C 663E             	MVF	_AD1CN1,1,0
+0148                       ;	;.line	75; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_DCSETSelect(dcset);             // Config Ref. Gain and DC offset
+0149 003D 06F0             	MVL	0xf0
+0150 003E 283F             	ANDF	_AD1CN2,0,0
+0151 003F 2C00             	IORF	_ADC_Open_STK08,0,0
+0152 0040 663F             	MVF	_AD1CN2,1,0
+0153                       ;	;.line	76; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_OSRSelect(osr);                 // Config Over sampling ratio
+0154 0041 06E1             	MVL	0xe1
+0155 0042 283D             	ANDF	_AD1CN0,0,0
+0156 0043 2C00             	IORF	_ADC_Open_STK09,0,0
+0157 0044 663D             	MVF	_AD1CN0,1,0
+0158                       ;	;.line	77; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VCMSSelect(vcms); 
+0159 0045 06DF             	MVL	0xdf
+0160 0046 2842             	ANDF	_AD1CN5,0,0
+0161 0047 2C00             	IORF	_ADC_Open_STK10,0,0
+0162 0048 6642             	MVF	_AD1CN5,1,0
+0163                       ;	;.line	79; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_ENACMEnable();
+0164 0049 9E42             	BSF	_AD1CN5,7
+0165                       ;	;.line	80; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_Enable();
+0166 004A 9E3D             	BSF	_AD1CN0,7
+0167                       ;	;.line	81; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0168 004B 000A             	RET	
+0169                       ; exit point of _ADC_Open
+0170 004C --              	.ENDFUNC	_ADC_Open
+0171                       ;--------------------------------------------------------
+0172                       
+0173                       	;--cdb--S:G$ADC_GetData$0$0({2}DF,SL:SL),C,0,0
+0174                       	;--cdb--S:G$ADC_Open$0$0({2}DF,SV:S),C,0,0
+0175                       	;--cdb--S:G$ADC_SDRVEnable$0$0({2}DF,SV:S),C,0,0
+0176                       	;--cdb--S:G$ADC_SDRVDisable$0$0({2}DF,SV:S),C,0,0
+0177                       	;--cdb--S:G$ENSDRVEnable$0$0({2}DF,SV:S),C,0,0
+0178                       	;--cdb--S:G$ENSDRVDisable$0$0({2}DF,SV:S),C,0,0
+0179                       	;--cdb--S:G$FSR0$0$0({2}DD,SC:U),E,0,0
+0180                       	;--cdb--S:G$FSR1$0$0({2}DD,SC:U),E,0,0
+0181                       	;--cdb--S:G$FSR2$0$0({2}DD,SC:U),E,0,0
+0182                       	;--cdb--S:G$ADCR$0$0({4}SL:SL),E,0,0
+0183                       	;--cdb--S:G$_SWTGTID$0$0({1}SC:U),I,0,0
+0184                       	;--cdb--S:G$INDF0$0$0({1}SC:U),I,0,0
+0185                       	;--cdb--S:G$POINC0$0$0({1}SC:U),I,0,0
+0186                       	;--cdb--S:G$PODEC0$0$0({1}SC:U),I,0,0
+0187                       	;--cdb--S:G$PRINC0$0$0({1}SC:U),I,0,0
+0188                       	;--cdb--S:G$PLUSW0$0$0({1}SC:U),I,0,0
+0189                       	;--cdb--S:G$INDF1$0$0({1}SC:U),I,0,0
+0190                       	;--cdb--S:G$POINC1$0$0({1}SC:U),I,0,0
+0191                       	;--cdb--S:G$PODEC1$0$0({1}SC:U),I,0,0
+0192                       	;--cdb--S:G$PRINC1$0$0({1}SC:U),I,0,0
+0193                       	;--cdb--S:G$PLUSW1$0$0({1}SC:U),I,0,0
+0194                       	;--cdb--S:G$INDF2$0$0({1}SC:U),I,0,0
+0195                       	;--cdb--S:G$POINC2$0$0({1}SC:U),I,0,0
+0196                       	;--cdb--S:G$PODEC2$0$0({1}SC:U),I,0,0
+0197                       	;--cdb--S:G$PRINC2$0$0({1}SC:U),I,0,0
+0198                       	;--cdb--S:G$PLUSW2$0$0({1}SC:U),I,0,0
+0199                       	;--cdb--S:G$FSR0H$0$0({1}SC:U),I,0,0
+0200                       	;--cdb--S:G$FSR0L$0$0({1}SC:U),I,0,0
+0201                       	;--cdb--S:G$FSR1H$0$0({1}SC:U),I,0,0
+0202                       	;--cdb--S:G$FSR1L$0$0({1}SC:U),I,0,0
+0203                       	;--cdb--S:G$FSR2H$0$0({1}SC:U),I,0,0
+0204                       	;--cdb--S:G$FSR2L$0$0({1}SC:U),I,0,0
+0205                       	;--cdb--S:G$TOSH$0$0({1}SC:U),I,0,0
+0206                       	;--cdb--S:G$TOSL$0$0({1}SC:U),I,0,0
+0207                       	;--cdb--S:G$SKCN$0$0({1}SC:U),I,0,0
+0208                       	;--cdb--S:G$PCLATH$0$0({1}SC:U),I,0,0
+0209                       	;--cdb--S:G$PCLATL$0$0({1}SC:U),I,0,0
+0210                       	;--cdb--S:G$TBLPTRH$0$0({1}SC:U),I,0,0
+0211                       	;--cdb--S:G$TBLPTRL$0$0({1}SC:U),I,0,0
+0212                       	;--cdb--S:G$TBLDH$0$0({1}SC:U),I,0,0
+0213                       	;--cdb--S:G$TBLDL$0$0({1}SC:U),I,0,0
+0214                       	;--cdb--S:G$PRODH$0$0({1}SC:U),I,0,0
+0215                       	;--cdb--S:G$PRODL$0$0({1}SC:U),I,0,0
+0216                       	;--cdb--S:G$INTE0$0$0({1}SC:U),I,0,0
+0217                       	;--cdb--S:G$INTE1$0$0({1}SC:U),I,0,0
+0218                       	;--cdb--S:G$INTF0$0$0({1}SC:U),I,0,0
+0219                       	;--cdb--S:G$INTF1$0$0({1}SC:U),I,0,0
+0220                       	;--cdb--S:G$WREG$0$0({1}SC:U),I,0,0
+0221                       	;--cdb--S:G$BSRCN$0$0({1}SC:U),I,0,0
+0222                       	;--cdb--S:G$STATUS$0$0({1}SC:U),I,0,0
+0223                       	;--cdb--S:G$MSTAT$0$0({1}SC:U),I,0,0
+0224                       	;--cdb--S:G$PSTAT$0$0({1}SC:U),I,0,0
+0225                       	;--cdb--S:G$BIECN$0$0({1}SC:U),I,0,0
+0226                       	;--cdb--S:G$BIEARH$0$0({1}SC:U),I,0,0
+0227                       	;--cdb--S:G$BIEARL$0$0({1}SC:U),I,0,0
+0228                       	;--cdb--S:G$BIEDRH$0$0({1}SC:U),I,0,0
+0229                       	;--cdb--S:G$BIEDRL$0$0({1}SC:U),I,0,0
+0230                       	;--cdb--S:G$PWRCN$0$0({1}SC:U),I,0,0
+0231                       	;--cdb--S:G$OSCCN0$0$0({1}SC:U),I,0,0
+0232                       	;--cdb--S:G$OSCCN1$0$0({1}SC:U),I,0,0
+0233                       	;--cdb--S:G$OSCCN2$0$0({1}SC:U),I,0,0
+0234                       	;--cdb--S:G$CSFCN0$0$0({1}SC:U),I,0,0
+0235                       	;--cdb--S:G$CSFCN1$0$0({1}SC:U),I,0,0
+0236                       	;--cdb--S:G$WDTCN$0$0({1}SC:U),I,0,0
+0237                       	;--cdb--S:G$AD1H$0$0({1}SC:U),I,0,0
+0238                       	;--cdb--S:G$AD1M$0$0({1}SC:U),I,0,0
+0239                       	;--cdb--S:G$AD1L$0$0({1}SC:U),I,0,0
+0240                       	;--cdb--S:G$AD1CN0$0$0({1}SC:U),I,0,0
+0241                       	;--cdb--S:G$AD1CN1$0$0({1}SC:U),I,0,0
+0242                       	;--cdb--S:G$AD1CN2$0$0({1}SC:U),I,0,0
+0243                       	;--cdb--S:G$AD1CN3$0$0({1}SC:U),I,0,0
+0244                       	;--cdb--S:G$AD1CN4$0$0({1}SC:U),I,0,0
+0245                       	;--cdb--S:G$AD1CN5$0$0({1}SC:U),I,0,0
+0246                       	;--cdb--S:G$LVDCN$0$0({1}SC:U),I,0,0
+0247                       	;--cdb--S:G$TMA1CN$0$0({1}SC:U),I,0,0
+0248                       	;--cdb--S:G$TMA1R$0$0({1}SC:U),I,0,0
+0249                       	;--cdb--S:G$TMA1C$0$0({1}SC:U),I,0,0
+0250                       	;--cdb--S:G$PT1$0$0({1}SC:U),I,0,0
+0251                       	;--cdb--S:G$TRISC1$0$0({1}SC:U),I,0,0
+0252                       	;--cdb--S:G$PT1DA$0$0({1}SC:U),I,0,0
+0253                       	;--cdb--S:G$PT1PU$0$0({1}SC:U),I,0,0
+0254                       	;--cdb--S:G$PT1M1$0$0({1}SC:U),I,0,0
+0255                       	;--cdb--S:G$PT2$0$0({1}SC:U),I,0,0
+0256                       	;--cdb--S:G$TRISC2$0$0({1}SC:U),I,0,0
+0257                       	;--cdb--S:G$PT2DA$0$0({1}SC:U),I,0,0
+0258                       	;--cdb--S:G$PT2PU$0$0({1}SC:U),I,0,0
+0259                       	;--cdb--S:G$PT8$0$0({1}SC:U),I,0,0
+0260                       	;--cdb--S:G$TRISC8$0$0({1}SC:U),I,0,0
+0261                       	;--cdb--S:G$PT8PU$0$0({1}SC:U),I,0,0
+0262                       	;--cdb--S:G$UR0CN$0$0({1}SC:U),I,0,0
+0263                       	;--cdb--S:G$UR0STA$0$0({1}SC:U),I,0,0
+0264                       	;--cdb--S:G$BA0CN$0$0({1}SC:U),I,0,0
+0265                       	;--cdb--S:G$BG0RH$0$0({1}SC:U),I,0,0
+0266                       	;--cdb--S:G$BG0RL$0$0({1}SC:U),I,0,0
+0267                       	;--cdb--S:G$TX0R$0$0({1}SC:U),I,0,0
+0268                       	;--cdb--S:G$RC0REG$0$0({1}SC:U),I,0,0
+0269                       	;--cdb--S:G$LCDCN1$0$0({1}SC:U),I,0,0
+0270                       	;--cdb--S:G$LCDCN2$0$0({1}SC:U),I,0,0
+0271                       	;--cdb--S:G$LCDCN3$0$0({1}SC:U),I,0,0
+0272                       	;--cdb--S:G$LCDCN4$0$0({1}SC:U),I,0,0
+0273                       	;--cdb--S:G$LCD0$0$0({1}SC:U),I,0,0
+0274                       	;--cdb--S:G$LCD1$0$0({1}SC:U),I,0,0
+0275                       	;--cdb--S:G$LCD2$0$0({1}SC:U),I,0,0
+0276                       	;--cdb--S:G$LCD3$0$0({1}SC:U),I,0,0
+0277                       	;--cdb--S:G$LCD4$0$0({1}SC:U),I,0,0
+0278                       	;--cdb--S:G$LCD5$0$0({1}SC:U),I,0,0
+0279                       	;--cdb--S:G$LCD6$0$0({1}SC:U),I,0,0
+0280                       	;--cdb--S:G$Filter$0$0({1}SC:U),I,0,0
+0281                       	;--cdb--S:G$ADCRH$0$0({1}SC:U),I,0,0
+0282                       	;--cdb--S:G$ADCRM$0$0({1}SC:U),I,0,0
+0283                       	;--cdb--S:G$ADCRL$0$0({1}SC:U),I,0,0
+0284                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_vcms_65536_5$vcms$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK10]
+0285                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_osr_65536_5$osr$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK09]
+0286                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_dcset_65536_5$dcset$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK08]
+0287                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_vrgn_65536_5$vrgn$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK07]
+0288                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_pgagn_65536_5$pgagn$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK06]
+0289                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_adgn_65536_5$adgn$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK05]
+0290                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_vrl_65536_5$vrl$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK04]
+0291                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_vrh_65536_5$vrh$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK03]
+0292                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_inl_65536_5$inl$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK02]
+0293                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_inh_65536_5$inh$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK01]
+0294                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_cks_65536_5$cks$10000$5({1}SC:U),R,0,0,[_ADC_Open_STK00]
+0295                       	;--cdb--S:LADC_52.ADC_Open._ADC_Open_ck_65536_5$ck$10000$5({1}SC:U),R,0,0,[r0x113F]
+0296                       	;--cdb--S:LADC_52.ADC_GetData._ADC_GetData_ADCData_65536_8$ADCData$10000$8({4}SL:SL),E,0,0
+0297                       	;--cdb--S:G$ADC_Open$0$0({2}DF,SV:S),C,0,0
+0298                       	;--cdb--S:G$ADC_GetData$0$0({2}DF,SL:SL),C,0,0
+0299                       ;--------------------------------------------------------
+0300                       ; external declarations
+0301                       ;--------------------------------------------------------
+0302                       	.globl	_FSR0
+0303                       	.globl	_FSR1
+0304                       	.globl	_FSR2
+0305                       	.globl	_ADCR
+0306                       
+0307                       	.globl WSAVE
+0308                       	.globl STK07
+0309                       	.globl STK07_SAVE
+0310                       	.globl STK06
+0311                       	.globl STK06_SAVE
+0312                       	.globl STK05
+0313                       	.globl STK05_SAVE
+0314                       	.globl STK04
+0315                       	.globl STK04_SAVE
+0316                       	.globl STK03
+0317                       	.globl STK03_SAVE
+0318                       	.globl STK02
+0319                       	.globl STK02_SAVE
+0320                       	.globl STK01
+0321                       	.globl STK01_SAVE
+0322                       	.globl STK00
+0323                       	.globl STK00_SAVE
+0324                       ;--------------------------------------------------------
+0325                       ; global -1 declarations
+0326                       ;--------------------------------------------------------
+0327                       	.globl	_ADC_Open
+0328                       
+0329                       	.globl	_memcpy
+0330                       ;--------------------------------------------------------
+0331                       ; global -2 definitions
+0332                       ;--------------------------------------------------------
+0333                       	.area DSEG(DATA)
+0334                       __SWTGTID	.equ	0xA43354DA
+0335                       
+0336                       	.area DSEG(DATA)
+0337                       _INDF0	.equ	0x0
+0338                       
+0339                       	.area DSEG(DATA)
+0340                       _POINC0	.equ	0x1
+0341                       
+0342                       	.area DSEG(DATA)
+0343                       _PODEC0	.equ	0x2
+0344                       
+0345                       	.area DSEG(DATA)
+0346                       _PRINC0	.equ	0x3
+0347                       
+0348                       	.area DSEG(DATA)
+0349                       _PLUSW0	.equ	0x4
+0350                       
+0351                       	.area DSEG(DATA)
+0352                       _INDF1	.equ	0x5
+0353                       
+0354                       	.area DSEG(DATA)
+0355                       _POINC1	.equ	0x6
+0356                       
+0357                       	.area DSEG(DATA)
+0358                       _PODEC1	.equ	0x7
+0359                       
+0360                       	.area DSEG(DATA)
+0361                       _PRINC1	.equ	0x8
+0362                       
+0363                       	.area DSEG(DATA)
+0364                       _PLUSW1	.equ	0x9
+0365                       
+0366                       	.area DSEG(DATA)
+0367                       _INDF2	.equ	0xA
+0368                       
+0369                       	.area DSEG(DATA)
+0370                       _POINC2	.equ	0xB
+0371                       
+0372                       	.area DSEG(DATA)
+0373                       _PODEC2	.equ	0xC
+0374                       
+0375                       	.area DSEG(DATA)
+0376                       _PRINC2	.equ	0xD
+0377                       
+0378                       	.area DSEG(DATA)
+0379                       _PLUSW2	.equ	0xE
+0380                       
+0381                       	.area DSEG(DATA)
+0382                       _FSR0H	.equ	0xF
+0383                       
+0384                       	.area DSEG(DATA)
+0385                       _FSR0L	.equ	0x10
+0386                       
+0387                       	.area DSEG(DATA)
+0388                       _FSR1H	.equ	0x11
+0389                       
+0390                       	.area DSEG(DATA)
+0391                       _FSR1L	.equ	0x12
+0392                       
+0393                       	.area DSEG(DATA)
+0394                       _FSR2H	.equ	0x13
+0395                       
+0396                       	.area DSEG(DATA)
+0397                       _FSR2L	.equ	0x14
+0398                       
+0399                       	.area DSEG(DATA)
+0400                       _TOSH	.equ	0x16
+0401                       
+0402                       	.area DSEG(DATA)
+0403                       _TOSL	.equ	0x17
+0404                       
+0405                       	.area DSEG(DATA)
+0406                       _SKCN	.equ	0x18
+0407                       
+0408                       	.area DSEG(DATA)
+0409                       _PCLATH	.equ	0x1A
+0410                       
+0411                       	.area DSEG(DATA)
+0412                       _PCLATL	.equ	0x1B
+0413                       
+0414                       	.area DSEG(DATA)
+0415                       _TBLPTRH	.equ	0x1D
+0416                       
+0417                       	.area DSEG(DATA)
+0418                       _TBLPTRL	.equ	0x1E
+0419                       
+0420                       	.area DSEG(DATA)
+0421                       _TBLDH	.equ	0x1F
+0422                       
+0423                       	.area DSEG(DATA)
+0424                       _TBLDL	.equ	0x20
+0425                       
+0426                       	.area DSEG(DATA)
+0427                       _PRODH	.equ	0x21
+0428                       
+0429                       	.area DSEG(DATA)
+0430                       _PRODL	.equ	0x22
+0431                       
+0432                       	.area DSEG(DATA)
+0433                       _INTE0	.equ	0x23
+0434                       
+0435                       	.area DSEG(DATA)
+0436                       _INTE1	.equ	0x24
+0437                       
+0438                       	.area DSEG(DATA)
+0439                       _INTF0	.equ	0x26
+0440                       
+0441                       	.area DSEG(DATA)
+0442                       _INTF1	.equ	0x27
+0443                       
+0444                       	.area DSEG(DATA)
+0445                       _WREG	.equ	0x29
+0446                       
+0447                       	.area DSEG(DATA)
+0448                       _BSRCN	.equ	0x2A
+0449                       
+0450                       	.area DSEG(DATA)
+0451                       _STATUS	.equ	0x2B
+0452                       
+0453                       	.area DSEG(DATA)
+0454                       _MSTAT	.equ	0x2B
+0455                       
+0456                       	.area DSEG(DATA)
+0457                       _PSTAT	.equ	0x2C
+0458                       
+0459                       	.area DSEG(DATA)
+0460                       _BIECN	.equ	0x2E
+0461                       
+0462                       	.area DSEG(DATA)
+0463                       _BIEARH	.equ	0x2F
+0464                       
+0465                       	.area DSEG(DATA)
+0466                       _BIEARL	.equ	0x30
+0467                       
+0468                       	.area DSEG(DATA)
+0469                       _BIEDRH	.equ	0x31
+0470                       
+0471                       	.area DSEG(DATA)
+0472                       _BIEDRL	.equ	0x32
+0473                       
+0474                       	.area DSEG(DATA)
+0475                       _PWRCN	.equ	0x33
+0476                       
+0477                       	.area DSEG(DATA)
+0478                       _OSCCN0	.equ	0x34
+0479                       
+0480                       	.area DSEG(DATA)
+0481                       _OSCCN1	.equ	0x35
+0482                       
+0483                       	.area DSEG(DATA)
+0484                       _OSCCN2	.equ	0x36
+0485                       
+0486                       	.area DSEG(DATA)
+0487                       _CSFCN0	.equ	0x37
+0488                       
+0489                       	.area DSEG(DATA)
+0490                       _CSFCN1	.equ	0x38
+0491                       
+0492                       	.area DSEG(DATA)
+0493                       _WDTCN	.equ	0x39
+0494                       
+0495                       	.area DSEG(DATA)
+0496                       _AD1H	.equ	0x3A
+0497                       
+0498                       	.area DSEG(DATA)
+0499                       _AD1M	.equ	0x3B
+0500                       
+0501                       	.area DSEG(DATA)
+0502                       _AD1L	.equ	0x3C
+0503                       
+0504                       	.area DSEG(DATA)
+0505                       _AD1CN0	.equ	0x3D
+0506                       
+0507                       	.area DSEG(DATA)
+0508                       _AD1CN1	.equ	0x3E
+0509                       
+0510                       	.area DSEG(DATA)
+0511                       _AD1CN2	.equ	0x3F
+0512                       
+0513                       	.area DSEG(DATA)
+0514                       _AD1CN3	.equ	0x40
+0515                       
+0516                       	.area DSEG(DATA)
+0517                       _AD1CN4	.equ	0x41
+0518                       
+0519                       	.area DSEG(DATA)
+0520                       _AD1CN5	.equ	0x42
+0521                       
+0522                       	.area DSEG(DATA)
+0523                       _LVDCN	.equ	0x43
+0524                       
+0525                       	.area DSEG(DATA)
+0526                       _TMA1CN	.equ	0x44
+0527                       
+0528                       	.area DSEG(DATA)
+0529                       _TMA1R	.equ	0x45
+0530                       
+0531                       	.area DSEG(DATA)
+0532                       _TMA1C	.equ	0x46
+0533                       
+0534                       	.area DSEG(DATA)
+0535                       _PT1	.equ	0x47
+0536                       
+0537                       	.area DSEG(DATA)
+0538                       _TRISC1	.equ	0x48
+0539                       
+0540                       	.area DSEG(DATA)
+0541                       _PT1DA	.equ	0x49
+0542                       
+0543                       	.area DSEG(DATA)
+0544                       _PT1PU	.equ	0x4A
+0545                       
+0546                       	.area DSEG(DATA)
+0547                       _PT1M1	.equ	0x4B
+0548                       
+0549                       	.area DSEG(DATA)
+0550                       _PT2	.equ	0x4C
+0551                       
+0552                       	.area DSEG(DATA)
+0553                       _TRISC2	.equ	0x4D
+0554                       
+0555                       	.area DSEG(DATA)
+0556                       _PT2DA	.equ	0x4E
+0557                       
+0558                       	.area DSEG(DATA)
+0559                       _PT2PU	.equ	0x4F
+0560                       
+0561                       	.area DSEG(DATA)
+0562                       _PT8	.equ	0x50
+0563                       
+0564                       	.area DSEG(DATA)
+0565                       _TRISC8	.equ	0x51
+0566                       
+0567                       	.area DSEG(DATA)
+0568                       _PT8PU	.equ	0x53
+0569                       
+0570                       	.area DSEG(DATA)
+0571                       _UR0CN	.equ	0x54
+0572                       
+0573                       	.area DSEG(DATA)
+0574                       _UR0STA	.equ	0x55
+0575                       
+0576                       	.area DSEG(DATA)
+0577                       _BA0CN	.equ	0x56
+0578                       
+0579                       	.area DSEG(DATA)
+0580                       _BG0RH	.equ	0x57
+0581                       
+0582                       	.area DSEG(DATA)
+0583                       _BG0RL	.equ	0x58
+0584                       
+0585                       	.area DSEG(DATA)
+0586                       _TX0R	.equ	0x59
+0587                       
+0588                       	.area DSEG(DATA)
+0589                       _RC0REG	.equ	0x5A
+0590                       
+0591                       	.area DSEG(DATA)
+0592                       _LCDCN1	.equ	0x5B
+0593                       
+0594                       	.area DSEG(DATA)
+0595                       _LCDCN2	.equ	0x5C
+0596                       
+0597                       	.area DSEG(DATA)
+0598                       _LCDCN3	.equ	0x5D
+0599                       
+0600                       	.area DSEG(DATA)
+0601                       _LCDCN4	.equ	0x5E
+0602                       
+0603                       	.area DSEG(DATA)
+0604                       _LCD0	.equ	0x5F
+0605                       
+0606                       	.area DSEG(DATA)
+0607                       _LCD1	.equ	0x60
+0608                       
+0609                       	.area DSEG(DATA)
+0610                       _LCD2	.equ	0x61
+0611                       
+0612                       	.area DSEG(DATA)
+0613                       _LCD3	.equ	0x62
+0614                       
+0615                       	.area DSEG(DATA)
+0616                       _LCD4	.equ	0x63
+0617                       
+0618                       	.area DSEG(DATA)
+0619                       _LCD5	.equ	0x64
+0620                       
+0621                       	.area DSEG(DATA)
+0622                       _LCD6	.equ	0x65
+0623                       
+0624                       	.area DSEG(DATA)
+0625                       _Filter	.equ	0x66
+0626                       
+0627                       	.area DSEG(DATA)
+0628                       _ADCRH	.equ	0x3A
+0629                       
+0630                       	.area DSEG(DATA)
+0631                       _ADCRM	.equ	0x3B
+0632                       
+0633                       	.area DSEG(DATA)
+0634                       _ADCRL	.equ	0x3C
+0635                       
+0636                       ;--------------------------------------------------------
+0637                       ; absolute symbol definitions
+0638                       ;--------------------------------------------------------
+0639                       ;--------------------------------------------------------
+0640                       ; compiler-defined variables
+0641                       ;--------------------------------------------------------
+0642                       	.area IDATA (DATA,REL,CON); pre-def
+0643                       	.area IDATAROM (CODE,REL,CON); pre-def
+0644                       	.area UDATA (DATA,REL,CON); pre-def
+0645                       	.area UDATA (DATA,REL,CON) ;UDL_ADC_52_0	udata
+0646 0000 --               r0x113F:	.ds	1
+0647                       	.area LOCALSTK (STK); local stack var
+0648 0000 --               _ADC_Open_STK00:	.ds	1
+0649                       	.globl _ADC_Open_STK00
+0650 0001 --               _ADC_Open_STK01:	.ds	1
+0651                       	.globl _ADC_Open_STK01
+0652 0002 --               _ADC_Open_STK02:	.ds	1
+0653                       	.globl _ADC_Open_STK02
+0654 0003 --               _ADC_Open_STK03:	.ds	1
+0655                       	.globl _ADC_Open_STK03
+0656 0004 --               _ADC_Open_STK04:	.ds	1
+0657                       	.globl _ADC_Open_STK04
+0658 0005 --               _ADC_Open_STK05:	.ds	1
+0659                       	.globl _ADC_Open_STK05
+0660 0006 --               _ADC_Open_STK06:	.ds	1
+0661                       	.globl _ADC_Open_STK06
+0662 0007 --               _ADC_Open_STK07:	.ds	1
+0663                       	.globl _ADC_Open_STK07
+0664 0008 --               _ADC_Open_STK08:	.ds	1
+0665                       	.globl _ADC_Open_STK08
+0666 0009 --               _ADC_Open_STK09:	.ds	1
+0667                       	.globl _ADC_Open_STK09
+0668 000A --               _ADC_Open_STK10:	.ds	1
+0669                       	.globl _ADC_Open_STK10
+0670 000B --               _ADC_GetData_ADCData_65536_8:	.ds	4
+0671                       ;--------------------------------------------------------
+0672                       ; initialized data
+0673                       ;--------------------------------------------------------
+0674                       ;--------------------------------------------------------
+0675                       ; initialized data - mirror
+0676                       ;--------------------------------------------------------
+0677                       	;Following is optimization info, 
+0678                       	;xxcdbxxW:dst:src+offset:srclit:just-remove
+0679                       	;--cdb--W:r0x114B:NULL+0:-1:1
+0680                       	;--cdb--W:r0x113F:NULL+0:-1:1
+0681                       	end

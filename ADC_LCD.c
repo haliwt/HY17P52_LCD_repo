@@ -71,13 +71,11 @@ MCUSTATUS  MCUSTATUSbits;
 void PGAandADCAccuracyMode(void);
 void AccuracyModeADCOFF(void);
 void ADCAccuracyMode(void);
-
-void ShowADC (void);
-void DisplayNum(long Num);
 long UnitConverter(long data);
 unsigned char LowVoltageDetect_3V(void);
 unsigned char LowVoltageDetect_2V4(void);
 void LowVoltageDisplay(void);
+
 //void NegativePressure_Display(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
@@ -283,6 +281,7 @@ void main(void)
 						        LCDDisplay=UnitConverter(LCDDisplay);
 						        DisplayNum(LCDDisplay);
                                 LowVoltageDisplay();
+                           
 								Delay(20000);
 				
 						 }
@@ -296,6 +295,7 @@ void main(void)
 							    LCDDisplay=UnitConverter(LCDDisplay);
 								DisplayNum( LCDDisplay);
 								LowVoltageDisplay();
+							
 								Delay(20000);
 									
 								}
@@ -306,6 +306,7 @@ void main(void)
 								ADC=Reverse_Data(ADC);
 								DisplayNum(ADC);
 							    LowVoltageDisplay();
+							
 								Delay(20000);
 
 							}
@@ -325,6 +326,7 @@ void main(void)
 					   	   	 LCDDisplay=UnitConverter(LCDDisplay);
 							 DisplayNum(LCDDisplay);
 							 LowVoltageDisplay();
+						
 							 Delay(20000);
 
 					   	   }
@@ -341,6 +343,7 @@ void main(void)
 								    LCDDisplay=UnitConverter(LCDDisplay);
 									DisplayNum( LCDDisplay);
 									LowVoltageDisplay();
+								
 									Delay(20000);
 								
 						    }
@@ -351,6 +354,7 @@ void main(void)
 							ADC=Reverse_Data(ADC);
 							DisplayNum(ADC);
 							LowVoltageDisplay();
+						
 							Delay(20000);
 						}
 					}
@@ -412,23 +416,23 @@ void main(void)
 			      GPIO_PT16_LOW();
 				#if 1
 				 //BIE Write
-							HY17P52WR3(0,0xAA,adS.unitChoose);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-						    if(Flag== 1)
-						    {
-						       GPIO_PT16_HIGH();
-						        while(1);    //fail
-						    }
-						    	
-													    //BIE Read   
-								BIEARL=0;                                //addr=0
-							    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-							    while((BIECN& 0x01)==1); 
-							    adS.eepromRead_low_bit=BIEDRL;
-							 
-							  if(adS.eepromRead_low_bit==0)  LCD_WriteData(&LCD4, seg_bar) ; 
-							  else if(adS.eepromRead_low_bit==1)LCD_WriteData(&LCD4, seg_kgf) ; 
-							  else if(adS.eepromRead_low_bit==2)LCD_WriteData(&LCD4, seg_mpa) ; 
-							  else if(adS.eepromRead_low_bit==3)LCD_WriteData(&LCD4, seg_psi) ; 
+					HY17P52WR3(0,0xAA,adS.unitChoose);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+				    if(Flag== 1)
+				    {
+				       GPIO_PT16_HIGH();
+				        while(1);    //fail
+				    }
+				    	
+											    //BIE Read   
+						BIEARL=0;                                //addr=0
+					    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+					    while((BIECN& 0x01)==1); 
+					    adS.eepromRead_low_bit=BIEDRL;
+					 
+					  if(adS.eepromRead_low_bit==0)  LCD_WriteData(&LCD4, seg_bar) ; 
+					  else if(adS.eepromRead_low_bit==1)LCD_WriteData(&LCD4, seg_kgf) ; 
+					  else if(adS.eepromRead_low_bit==2)LCD_WriteData(&LCD4, seg_mpa) ; 
+					  else if(adS.eepromRead_low_bit==3)LCD_WriteData(&LCD4, seg_psi) ; 
 				#endif 
 				
 				
@@ -450,21 +454,34 @@ void main(void)
 ******************************************************************************/
 long UnitConverter(long data)
 {
+     
+		BIEARL=0;                                //addr=0
+	    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+	    while((BIECN& 0x01)==1); 
+	    adS.eepromRead_low_bit=BIEDRL;
+
      if(adS.eepromRead_low_bit==0){ /*psi*/
-        
+
+         LCD_WriteData(&LCD4, seg_psi) ;
          return  kgfTOpsi(data) ;
      } 
 	 else if(adS.eepromRead_low_bit==1){ /*unit bar*/
-     	 
+     	 LCD_WriteData(&LCD4, seg_bar) ;
      	 return	kgfTObar(data);
 	 }
 	 else if(adS.eepromRead_low_bit==2){ /* unit kgf*/
           
+         LCD_WriteData(&LCD4, seg_kgf) ;
          return data;
 	 } 
 	 else if(adS.eepromRead_low_bit==3){ /*uint mpa*/
 
+	 	 LCD_WriteData(&LCD4, seg_mpa) ;
 	 	 return kgfTOmpa(data);
+	 }
+	 else{
+             LCD_WriteData(&LCD4, seg_kgf) ;
+             return data;
 	 }
 
 }
@@ -541,7 +558,9 @@ void LowVoltageDisplay(void)
 	       		DispalyBatteryCapacityLow();
 	       }
 	}
+	
 }
+
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/

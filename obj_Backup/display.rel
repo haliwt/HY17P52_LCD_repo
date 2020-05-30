@@ -1,0 +1,1012 @@
+$MOD:display:".\obj\display.rel"
+$VER:SDASHYA_201
+$ASFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
+$SRC:"E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\display.asm"
+$EXPORT:_DispalyBatteryCapacityLow
+$CDB:"S:G$DispalyBatteryCapacityLow$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayBatteryCapacityHalf
+$CDB:"S:G$DisplayBatteryCapacityHalf$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayBatteryCapacityFull
+$CDB:"S:G$DisplayBatteryCapacityFull$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayLLL
+$CDB:"S:G$DisplayLLL$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayHHH
+$CDB:"S:G$DisplayHHH$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_Reverse_Data
+$CDB:"S:G$Reverse_Data$0$0({2}DF,SL:SL),C,0,0"
+$EXPORT:_Delay
+$CDB:"S:G$Delay$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayUnit
+$CDB:"S:G$DisplayUnit$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_Display2Er
+$CDB:"S:G$Display2Er$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayHex
+$CDB:"S:G$DisplayHex$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayNum
+$CDB:"S:G$DisplayNum$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_DisplayHycon
+$CDB:"S:G$DisplayHycon$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_ClearLCD
+$CDB:"S:G$ClearLCD$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_GPIO_Iint
+$CDB:"S:G$GPIO_Iint$0$0({2}DF,SV:S),C,0,0"
+$EXPORT:_adS
+$CDB:"S:G$adS$0$0({14}ST_adc_works_:S),E,0,0"
+$EXPORT:_DisplayNum_STK00
+$EXPORT:_DisplayNum_STK01
+$EXPORT:_DisplayNum_STK02
+$EXPORT:_Delay_STK00
+$EXPORT:_Reverse_Data_STK00
+$EXPORT:_Reverse_Data_STK01
+$EXPORT:_Reverse_Data_STK02
+$EXPORT:_seg
+$CDB:"S:G$seg$0$0({29}DA29d,SC:U),D,0,0"
+$REF:__modslong
+$CDBF:8:"S:G$_modslong$0$0({2}DF,SL:SL),C,0,0"
+$REF:__divslong
+$CDBF:8:"S:G$_divslong$0$0({2}DF,SL:SL),C,0,0"
+$REF:__mullong
+$CDBF:8:"S:G$_mullong$0$0({2}DF,SL:SL),C,0,0"
+$REF:___slong2fs
+$CDBF:4:"S:G$__slong2fs$0$0({2}DF,SF:S),C,0,0"
+$REF:___fsmul
+$CDBF:8:"S:G$__fsmul$0$0({2}DF,SF:S),C,0,0"
+$REF:___fs2slong
+$CDBF:4:"S:G$__fs2slong$0$0({2}DF,SL:SL),C,0,0"
+$REF:__g2ptrget1
+$REF:__g2ptrput1
+$REF:STK02
+$REF:STK01
+$REF:STK00
+$REF:__modslong_STK06
+$REF:__modslong_STK05
+$REF:__modslong_STK04
+$REF:__modslong_STK03
+$REF:__modslong_STK02
+$REF:__modslong_STK01
+$REF:__modslong_STK00
+$REF:__g2ptrget1_STK00
+$REF:__g2ptrput1_STK01
+$REF:__g2ptrput1_STK00
+$REF:__divslong_STK06
+$REF:__divslong_STK05
+$REF:__divslong_STK04
+$REF:__divslong_STK03
+$REF:__divslong_STK02
+$REF:__divslong_STK01
+$REF:__divslong_STK00
+$REF:__mullong_STK06
+$REF:__mullong_STK05
+$REF:__mullong_STK04
+$REF:__mullong_STK03
+$REF:__mullong_STK02
+$REF:__mullong_STK01
+$REF:__mullong_STK00
+$REF:___slong2fs_STK02
+$REF:___slong2fs_STK01
+$REF:___slong2fs_STK00
+$REF:___fsmul_STK06
+$REF:___fsmul_STK05
+$REF:___fsmul_STK04
+$REF:___fsmul_STK03
+$REF:___fsmul_STK02
+$REF:___fsmul_STK01
+$REF:___fsmul_STK00
+$REF:___fs2slong_STK02
+$REF:___fs2slong_STK01
+$REF:___fs2slong_STK00
+$AREA:_CODE:1:0:0:0
+$AREA:CCODE:1:0:0:0
+$FUNC:0:_DispalyBatteryCapacityLow:",obj/display.asm:54"
+$LAB:57:_DispalyBatteryCapacityLow:",obj/display.asm:57"
+$WDATAH:58:1:1:0x6:",obj/display.asm:58"
+$WDATA:58:1:1:0x90:",obj/display.asm:58"
+$WDATAH:59:1:1:0x66:",obj/display.asm:59"
+$WDATA:59:1:1:0x5F:",obj/display.asm:59"
+$WDATAH:61:1:1:0x0:",obj/display.asm:61"
+$WDATA:61:1:1:0xA:",obj/display.asm:61"
+$ENDFUNC
+$FUNC:0:_DisplayBatteryCapacityHalf:",obj/display.asm:69"
+$LAB:72:_DisplayBatteryCapacityHalf:",obj/display.asm:72"
+$WDATAH:73:1:1:0x6:",obj/display.asm:73"
+$WDATA:73:1:1:0xD0:",obj/display.asm:73"
+$WDATAH:74:1:1:0x66:",obj/display.asm:74"
+$WDATA:74:1:1:0x5F:",obj/display.asm:74"
+$WDATAH:76:1:1:0x0:",obj/display.asm:76"
+$WDATA:76:1:1:0xA:",obj/display.asm:76"
+$ENDFUNC
+$FUNC:0:_DisplayBatteryCapacityFull:",obj/display.asm:84"
+$LAB:87:_DisplayBatteryCapacityFull:",obj/display.asm:87"
+$WDATAH:88:1:1:0xA:",obj/display.asm:88"
+$WDATA:88:1:1:0x5F:",obj/display.asm:88"
+$WDATAH:90:1:1:0x0:",obj/display.asm:90"
+$WDATA:90:1:1:0xA:",obj/display.asm:90"
+$ENDFUNC
+$FUNC:0:_DisplayLLL:",obj/display.asm:98"
+$LAB:101:_DisplayLLL:",obj/display.asm:101"
+$WDATAH:102:1:1:0xC:",obj/display.asm:102"
+$WDATA:102:1:1:0x5F:",obj/display.asm:102"
+$WDATAH:104:1:1:0x6:",obj/display.asm:104"
+$WDATA:104:1:1:0x70:",obj/display.asm:104"
+$WDATAH:105:1:1:0x66:",obj/display.asm:105"
+$WDATA:105:1:1:0x60:",obj/display.asm:105"
+$WDATAH:107:1:1:0x66:",obj/display.asm:107"
+$WDATA:107:1:1:0x61:",obj/display.asm:107"
+$WDATAH:109:1:1:0x66:",obj/display.asm:109"
+$WDATA:109:1:1:0x62:",obj/display.asm:109"
+$WDATAH:111:1:1:0x0:",obj/display.asm:111"
+$WDATA:111:1:1:0xA:",obj/display.asm:111"
+$ENDFUNC
+$FUNC:0:_DisplayHHH:",obj/display.asm:119"
+$LAB:122:_DisplayHHH:",obj/display.asm:122"
+$WDATAH:123:1:1:0xC:",obj/display.asm:123"
+$WDATA:123:1:1:0x5F:",obj/display.asm:123"
+$WDATAH:125:1:1:0x6:",obj/display.asm:125"
+$WDATA:125:1:1:0x6E:",obj/display.asm:125"
+$WDATAH:126:1:1:0x66:",obj/display.asm:126"
+$WDATA:126:1:1:0x60:",obj/display.asm:126"
+$WDATAH:128:1:1:0x66:",obj/display.asm:128"
+$WDATA:128:1:1:0x61:",obj/display.asm:128"
+$WDATAH:130:1:1:0x66:",obj/display.asm:130"
+$WDATA:130:1:1:0x62:",obj/display.asm:130"
+$WDATAH:132:1:1:0x0:",obj/display.asm:132"
+$WDATA:132:1:1:0xA:",obj/display.asm:132"
+$ENDFUNC
+$FUNC:4:_Reverse_Data:",obj/display.asm:144":$C:__mullong:$C:__modslong\
+:$C:___slong2fs:$C:___fsmul:$C:___fs2slong:$L:r0x116B:$L:_Reverse_Data_STK00\
+:$L:_Reverse_Data_STK01:$L:_Reverse_Data_STK02:$L:r0x116C:$L:r0x116D:$L:r0x116E\
+:$L:r0x116F:$L:r0x1173:$L:r0x1172:$L:r0x1171:$L:r0x1170:$L:r0x1177
+$LAB:147:_Reverse_Data:",obj/display.asm:147"
+$WDATAH:148:1:1:(0x66 | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:148"
+$WDATA:148:1:1:(r0x116B & 0xFF):",obj/display.asm:148"
+$WDATAH:150:1:1:(0xC | { (r0x116C >> 0x8) & 0x1 }):",obj/display.asm:150"
+$WDATA:150:1:1:(r0x116C & 0xFF):",obj/display.asm:150"
+$WDATAH:151:1:1:(0xC | { (r0x116D >> 0x8) & 0x1 }):",obj/display.asm:151"
+$WDATA:151:1:1:(r0x116D & 0xFF):",obj/display.asm:151"
+$WDATAH:152:1:1:(0xC | { (r0x116E >> 0x8) & 0x1 }):",obj/display.asm:152"
+$WDATA:152:1:1:(r0x116E & 0xFF):",obj/display.asm:152"
+$WDATAH:153:1:1:(0xC | { (r0x116F >> 0x8) & 0x1 }):",obj/display.asm:153"
+$WDATA:153:1:1:(r0x116F & 0xFF):",obj/display.asm:153"
+$LAB:154:_00152_DS_:",obj/display.asm:154"
+$WDATAH:156:1:1:(0x64 | { (_Reverse_Data_STK02 >> 0x8) & 0x1 }):",obj/display.asm:156"
+$WDATA:156:1:1:(_Reverse_Data_STK02 & 0xFF):",obj/display.asm:156"
+$WDATAH:157:1:1:(0x2C | { (_Reverse_Data_STK01 >> 0x8) & 0x1 }):",obj/display.asm:157"
+$WDATA:157:1:1:(_Reverse_Data_STK01 & 0xFF):",obj/display.asm:157"
+$WDATAH:158:1:1:(0x2C | { (_Reverse_Data_STK00 >> 0x8) & 0x1 }):",obj/display.asm:158"
+$WDATA:158:1:1:(_Reverse_Data_STK00 & 0xFF):",obj/display.asm:158"
+$WDATAH:159:1:1:(0x2C | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:159"
+$WDATA:159:1:1:(r0x116B & 0xFF):",obj/display.asm:159"
+$WDATAS:160:1:1:0xA0:",obj/display.asm:160"
+$WDATA:160:1:1:0x2B:",obj/display.asm:160"
+$WDATAH:161:1:1:0xC2:",obj/display.asm:161"
+$WDATA:161:1:1:{ (_00154_DS_ >> 0xD) & 0xFF }:",obj/display.asm:161"
+$WDATAH:161:1:1:(((_00154_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:161"
+$WDATA:161:1:1:((_00154_DS_ >> 0x1) & 0xFF):",obj/display.asm:161"
+$WDATAH:163:1:1:(0x64 | { (r0x116C >> 0x8) & 0x1 }):",obj/display.asm:163"
+$WDATA:163:1:1:(r0x116C & 0xFF):",obj/display.asm:163"
+$WDATAH:164:1:1:(0x66 | { (__mullong_STK06 >> 0x8) & 0x1 }):",obj/display.asm:164"
+$WDATA:164:1:1:(__mullong_STK06 & 0xFF):",obj/display.asm:164"
+$WDATAH:165:1:1:(0x64 | { (r0x116D >> 0x8) & 0x1 }):",obj/display.asm:165"
+$WDATA:165:1:1:(r0x116D & 0xFF):",obj/display.asm:165"
+$WDATAH:166:1:1:(0x66 | { (__mullong_STK05 >> 0x8) & 0x1 }):",obj/display.asm:166"
+$WDATA:166:1:1:(__mullong_STK05 & 0xFF):",obj/display.asm:166"
+$WDATAH:167:1:1:(0x64 | { (r0x116E >> 0x8) & 0x1 }):",obj/display.asm:167"
+$WDATA:167:1:1:(r0x116E & 0xFF):",obj/display.asm:167"
+$WDATAH:168:1:1:(0x66 | { (__mullong_STK04 >> 0x8) & 0x1 }):",obj/display.asm:168"
+$WDATA:168:1:1:(__mullong_STK04 & 0xFF):",obj/display.asm:168"
+$WDATAH:169:1:1:(0x64 | { (r0x116F >> 0x8) & 0x1 }):",obj/display.asm:169"
+$WDATA:169:1:1:(r0x116F & 0xFF):",obj/display.asm:169"
+$WDATAH:170:1:1:(0x66 | { (__mullong_STK03 >> 0x8) & 0x1 }):",obj/display.asm:170"
+$WDATA:170:1:1:(__mullong_STK03 & 0xFF):",obj/display.asm:170"
+$WDATAH:171:1:1:0x6:",obj/display.asm:171"
+$WDATA:171:1:1:0xA:",obj/display.asm:171"
+$WDATAH:172:1:1:(0x66 | { (__mullong_STK02 >> 0x8) & 0x1 }):",obj/display.asm:172"
+$WDATA:172:1:1:(__mullong_STK02 & 0xFF):",obj/display.asm:172"
+$WDATAH:173:1:1:(0xC | { (__mullong_STK01 >> 0x8) & 0x1 }):",obj/display.asm:173"
+$WDATA:173:1:1:(__mullong_STK01 & 0xFF):",obj/display.asm:173"
+$WDATAH:174:1:1:(0xC | { (__mullong_STK00 >> 0x8) & 0x1 }):",obj/display.asm:174"
+$WDATA:174:1:1:(__mullong_STK00 & 0xFF):",obj/display.asm:174"
+$WDATAH:175:1:1:0x6:",obj/display.asm:175"
+$WDATA:175:1:1:0x0:",obj/display.asm:175"
+$WDATAH:176:1:1:0xC0:",obj/display.asm:176"
+$WDATA:176:1:1:{ (__mullong >> 0xD) & 0xFF }:",obj/display.asm:176"
+$WDATAH:176:1:1:(((__mullong >> 0x9) & 0xF) | 0xF0):",obj/display.asm:176"
+$WDATA:176:1:1:((__mullong >> 0x1) & 0xFF):",obj/display.asm:176"
+$WDATAH:178:1:1:(0x66 | { (r0x1173 >> 0x8) & 0x1 }):",obj/display.asm:178"
+$WDATA:178:1:1:(r0x1173 & 0xFF):",obj/display.asm:178"
+$WDATAH:179:1:1:(0x64 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:179"
+$WDATA:179:1:1:(STK00 & 0xFF):",obj/display.asm:179"
+$WDATAH:180:1:1:(0x66 | { (r0x1172 >> 0x8) & 0x1 }):",obj/display.asm:180"
+$WDATA:180:1:1:(r0x1172 & 0xFF):",obj/display.asm:180"
+$WDATAH:181:1:1:(0x64 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:181"
+$WDATA:181:1:1:(STK01 & 0xFF):",obj/display.asm:181"
+$WDATAH:182:1:1:(0x66 | { (r0x1171 >> 0x8) & 0x1 }):",obj/display.asm:182"
+$WDATA:182:1:1:(r0x1171 & 0xFF):",obj/display.asm:182"
+$WDATAH:183:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:183"
+$WDATA:183:1:1:(STK02 & 0xFF):",obj/display.asm:183"
+$WDATAH:184:1:1:(0x66 | { (r0x1170 >> 0x8) & 0x1 }):",obj/display.asm:184"
+$WDATA:184:1:1:(r0x1170 & 0xFF):",obj/display.asm:184"
+$WDATAH:185:1:1:0x6:",obj/display.asm:185"
+$WDATA:185:1:1:0xA:",obj/display.asm:185"
+$WDATAH:186:1:1:(0x66 | { (__modslong_STK06 >> 0x8) & 0x1 }):",obj/display.asm:186"
+$WDATA:186:1:1:(__modslong_STK06 & 0xFF):",obj/display.asm:186"
+$WDATAH:187:1:1:(0xC | { (__modslong_STK05 >> 0x8) & 0x1 }):",obj/display.asm:187"
+$WDATA:187:1:1:(__modslong_STK05 & 0xFF):",obj/display.asm:187"
+$WDATAH:188:1:1:(0xC | { (__modslong_STK04 >> 0x8) & 0x1 }):",obj/display.asm:188"
+$WDATA:188:1:1:(__modslong_STK04 & 0xFF):",obj/display.asm:188"
+$WDATAH:189:1:1:(0xC | { (__modslong_STK03 >> 0x8) & 0x1 }):",obj/display.asm:189"
+$WDATA:189:1:1:(__modslong_STK03 & 0xFF):",obj/display.asm:189"
+$WDATAH:190:1:1:(0x64 | { (_Reverse_Data_STK02 >> 0x8) & 0x1 }):",obj/display.asm:190"
+$WDATA:190:1:1:(_Reverse_Data_STK02 & 0xFF):",obj/display.asm:190"
+$WDATAH:191:1:1:(0x66 | { (__modslong_STK02 >> 0x8) & 0x1 }):",obj/display.asm:191"
+$WDATA:191:1:1:(__modslong_STK02 & 0xFF):",obj/display.asm:191"
+$WDATAH:192:1:1:(0x64 | { (_Reverse_Data_STK01 >> 0x8) & 0x1 }):",obj/display.asm:192"
+$WDATA:192:1:1:(_Reverse_Data_STK01 & 0xFF):",obj/display.asm:192"
+$WDATAH:193:1:1:(0x66 | { (__modslong_STK01 >> 0x8) & 0x1 }):",obj/display.asm:193"
+$WDATA:193:1:1:(__modslong_STK01 & 0xFF):",obj/display.asm:193"
+$WDATAH:194:1:1:(0x64 | { (_Reverse_Data_STK00 >> 0x8) & 0x1 }):",obj/display.asm:194"
+$WDATA:194:1:1:(_Reverse_Data_STK00 & 0xFF):",obj/display.asm:194"
+$WDATAH:195:1:1:(0x66 | { (__modslong_STK00 >> 0x8) & 0x1 }):",obj/display.asm:195"
+$WDATA:195:1:1:(__modslong_STK00 & 0xFF):",obj/display.asm:195"
+$WDATAH:196:1:1:(0x64 | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:196"
+$WDATA:196:1:1:(r0x116B & 0xFF):",obj/display.asm:196"
+$WDATAH:197:1:1:0xC0:",obj/display.asm:197"
+$WDATA:197:1:1:{ (__modslong >> 0xD) & 0xFF }:",obj/display.asm:197"
+$WDATAH:197:1:1:(((__modslong >> 0x9) & 0xF) | 0xF0):",obj/display.asm:197"
+$WDATA:197:1:1:((__modslong >> 0x1) & 0xFF):",obj/display.asm:197"
+$WDATAH:199:1:1:(0x66 | { (r0x1177 >> 0x8) & 0x1 }):",obj/display.asm:199"
+$WDATA:199:1:1:(r0x1177 & 0xFF):",obj/display.asm:199"
+$WDATAH:200:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:200"
+$WDATA:200:1:1:(STK02 & 0xFF):",obj/display.asm:200"
+$WDATAH:201:1:1:(0x10 | { (r0x1170 >> 0x8) & 0x1 }):",obj/display.asm:201"
+$WDATA:201:1:1:(r0x1170 & 0xFF):",obj/display.asm:201"
+$WDATAH:202:1:1:(0x66 | { (r0x116C >> 0x8) & 0x1 }):",obj/display.asm:202"
+$WDATA:202:1:1:(r0x116C & 0xFF):",obj/display.asm:202"
+$WDATAH:203:1:1:(0x64 | { (r0x1171 >> 0x8) & 0x1 }):",obj/display.asm:203"
+$WDATA:203:1:1:(r0x1171 & 0xFF):",obj/display.asm:203"
+$WDATAH:204:1:1:(0x14 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:204"
+$WDATA:204:1:1:(STK01 & 0xFF):",obj/display.asm:204"
+$WDATAH:205:1:1:(0x66 | { (r0x116D >> 0x8) & 0x1 }):",obj/display.asm:205"
+$WDATA:205:1:1:(r0x116D & 0xFF):",obj/display.asm:205"
+$WDATAH:206:1:1:(0x64 | { (r0x1172 >> 0x8) & 0x1 }):",obj/display.asm:206"
+$WDATA:206:1:1:(r0x1172 & 0xFF):",obj/display.asm:206"
+$WDATAH:207:1:1:(0x14 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:207"
+$WDATA:207:1:1:(STK00 & 0xFF):",obj/display.asm:207"
+$WDATAH:208:1:1:(0x66 | { (r0x116E >> 0x8) & 0x1 }):",obj/display.asm:208"
+$WDATA:208:1:1:(r0x116E & 0xFF):",obj/display.asm:208"
+$WDATAH:209:1:1:(0x64 | { (r0x1173 >> 0x8) & 0x1 }):",obj/display.asm:209"
+$WDATA:209:1:1:(r0x1173 & 0xFF):",obj/display.asm:209"
+$WDATAH:210:1:1:(0x14 | { (r0x1177 >> 0x8) & 0x1 }):",obj/display.asm:210"
+$WDATA:210:1:1:(r0x1177 & 0xFF):",obj/display.asm:210"
+$WDATAH:211:1:1:(0x66 | { (r0x116F >> 0x8) & 0x1 }):",obj/display.asm:211"
+$WDATA:211:1:1:(r0x116F & 0xFF):",obj/display.asm:211"
+$WDATAH:213:1:1:(0x64 | { (_Reverse_Data_STK02 >> 0x8) & 0x1 }):",obj/display.asm:213"
+$WDATA:213:1:1:(_Reverse_Data_STK02 & 0xFF):",obj/display.asm:213"
+$WDATAH:214:1:1:(0x66 | { (___slong2fs_STK02 >> 0x8) & 0x1 }):",obj/display.asm:214"
+$WDATA:214:1:1:(___slong2fs_STK02 & 0xFF):",obj/display.asm:214"
+$WDATAH:215:1:1:(0x64 | { (_Reverse_Data_STK01 >> 0x8) & 0x1 }):",obj/display.asm:215"
+$WDATA:215:1:1:(_Reverse_Data_STK01 & 0xFF):",obj/display.asm:215"
+$WDATAH:216:1:1:(0x66 | { (___slong2fs_STK01 >> 0x8) & 0x1 }):",obj/display.asm:216"
+$WDATA:216:1:1:(___slong2fs_STK01 & 0xFF):",obj/display.asm:216"
+$WDATAH:217:1:1:(0x64 | { (_Reverse_Data_STK00 >> 0x8) & 0x1 }):",obj/display.asm:217"
+$WDATA:217:1:1:(_Reverse_Data_STK00 & 0xFF):",obj/display.asm:217"
+$WDATAH:218:1:1:(0x66 | { (___slong2fs_STK00 >> 0x8) & 0x1 }):",obj/display.asm:218"
+$WDATA:218:1:1:(___slong2fs_STK00 & 0xFF):",obj/display.asm:218"
+$WDATAH:219:1:1:(0x64 | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:219"
+$WDATA:219:1:1:(r0x116B & 0xFF):",obj/display.asm:219"
+$WDATAH:220:1:1:0xC0:",obj/display.asm:220"
+$WDATA:220:1:1:{ (___slong2fs >> 0xD) & 0xFF }:",obj/display.asm:220"
+$WDATAH:220:1:1:(((___slong2fs >> 0x9) & 0xF) | 0xF0):",obj/display.asm:220"
+$WDATA:220:1:1:((___slong2fs >> 0x1) & 0xFF):",obj/display.asm:220"
+$WDATAH:222:1:1:(0x66 | { (r0x1173 >> 0x8) & 0x1 }):",obj/display.asm:222"
+$WDATA:222:1:1:(r0x1173 & 0xFF):",obj/display.asm:222"
+$WDATAH:223:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:223"
+$WDATA:223:1:1:(STK02 & 0xFF):",obj/display.asm:223"
+$WDATAH:224:1:1:(0x66 | { (___fsmul_STK06 >> 0x8) & 0x1 }):",obj/display.asm:224"
+$WDATA:224:1:1:(___fsmul_STK06 & 0xFF):",obj/display.asm:224"
+$WDATAH:225:1:1:(0x64 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:225"
+$WDATA:225:1:1:(STK01 & 0xFF):",obj/display.asm:225"
+$WDATAH:226:1:1:(0x66 | { (___fsmul_STK05 >> 0x8) & 0x1 }):",obj/display.asm:226"
+$WDATA:226:1:1:(___fsmul_STK05 & 0xFF):",obj/display.asm:226"
+$WDATAH:227:1:1:(0x64 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:227"
+$WDATA:227:1:1:(STK00 & 0xFF):",obj/display.asm:227"
+$WDATAH:228:1:1:(0x66 | { (___fsmul_STK04 >> 0x8) & 0x1 }):",obj/display.asm:228"
+$WDATA:228:1:1:(___fsmul_STK04 & 0xFF):",obj/display.asm:228"
+$WDATAH:229:1:1:(0x64 | { (r0x1173 >> 0x8) & 0x1 }):",obj/display.asm:229"
+$WDATA:229:1:1:(r0x1173 & 0xFF):",obj/display.asm:229"
+$WDATAH:230:1:1:(0x66 | { (___fsmul_STK03 >> 0x8) & 0x1 }):",obj/display.asm:230"
+$WDATA:230:1:1:(___fsmul_STK03 & 0xFF):",obj/display.asm:230"
+$WDATAH:231:1:1:0x6:",obj/display.asm:231"
+$WDATA:231:1:1:0xCD:",obj/display.asm:231"
+$WDATAH:232:1:1:(0x66 | { (___fsmul_STK02 >> 0x8) & 0x1 }):",obj/display.asm:232"
+$WDATA:232:1:1:(___fsmul_STK02 & 0xFF):",obj/display.asm:232"
+$WDATAH:233:1:1:0x6:",obj/display.asm:233"
+$WDATA:233:1:1:0xCC:",obj/display.asm:233"
+$WDATAH:234:1:1:(0x66 | { (___fsmul_STK01 >> 0x8) & 0x1 }):",obj/display.asm:234"
+$WDATA:234:1:1:(___fsmul_STK01 & 0xFF):",obj/display.asm:234"
+$WDATAH:235:1:1:(0x66 | { (___fsmul_STK00 >> 0x8) & 0x1 }):",obj/display.asm:235"
+$WDATA:235:1:1:(___fsmul_STK00 & 0xFF):",obj/display.asm:235"
+$WDATAH:236:1:1:0x6:",obj/display.asm:236"
+$WDATA:236:1:1:0x3D:",obj/display.asm:236"
+$WDATAH:237:1:1:0xC0:",obj/display.asm:237"
+$WDATA:237:1:1:{ (___fsmul >> 0xD) & 0xFF }:",obj/display.asm:237"
+$WDATAH:237:1:1:(((___fsmul >> 0x9) & 0xF) | 0xF0):",obj/display.asm:237"
+$WDATA:237:1:1:((___fsmul >> 0x1) & 0xFF):",obj/display.asm:237"
+$WDATAH:239:1:1:(0x66 | { (r0x1173 >> 0x8) & 0x1 }):",obj/display.asm:239"
+$WDATA:239:1:1:(r0x1173 & 0xFF):",obj/display.asm:239"
+$WDATAH:240:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:240"
+$WDATA:240:1:1:(STK02 & 0xFF):",obj/display.asm:240"
+$WDATAH:241:1:1:(0x66 | { (___fs2slong_STK02 >> 0x8) & 0x1 }):",obj/display.asm:241"
+$WDATA:241:1:1:(___fs2slong_STK02 & 0xFF):",obj/display.asm:241"
+$WDATAH:242:1:1:(0x64 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:242"
+$WDATA:242:1:1:(STK01 & 0xFF):",obj/display.asm:242"
+$WDATAH:243:1:1:(0x66 | { (___fs2slong_STK01 >> 0x8) & 0x1 }):",obj/display.asm:243"
+$WDATA:243:1:1:(___fs2slong_STK01 & 0xFF):",obj/display.asm:243"
+$WDATAH:244:1:1:(0x64 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:244"
+$WDATA:244:1:1:(STK00 & 0xFF):",obj/display.asm:244"
+$WDATAH:245:1:1:(0x66 | { (___fs2slong_STK00 >> 0x8) & 0x1 }):",obj/display.asm:245"
+$WDATA:245:1:1:(___fs2slong_STK00 & 0xFF):",obj/display.asm:245"
+$WDATAH:246:1:1:(0x64 | { (r0x1173 >> 0x8) & 0x1 }):",obj/display.asm:246"
+$WDATA:246:1:1:(r0x1173 & 0xFF):",obj/display.asm:246"
+$WDATAH:247:1:1:0xC0:",obj/display.asm:247"
+$WDATA:247:1:1:{ (___fs2slong >> 0xD) & 0xFF }:",obj/display.asm:247"
+$WDATAH:247:1:1:(((___fs2slong >> 0x9) & 0xF) | 0xF0):",obj/display.asm:247"
+$WDATA:247:1:1:((___fs2slong >> 0x1) & 0xFF):",obj/display.asm:247"
+$WDATAH:249:1:1:(0x66 | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:249"
+$WDATA:249:1:1:(r0x116B & 0xFF):",obj/display.asm:249"
+$WDATAH:250:1:1:(0x64 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:250"
+$WDATA:250:1:1:(STK00 & 0xFF):",obj/display.asm:250"
+$WDATAH:251:1:1:(0x66 | { (_Reverse_Data_STK00 >> 0x8) & 0x1 }):",obj/display.asm:251"
+$WDATA:251:1:1:(_Reverse_Data_STK00 & 0xFF):",obj/display.asm:251"
+$WDATAH:252:1:1:(0x64 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:252"
+$WDATA:252:1:1:(STK01 & 0xFF):",obj/display.asm:252"
+$WDATAH:253:1:1:(0x66 | { (_Reverse_Data_STK01 >> 0x8) & 0x1 }):",obj/display.asm:253"
+$WDATA:253:1:1:(_Reverse_Data_STK01 & 0xFF):",obj/display.asm:253"
+$WDATAH:254:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:254"
+$WDATA:254:1:1:(STK02 & 0xFF):",obj/display.asm:254"
+$WDATAH:255:1:1:(0x66 | { (_Reverse_Data_STK02 >> 0x8) & 0x1 }):",obj/display.asm:255"
+$WDATA:255:1:1:(_Reverse_Data_STK02 & 0xFF):",obj/display.asm:255"
+$WDATAH:256:1:1:0xC2:",obj/display.asm:256"
+$WDATA:256:1:1:{ (_00152_DS_ >> 0xD) & 0xFF }:",obj/display.asm:256"
+$WDATAH:256:1:1:(((_00152_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:256"
+$WDATA:256:1:1:((_00152_DS_ >> 0x1) & 0xFF):",obj/display.asm:256"
+$LAB:257:_00154_DS_:",obj/display.asm:257"
+$WDATAS:259:1:1:(0xBE | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:259"
+$WDATA:259:1:1:(r0x116B & 0xFF):",obj/display.asm:259"
+$WDATAH:260:1:1:0xC2:",obj/display.asm:260"
+$WDATA:260:1:1:{ (_00156_DS_ >> 0xD) & 0xFF }:",obj/display.asm:260"
+$WDATAH:260:1:1:(((_00156_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:260"
+$WDATA:260:1:1:((_00156_DS_ >> 0x1) & 0xFF):",obj/display.asm:260"
+$WDATAH:261:1:1:(0x24 | { (r0x116C >> 0x8) & 0x1 }):",obj/display.asm:261"
+$WDATA:261:1:1:(r0x116C & 0xFF):",obj/display.asm:261"
+$WDATAH:262:1:1:(0x66 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:262"
+$WDATA:262:1:1:(STK02 & 0xFF):",obj/display.asm:262"
+$WDATAH:263:1:1:(0x24 | { (r0x116D >> 0x8) & 0x1 }):",obj/display.asm:263"
+$WDATA:263:1:1:(r0x116D & 0xFF):",obj/display.asm:263"
+$WDATAH:264:1:1:(0x66 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:264"
+$WDATA:264:1:1:(STK01 & 0xFF):",obj/display.asm:264"
+$WDATAH:265:1:1:(0x24 | { (r0x116E >> 0x8) & 0x1 }):",obj/display.asm:265"
+$WDATA:265:1:1:(r0x116E & 0xFF):",obj/display.asm:265"
+$WDATAH:266:1:1:(0x66 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:266"
+$WDATA:266:1:1:(STK00 & 0xFF):",obj/display.asm:266"
+$WDATAH:267:1:1:(0x24 | { (r0x116F >> 0x8) & 0x1 }):",obj/display.asm:267"
+$WDATA:267:1:1:(r0x116F & 0xFF):",obj/display.asm:267"
+$WDATAH:268:1:1:(0x66 | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:268"
+$WDATA:268:1:1:(r0x116B & 0xFF):",obj/display.asm:268"
+$WDATAH:269:1:1:(0x3A | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:269"
+$WDATA:269:1:1:(STK02 & 0xFF):",obj/display.asm:269"
+$WDATAH:270:1:1:0x6:",obj/display.asm:270"
+$WDATA:270:1:1:0x0:",obj/display.asm:270"
+$WDATAH:271:1:1:(0x16 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:271"
+$WDATA:271:1:1:(STK01 & 0xFF):",obj/display.asm:271"
+$WDATAH:272:1:1:(0x16 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:272"
+$WDATA:272:1:1:(STK00 & 0xFF):",obj/display.asm:272"
+$WDATAH:273:1:1:(0x14 | { (r0x116B >> 0x8) & 0x1 }):",obj/display.asm:273"
+$WDATA:273:1:1:(r0x116B & 0xFF):",obj/display.asm:273"
+$WDATAH:274:1:1:0xC2:",obj/display.asm:274"
+$WDATA:274:1:1:{ (_00158_DS_ >> 0xD) & 0xFF }:",obj/display.asm:274"
+$WDATAH:274:1:1:(((_00158_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:274"
+$WDATA:274:1:1:((_00158_DS_ >> 0x1) & 0xFF):",obj/display.asm:274"
+$LAB:275:_00156_DS_:",obj/display.asm:275"
+$WDATAH:277:1:1:(0x64 | { (r0x116C >> 0x8) & 0x1 }):",obj/display.asm:277"
+$WDATA:277:1:1:(r0x116C & 0xFF):",obj/display.asm:277"
+$WDATAH:278:1:1:(0x66 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:278"
+$WDATA:278:1:1:(STK02 & 0xFF):",obj/display.asm:278"
+$WDATAH:279:1:1:(0x64 | { (r0x116D >> 0x8) & 0x1 }):",obj/display.asm:279"
+$WDATA:279:1:1:(r0x116D & 0xFF):",obj/display.asm:279"
+$WDATAH:280:1:1:(0x66 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:280"
+$WDATA:280:1:1:(STK01 & 0xFF):",obj/display.asm:280"
+$WDATAH:281:1:1:(0x64 | { (r0x116E >> 0x8) & 0x1 }):",obj/display.asm:281"
+$WDATA:281:1:1:(r0x116E & 0xFF):",obj/display.asm:281"
+$WDATAH:282:1:1:(0x66 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:282"
+$WDATA:282:1:1:(STK00 & 0xFF):",obj/display.asm:282"
+$WDATAH:283:1:1:(0x64 | { (r0x116F >> 0x8) & 0x1 }):",obj/display.asm:283"
+$WDATA:283:1:1:(r0x116F & 0xFF):",obj/display.asm:283"
+$LAB:284:_00158_DS_:",obj/display.asm:284"
+$WDATAH:286:1:1:0x0:",obj/display.asm:286"
+$WDATA:286:1:1:0xA:",obj/display.asm:286"
+$ENDFUNC
+$FUNC:2:_Delay:",obj/display.asm:294":$L:r0x1166:$L:_Delay_STK00
+$LAB:297:_Delay:",obj/display.asm:297"
+$WDATAH:298:1:1:(0x66 | { (r0x1166 >> 0x8) & 0x1 }):",obj/display.asm:298"
+$WDATA:298:1:1:(r0x1166 & 0xFF):",obj/display.asm:298"
+$LAB:299:_00145_DS_:",obj/display.asm:299"
+$WDATAH:301:1:1:(0x64 | { (_Delay_STK00 >> 0x8) & 0x1 }):",obj/display.asm:301"
+$WDATA:301:1:1:(_Delay_STK00 & 0xFF):",obj/display.asm:301"
+$WDATAH:302:1:1:(0x2C | { (r0x1166 >> 0x8) & 0x1 }):",obj/display.asm:302"
+$WDATA:302:1:1:(r0x1166 & 0xFF):",obj/display.asm:302"
+$WDATAS:303:1:1:0xA0:",obj/display.asm:303"
+$WDATA:303:1:1:0x2B:",obj/display.asm:303"
+$WDATAH:304:1:1:0xC2:",obj/display.asm:304"
+$WDATA:304:1:1:{ (_00147_DS_ >> 0xD) & 0xFF }:",obj/display.asm:304"
+$WDATAH:304:1:1:(((_00147_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:304"
+$WDATA:304:1:1:((_00147_DS_ >> 0x1) & 0xFF):",obj/display.asm:304"
+$WDATAH:306:1:1:0x0:",obj/display.asm:306"
+$WDATA:306:1:1:0x0:",obj/display.asm:306"
+$WDATAH:308:1:1:(0x32 | { (_Delay_STK00 >> 0x8) & 0x1 }):",obj/display.asm:308"
+$WDATA:308:1:1:(_Delay_STK00 & 0xFF):",obj/display.asm:308"
+$WDATAS:309:1:1:(0x40 | { (_Delay_STK00 >> 0x8) & 0x1 }):",obj/display.asm:309"
+$WDATA:309:1:1:(_Delay_STK00 & 0xFF):",obj/display.asm:309"
+$WDATAH:310:1:1:(0x32 | { (r0x1166 >> 0x8) & 0x1 }):",obj/display.asm:310"
+$WDATA:310:1:1:(r0x1166 & 0xFF):",obj/display.asm:310"
+$WDATAH:311:1:1:0xC2:",obj/display.asm:311"
+$WDATA:311:1:1:{ (_00145_DS_ >> 0xD) & 0xFF }:",obj/display.asm:311"
+$WDATAH:311:1:1:(((_00145_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:311"
+$WDATA:311:1:1:((_00145_DS_ >> 0x1) & 0xFF):",obj/display.asm:311"
+$LAB:312:_00147_DS_:",obj/display.asm:312"
+$WDATAH:314:1:1:0x0:",obj/display.asm:314"
+$WDATA:314:1:1:0xA:",obj/display.asm:314"
+$ENDFUNC
+$FUNC:0:_DisplayUnit:",obj/display.asm:322"
+$LAB:325:_DisplayUnit:",obj/display.asm:325"
+$WDATAH:326:1:1:0xC:",obj/display.asm:326"
+$WDATA:326:1:1:0x5F:",obj/display.asm:326"
+$WDATAH:328:1:1:0x6:",obj/display.asm:328"
+$WDATA:328:1:1:0x2:",obj/display.asm:328"
+$WDATAH:329:1:1:0x66:",obj/display.asm:329"
+$WDATA:329:1:1:0x60:",obj/display.asm:329"
+$WDATAH:331:1:1:0x6:",obj/display.asm:331"
+$WDATA:331:1:1:0x26:",obj/display.asm:331"
+$WDATAH:332:1:1:0x66:",obj/display.asm:332"
+$WDATA:332:1:1:0x61:",obj/display.asm:332"
+$WDATAH:334:1:1:0x6:",obj/display.asm:334"
+$WDATA:334:1:1:0x7A:",obj/display.asm:334"
+$WDATAH:335:1:1:0x66:",obj/display.asm:335"
+$WDATA:335:1:1:0x62:",obj/display.asm:335"
+$WDATAH:337:1:1:0x0:",obj/display.asm:337"
+$WDATA:337:1:1:0xA:",obj/display.asm:337"
+$ENDFUNC
+$FUNC:0:_Display2Er:",obj/display.asm:345"
+$LAB:348:_Display2Er:",obj/display.asm:348"
+$WDATAH:349:1:1:0xC:",obj/display.asm:349"
+$WDATA:349:1:1:0x5F:",obj/display.asm:349"
+$WDATAH:351:1:1:0x6:",obj/display.asm:351"
+$WDATA:351:1:1:0xBC:",obj/display.asm:351"
+$WDATAH:352:1:1:0x66:",obj/display.asm:352"
+$WDATA:352:1:1:0x62:",obj/display.asm:352"
+$WDATAH:354:1:1:0x6:",obj/display.asm:354"
+$WDATA:354:1:1:0xF4:",obj/display.asm:354"
+$WDATAH:355:1:1:0x66:",obj/display.asm:355"
+$WDATA:355:1:1:0x61:",obj/display.asm:355"
+$WDATAH:357:1:1:0x6:",obj/display.asm:357"
+$WDATA:357:1:1:0x24:",obj/display.asm:357"
+$WDATAH:358:1:1:0x66:",obj/display.asm:358"
+$WDATA:358:1:1:0x60:",obj/display.asm:358"
+$WDATAH:360:1:1:0x0:",obj/display.asm:360"
+$WDATA:360:1:1:0xA:",obj/display.asm:360"
+$ENDFUNC
+$FUNC:2:_DisplayHex:",obj/display.asm:368"
+$LAB:371:_DisplayHex:",obj/display.asm:371"
+$WDATAH:372:1:1:0x0:",obj/display.asm:372"
+$WDATA:372:1:1:0xA:",obj/display.asm:372"
+$ENDFUNC
+$FUNC:4:_DisplayNum:",obj/display.asm:382":$C:__modslong:$C:__g2ptrget1\
+:$C:__g2ptrput1:$C:__divslong:$L:r0x1146:$L:_DisplayNum_STK00:$L:_DisplayNum_STK01\
+:$L:_DisplayNum_STK02:$L:r0x1147:$L:r0x1148:$L:r0x1149:$L:r0x114A
+$LAB:385:_DisplayNum:",obj/display.asm:385"
+$WDATAH:386:1:1:(0x66 | { (r0x1146 >> 0x8) & 0x1 }):",obj/display.asm:386"
+$WDATA:386:1:1:(r0x1146 & 0xFF):",obj/display.asm:386"
+$WDATAH:388:1:1:0x6:",obj/display.asm:388"
+$WDATA:388:1:1:0x62:",obj/display.asm:388"
+$WDATAH:389:1:1:(0x66 | { (r0x1147 >> 0x8) & 0x1 }):",obj/display.asm:389"
+$WDATA:389:1:1:(r0x1147 & 0xFF):",obj/display.asm:389"
+$WDATAH:390:1:1:0x6:",obj/display.asm:390"
+$WDATA:390:1:1:0x0:",obj/display.asm:390"
+$WDATAH:391:1:1:(0x66 | { (r0x1148 >> 0x8) & 0x1 }):",obj/display.asm:391"
+$WDATA:391:1:1:(r0x1148 & 0xFF):",obj/display.asm:391"
+$WDATAH:393:1:1:0x6:",obj/display.asm:393"
+$WDATA:393:1:1:0x3:",obj/display.asm:393"
+$WDATAH:394:1:1:(0x66 | { (r0x1149 >> 0x8) & 0x1 }):",obj/display.asm:394"
+$WDATA:394:1:1:(r0x1149 & 0xFF):",obj/display.asm:394"
+$LAB:395:_00125_DS_:",obj/display.asm:395"
+$WDATAH:397:1:1:0x6:",obj/display.asm:397"
+$WDATA:397:1:1:0xA:",obj/display.asm:397"
+$WDATAH:398:1:1:(0x66 | { (__modslong_STK06 >> 0x8) & 0x1 }):",obj/display.asm:398"
+$WDATA:398:1:1:(__modslong_STK06 & 0xFF):",obj/display.asm:398"
+$WDATAH:399:1:1:(0xC | { (__modslong_STK05 >> 0x8) & 0x1 }):",obj/display.asm:399"
+$WDATA:399:1:1:(__modslong_STK05 & 0xFF):",obj/display.asm:399"
+$WDATAH:400:1:1:(0xC | { (__modslong_STK04 >> 0x8) & 0x1 }):",obj/display.asm:400"
+$WDATA:400:1:1:(__modslong_STK04 & 0xFF):",obj/display.asm:400"
+$WDATAH:401:1:1:(0xC | { (__modslong_STK03 >> 0x8) & 0x1 }):",obj/display.asm:401"
+$WDATA:401:1:1:(__modslong_STK03 & 0xFF):",obj/display.asm:401"
+$WDATAH:402:1:1:(0x64 | { (_DisplayNum_STK02 >> 0x8) & 0x1 }):",obj/display.asm:402"
+$WDATA:402:1:1:(_DisplayNum_STK02 & 0xFF):",obj/display.asm:402"
+$WDATAH:403:1:1:(0x66 | { (__modslong_STK02 >> 0x8) & 0x1 }):",obj/display.asm:403"
+$WDATA:403:1:1:(__modslong_STK02 & 0xFF):",obj/display.asm:403"
+$WDATAH:404:1:1:(0x64 | { (_DisplayNum_STK01 >> 0x8) & 0x1 }):",obj/display.asm:404"
+$WDATA:404:1:1:(_DisplayNum_STK01 & 0xFF):",obj/display.asm:404"
+$WDATAH:405:1:1:(0x66 | { (__modslong_STK01 >> 0x8) & 0x1 }):",obj/display.asm:405"
+$WDATA:405:1:1:(__modslong_STK01 & 0xFF):",obj/display.asm:405"
+$WDATAH:406:1:1:(0x64 | { (_DisplayNum_STK00 >> 0x8) & 0x1 }):",obj/display.asm:406"
+$WDATA:406:1:1:(_DisplayNum_STK00 & 0xFF):",obj/display.asm:406"
+$WDATAH:407:1:1:(0x66 | { (__modslong_STK00 >> 0x8) & 0x1 }):",obj/display.asm:407"
+$WDATA:407:1:1:(__modslong_STK00 & 0xFF):",obj/display.asm:407"
+$WDATAH:408:1:1:(0x64 | { (r0x1146 >> 0x8) & 0x1 }):",obj/display.asm:408"
+$WDATA:408:1:1:(r0x1146 & 0xFF):",obj/display.asm:408"
+$WDATAH:409:1:1:0xC0:",obj/display.asm:409"
+$WDATA:409:1:1:{ (__modslong >> 0xD) & 0xFF }:",obj/display.asm:409"
+$WDATAH:409:1:1:(((__modslong >> 0x9) & 0xF) | 0xF0):",obj/display.asm:409"
+$WDATA:409:1:1:((__modslong >> 0x1) & 0xFF):",obj/display.asm:409"
+$WDATAH:410:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:410"
+$WDATA:410:1:1:(STK02 & 0xFF):",obj/display.asm:410"
+$WDATAH:411:1:1:0x4:",obj/display.asm:411"
+$WDATA:411:1:1:((_seg + 0x0) & 0xFF):",obj/display.asm:411"
+$WDATAH:412:1:1:(0x66 | { (r0x114A >> 0x8) & 0x1 }):",obj/display.asm:412"
+$WDATA:412:1:1:(r0x114A & 0xFF):",obj/display.asm:412"
+$WDATAH:413:1:1:0x6:",obj/display.asm:413"
+$WDATA:413:1:1:(((_seg + 0x0) >> 0x8) & 0xFF):",obj/display.asm:413"
+$WDATAH:414:1:1:(0x14 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:414"
+$WDATA:414:1:1:(STK01 & 0xFF):",obj/display.asm:414"
+$WDATAH:415:1:1:0xC6:",obj/display.asm:415"
+$WDATA:415:1:1:(r0x114A & 0x7F):",obj/display.asm:415"
+$WDATAH:415:1:1:(0xF0 | ((__g2ptrget1_STK00 >> 0x8) & 0xF)):",obj/display.asm:415"
+$WDATA:415:1:1:(__g2ptrget1_STK00 & 0xFF):",obj/display.asm:415"
+$WDATAH:416:1:1:0x2:",obj/display.asm:416"
+$WDATA:416:1:1:0x80:",obj/display.asm:416"
+$WDATAH:417:1:1:0xC0:",obj/display.asm:417"
+$WDATA:417:1:1:{ (__g2ptrget1 >> 0xD) & 0xFF }:",obj/display.asm:417"
+$WDATAH:417:1:1:(((__g2ptrget1 >> 0x9) & 0xF) | 0xF0):",obj/display.asm:417"
+$WDATA:417:1:1:((__g2ptrget1 >> 0x1) & 0xFF):",obj/display.asm:417"
+$WDATAH:419:1:1:(0x66 | { (__g2ptrput1_STK01 >> 0x8) & 0x1 }):",obj/display.asm:419"
+$WDATA:419:1:1:(__g2ptrput1_STK01 & 0xFF):",obj/display.asm:419"
+$WDATAH:420:1:1:(0x64 | { (r0x1147 >> 0x8) & 0x1 }):",obj/display.asm:420"
+$WDATA:420:1:1:(r0x1147 & 0xFF):",obj/display.asm:420"
+$WDATAH:421:1:1:(0x66 | { (__g2ptrput1_STK00 >> 0x8) & 0x1 }):",obj/display.asm:421"
+$WDATA:421:1:1:(__g2ptrput1_STK00 & 0xFF):",obj/display.asm:421"
+$WDATAH:422:1:1:(0x64 | { (r0x1148 >> 0x8) & 0x1 }):",obj/display.asm:422"
+$WDATA:422:1:1:(r0x1148 & 0xFF):",obj/display.asm:422"
+$WDATAH:423:1:1:0xC0:",obj/display.asm:423"
+$WDATA:423:1:1:{ (__g2ptrput1 >> 0xD) & 0xFF }:",obj/display.asm:423"
+$WDATAH:423:1:1:(((__g2ptrput1 >> 0x9) & 0xF) | 0xF0):",obj/display.asm:423"
+$WDATA:423:1:1:((__g2ptrput1 >> 0x1) & 0xFF):",obj/display.asm:423"
+$WDATAH:425:1:1:0x6:",obj/display.asm:425"
+$WDATA:425:1:1:0xA:",obj/display.asm:425"
+$WDATAH:426:1:1:(0x66 | { (__divslong_STK06 >> 0x8) & 0x1 }):",obj/display.asm:426"
+$WDATA:426:1:1:(__divslong_STK06 & 0xFF):",obj/display.asm:426"
+$WDATAH:427:1:1:(0xC | { (__divslong_STK05 >> 0x8) & 0x1 }):",obj/display.asm:427"
+$WDATA:427:1:1:(__divslong_STK05 & 0xFF):",obj/display.asm:427"
+$WDATAH:428:1:1:(0xC | { (__divslong_STK04 >> 0x8) & 0x1 }):",obj/display.asm:428"
+$WDATA:428:1:1:(__divslong_STK04 & 0xFF):",obj/display.asm:428"
+$WDATAH:429:1:1:(0xC | { (__divslong_STK03 >> 0x8) & 0x1 }):",obj/display.asm:429"
+$WDATA:429:1:1:(__divslong_STK03 & 0xFF):",obj/display.asm:429"
+$WDATAH:430:1:1:(0x64 | { (_DisplayNum_STK02 >> 0x8) & 0x1 }):",obj/display.asm:430"
+$WDATA:430:1:1:(_DisplayNum_STK02 & 0xFF):",obj/display.asm:430"
+$WDATAH:431:1:1:(0x66 | { (__divslong_STK02 >> 0x8) & 0x1 }):",obj/display.asm:431"
+$WDATA:431:1:1:(__divslong_STK02 & 0xFF):",obj/display.asm:431"
+$WDATAH:432:1:1:(0x64 | { (_DisplayNum_STK01 >> 0x8) & 0x1 }):",obj/display.asm:432"
+$WDATA:432:1:1:(_DisplayNum_STK01 & 0xFF):",obj/display.asm:432"
+$WDATAH:433:1:1:(0x66 | { (__divslong_STK01 >> 0x8) & 0x1 }):",obj/display.asm:433"
+$WDATA:433:1:1:(__divslong_STK01 & 0xFF):",obj/display.asm:433"
+$WDATAH:434:1:1:(0x64 | { (_DisplayNum_STK00 >> 0x8) & 0x1 }):",obj/display.asm:434"
+$WDATA:434:1:1:(_DisplayNum_STK00 & 0xFF):",obj/display.asm:434"
+$WDATAH:435:1:1:(0x66 | { (__divslong_STK00 >> 0x8) & 0x1 }):",obj/display.asm:435"
+$WDATA:435:1:1:(__divslong_STK00 & 0xFF):",obj/display.asm:435"
+$WDATAH:436:1:1:(0x64 | { (r0x1146 >> 0x8) & 0x1 }):",obj/display.asm:436"
+$WDATA:436:1:1:(r0x1146 & 0xFF):",obj/display.asm:436"
+$WDATAH:437:1:1:0xC0:",obj/display.asm:437"
+$WDATA:437:1:1:{ (__divslong >> 0xD) & 0xFF }:",obj/display.asm:437"
+$WDATAH:437:1:1:(((__divslong >> 0x9) & 0xF) | 0xF0):",obj/display.asm:437"
+$WDATA:437:1:1:((__divslong >> 0x1) & 0xFF):",obj/display.asm:437"
+$WDATAH:439:1:1:(0x66 | { (r0x1146 >> 0x8) & 0x1 }):",obj/display.asm:439"
+$WDATA:439:1:1:(r0x1146 & 0xFF):",obj/display.asm:439"
+$WDATAH:440:1:1:(0x64 | { (STK00 >> 0x8) & 0x1 }):",obj/display.asm:440"
+$WDATA:440:1:1:(STK00 & 0xFF):",obj/display.asm:440"
+$WDATAH:441:1:1:(0x66 | { (_DisplayNum_STK00 >> 0x8) & 0x1 }):",obj/display.asm:441"
+$WDATA:441:1:1:(_DisplayNum_STK00 & 0xFF):",obj/display.asm:441"
+$WDATAH:442:1:1:(0x64 | { (STK01 >> 0x8) & 0x1 }):",obj/display.asm:442"
+$WDATA:442:1:1:(STK01 & 0xFF):",obj/display.asm:442"
+$WDATAH:443:1:1:(0x66 | { (_DisplayNum_STK01 >> 0x8) & 0x1 }):",obj/display.asm:443"
+$WDATA:443:1:1:(_DisplayNum_STK01 & 0xFF):",obj/display.asm:443"
+$WDATAH:444:1:1:(0x64 | { (STK02 >> 0x8) & 0x1 }):",obj/display.asm:444"
+$WDATA:444:1:1:(STK02 & 0xFF):",obj/display.asm:444"
+$WDATAH:445:1:1:(0x66 | { (_DisplayNum_STK02 >> 0x8) & 0x1 }):",obj/display.asm:445"
+$WDATA:445:1:1:(_DisplayNum_STK02 & 0xFF):",obj/display.asm:445"
+$WDATAH:447:1:1:(0x32 | { (r0x1147 >> 0x8) & 0x1 }):",obj/display.asm:447"
+$WDATA:447:1:1:(r0x1147 & 0xFF):",obj/display.asm:447"
+$WDATAS:448:1:1:(0x40 | { (r0x1147 >> 0x8) & 0x1 }):",obj/display.asm:448"
+$WDATA:448:1:1:(r0x1147 & 0xFF):",obj/display.asm:448"
+$WDATAH:449:1:1:(0x32 | { (r0x1148 >> 0x8) & 0x1 }):",obj/display.asm:449"
+$WDATA:449:1:1:(r0x1148 & 0xFF):",obj/display.asm:449"
+$WDATAS:450:1:1:(0x36 | { (r0x1149 >> 0x8) & 0x1 }):",obj/display.asm:450"
+$WDATA:450:1:1:(r0x1149 & 0xFF):",obj/display.asm:450"
+$WDATAH:452:1:1:0xC2:",obj/display.asm:452"
+$WDATA:452:1:1:{ (_00125_DS_ >> 0xD) & 0xFF }:",obj/display.asm:452"
+$WDATAH:452:1:1:(((_00125_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:452"
+$WDATA:452:1:1:((_00125_DS_ >> 0x1) & 0xFF):",obj/display.asm:452"
+$WDATAS:454:1:1:(0xBC | { ((_adS + 0x6) >> 0x8) & 0x1 }):",obj/display.asm:454"
+$WDATA:454:1:1:((_adS + 0x6) & 0xFF):",obj/display.asm:454"
+$WDATAH:455:1:1:0xC2:",obj/display.asm:455"
+$WDATA:455:1:1:{ (_00121_DS_ >> 0xD) & 0xFF }:",obj/display.asm:455"
+$WDATAH:455:1:1:(((_00121_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:455"
+$WDATA:455:1:1:((_00121_DS_ >> 0x1) & 0xFF):",obj/display.asm:455"
+$WDATAH:457:1:1:0x6:",obj/display.asm:457"
+$WDATA:457:1:1:0x8:",obj/display.asm:457"
+$WDATAH:458:1:1:0x66:",obj/display.asm:458"
+$WDATA:458:1:1:0x5F:",obj/display.asm:458"
+$WDATAH:459:1:1:0xC2:",obj/display.asm:459"
+$WDATA:459:1:1:{ (_00126_DS_ >> 0xD) & 0xFF }:",obj/display.asm:459"
+$WDATAH:459:1:1:(((_00126_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:459"
+$WDATA:459:1:1:((_00126_DS_ >> 0x1) & 0xFF):",obj/display.asm:459"
+$LAB:460:_00121_DS_:",obj/display.asm:460"
+$WDATAH:462:1:1:0xC:",obj/display.asm:462"
+$WDATA:462:1:1:0x5F:",obj/display.asm:462"
+$LAB:463:_00126_DS_:",obj/display.asm:463"
+$WDATAH:465:1:1:0x0:",obj/display.asm:465"
+$WDATA:465:1:1:0xA:",obj/display.asm:465"
+$ENDFUNC
+$FUNC:0:_DisplayHycon:",obj/display.asm:473"
+$LAB:476:_DisplayHycon:",obj/display.asm:476"
+$WDATAH:477:1:1:0xC:",obj/display.asm:477"
+$WDATA:477:1:1:0x5F:",obj/display.asm:477"
+$WDATAH:479:1:1:0x6:",obj/display.asm:479"
+$WDATA:479:1:1:0x70:",obj/display.asm:479"
+$WDATAH:480:1:1:0x66:",obj/display.asm:480"
+$WDATA:480:1:1:0x60:",obj/display.asm:480"
+$WDATAH:482:1:1:0x66:",obj/display.asm:482"
+$WDATA:482:1:1:0x61:",obj/display.asm:482"
+$WDATAH:484:1:1:0x66:",obj/display.asm:484"
+$WDATA:484:1:1:0x62:",obj/display.asm:484"
+$WDATAH:486:1:1:0x66:",obj/display.asm:486"
+$WDATA:486:1:1:0x63:",obj/display.asm:486"
+$WDATAH:488:1:1:0x66:",obj/display.asm:488"
+$WDATA:488:1:1:0x64:",obj/display.asm:488"
+$WDATAH:490:1:1:0xC:",obj/display.asm:490"
+$WDATA:490:1:1:0x65:",obj/display.asm:490"
+$WDATAH:492:1:1:0x0:",obj/display.asm:492"
+$WDATA:492:1:1:0xA:",obj/display.asm:492"
+$ENDFUNC
+$FUNC:0:_ClearLCD:",obj/display.asm:500":$L:r0x1140
+$LAB:502:_ClearLCD:",obj/display.asm:502"
+$WDATAH:503:1:1:0x0:",obj/display.asm:503"
+$WDATA:503:1:1:0xC:",obj/display.asm:503"
+$WDATAH:503:1:1:0xF0:",obj/display.asm:503"
+$WDATA:503:1:1:0x5F:",obj/display.asm:503"
+$WDATAH:505:1:1:0x6:",obj/display.asm:505"
+$WDATA:505:1:1:0x6:",obj/display.asm:505"
+$WDATAH:506:1:1:(0x66 | { (r0x1140 >> 0x8) & 0x1 }):",obj/display.asm:506"
+$WDATA:506:1:1:(r0x1140 & 0xFF):",obj/display.asm:506"
+$LAB:507:_00110_DS_:",obj/display.asm:507"
+$WDATAH:509:1:1:0xC:",obj/display.asm:509"
+$WDATA:509:1:1:0x1:",obj/display.asm:509"
+$WDATAS:511:1:1:(0x36 | { (r0x1140 >> 0x8) & 0x1 }):",obj/display.asm:511"
+$WDATA:511:1:1:(r0x1140 & 0xFF):",obj/display.asm:511"
+$WDATAH:512:1:1:0xC2:",obj/display.asm:512"
+$WDATA:512:1:1:{ (_00110_DS_ >> 0xD) & 0xFF }:",obj/display.asm:512"
+$WDATAH:512:1:1:(((_00110_DS_ >> 0x9) & 0xF) | 0xF0):",obj/display.asm:512"
+$WDATA:512:1:1:((_00110_DS_ >> 0x1) & 0xFF):",obj/display.asm:512"
+$WDATAH:514:1:1:0x0:",obj/display.asm:514"
+$WDATA:514:1:1:0xA:",obj/display.asm:514"
+$ENDFUNC
+$FUNC:0:_GPIO_Iint:",obj/display.asm:522"
+$LAB:525:_GPIO_Iint:",obj/display.asm:525"
+$WDATAH:526:1:1:0x6:",obj/display.asm:526"
+$WDATA:526:1:1:0xDF:",obj/display.asm:526"
+$WDATAH:527:1:1:0x28:",obj/display.asm:527"
+$WDATA:527:1:1:0x48:",obj/display.asm:527"
+$WDATAH:528:1:1:0x2:",obj/display.asm:528"
+$WDATA:528:1:1:0x20:",obj/display.asm:528"
+$WDATAH:529:1:1:0x66:",obj/display.asm:529"
+$WDATA:529:1:1:0x48:",obj/display.asm:529"
+$WDATAH:531:1:1:0x6:",obj/display.asm:531"
+$WDATA:531:1:1:0xBF:",obj/display.asm:531"
+$WDATAH:532:1:1:0x28:",obj/display.asm:532"
+$WDATA:532:1:1:0x48:",obj/display.asm:532"
+$WDATAH:533:1:1:0x2:",obj/display.asm:533"
+$WDATA:533:1:1:0x40:",obj/display.asm:533"
+$WDATAH:534:1:1:0x66:",obj/display.asm:534"
+$WDATA:534:1:1:0x48:",obj/display.asm:534"
+$WDATAH:536:1:1:0x80:",obj/display.asm:536"
+$WDATA:536:1:1:0x48:",obj/display.asm:536"
+$WDATAH:538:1:1:0x0:",obj/display.asm:538"
+$WDATA:538:1:1:0xA:",obj/display.asm:538"
+$ENDFUNC
+$AREA:DSEG:2:0:0:0
+$LAB:744:_adS:",obj/display.asm:744"
+$BLANK:744:14:",obj/display.asm:744"
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:DSEG:2:0:0:0
+$AREA:IDATA:2:0:0:0
+$AREA:IDATAROM:1:0:0:0
+$AREA:UDATA:2:0:0:0
+$LAB:1059:r0x1140:",obj/display.asm:1059"
+$BLANK:1059:1:",obj/display.asm:1059"
+$LAB:1060:r0x1146:",obj/display.asm:1060"
+$BLANK:1060:1:",obj/display.asm:1060"
+$LAB:1061:r0x1147:",obj/display.asm:1061"
+$BLANK:1061:1:",obj/display.asm:1061"
+$LAB:1062:r0x1148:",obj/display.asm:1062"
+$BLANK:1062:1:",obj/display.asm:1062"
+$LAB:1063:r0x1149:",obj/display.asm:1063"
+$BLANK:1063:1:",obj/display.asm:1063"
+$LAB:1064:r0x114A:",obj/display.asm:1064"
+$BLANK:1064:1:",obj/display.asm:1064"
+$LAB:1065:r0x1166:",obj/display.asm:1065"
+$BLANK:1065:1:",obj/display.asm:1065"
+$LAB:1066:r0x116B:",obj/display.asm:1066"
+$BLANK:1066:1:",obj/display.asm:1066"
+$LAB:1067:r0x116C:",obj/display.asm:1067"
+$BLANK:1067:1:",obj/display.asm:1067"
+$LAB:1068:r0x116D:",obj/display.asm:1068"
+$BLANK:1068:1:",obj/display.asm:1068"
+$LAB:1069:r0x116E:",obj/display.asm:1069"
+$BLANK:1069:1:",obj/display.asm:1069"
+$LAB:1070:r0x116F:",obj/display.asm:1070"
+$BLANK:1070:1:",obj/display.asm:1070"
+$LAB:1071:r0x1170:",obj/display.asm:1071"
+$BLANK:1071:1:",obj/display.asm:1071"
+$LAB:1072:r0x1171:",obj/display.asm:1072"
+$BLANK:1072:1:",obj/display.asm:1072"
+$LAB:1073:r0x1172:",obj/display.asm:1073"
+$BLANK:1073:1:",obj/display.asm:1073"
+$LAB:1074:r0x1173:",obj/display.asm:1074"
+$BLANK:1074:1:",obj/display.asm:1074"
+$LAB:1075:r0x1177:",obj/display.asm:1075"
+$BLANK:1075:1:",obj/display.asm:1075"
+$AREA:UDATA:2:0:0:0
+$AREA:LOCALSTK:4:0:0:0
+$LAB:1077:_DisplayNum_STK00:",obj/display.asm:1077"
+$BLANK:1077:1:",obj/display.asm:1077"
+$LAB:1079:_DisplayNum_STK01:",obj/display.asm:1079"
+$BLANK:1079:1:",obj/display.asm:1079"
+$LAB:1081:_DisplayNum_STK02:",obj/display.asm:1081"
+$BLANK:1081:1:",obj/display.asm:1081"
+$LAB:1100:_Delay_STK00:",obj/display.asm:1100"
+$BLANK:1100:1:",obj/display.asm:1100"
+$LAB:1102:_Reverse_Data_STK00:",obj/display.asm:1102"
+$BLANK:1102:1:",obj/display.asm:1102"
+$LAB:1104:_Reverse_Data_STK01:",obj/display.asm:1104"
+$BLANK:1104:1:",obj/display.asm:1104"
+$LAB:1106:_Reverse_Data_STK02:",obj/display.asm:1106"
+$BLANK:1106:1:",obj/display.asm:1106"
+$AREA:CONST:1:0:0:0
+$LAB:1134:_seg:",obj/display.asm:1134"
+$WDATA:1135:0:1:0xFA:",obj/display.asm:1135"
+$WDATA:1136:0:1:0xA:",obj/display.asm:1136"
+$WDATA:1137:0:1:0xBC:",obj/display.asm:1137"
+$WDATA:1138:0:1:0x9E:",obj/display.asm:1138"
+$WDATA:1139:0:1:0x4E:",obj/display.asm:1139"
+$WDATA:1140:0:1:0xD6:",obj/display.asm:1140"
+$WDATA:1141:0:1:0xF6:",obj/display.asm:1141"
+$WDATA:1142:0:1:0xCA:",obj/display.asm:1142"
+$WDATA:1143:0:1:0xFE:",obj/display.asm:1143"
+$WDATA:1144:0:1:0xDE:",obj/display.asm:1144"
+$WDATA:1145:0:1:0xEE:",obj/display.asm:1145"
+$WDATA:1146:0:1:0x76:",obj/display.asm:1146"
+$WDATA:1147:0:1:0xF0:",obj/display.asm:1147"
+$WDATA:1148:0:1:0x3E:",obj/display.asm:1148"
+$WDATA:1149:0:1:0xF4:",obj/display.asm:1149"
+$WDATA:1150:0:1:0xE4:",obj/display.asm:1150"
+$WDATA:1151:0:1:0x6E:",obj/display.asm:1151"
+$WDATA:1152:0:1:0x2:",obj/display.asm:1152"
+$WDATA:1153:0:1:0x1E:",obj/display.asm:1153"
+$WDATA:1154:0:1:0x70:",obj/display.asm:1154"
+$WDATA:1155:0:1:0x26:",obj/display.asm:1155"
+$WDATA:1156:0:1:0x36:",obj/display.asm:1156"
+$WDATA:1157:0:1:0xEC:",obj/display.asm:1157"
+$WDATA:1158:0:1:0xCE:",obj/display.asm:1158"
+$WDATA:1159:0:1:0x24:",obj/display.asm:1159"
+$WDATA:1160:0:1:0x74:",obj/display.asm:1160"
+$WDATA:1161:0:1:0x32:",obj/display.asm:1161"
+$WDATA:1162:0:1:0x5E:",obj/display.asm:1162"
+$WDATA:1163:0:1:0x7A:",obj/display.asm:1163"
+$EQU:__SWTGTID:747:0xA43354DA
+$EQU:_INDF0:750:0x0
+$EQU:_POINC0:753:0x1
+$EQU:_PODEC0:756:0x2
+$EQU:_PRINC0:759:0x3
+$EQU:_PLUSW0:762:0x4
+$EQU:_INDF1:765:0x5
+$EQU:_POINC1:768:0x6
+$EQU:_PODEC1:771:0x7
+$EQU:_PRINC1:774:0x8
+$EQU:_PLUSW1:777:0x9
+$EQU:_INDF2:780:0xA
+$EQU:_POINC2:783:0xB
+$EQU:_PODEC2:786:0xC
+$EQU:_PRINC2:789:0xD
+$EQU:_PLUSW2:792:0xE
+$EQU:_FSR0H:795:0xF
+$EQU:_FSR0L:798:0x10
+$EQU:_FSR1H:801:0x11
+$EQU:_FSR1L:804:0x12
+$EQU:_FSR2H:807:0x13
+$EQU:_FSR2L:810:0x14
+$EQU:_TOSH:813:0x16
+$EQU:_TOSL:816:0x17
+$EQU:_SKCN:819:0x18
+$EQU:_PCLATH:822:0x1A
+$EQU:_PCLATL:825:0x1B
+$EQU:_TBLPTRH:828:0x1D
+$EQU:_TBLPTRL:831:0x1E
+$EQU:_TBLDH:834:0x1F
+$EQU:_TBLDL:837:0x20
+$EQU:_PRODH:840:0x21
+$EQU:_PRODL:843:0x22
+$EQU:_INTE0:846:0x23
+$EQU:_INTE1:849:0x24
+$EQU:_INTF0:852:0x26
+$EQU:_INTF1:855:0x27
+$EQU:_WREG:858:0x29
+$EQU:_BSRCN:861:0x2A
+$EQU:_STATUS:864:0x2B
+$EQU:_MSTAT:867:0x2B
+$EQU:_PSTAT:870:0x2C
+$EQU:_BIECN:873:0x2E
+$EQU:_BIEARH:876:0x2F
+$EQU:_BIEARL:879:0x30
+$EQU:_BIEDRH:882:0x31
+$EQU:_BIEDRL:885:0x32
+$EQU:_PWRCN:888:0x33
+$EQU:_OSCCN0:891:0x34
+$EQU:_OSCCN1:894:0x35
+$EQU:_OSCCN2:897:0x36
+$EQU:_CSFCN0:900:0x37
+$EQU:_CSFCN1:903:0x38
+$EQU:_WDTCN:906:0x39
+$EQU:_AD1H:909:0x3A
+$EQU:_AD1M:912:0x3B
+$EQU:_AD1L:915:0x3C
+$EQU:_AD1CN0:918:0x3D
+$EQU:_AD1CN1:921:0x3E
+$EQU:_AD1CN2:924:0x3F
+$EQU:_AD1CN3:927:0x40
+$EQU:_AD1CN4:930:0x41
+$EQU:_AD1CN5:933:0x42
+$EQU:_LVDCN:936:0x43
+$EQU:_TMA1CN:939:0x44
+$EQU:_TMA1R:942:0x45
+$EQU:_TMA1C:945:0x46
+$EQU:_PT1:948:0x47
+$EQU:_TRISC1:951:0x48
+$EQU:_PT1DA:954:0x49
+$EQU:_PT1PU:957:0x4A
+$EQU:_PT1M1:960:0x4B
+$EQU:_PT2:963:0x4C
+$EQU:_TRISC2:966:0x4D
+$EQU:_PT2DA:969:0x4E
+$EQU:_PT2PU:972:0x4F
+$EQU:_PT8:975:0x50
+$EQU:_TRISC8:978:0x51
+$EQU:_PT8PU:981:0x53
+$EQU:_UR0CN:984:0x54
+$EQU:_UR0STA:987:0x55
+$EQU:_BA0CN:990:0x56
+$EQU:_BG0RH:993:0x57
+$EQU:_BG0RL:996:0x58
+$EQU:_TX0R:999:0x59
+$EQU:_RC0REG:1002:0x5A
+$EQU:_LCDCN1:1005:0x5B
+$EQU:_LCDCN2:1008:0x5C
+$EQU:_LCDCN3:1011:0x5D
+$EQU:_LCDCN4:1014:0x5E
+$EQU:_LCD0:1017:0x5F
+$EQU:_LCD1:1020:0x60
+$EQU:_LCD2:1023:0x61
+$EQU:_LCD3:1026:0x62
+$EQU:_LCD4:1029:0x63
+$EQU:_LCD5:1032:0x64
+$EQU:_LCD6:1035:0x65
+$EQU:_Filter:1038:0x66
+$EQU:_ADCRH:1041:0x3A
+$EQU:_ADCRM:1044:0x3B
+$EQU:_ADCRL:1047:0x3C
+$ENDMOD:display:".\obj\display.rel"

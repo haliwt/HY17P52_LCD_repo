@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><Watch>
+<ItemGroup>
+<Name>ADC</Name>
+<Module/>
+<Function/>
+</ItemGroup>
+</Watch>
+<BreakPoint/>
+<DebugWindow>
+<ShowBreakPoint>FALSE</ShowBreakPoint>
+<ShowVar>TRUE</ShowVar>
+<ShowMemory>FALSE</ShowMemory>
+<ShowSFR>TRUE</ShowSFR>
+<ShowCallStack>FALSE</ShowCallStack>
+<ShowADGraph>FALSE</ShowADGraph>
+<ShowOpGraph>FALSE</ShowOpGraph>
+<ShowCmpGraph>FALSE</ShowCmpGraph>
+<ShowCLKGraph>FALSE</ShowCLKGraph>
+<ShowLNOPAGraph>FALSE</ShowLNOPAGraph>
+<ShowPWRGraph>FALSE</ShowPWRGraph>
+<ShowMPNGraph>FALSE</ShowMPNGraph>
+</DebugWindow>

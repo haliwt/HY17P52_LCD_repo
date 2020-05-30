@@ -1,0 +1,147 @@
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdcc -v 
+SDCC : HY08A 3.9.3 #4ad52972e (MSVC) Nov 29 2019 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\ADC_LCD.asm " del ".\obj\ADC_LCD.asm"  
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdcc   -I "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P"  -S -pHY17P52 ".\ADC_LCD.c" 
+.\ADC_LCD.c:103: warning 158: overflow in implicit constant conversion
+.\ADC_LCD.c:240: warning 158: overflow in implicit constant conversion
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "ADC_LCD.asm" (
+copy "ADC_LCD.asm" obj  
+ del "ADC_LCD.asm" 							  
+)  else (
+copy ".\ADC_LCD.asm" obj   
+ del ".\ADC_LCD.asm"  
+) 
+已复制         1 个文件。
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\ADC_52.asm " del ".\obj\ADC_52.asm"  
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdcc   -I "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P"  -S -pHY17P52 "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "ADC_52.asm" (
+copy "ADC_52.asm" obj   
+ del "ADC_52.asm" 							 
+)  else (
+copy "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.asm" obj   
+ del "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.asm"  
+) 
+已复制         1 个文件。
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\display.asm " del ".\obj\display.asm"  
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdcc   -I "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P"  -S -pHY17P52 ".\display.c" 
+.\display.c:78: warning 85: in function DisplayNum unreferenced local variable : 'MINUS'
+.\display.c:88: warning 85: in function DisplayHex unreferenced function argument : 'Num'
+.\display.c:99: warning 158: overflow in implicit constant conversion
+.\display.c:100: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+.\/lcdTable.h:72: warning 158: overflow in implicit constant conversion
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "display.asm" (
+copy "display.asm" obj  
+ del "display.asm" 							  
+)  else (
+copy ".\display.asm" obj   
+ del ".\display.asm"  
+) 
+已复制         1 个文件。
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\LED.asm " del ".\obj\LED.asm"  
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdcc   -I "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P"  -S -pHY17P52 "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "LED.asm" (
+copy "LED.asm" obj   
+ del "LED.asm" 							 
+)  else (
+copy "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.asm" obj   
+ del "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.asm"  
+) 
+已复制         1 个文件。
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\GPIO.asm " del ".\obj\GPIO.asm"  
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdcc   -I "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P"  -S -pHY17P52 "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\GPIO.c" 
+E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\GPIO.c:1: warning 190: ISO C forbids an empty source file
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "GPIO.asm" (
+copy "GPIO.asm" obj   
+ del "GPIO.asm" 							 
+)  else (
+copy "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\GPIO.asm" obj   
+ del "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\GPIO.asm"  
+) 
+已复制         1 个文件。
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\ADC_LCD.rel " del ".\obj\ADC_LCD.rel" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdashya -l -s -o -y ".\obj\ADC_LCD.asm" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\ADC_52.rel " del ".\obj\ADC_52.rel" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdashya -l -s -o -y ".\obj\ADC_52.asm" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\display.rel " del ".\obj\display.rel" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdashya -l -s -o -y ".\obj\display.asm" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\LED.rel " del ".\obj\LED.rel" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdashya -l -s -o -y ".\obj\LED.asm" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist ".\obj\GPIO.rel " del ".\obj\GPIO.rel" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdashya -l -s -o -y ".\obj\GPIO.asm" 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>if exist "E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\error.txt" (exit  ) 
+
+E:\HY17P52_TestSoft\HY17P52_LCD_soft>sdld -u -m -i -y -h08d -nx  ".\obj\ADC_LCD.ihx"  ".\obj\ADC_LCD.rel" ".\obj\ADC_52.rel" ".\obj\display.rel" ".\obj\LED.rel" ".\obj\GPIO.rel"   -l HY17PSDCC.LIB -l HY17P52ADCSetting.lib -l HY17P52WR3.lib  
+Warning, function _ENSDRVDisable not used will be optimized out.
+Warning, function _ENSDRVEnable not used will be optimized out.
+Warning, function _DisplayLLL not used will be optimized out.
+Warning, function _DisplayHHH not used will be optimized out.
+Warning, function _DisplayHex not used will be optimized out.
+Warning, function _DisplayHycon not used will be optimized out.
+Warning, function _ClearLCD not used will be optimized out.
+Warning, function _GetDisplay not used will be optimized out.
+Warning, function _LEDSetting not used will be optimized out.
+Warning, function _TMR_RS_Setting not used will be optimized out.
+Warning, function _AccuracyModeADCOFF not used will be optimized out.
+Warning, function _ADCAccuracyMode not used will be optimized out.
+ROM max address is 0x1AC0 (byte), or size is 3424 (decimal) words. 
+ROM usage is around 83%. 
+Estimated C-STACK/HEAP sizes are  74(0x4A)/24(0x18) bytes.
+RAM usage is around 38%.

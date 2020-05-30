@@ -1,0 +1,2131 @@
+------------------------------------------------------------------------
+ Map File for linked output ".\obj\ADC_LCD.ihx", using target HY17P52.
+------------------------------------------------------------------------
+
+---Resource Usage Summaries---
+Heap RAM: 0x168~0x180, size 24 bytes.
+Estimate C-STACK RAM: 0x80~0xCA, size 74 bytes
+RAM usage is around 38%
+ROM used 0 ~ 0x1AC0(byte)
+ROM usage is around 83%
+---Resource Usage listed above ---
+
+RAM AREA Summary:
+Area UDATA	0x0168~0x016C, size 	4	 bytes.
+Area DSEG	0x016C~0x0180, size 	20	 bytes.
+
+main thread max call level is 4
+interupt thread max call level is 2
+
+Call-Tree Information:
+--> _main ,08C/08D-Re-Entry, local var size 0xE, 
+	--> _GPIO_Iint ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _ADC_Open ,08C/08D-Re-Entry, local var size 0xC, 
+	--> _PGAandADCAccuracyMode ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _Delay ,08C/08D-Re-Entry, local var size 0x2, 
+	--> _Display2Er ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _DisplayUnit ,08C/08D-Re-Entry, local var size 0x0, 
+	--> ___slong2fs ,08C/08D-Re-Entry, local var size 0x8, 
+		--> ___ulong2fs ,08C/08D-Re-Entry, local var size 0xE, 
+	--> ___fsmul ,08C/08D-Re-Entry, local var size 0x20, 
+		--> __mullong ,08C/08D-Re-Entry, local var size 0xB, 
+	--> ___fs2slong ,08C/08D-Re-Entry, local var size 0x5, 
+		--> ___fslt ,08C/08D-Re-Entry, local var size 0x10, 
+		--> ___fs2ulong ,08C/08D-Re-Entry, local var size 0xA, 
+			--> __shr_slong ,08C/08D-Re-Entry, local var size 0x0, 
+	--> ___fssub ,08C/08D-Re-Entry, local var size 0x8, 
+		--> ___fsadd ,08C/08D-Re-Entry, local var size 0x1D, 
+			--> __shr_slong ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _DisplayNum ,08C/08D-Re-Entry, local var size 0x8, 
+		--> __modslong ,08C/08D-Re-Entry, local var size 0x9, 
+			--> __modulong ,08C/08D-Re-Entry, local var size 0x9, 
+		--> __g2ptrget1 ,08C/08D-Re-Entry, local var size 0x1, 
+		--> __g2ptrput1 ,08C/08D-Re-Entry, local var size 0x2, 
+		--> __divslong ,08C/08D-Re-Entry, local var size 0x9, 
+			--> __divulong ,08C/08D-Re-Entry, local var size 0xD, 
+	--> ___fslt ,08C/08D-Re-Entry, local var size 0x10, 
+	--> _Reverse_Data ,08C/08D-Re-Entry, local var size 0xD, 
+		--> __mullong ,08C/08D-Re-Entry, local var size 0xB, 
+		--> __modslong ,08C/08D-Re-Entry, local var size 0x9, 
+			--> __modulong ,08C/08D-Re-Entry, local var size 0x9, 
+		--> ___slong2fs ,08C/08D-Re-Entry, local var size 0x8, 
+			--> ___ulong2fs ,08C/08D-Re-Entry, local var size 0xE, 
+		--> ___fsmul ,08C/08D-Re-Entry, local var size 0x20, 
+			--> __mullong ,08C/08D-Re-Entry, local var size 0xB, 
+		--> ___fs2slong ,08C/08D-Re-Entry, local var size 0x5, 
+			--> ___fslt ,08C/08D-Re-Entry, local var size 0x10, 
+			--> ___fs2ulong ,08C/08D-Re-Entry, local var size 0xA, 
+				--> __shr_slong ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _UnitConverter ,08C/08D-Re-Entry, local var size 0x7, 
+		--> ___slong2fs ,08C/08D-Re-Entry, local var size 0x8, 
+			--> ___ulong2fs ,08C/08D-Re-Entry, local var size 0xE, 
+		--> ___fsmul ,08C/08D-Re-Entry, local var size 0x20, 
+			--> __mullong ,08C/08D-Re-Entry, local var size 0xB, 
+		--> ___fs2slong ,08C/08D-Re-Entry, local var size 0x5, 
+			--> ___fslt ,08C/08D-Re-Entry, local var size 0x10, 
+			--> ___fs2ulong ,08C/08D-Re-Entry, local var size 0xA, 
+				--> __shr_slong ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _LowVoltageDisplay ,08C/08D-Re-Entry, local var size 0x1, 
+		--> _LowVoltageDetect_3V ,08C/08D-Re-Entry, local var size 0x1, 
+			--> _Delay ,08C/08D-Re-Entry, local var size 0x2, 
+		--> _DisplayBatteryCapacityFull ,08C/08D-Re-Entry, local var size 0x0, 
+		--> _LowVoltageDetect_2V4 ,08C/08D-Re-Entry, local var size 0x1, 
+			--> _Delay ,08C/08D-Re-Entry, local var size 0x2, 
+		--> _DisplayBatteryCapacityHalf ,08C/08D-Re-Entry, local var size 0x0, 
+		--> _DispalyBatteryCapacityLow ,08C/08D-Re-Entry, local var size 0x0, 
+	--> ___fsadd ,08C/08D-Re-Entry, local var size 0x1D, 
+		--> __shr_slong ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _HY17P52WR3 ,08C/08D-Re-Entry, local var size 0xA, 
+		--> _HY17P52WR3Delay ,08C/08D-Re-Entry, local var size 0x3, 
+estimated minimum RAM of call tree [main]: 70 (0x46) bytes.
+--> _ISR ,08C/08D-Re-Entry, local var size 0x0, 
+	--> _ADC_GetData ,08C/08D-Re-Entry, local var size 0x4, 
+estimated minimum RAM of call tree [interrupt]: 4 (0x4) bytes.
+
+Stack Pointer FSR2 initialized at 0x80
+
+
+********************
+Local stack information:
+********************
+Function _ISR             local is on FSR2, local size 00.
+Function _main            local is on FSR2, local size 0E.
+Function _LowVoltageDisplay local is on FSR2, local size 01.
+Function _LowVoltageDetect_2V4 local is on FSR2, local size 01.
+Function _LowVoltageDetect_3V local is on FSR2, local size 01.
+Function _UnitConverter   local is on FSR2, local size 07.
+Function _ENSDRVDisable   has base address 000, local size 000.
+Function _ENSDRVEnable    has base address 000, local size 000.
+Function _ADC_GetData     local is on FSR2, local size 04.
+Function _ADC_Open        local is on FSR2, local size 0C.
+Function _DispalyBatteryCapacityLow local is on FSR2, local size 00.
+Function _DisplayBatteryCapacityHalf local is on FSR2, local size 00.
+Function _DisplayBatteryCapacityFull local is on FSR2, local size 00.
+Function _DisplayLLL      has base address 000, local size 000.
+Function _DisplayHHH      has base address 000, local size 000.
+Function _Reverse_Data    local is on FSR2, local size 0D.
+Function _Delay           local is on FSR2, local size 02.
+Function _DisplayUnit     local is on FSR2, local size 00.
+Function _Display2Er      local is on FSR2, local size 00.
+Function _DisplayHex      has base address 000, local size 000.
+Function _DisplayNum      local is on FSR2, local size 08.
+Function _DisplayHycon    has base address 000, local size 000.
+Function _ClearLCD        has base address 000, local size 001.
+Function _GPIO_Iint       local is on FSR2, local size 00.
+Function _GetDisplay      has base address 000, local size 004.
+Function _LEDSetting      has base address 000, local size 001.
+Function _HY17P52WR3Delay local is on FSR2, local size 03.
+Function _HY17P52WR3      local is on FSR2, local size 0A.
+Function _TMR_RS_Setting  has base address 000, local size 000.
+Function _AccuracyModeADCOFF has base address 000, local size 000.
+Function _ADCAccuracyMode has base address 000, local size 000.
+Function _PGAandADCAccuracyMode local is on FSR2, local size 00.
+Function ___slong2fs      local is on FSR2, local size 08.
+Function ___fsmul         local is on FSR2, local size 20.
+Function ___fs2slong      local is on FSR2, local size 05.
+Function ___fssub         local is on FSR2, local size 08.
+Function ___fslt          local is on FSR2, local size 10.
+Function ___fsadd         local is on FSR2, local size 1D.
+Function __modslong       local is on FSR2, local size 09.
+Function __divslong       local is on FSR2, local size 09.
+Function __mullong        local is on FSR2, local size 0B.
+Function __g2ptrget1      local is on FSR2, local size 01.
+Function __g2ptrput1      local is on FSR2, local size 02.
+Function ___ulong2fs      local is on FSR2, local size 0E.
+Function ___fs2ulong      local is on FSR2, local size 0A.
+Function __shr_slong      local is on FSR2, local size 00.
+Function __modulong       local is on FSR2, local size 09.
+Function __divulong       local is on FSR2, local size 0D.
+in area UDATA module ADC_LCD start at 0x000 end at 0x16B
+Global STK07           =0x168
+Global STK06           =0x168
+Global STK05           =0x168
+Global STK04           =0x168
+Global STK03           =0x168
+Global WSAVE           =0x169
+Global STK07_SAVE      =0x169
+Global STK06_SAVE      =0x169
+Global STK05_SAVE      =0x169
+Global STK04_SAVE      =0x169
+Global STK03_SAVE      =0x169
+Global STK02_SAVE      =0x169
+Global STK01_SAVE      =0x16A
+Global STK00_SAVE      =0x16B
+Global _FSR0L_SAVE     =0x16C
+Global _FSR0H_SAVE     =0x16C
+Global _FSR1L_SAVE     =0x16C
+Global _FSR1H_SAVE     =0x16C
+Global _FSR2L_SAVE     =0x16C
+Global _FSR2H_SAVE     =0x16C
+Global _TBLPTRH_SAVE   =0x16C
+Local  r0x1140         =FSR2-0x000
+Local  r0x1141         =FSR2-0x003
+Local  r0x1142         =FSR2-0x002
+Local  r0x1143         =FSR2-0x001
+Local  r0x1144         =FSR2-0x007
+Local  r0x1145         =FSR2-0x006
+Local  r0x1146         =FSR2-0x005
+Local  r0x1147         =FSR2-0x004
+Local  r0x1148         =FSR2-0x00B
+Local  r0x1149         =FSR2-0x00A
+Local  r0x114A         =FSR2-0x009
+Local  r0x114B         =FSR2-0x008
+Local  r0x114C         =FSR2-0x00D
+Local  r0x114D         =FSR2-0x00C
+Local  r0x118E         =FSR2-0x000
+Local  r0x118F         =FSR2-0x004
+Local  r0x1192         =FSR2-0x006
+Local  r0x1193         =FSR2-0x005
+Local  r0x1194         =FSR2-0x000
+Local  r0x1195         =FSR2-0x000
+Local  r0x1196         =FSR2-0x000
+in area UDATA module ADC_52 start at 0x000 end at 0x000
+Local  r0x113F         =FSR2-0x000
+in area UDATA module display start at 0x000 end at 0x00C
+Local  r0x1140         =0x000
+Local  r0x1146         =FSR2-0x000
+Local  r0x1147         =FSR2-0x004
+Local  r0x1148         =FSR2-0x005
+Local  r0x1149         =FSR2-0x006
+Local  r0x114A         =FSR2-0x007
+Local  r0x1166         =FSR2-0x000
+Local  r0x116B         =FSR2-0x000
+Local  r0x116C         =FSR2-0x004
+Local  r0x116D         =FSR2-0x005
+Local  r0x116E         =FSR2-0x006
+Local  r0x116F         =FSR2-0x007
+Local  r0x1170         =FSR2-0x00B
+Local  r0x1171         =FSR2-0x00A
+Local  r0x1172         =FSR2-0x009
+Local  r0x1173         =FSR2-0x008
+Local  r0x1177         =FSR2-0x00C
+in area UDATA module LED start at 0x000 end at 0x003
+Local  r0x113F         =0x000
+Local  r0x1141         =0x000
+Local  r0x1143         =0x002
+Local  r0x1144         =0x003
+in area UDATA module HY17P52WR3 start at 0x000 end at 0x009
+Local  r0x113F         =FSR2-0x002
+Local  r0x1140         =FSR2-0x003
+Local  r0x1141         =FSR2-0x004
+Local  r0x1142         =FSR2-0x005
+Local  r0x1143         =FSR2-0x006
+Local  r0x1144         =FSR2-0x007
+Local  r0x1145         =FSR2-0x009
+Local  r0x1146         =FSR2-0x008
+Local  r0x114A         =FSR2-0x000
+Local  r0x114B         =FSR2-0x001
+Local  r0x114C         =FSR2-0x002
+in area UDATA module _slong2fs start at 0x000 end at 0x007
+Local  r0x1142         =FSR2-0x000
+Local  r0x1143         =FSR2-0x004
+Local  r0x1144         =FSR2-0x005
+Local  r0x1145         =FSR2-0x006
+Local  r0x1146         =FSR2-0x007
+in area UDATA module _fsmul start at 0x000 end at 0x01F
+Local  r0x1142         =FSR2-0x000
+Local  r0x114A         =FSR2-0x010
+Local  r0x114B         =FSR2-0x011
+Local  r0x114E         =FSR2-0x012
+Local  r0x114F         =FSR2-0x013
+Local  r0x1150         =FSR2-0x014
+Local  r0x1151         =FSR2-0x015
+Local  r0x1152         =FSR2-0x016
+Local  r0x1153         =FSR2-0x017
+Local  r0x1154         =FSR2-0x018
+Local  r0x1155         =FSR2-0x019
+Local  r0x1156         =FSR2-0x01A
+Local  r0x1159         =FSR2-0x01B
+Local  r0x115A         =FSR2-0x01F
+Local  r0x115B         =FSR2-0x01E
+Local  r0x115C         =FSR2-0x01D
+Local  r0x115D         =FSR2-0x01C
+in area UDATA module _fs2slong start at 0x000 end at 0x004
+Local  r0x1142         =FSR2-0x000
+Local  r0x1146         =FSR2-0x004
+in area UDATA module _fssub start at 0x000 end at 0x000
+Local  r0x1142         =FSR2-0x000
+in area UDATA module _fslt start at 0x000 end at 0x000
+Local  r0x1142         =FSR2-0x000
+in area UDATA module _fsadd start at 0x000 end at 0x01C
+Local  r0x1142         =FSR2-0x000
+Local  r0x1147         =FSR2-0x008
+Local  r0x1148         =FSR2-0x009
+Local  r0x1149         =FSR2-0x00A
+Local  r0x114A         =FSR2-0x00B
+Local  r0x114B         =FSR2-0x014
+Local  r0x114C         =FSR2-0x015
+Local  r0x114D         =FSR2-0x016
+Local  r0x114E         =FSR2-0x017
+Local  r0x114F         =FSR2-0x018
+Local  r0x1150         =FSR2-0x019
+Local  r0x1151         =FSR2-0x01A
+Local  r0x1152         =FSR2-0x01B
+Local  r0x1153         =FSR2-0x01C
+in area UDATA module _modslong start at 0x000 end at 0x008
+Local  r0x1142         =FSR2-0x000
+Local  r0x1147         =FSR2-0x008
+in area UDATA module _divslong start at 0x000 end at 0x000
+Local  r0x1142         =FSR2-0x000
+in area UDATA module _mullong_nomvff start at 0x000 end at 0x003
+Local  PROD0           =FSR2-0x003
+Local  PROD1           =FSR2-0x002
+Local  PROD2           =FSR2-0x001
+Local  PROD3           =FSR2-0x000
+in area UDATA module _ulong2fs start at 0x000 end at 0x009
+Local  r0x1142         =FSR2-0x000
+Local  r0x1143         =FSR2-0x004
+Local  r0x1144         =FSR2-0x005
+Local  r0x1145         =FSR2-0x006
+Local  r0x1146         =FSR2-0x007
+Local  r0x1149         =FSR2-0x008
+Local  r0x114A         =FSR2-0x009
+in area UDATA module _fs2ulong start at 0x000 end at 0x009
+Local  r0x1142         =FSR2-0x000
+Local  r0x1143         =FSR2-0x008
+Local  r0x114B         =FSR2-0x009
+in area UDATA module _modulong start at 0x000 end at 0x008
+Local  r0x1142         =FSR2-0x000
+Local  r0x1147         =FSR2-0x008
+in area UDATA module _divulong start at 0x000 end at 0x00C
+Local  r0x1142         =FSR2-0x000
+Local  r0x1147         =FSR2-0x008
+Local  r0x1148         =FSR2-0x009
+Local  r0x1149         =FSR2-0x00A
+Local  r0x114A         =FSR2-0x00B
+Local  r0x114B         =FSR2-0x00C
+in area DSEG module ADC_LCD start at 0x16C end at 0x171
+Global _Flag           =0x16C
+Global _ADC            =0x16D
+Global _MCUSTATUSbits  =0x171
+in area DSEG module display start at 0x172 end at 0x17F
+Global _adS            =0x172
+in area DSEG module _fsmul start at 0x008 end at 0x00F
+Local  ___fsmul_fl1_65536_21=FSR2-0x008
+Local  ___fsmul_fl2_65536_21=FSR2-0x00C
+in area DSEG module _fslt start at 0x008 end at 0x00F
+Local  ___fslt_fl1_65536_21=FSR2-0x008
+Local  ___fslt_fl2_65536_21=FSR2-0x00C
+in area DSEG module _fsadd start at 0x00C end at 0x013
+Local  ___fsadd_fl1_65536_21=FSR2-0x00C
+Local  ___fsadd_fl2_65536_21=FSR2-0x010
+in area DSEG module _divslong start at 0x008 end at 0x008
+Local  __divslong_xx_65536_2=FSR2-0x008
+in area DSEG module _ulong2fs start at 0x00A end at 0x00D
+Local  ___ulong2fs_fl_65536_21=FSR2-0x00A
+in area DSEG module _fs2ulong start at 0x004 end at 0x007
+Local  ___fs2ulong_fl1_65536_21=FSR2-0x004
+
+********************
+XDATA Area:
+********************
+
+********************
+STK Area:
+********************
+
+********************
+In area LOCALSTK module ADC_LCD:
+*******************
+Global _UnitConverter_STK02=0x003
+Global _UnitConverter_STK01=0x002
+Global _UnitConverter_STK00=0x001
+
+********************
+In area LOCALSTK module ADC_52:
+*******************
+Global _ADC_Open_STK00 =0x001
+Global _ADC_Open_STK01 =0x002
+Global _ADC_Open_STK02 =0x003
+Global _ADC_Open_STK03 =0x004
+Global _ADC_Open_STK04 =0x005
+Global _ADC_Open_STK05 =0x006
+Global _ADC_Open_STK06 =0x007
+Global _ADC_Open_STK07 =0x008
+Global _ADC_Open_STK08 =0x009
+Global _ADC_Open_STK09 =0x00A
+Global _ADC_Open_STK10 =0x00B
+Local  _ADC_GetData_ADCData_65536_8=0x000
+
+********************
+In area LOCALSTK module display:
+*******************
+Global _DisplayNum_STK00=0x001
+Global _DisplayNum_STK01=0x002
+Global _DisplayNum_STK02=0x003
+Global _Delay_STK00    =0x001
+Global _Reverse_Data_STK00=0x001
+Global _Reverse_Data_STK01=0x002
+Global _Reverse_Data_STK02=0x003
+
+********************
+In area LOCALSTK module LED:
+*******************
+Global _GetDisplay_STK00=0x001
+
+********************
+In area LOCALSTK module HY17P52WR3:
+*******************
+Global _HY17P52WR3_STK00=0x000
+Global _HY17P52WR3_STK01=0x001
+
+********************
+In area LOCALSTK module _slong2fs:
+*******************
+Global ___slong2fs_STK00=0x001
+Global ___slong2fs_STK01=0x002
+Global ___slong2fs_STK02=0x003
+
+********************
+In area LOCALSTK module _fsmul:
+*******************
+Global ___fsmul_STK00  =0x001
+Global ___fsmul_STK01  =0x002
+Global ___fsmul_STK02  =0x003
+Global ___fsmul_STK03  =0x004
+Global ___fsmul_STK04  =0x005
+Global ___fsmul_STK05  =0x006
+Global ___fsmul_STK06  =0x007
+
+********************
+In area LOCALSTK module _fs2slong:
+*******************
+Global ___fs2slong_STK00=0x001
+Global ___fs2slong_STK01=0x002
+Global ___fs2slong_STK02=0x003
+
+********************
+In area LOCALSTK module _fssub:
+*******************
+Global ___fssub_STK00  =0x001
+Global ___fssub_STK01  =0x002
+Global ___fssub_STK02  =0x003
+Global ___fssub_STK03  =0x004
+Global ___fssub_STK04  =0x005
+Global ___fssub_STK05  =0x006
+Global ___fssub_STK06  =0x007
+
+********************
+In area LOCALSTK module _fslt:
+*******************
+Global ___fslt_STK00   =0x001
+Global ___fslt_STK01   =0x002
+Global ___fslt_STK02   =0x003
+Global ___fslt_STK03   =0x004
+Global ___fslt_STK04   =0x005
+Global ___fslt_STK05   =0x006
+Global ___fslt_STK06   =0x007
+
+********************
+In area LOCALSTK module _fsadd:
+*******************
+Global ___fsadd_STK00  =0x001
+Global ___fsadd_STK01  =0x002
+Global ___fsadd_STK02  =0x003
+Global ___fsadd_STK03  =0x004
+Global ___fsadd_STK04  =0x005
+Global ___fsadd_STK05  =0x006
+Global ___fsadd_STK06  =0x007
+
+********************
+In area LOCALSTK module _modslong:
+*******************
+Global __modslong_STK00=0x001
+Global __modslong_STK01=0x002
+Global __modslong_STK02=0x003
+Global __modslong_STK03=0x004
+Global __modslong_STK04=0x005
+Global __modslong_STK05=0x006
+Global __modslong_STK06=0x007
+
+********************
+In area LOCALSTK module _divslong:
+*******************
+Global __divslong_STK00=0x001
+Global __divslong_STK01=0x002
+Global __divslong_STK02=0x003
+Global __divslong_STK03=0x004
+Global __divslong_STK04=0x005
+Global __divslong_STK05=0x006
+Global __divslong_STK06=0x007
+
+********************
+In area LOCALSTK module _mullong_nomvff:
+*******************
+Global __mullong_STK06 =0x00A
+Global __mullong_STK05 =0x009
+Global __mullong_STK04 =0x008
+Global __mullong_STK03 =0x007
+Global __mullong_STK02 =0x006
+Global __mullong_STK01 =0x005
+Global __mullong_STK00 =0x004
+
+********************
+In area LOCALSTK module _ulong2fs:
+*******************
+Global ___ulong2fs_STK00=0x001
+Global ___ulong2fs_STK01=0x002
+Global ___ulong2fs_STK02=0x003
+
+********************
+In area LOCALSTK module _fs2ulong:
+*******************
+Global ___fs2ulong_STK00=0x001
+Global ___fs2ulong_STK01=0x002
+Global ___fs2ulong_STK02=0x003
+
+********************
+In area LOCALSTK module _modulong:
+*******************
+Global __modulong_STK00=0x001
+Global __modulong_STK01=0x002
+Global __modulong_STK02=0x003
+Global __modulong_STK03=0x004
+Global __modulong_STK04=0x005
+Global __modulong_STK05=0x006
+Global __modulong_STK06=0x007
+
+********************
+In area LOCALSTK module _divulong:
+*******************
+Global __divulong_STK00=0x001
+Global __divulong_STK01=0x002
+Global __divulong_STK02=0x003
+Global __divulong_STK03=0x004
+Global __divulong_STK04=0x005
+Global __divulong_STK05=0x006
+Global __divulong_STK06=0x007
+
+********************
+In area STK module _g2ptrget1:
+*******************
+Global __g2ptrget1_STK00=0x000
+
+********************
+In area STK module _g2ptrput1:
+*******************
+Global __g2ptrput1_STK00=0x000
+Global __g2ptrput1_STK01=0x001
+
+********************
+ROM Area STARTUP, start 0x0000 (BYTE), end 0x0008 (BYTE), size 0x0008 (BYTE), or 0x0004 (WORD). 
+********************
+
+********************
+In area STARTUP module ADC_LCD start at 0x0000 (byte#) or 0x0000 (word#),endaddress is 0x0007(byte#) or 0x0003(word#), size 8 bytes (4 words)
+********************
+
+********************
+ROM Area c_interrupt, start 0x0008 (BYTE), end 0x0040 (BYTE), size 0x0038 (BYTE), or 0x001C (WORD). 
+********************
+
+********************
+In area c_interrupt module ADC_LCD start at 0x0008 (byte#) or 0x0004 (word#),endaddress is 0x003F(byte#) or 0x001F(word#), size 56 bytes (28 words)
+********************
+Local  __sdcc_interrupt=0x000008 (byte) 0x000004 (word)
+Global _ISR            =0x000008 (byte) 0x000004 (word)
+Local  _00461_DS_      =0x000032 (byte) 0x000019 (word)
+
+********************
+ROM Area _ALL, start 0x0040 (BYTE), end 0x1A6C (BYTE), size 0x1A2C (BYTE), or 0x0D16 (WORD). 
+********************
+
+********************
+In area _ALL module ADC_LCD start at 0x0040 (byte#) or 0x0020 (word#),endaddress is 0x0061(byte#) or 0x0030(word#), size 34 bytes (17 words)
+********************
+Global _LowVoltageDetect_2V4=0x000040 (byte) 0x000020 (word)
+Local  _00441_DS_      =0x00005A (byte) 0x00002D (word)
+Local  _00442_DS_      =0x00005E (byte) 0x00002F (word)
+
+********************
+In area _ALL module _fslt start at 0x0062 (byte#) or 0x0031 (word#),endaddress is 0x00D3(byte#) or 0x0069(word#), size 114 bytes (57 words)
+********************
+Global ___fslt         =0x000062 (byte) 0x000031 (word)
+Local  _00106_DS_      =0x0000AC (byte) 0x000056 (word)
+Local  _00108_DS_      =0x0000B0 (byte) 0x000058 (word)
+Local  _00111_DS_      =0x0000D0 (byte) 0x000068 (word)
+Local  _00112_DS_      =0x0000D2 (byte) 0x000069 (word)
+
+********************
+In area _ALL module ADC_LCD start at 0x00D4 (byte#) or 0x006A (word#),endaddress is 0x00F5(byte#) or 0x007A(word#), size 34 bytes (17 words)
+********************
+Global _LowVoltageDetect_3V=0x0000D4 (byte) 0x00006A (word)
+Local  _00434_DS_      =0x0000EE (byte) 0x000077 (word)
+Local  _00435_DS_      =0x0000F2 (byte) 0x000079 (word)
+
+********************
+In area _ALL module ADC_52 start at 0x00F6 (byte#) or 0x007B (word#),endaddress is 0x017D(byte#) or 0x00BE(word#), size 136 bytes (68 words)
+********************
+Global _ENSDRVDisable  =0x0000F6 (byte) 0x00007B (word)
+Global _ENSDRVEnable   =0x0000F6 (byte) 0x00007B (word)
+Global _ADC_GetData    =0x0000F6 (byte) 0x00007B (word)
+Local  _00110_DS_      =0x00010C (byte) 0x000086 (word)
+Local  _00111_DS_      =0x00010E (byte) 0x000087 (word)
+Global _ADC_Open       =0x00011E (byte) 0x00008F (word)
+
+********************
+In area _ALL module display start at 0x017E (byte#) or 0x00BF (word#),endaddress is 0x01C1(byte#) or 0x00E0(word#), size 68 bytes (34 words)
+********************
+Global _DispalyBatteryCapacityLow=0x00017E (byte) 0x0000BF (word)
+Global _DisplayBatteryCapacityHalf=0x000184 (byte) 0x0000C2 (word)
+Global _DisplayBatteryCapacityFull=0x00018A (byte) 0x0000C5 (word)
+Global _DisplayLLL     =0x00018E (byte) 0x0000C7 (word)
+Global _DisplayHHH     =0x00018E (byte) 0x0000C7 (word)
+Global _DisplayUnit    =0x00018E (byte) 0x0000C7 (word)
+Global _Display2Er     =0x00019E (byte) 0x0000CF (word)
+Global _DisplayHex     =0x0001AE (byte) 0x0000D7 (word)
+Global _DisplayHycon   =0x0001AE (byte) 0x0000D7 (word)
+Global _ClearLCD       =0x0001AE (byte) 0x0000D7 (word)
+Local  _00110_DS_      =0x0001AE (byte) 0x0000D7 (word)
+Global _GPIO_Iint      =0x0001AE (byte) 0x0000D7 (word)
+
+********************
+In area _ALL module LED start at 0x01C2 (byte#) or 0x00E1 (word#),endaddress is 0x01C1(byte#) or 0x00E0(word#), size 0 bytes (0 words)
+********************
+Global _GetDisplay     =0x0001C2 (byte) 0x0000E1 (word)
+Local  _00111_DS_      =0x0001C2 (byte) 0x0000E1 (word)
+Local  _00112_DS_      =0x0001C2 (byte) 0x0000E1 (word)
+Local  _00113_DS_      =0x0001C2 (byte) 0x0000E1 (word)
+Local  _00114_DS_      =0x0001C2 (byte) 0x0000E1 (word)
+Global _LEDSetting     =0x0001C2 (byte) 0x0000E1 (word)
+
+********************
+In area _ALL module HY17P52WR3 start at 0x01C2 (byte#) or 0x00E1 (word#),endaddress is 0x01E7(byte#) or 0x00F3(word#), size 38 bytes (19 words)
+********************
+Global _HY17P52WR3Delay=0x0001C2 (byte) 0x0000E1 (word)
+Local  _00175_DS_      =0x0001CA (byte) 0x0000E5 (word)
+Local  _00172_DS_      =0x0001D4 (byte) 0x0000EA (word)
+Local  _00183_DS_      =0x0001DE (byte) 0x0000EF (word)
+Local  _00178_DS_      =0x0001E6 (byte) 0x0000F3 (word)
+
+********************
+In area _ALL module _fssub start at 0x01E8 (byte#) or 0x00F4 (word#),endaddress is 0x0217(byte#) or 0x010B(word#), size 48 bytes (24 words)
+********************
+Global ___fssub        =0x0001E8 (byte) 0x0000F4 (word)
+
+********************
+In area _ALL module HY17P52WR3 start at 0x0218 (byte#) or 0x010C (word#),endaddress is 0x02E7(byte#) or 0x0173(word#), size 208 bytes (104 words)
+********************
+Global _HY17P52WR3     =0x000218 (byte) 0x00010C (word)
+Local  _00107_DS_      =0x000262 (byte) 0x000131 (word)
+Local  _00111_DS_      =0x000284 (byte) 0x000142 (word)
+Local  _00115_DS_      =0x000294 (byte) 0x00014A (word)
+Local  _00117_DS_      =0x0002B6 (byte) 0x00015B (word)
+Local  _00114_DS_      =0x0002E4 (byte) 0x000172 (word)
+Local  _00119_DS_      =0x0002E6 (byte) 0x000173 (word)
+
+********************
+In area _ALL module display start at 0x02E8 (byte#) or 0x0174 (word#),endaddress is 0x02FF(byte#) or 0x017F(word#), size 24 bytes (12 words)
+********************
+Global _Delay          =0x0002E8 (byte) 0x000174 (word)
+Local  _00145_DS_      =0x0002EC (byte) 0x000176 (word)
+Local  _00147_DS_      =0x0002FE (byte) 0x00017F (word)
+
+********************
+In area _ALL module HY17P52ADCSetting start at 0x0300 (byte#) or 0x0180 (word#),endaddress is 0x02FF(byte#) or 0x017F(word#), size 0 bytes (0 words)
+********************
+Global _TMR_RS_Setting =0x000300 (byte) 0x000180 (word)
+
+********************
+In area _ALL module ADC_LCD start at 0x0300 (byte#) or 0x0180 (word#),endaddress is 0x033D(byte#) or 0x019E(word#), size 62 bytes (31 words)
+********************
+Global _LowVoltageDisplay=0x000300 (byte) 0x000180 (word)
+Local  _00451_DS_      =0x00031E (byte) 0x00018F (word)
+Local  _00448_DS_      =0x00033A (byte) 0x00019D (word)
+Local  _00453_DS_      =0x00033C (byte) 0x00019E (word)
+
+********************
+In area _ALL module HY17P52ADCSetting start at 0x033E (byte#) or 0x019F (word#),endaddress is 0x0359(byte#) or 0x01AC(word#), size 28 bytes (14 words)
+********************
+Global _AccuracyModeADCOFF=0x00033E (byte) 0x00019F (word)
+Global _ADCAccuracyMode=0x00033E (byte) 0x00019F (word)
+Global _PGAandADCAccuracyMode=0x00033E (byte) 0x00019F (word)
+
+********************
+In area _ALL module ADC_LCD start at 0x035A (byte#) or 0x01AD (word#),endaddress is 0x0E9F(byte#) or 0x074F(word#), size 2886 bytes (1443 words)
+********************
+Global _main           =0x00035A (byte) 0x0001AD (word)
+Local  _00105_DS_      =0x0003BE (byte) 0x0001DF (word)
+Local  _00107_DS_      =0x000406 (byte) 0x000203 (word)
+Local  _00109_DS_      =0x000426 (byte) 0x000213 (word)
+Local  _00110_DS_      =0x000432 (byte) 0x000219 (word)
+Local  _00381_DS_      =0x000454 (byte) 0x00022A (word)
+Local  _00111_DS_      =0x00045C (byte) 0x00022E (word)
+Local  _00112_DS_      =0x00047C (byte) 0x00023E (word)
+Local  _00113_DS_      =0x00049A (byte) 0x00024D (word)
+Local  _00114_DS_      =0x0004BE (byte) 0x00025F (word)
+Local  _00178_DS_      =0x0004DA (byte) 0x00026D (word)
+Local  _00117_DS_      =0x00050C (byte) 0x000286 (word)
+Local  _00118_DS_      =0x0005B8 (byte) 0x0002DC (word)
+Local  _00119_DS_      =0x0005BC (byte) 0x0002DE (word)
+Local  _00120_DS_      =0x0005C0 (byte) 0x0002E0 (word)
+Local  _00129_DS_      =0x000658 (byte) 0x00032C (word)
+Local  _00126_DS_      =0x00076E (byte) 0x0003B7 (word)
+Local  _00185_DS_      =0x000798 (byte) 0x0003CC (word)
+Local  _00186_DS_      =0x0007B4 (byte) 0x0003DA (word)
+Local  _00187_DS_      =0x0007C8 (byte) 0x0003E4 (word)
+Local  _00188_DS_      =0x0007D6 (byte) 0x0003EB (word)
+Local  _00123_DS_      =0x0007F2 (byte) 0x0003F9 (word)
+Local  _00189_DS_      =0x000818 (byte) 0x00040C (word)
+Local  _00190_DS_      =0x000834 (byte) 0x00041A (word)
+Local  _00191_DS_      =0x000848 (byte) 0x000424 (word)
+Local  _00192_DS_      =0x000856 (byte) 0x00042B (word)
+Local  _00124_DS_      =0x000878 (byte) 0x00043C (word)
+Local  _00132_DS_      =0x00095C (byte) 0x0004AE (word)
+Local  _00141_DS_      =0x000996 (byte) 0x0004CB (word)
+Local  _00193_DS_      =0x0009BE (byte) 0x0004DF (word)
+Local  _00194_DS_      =0x0009DA (byte) 0x0004ED (word)
+Local  _00135_DS_      =0x000AE2 (byte) 0x000571 (word)
+Local  _00138_DS_      =0x000BC8 (byte) 0x0005E4 (word)
+Local  _00195_DS_      =0x000BEE (byte) 0x0005F7 (word)
+Local  _00196_DS_      =0x000C0A (byte) 0x000605 (word)
+Local  _00146_DS_      =0x000C54 (byte) 0x00062A (word)
+Local  _00147_DS_      =0x000D00 (byte) 0x000680 (word)
+Local  _00148_DS_      =0x000D04 (byte) 0x000682 (word)
+Local  _00149_DS_      =0x000D08 (byte) 0x000684 (word)
+Local  _00197_DS_      =0x000D28 (byte) 0x000694 (word)
+Local  _00198_DS_      =0x000D44 (byte) 0x0006A2 (word)
+Local  _00152_DS_      =0x000D58 (byte) 0x0006AC (word)
+Local  _00199_DS_      =0x000D76 (byte) 0x0006BB (word)
+Local  _00200_DS_      =0x000D92 (byte) 0x0006C9 (word)
+Local  _00155_DS_      =0x000DEC (byte) 0x0006F6 (word)
+Local  _00157_DS_      =0x000E44 (byte) 0x000722 (word)
+Local  _00160_DS_      =0x000E46 (byte) 0x000723 (word)
+Local  _00161_DS_      =0x000E4A (byte) 0x000725 (word)
+Local  _00173_DS_      =0x000E6C (byte) 0x000736 (word)
+Local  _00170_DS_      =0x000E7A (byte) 0x00073D (word)
+Local  _00167_DS_      =0x000E8C (byte) 0x000746 (word)
+
+********************
+In area _ALL module _slong2fs start at 0x0EA0 (byte#) or 0x0750 (word#),endaddress is 0x0EEB(byte#) or 0x0775(word#), size 76 bytes (38 words)
+********************
+Global ___slong2fs     =0x000EA0 (byte) 0x000750 (word)
+Local  _00106_DS_      =0x000EDA (byte) 0x00076D (word)
+Local  _00108_DS_      =0x000EEA (byte) 0x000775 (word)
+
+********************
+In area _ALL module display start at 0x0EEC (byte#) or 0x0776 (word#),endaddress is 0x0FDB(byte#) or 0x07ED(word#), size 240 bytes (120 words)
+********************
+Global _Reverse_Data   =0x000EEC (byte) 0x000776 (word)
+Local  _00152_DS_      =0x000EF8 (byte) 0x00077C (word)
+Local  _00154_DS_      =0x000FAC (byte) 0x0007D6 (word)
+Local  _00156_DS_      =0x000FCC (byte) 0x0007E6 (word)
+Local  _00158_DS_      =0x000FDA (byte) 0x0007ED (word)
+
+********************
+In area _ALL module _fs2slong start at 0x0FDC (byte#) or 0x07EE (word#),endaddress is 0x1051(byte#) or 0x0828(word#), size 118 bytes (59 words)
+********************
+Global ___fs2slong     =0x000FDC (byte) 0x0007EE (word)
+Local  _00106_DS_      =0x000FF4 (byte) 0x0007FA (word)
+Local  _00108_DS_      =0x001040 (byte) 0x000820 (word)
+Local  _00110_DS_      =0x001050 (byte) 0x000828 (word)
+
+********************
+In area _ALL module display start at 0x1052 (byte#) or 0x0829 (word#),endaddress is 0x10D5(byte#) or 0x086A(word#), size 132 bytes (66 words)
+********************
+Global _DisplayNum     =0x001052 (byte) 0x000829 (word)
+Local  _00125_DS_      =0x001062 (byte) 0x000831 (word)
+Local  _00121_DS_      =0x0010D2 (byte) 0x000869 (word)
+Local  _00126_DS_      =0x0010D4 (byte) 0x00086A (word)
+
+********************
+In area _ALL module ADC_LCD start at 0x10D6 (byte#) or 0x086B (word#),endaddress is 0x11FD(byte#) or 0x08FE(word#), size 296 bytes (148 words)
+********************
+Global _UnitConverter  =0x0010D6 (byte) 0x00086B (word)
+Local  _00387_DS_      =0x0010DE (byte) 0x00086F (word)
+Local  _00400_DS_      =0x00113A (byte) 0x00089D (word)
+Local  _00397_DS_      =0x001182 (byte) 0x0008C1 (word)
+Local  _00394_DS_      =0x00119E (byte) 0x0008CF (word)
+Local  _00391_DS_      =0x0011EA (byte) 0x0008F5 (word)
+Local  _00402_DS_      =0x0011FC (byte) 0x0008FE (word)
+
+********************
+In area _ALL module _fsadd start at 0x11FE (byte#) or 0x08FF (word#),endaddress is 0x147B(byte#) or 0x0A3D(word#), size 638 bytes (319 words)
+********************
+Global ___fsadd        =0x0011FE (byte) 0x0008FF (word)
+Local  _00106_DS_      =0x001246 (byte) 0x000923 (word)
+Local  _00108_DS_      =0x001262 (byte) 0x000931 (word)
+Local  _00110_DS_      =0x0012B0 (byte) 0x000958 (word)
+Local  _00112_DS_      =0x0012E0 (byte) 0x000970 (word)
+Local  _00114_DS_      =0x00131E (byte) 0x00098F (word)
+Local  _00116_DS_      =0x001338 (byte) 0x00099C (word)
+Local  _00118_DS_      =0x001378 (byte) 0x0009BC (word)
+Local  _00119_DS_      =0x0013AA (byte) 0x0009D5 (word)
+Local  _00123_DS_      =0x0013E2 (byte) 0x0009F1 (word)
+Local  _00125_DS_      =0x0013F8 (byte) 0x0009FC (word)
+Local  _00130_DS_      =0x001414 (byte) 0x000A0A (word)
+Local  _00129_DS_      =0x00142A (byte) 0x000A15 (word)
+Local  _00132_DS_      =0x001438 (byte) 0x000A1C (word)
+Local  _00133_DS_      =0x00147A (byte) 0x000A3D (word)
+
+********************
+In area _ALL module _modslong start at 0x147C (byte#) or 0x0A3E (word#),endaddress is 0x14F1(byte#) or 0x0A78(word#), size 118 bytes (59 words)
+********************
+Global __modslong      =0x00147C (byte) 0x000A3E (word)
+Local  _00106_DS_      =0x00149A (byte) 0x000A4D (word)
+Local  _00108_DS_      =0x0014B0 (byte) 0x000A58 (word)
+Local  _00110_DS_      =0x0014EE (byte) 0x000A77 (word)
+Local  _00111_DS_      =0x0014F0 (byte) 0x000A78 (word)
+
+********************
+In area _ALL module _divslong start at 0x14F2 (byte#) or 0x0A79 (word#),endaddress is 0x1567(byte#) or 0x0AB3(word#), size 118 bytes (59 words)
+********************
+Global __divslong      =0x0014F2 (byte) 0x000A79 (word)
+Local  _00106_DS_      =0x001510 (byte) 0x000A88 (word)
+Local  _00108_DS_      =0x001528 (byte) 0x000A94 (word)
+Local  _00110_DS_      =0x001564 (byte) 0x000AB2 (word)
+Local  _00111_DS_      =0x001566 (byte) 0x000AB3 (word)
+
+********************
+In area _ALL module _mullong_nomvff start at 0x1568 (byte#) or 0x0AB4 (word#),endaddress is 0x15E3(byte#) or 0x0AF1(word#), size 124 bytes (62 words)
+********************
+Global __mullong       =0x001568 (byte) 0x000AB4 (word)
+
+********************
+In area _ALL module _g2ptrget1 start at 0x15E4 (byte#) or 0x0AF2 (word#),endaddress is 0x1605(byte#) or 0x0B02(word#), size 34 bytes (17 words)
+********************
+Global __g2ptrget1     =0x0015E4 (byte) 0x000AF2 (word)
+Local  ROMACC          =0x0015F2 (byte) 0x000AF9 (word)
+Local  FIN             =0x001604 (byte) 0x000B02 (word)
+
+********************
+In area _ALL module _g2ptrput1 start at 0x1606 (byte#) or 0x0B03 (word#),endaddress is 0x1615(byte#) or 0x0B0A(word#), size 16 bytes (8 words)
+********************
+Global __g2ptrput1     =0x001606 (byte) 0x000B03 (word)
+Local  ROMACC          =0x001614 (byte) 0x000B0A (word)
+
+********************
+In area _ALL module _ulong2fs start at 0x1616 (byte#) or 0x0B0B (word#),endaddress is 0x16C5(byte#) or 0x0B62(word#), size 176 bytes (88 words)
+********************
+Global ___ulong2fs     =0x001616 (byte) 0x000B0B (word)
+Local  _00119_DS_      =0x00162E (byte) 0x000B17 (word)
+Local  _00107_DS_      =0x001634 (byte) 0x000B1A (word)
+Local  _00110_DS_      =0x00164A (byte) 0x000B25 (word)
+Local  _00124_DS_      =0x001666 (byte) 0x000B33 (word)
+Local  _00114_DS_      =0x001692 (byte) 0x000B49 (word)
+Local  _00115_DS_      =0x0016C4 (byte) 0x000B62 (word)
+
+********************
+In area _ALL module _fs2ulong start at 0x16C6 (byte#) or 0x0B63 (word#),endaddress is 0x1725(byte#) or 0x0B92(word#), size 96 bytes (48 words)
+********************
+Global ___fs2ulong     =0x0016C6 (byte) 0x000B63 (word)
+Local  _00105_DS_      =0x0016EC (byte) 0x000B76 (word)
+Local  _00106_DS_      =0x0016F6 (byte) 0x000B7B (word)
+Local  _00108_DS_      =0x001724 (byte) 0x000B92 (word)
+
+********************
+In area _ALL module _fsmul start at 0x1726 (byte#) or 0x0B93 (word#),endaddress is 0x1981(byte#) or 0x0CC0(word#), size 604 bytes (302 words)
+********************
+Global ___fsmul        =0x001726 (byte) 0x000B93 (word)
+Local  _00105_DS_      =0x001762 (byte) 0x000BB1 (word)
+Local  _00106_DS_      =0x00176C (byte) 0x000BB6 (word)
+Local  _00109_DS_      =0x0018BC (byte) 0x000C5E (word)
+Local  _00110_DS_      =0x0018D4 (byte) 0x000C6A (word)
+Local  _00119_DS_      =0x0018F8 (byte) 0x000C7C (word)
+Local  _00120_DS_      =0x001900 (byte) 0x000C80 (word)
+Local  _00115_DS_      =0x001918 (byte) 0x000C8C (word)
+Local  _00112_DS_      =0x001926 (byte) 0x000C93 (word)
+Local  _00121_DS_      =0x001938 (byte) 0x000C9C (word)
+Local  _00122_DS_      =0x001940 (byte) 0x000CA0 (word)
+Local  _00116_DS_      =0x001972 (byte) 0x000CB9 (word)
+Local  _00117_DS_      =0x001980 (byte) 0x000CC0 (word)
+
+********************
+In area _ALL module _shr_slong start at 0x1982 (byte#) or 0x0CC1 (word#),endaddress is 0x1999(byte#) or 0x0CCC(word#), size 24 bytes (12 words)
+********************
+Global __shr_slong     =0x001982 (byte) 0x000CC1 (word)
+Local  loop_shr        =0x001986 (byte) 0x000CC3 (word)
+Local  FIN             =0x001994 (byte) 0x000CCA (word)
+
+********************
+In area _ALL module _modulong start at 0x199A (byte#) or 0x0CCD (word#),endaddress is 0x1A09(byte#) or 0x0D04(word#), size 112 bytes (56 words)
+********************
+Global __modulong      =0x00199A (byte) 0x000CCD (word)
+Local  _00106_DS_      =0x0019A0 (byte) 0x000CD0 (word)
+Local  _00111_DS_      =0x0019C6 (byte) 0x000CE3 (word)
+Local  _00110_DS_      =0x0019EA (byte) 0x000CF5 (word)
+
+********************
+In area _ALL module _divulong start at 0x1A0A (byte#) or 0x0D05 (word#),endaddress is 0x1A6B(byte#) or 0x0D35(word#), size 98 bytes (49 words)
+********************
+Global __divulong      =0x001A0A (byte) 0x000D05 (word)
+Local  _00109_DS_      =0x001A1A (byte) 0x000D0D (word)
+Local  _00110_DS_      =0x001A58 (byte) 0x000D2C (word)
+
+********************
+ROM Area CONST, start 0x1A6C (BYTE), end 0x1A89 (BYTE), size 0x001D (BYTE), or 0x000F (WORD). 
+********************
+
+********************
+In area CONST module display start at 0x1A6C (byte#) or 0x0D36 (word#),endaddress is 0x1A88(byte#) or 0x0D43(word#), size 29 bytes (14 words)
+********************
+Global _seg            =0x001A6C (byte) 0x000D36 (word)
+
+********************
+ROM Area CODE, start 0x1A8A (BYTE), end 0x1AC0 (BYTE), size 0x0036 (BYTE), or 0x001B (WORD). 
+********************
+
+********************
+In area CODE module gsinit256fsr2 start at 0x1A8A (byte#) or 0x0D45 (word#),endaddress is 0x1ABF(byte#) or 0x0D5F(word#), size 54 bytes (27 words)
+********************
+Global __sdcc_gsinit_startup256fsr2=0x001A8A (byte) 0x000D45 (word)
+Local  loop_clear_ram0 =0x001A90 (byte) 0x000D48 (word)
+Local  loop_copy1      =0x001AA2 (byte) 0x000D51 (word)
+Local  pre1            =0x001AB6 (byte) 0x000D5B (word)
+
+********************
+EQU defined information:
+********************
+module ADC_LCD              global STK02                EQU 001E
+module ADC_LCD              global STK01                EQU 001F
+module ADC_LCD              global STK00                EQU 0020
+module ADC_LCD              local  __SWTGTID            EQU A43354DA
+module ADC_LCD              local  _INDF0               EQU 0000
+module ADC_LCD              local  _POINC0              EQU 0001
+module ADC_LCD              local  _PODEC0              EQU 0002
+module ADC_LCD              local  _PRINC0              EQU 0003
+module ADC_LCD              local  _PLUSW0              EQU 0004
+module ADC_LCD              local  _INDF1               EQU 0005
+module ADC_LCD              local  _POINC1              EQU 0006
+module ADC_LCD              local  _PODEC1              EQU 0007
+module ADC_LCD              local  _PRINC1              EQU 0008
+module ADC_LCD              local  _PLUSW1              EQU 0009
+module ADC_LCD              local  _INDF2               EQU 000A
+module ADC_LCD              local  _POINC2              EQU 000B
+module ADC_LCD              local  _PODEC2              EQU 000C
+module ADC_LCD              local  _PRINC2              EQU 000D
+module ADC_LCD              local  _PLUSW2              EQU 000E
+module ADC_LCD              local  _FSR0H               EQU 000F
+module ADC_LCD              local  _FSR0L               EQU 0010
+module ADC_LCD              local  _FSR1H               EQU 0011
+module ADC_LCD              local  _FSR1L               EQU 0012
+module ADC_LCD              local  _FSR2H               EQU 0013
+module ADC_LCD              local  _FSR2L               EQU 0014
+module ADC_LCD              local  _TOSH                EQU 0016
+module ADC_LCD              local  _TOSL                EQU 0017
+module ADC_LCD              local  _SKCN                EQU 0018
+module ADC_LCD              local  _PCLATH              EQU 001A
+module ADC_LCD              local  _PCLATL              EQU 001B
+module ADC_LCD              local  _TBLPTRH             EQU 001D
+module ADC_LCD              local  _TBLPTRL             EQU 001E
+module ADC_LCD              local  _TBLDH               EQU 001F
+module ADC_LCD              local  _TBLDL               EQU 0020
+module ADC_LCD              local  _PRODH               EQU 0021
+module ADC_LCD              local  _PRODL               EQU 0022
+module ADC_LCD              local  _INTE0               EQU 0023
+module ADC_LCD              local  _INTE1               EQU 0024
+module ADC_LCD              local  _INTF0               EQU 0026
+module ADC_LCD              local  _INTF1               EQU 0027
+module ADC_LCD              local  _WREG                EQU 0029
+module ADC_LCD              local  _BSRCN               EQU 002A
+module ADC_LCD              local  _STATUS              EQU 002B
+module ADC_LCD              local  _MSTAT               EQU 002B
+module ADC_LCD              local  _PSTAT               EQU 002C
+module ADC_LCD              local  _BIECN               EQU 002E
+module ADC_LCD              local  _BIEARH              EQU 002F
+module ADC_LCD              local  _BIEARL              EQU 0030
+module ADC_LCD              local  _BIEDRH              EQU 0031
+module ADC_LCD              local  _BIEDRL              EQU 0032
+module ADC_LCD              local  _PWRCN               EQU 0033
+module ADC_LCD              local  _OSCCN0              EQU 0034
+module ADC_LCD              local  _OSCCN1              EQU 0035
+module ADC_LCD              local  _OSCCN2              EQU 0036
+module ADC_LCD              local  _CSFCN0              EQU 0037
+module ADC_LCD              local  _CSFCN1              EQU 0038
+module ADC_LCD              local  _WDTCN               EQU 0039
+module ADC_LCD              local  _AD1H                EQU 003A
+module ADC_LCD              local  _AD1M                EQU 003B
+module ADC_LCD              local  _AD1L                EQU 003C
+module ADC_LCD              local  _AD1CN0              EQU 003D
+module ADC_LCD              local  _AD1CN1              EQU 003E
+module ADC_LCD              local  _AD1CN2              EQU 003F
+module ADC_LCD              local  _AD1CN3              EQU 0040
+module ADC_LCD              local  _AD1CN4              EQU 0041
+module ADC_LCD              local  _AD1CN5              EQU 0042
+module ADC_LCD              local  _LVDCN               EQU 0043
+module ADC_LCD              local  _TMA1CN              EQU 0044
+module ADC_LCD              local  _TMA1R               EQU 0045
+module ADC_LCD              local  _TMA1C               EQU 0046
+module ADC_LCD              local  _PT1                 EQU 0047
+module ADC_LCD              local  _TRISC1              EQU 0048
+module ADC_LCD              local  _PT1DA               EQU 0049
+module ADC_LCD              local  _PT1PU               EQU 004A
+module ADC_LCD              local  _PT1M1               EQU 004B
+module ADC_LCD              local  _PT2                 EQU 004C
+module ADC_LCD              local  _TRISC2              EQU 004D
+module ADC_LCD              local  _PT2DA               EQU 004E
+module ADC_LCD              local  _PT2PU               EQU 004F
+module ADC_LCD              local  _PT8                 EQU 0050
+module ADC_LCD              local  _TRISC8              EQU 0051
+module ADC_LCD              local  _PT8PU               EQU 0053
+module ADC_LCD              local  _UR0CN               EQU 0054
+module ADC_LCD              local  _UR0STA              EQU 0055
+module ADC_LCD              local  _BA0CN               EQU 0056
+module ADC_LCD              local  _BG0RH               EQU 0057
+module ADC_LCD              local  _BG0RL               EQU 0058
+module ADC_LCD              local  _TX0R                EQU 0059
+module ADC_LCD              local  _RC0REG              EQU 005A
+module ADC_LCD              local  _LCDCN1              EQU 005B
+module ADC_LCD              local  _LCDCN2              EQU 005C
+module ADC_LCD              local  _LCDCN3              EQU 005D
+module ADC_LCD              local  _LCDCN4              EQU 005E
+module ADC_LCD              local  _LCD0                EQU 005F
+module ADC_LCD              local  _LCD1                EQU 0060
+module ADC_LCD              local  _LCD2                EQU 0061
+module ADC_LCD              local  _LCD3                EQU 0062
+module ADC_LCD              local  _LCD4                EQU 0063
+module ADC_LCD              local  _LCD5                EQU 0064
+module ADC_LCD              local  _LCD6                EQU 0065
+module ADC_LCD              local  _Filter              EQU 0066
+module ADC_LCD              local  _ADCRH               EQU 003A
+module ADC_LCD              local  _ADCRM               EQU 003B
+module ADC_LCD              local  _ADCRL               EQU 003C
+module ADC_52               local  __SWTGTID            EQU A43354DA
+module ADC_52               local  _INDF0               EQU 0000
+module ADC_52               local  _POINC0              EQU 0001
+module ADC_52               local  _PODEC0              EQU 0002
+module ADC_52               local  _PRINC0              EQU 0003
+module ADC_52               local  _PLUSW0              EQU 0004
+module ADC_52               local  _INDF1               EQU 0005
+module ADC_52               local  _POINC1              EQU 0006
+module ADC_52               local  _PODEC1              EQU 0007
+module ADC_52               local  _PRINC1              EQU 0008
+module ADC_52               local  _PLUSW1              EQU 0009
+module ADC_52               local  _INDF2               EQU 000A
+module ADC_52               local  _POINC2              EQU 000B
+module ADC_52               local  _PODEC2              EQU 000C
+module ADC_52               local  _PRINC2              EQU 000D
+module ADC_52               local  _PLUSW2              EQU 000E
+module ADC_52               local  _FSR0H               EQU 000F
+module ADC_52               local  _FSR0L               EQU 0010
+module ADC_52               local  _FSR1H               EQU 0011
+module ADC_52               local  _FSR1L               EQU 0012
+module ADC_52               local  _FSR2H               EQU 0013
+module ADC_52               local  _FSR2L               EQU 0014
+module ADC_52               local  _TOSH                EQU 0016
+module ADC_52               local  _TOSL                EQU 0017
+module ADC_52               local  _SKCN                EQU 0018
+module ADC_52               local  _PCLATH              EQU 001A
+module ADC_52               local  _PCLATL              EQU 001B
+module ADC_52               local  _TBLPTRH             EQU 001D
+module ADC_52               local  _TBLPTRL             EQU 001E
+module ADC_52               local  _TBLDH               EQU 001F
+module ADC_52               local  _TBLDL               EQU 0020
+module ADC_52               local  _PRODH               EQU 0021
+module ADC_52               local  _PRODL               EQU 0022
+module ADC_52               local  _INTE0               EQU 0023
+module ADC_52               local  _INTE1               EQU 0024
+module ADC_52               local  _INTF0               EQU 0026
+module ADC_52               local  _INTF1               EQU 0027
+module ADC_52               local  _WREG                EQU 0029
+module ADC_52               local  _BSRCN               EQU 002A
+module ADC_52               local  _STATUS              EQU 002B
+module ADC_52               local  _MSTAT               EQU 002B
+module ADC_52               local  _PSTAT               EQU 002C
+module ADC_52               local  _BIECN               EQU 002E
+module ADC_52               local  _BIEARH              EQU 002F
+module ADC_52               local  _BIEARL              EQU 0030
+module ADC_52               local  _BIEDRH              EQU 0031
+module ADC_52               local  _BIEDRL              EQU 0032
+module ADC_52               local  _PWRCN               EQU 0033
+module ADC_52               local  _OSCCN0              EQU 0034
+module ADC_52               local  _OSCCN1              EQU 0035
+module ADC_52               local  _OSCCN2              EQU 0036
+module ADC_52               local  _CSFCN0              EQU 0037
+module ADC_52               local  _CSFCN1              EQU 0038
+module ADC_52               local  _WDTCN               EQU 0039
+module ADC_52               local  _AD1H                EQU 003A
+module ADC_52               local  _AD1M                EQU 003B
+module ADC_52               local  _AD1L                EQU 003C
+module ADC_52               local  _AD1CN0              EQU 003D
+module ADC_52               local  _AD1CN1              EQU 003E
+module ADC_52               local  _AD1CN2              EQU 003F
+module ADC_52               local  _AD1CN3              EQU 0040
+module ADC_52               local  _AD1CN4              EQU 0041
+module ADC_52               local  _AD1CN5              EQU 0042
+module ADC_52               local  _LVDCN               EQU 0043
+module ADC_52               local  _TMA1CN              EQU 0044
+module ADC_52               local  _TMA1R               EQU 0045
+module ADC_52               local  _TMA1C               EQU 0046
+module ADC_52               local  _PT1                 EQU 0047
+module ADC_52               local  _TRISC1              EQU 0048
+module ADC_52               local  _PT1DA               EQU 0049
+module ADC_52               local  _PT1PU               EQU 004A
+module ADC_52               local  _PT1M1               EQU 004B
+module ADC_52               local  _PT2                 EQU 004C
+module ADC_52               local  _TRISC2              EQU 004D
+module ADC_52               local  _PT2DA               EQU 004E
+module ADC_52               local  _PT2PU               EQU 004F
+module ADC_52               local  _PT8                 EQU 0050
+module ADC_52               local  _TRISC8              EQU 0051
+module ADC_52               local  _PT8PU               EQU 0053
+module ADC_52               local  _UR0CN               EQU 0054
+module ADC_52               local  _UR0STA              EQU 0055
+module ADC_52               local  _BA0CN               EQU 0056
+module ADC_52               local  _BG0RH               EQU 0057
+module ADC_52               local  _BG0RL               EQU 0058
+module ADC_52               local  _TX0R                EQU 0059
+module ADC_52               local  _RC0REG              EQU 005A
+module ADC_52               local  _LCDCN1              EQU 005B
+module ADC_52               local  _LCDCN2              EQU 005C
+module ADC_52               local  _LCDCN3              EQU 005D
+module ADC_52               local  _LCDCN4              EQU 005E
+module ADC_52               local  _LCD0                EQU 005F
+module ADC_52               local  _LCD1                EQU 0060
+module ADC_52               local  _LCD2                EQU 0061
+module ADC_52               local  _LCD3                EQU 0062
+module ADC_52               local  _LCD4                EQU 0063
+module ADC_52               local  _LCD5                EQU 0064
+module ADC_52               local  _LCD6                EQU 0065
+module ADC_52               local  _Filter              EQU 0066
+module ADC_52               local  _ADCRH               EQU 003A
+module ADC_52               local  _ADCRM               EQU 003B
+module ADC_52               local  _ADCRL               EQU 003C
+module display              local  __SWTGTID            EQU A43354DA
+module display              local  _INDF0               EQU 0000
+module display              local  _POINC0              EQU 0001
+module display              local  _PODEC0              EQU 0002
+module display              local  _PRINC0              EQU 0003
+module display              local  _PLUSW0              EQU 0004
+module display              local  _INDF1               EQU 0005
+module display              local  _POINC1              EQU 0006
+module display              local  _PODEC1              EQU 0007
+module display              local  _PRINC1              EQU 0008
+module display              local  _PLUSW1              EQU 0009
+module display              local  _INDF2               EQU 000A
+module display              local  _POINC2              EQU 000B
+module display              local  _PODEC2              EQU 000C
+module display              local  _PRINC2              EQU 000D
+module display              local  _PLUSW2              EQU 000E
+module display              local  _FSR0H               EQU 000F
+module display              local  _FSR0L               EQU 0010
+module display              local  _FSR1H               EQU 0011
+module display              local  _FSR1L               EQU 0012
+module display              local  _FSR2H               EQU 0013
+module display              local  _FSR2L               EQU 0014
+module display              local  _TOSH                EQU 0016
+module display              local  _TOSL                EQU 0017
+module display              local  _SKCN                EQU 0018
+module display              local  _PCLATH              EQU 001A
+module display              local  _PCLATL              EQU 001B
+module display              local  _TBLPTRH             EQU 001D
+module display              local  _TBLPTRL             EQU 001E
+module display              local  _TBLDH               EQU 001F
+module display              local  _TBLDL               EQU 0020
+module display              local  _PRODH               EQU 0021
+module display              local  _PRODL               EQU 0022
+module display              local  _INTE0               EQU 0023
+module display              local  _INTE1               EQU 0024
+module display              local  _INTF0               EQU 0026
+module display              local  _INTF1               EQU 0027
+module display              local  _WREG                EQU 0029
+module display              local  _BSRCN               EQU 002A
+module display              local  _STATUS              EQU 002B
+module display              local  _MSTAT               EQU 002B
+module display              local  _PSTAT               EQU 002C
+module display              local  _BIECN               EQU 002E
+module display              local  _BIEARH              EQU 002F
+module display              local  _BIEARL              EQU 0030
+module display              local  _BIEDRH              EQU 0031
+module display              local  _BIEDRL              EQU 0032
+module display              local  _PWRCN               EQU 0033
+module display              local  _OSCCN0              EQU 0034
+module display              local  _OSCCN1              EQU 0035
+module display              local  _OSCCN2              EQU 0036
+module display              local  _CSFCN0              EQU 0037
+module display              local  _CSFCN1              EQU 0038
+module display              local  _WDTCN               EQU 0039
+module display              local  _AD1H                EQU 003A
+module display              local  _AD1M                EQU 003B
+module display              local  _AD1L                EQU 003C
+module display              local  _AD1CN0              EQU 003D
+module display              local  _AD1CN1              EQU 003E
+module display              local  _AD1CN2              EQU 003F
+module display              local  _AD1CN3              EQU 0040
+module display              local  _AD1CN4              EQU 0041
+module display              local  _AD1CN5              EQU 0042
+module display              local  _LVDCN               EQU 0043
+module display              local  _TMA1CN              EQU 0044
+module display              local  _TMA1R               EQU 0045
+module display              local  _TMA1C               EQU 0046
+module display              local  _PT1                 EQU 0047
+module display              local  _TRISC1              EQU 0048
+module display              local  _PT1DA               EQU 0049
+module display              local  _PT1PU               EQU 004A
+module display              local  _PT1M1               EQU 004B
+module display              local  _PT2                 EQU 004C
+module display              local  _TRISC2              EQU 004D
+module display              local  _PT2DA               EQU 004E
+module display              local  _PT2PU               EQU 004F
+module display              local  _PT8                 EQU 0050
+module display              local  _TRISC8              EQU 0051
+module display              local  _PT8PU               EQU 0053
+module display              local  _UR0CN               EQU 0054
+module display              local  _UR0STA              EQU 0055
+module display              local  _BA0CN               EQU 0056
+module display              local  _BG0RH               EQU 0057
+module display              local  _BG0RL               EQU 0058
+module display              local  _TX0R                EQU 0059
+module display              local  _RC0REG              EQU 005A
+module display              local  _LCDCN1              EQU 005B
+module display              local  _LCDCN2              EQU 005C
+module display              local  _LCDCN3              EQU 005D
+module display              local  _LCDCN4              EQU 005E
+module display              local  _LCD0                EQU 005F
+module display              local  _LCD1                EQU 0060
+module display              local  _LCD2                EQU 0061
+module display              local  _LCD3                EQU 0062
+module display              local  _LCD4                EQU 0063
+module display              local  _LCD5                EQU 0064
+module display              local  _LCD6                EQU 0065
+module display              local  _Filter              EQU 0066
+module display              local  _ADCRH               EQU 003A
+module display              local  _ADCRM               EQU 003B
+module display              local  _ADCRL               EQU 003C
+module LED                  local  __SWTGTID            EQU 93E79486
+module LED                  local  _INDF0               EQU 0000
+module LED                  local  _POINC0              EQU 0001
+module LED                  local  _PODEC0              EQU 0002
+module LED                  local  _PRINC0              EQU 0003
+module LED                  local  _PLUSW0              EQU 0004
+module LED                  local  _INDF1               EQU 0005
+module LED                  local  _POINC1              EQU 0006
+module LED                  local  _PODEC1              EQU 0007
+module LED                  local  _PRINC1              EQU 0008
+module LED                  local  _PLUSW1              EQU 0009
+module LED                  local  _INDF2               EQU 000A
+module LED                  local  _POINC2              EQU 000B
+module LED                  local  _PODEC2              EQU 000C
+module LED                  local  _PRINC2              EQU 000D
+module LED                  local  _PLUSW2              EQU 000E
+module LED                  local  _FSR0H               EQU 000F
+module LED                  local  _FSR0L               EQU 0010
+module LED                  local  _FSR1H               EQU 0011
+module LED                  local  _FSR1L               EQU 0012
+module LED                  local  _FSR2H               EQU 0013
+module LED                  local  _FSR2L               EQU 0014
+module LED                  local  _TOSH                EQU 0016
+module LED                  local  _TOSL                EQU 0017
+module LED                  local  _SKCN                EQU 0018
+module LED                  local  _PCLATH              EQU 001A
+module LED                  local  _PCLATL              EQU 001B
+module LED                  local  _TBLPTRH             EQU 001D
+module LED                  local  _TBLPTRL             EQU 001E
+module LED                  local  _TBLDH               EQU 001F
+module LED                  local  _TBLDL               EQU 0020
+module LED                  local  _PRODH               EQU 0021
+module LED                  local  _PRODL               EQU 0022
+module LED                  local  _INTE0               EQU 0023
+module LED                  local  _INTE1               EQU 0024
+module LED                  local  _INTE2               EQU 0025
+module LED                  local  _INTF0               EQU 0026
+module LED                  local  _INTF1               EQU 0027
+module LED                  local  _INTF2               EQU 0028
+module LED                  local  _WREG                EQU 0029
+module LED                  local  _BSRCN               EQU 002A
+module LED                  local  _STATUS              EQU 002B
+module LED                  local  _MSTAT               EQU 002B
+module LED                  local  _PSTAT               EQU 002C
+module LED                  local  _INTE3               EQU 002E
+module LED                  local  _INTF3               EQU 0030
+module LED                  local  _BIECN               EQU 0031
+module LED                  local  _BIEARL              EQU 0033
+module LED                  local  _BIEDRH              EQU 0034
+module LED                  local  _BIEDRL              EQU 0035
+module LED                  local  _PWRCN               EQU 0036
+module LED                  local  _OSCCN0              EQU 0037
+module LED                  local  _OSCCN1              EQU 0038
+module LED                  local  _OSCCN2              EQU 0039
+module LED                  local  _CSFCN0              EQU 003A
+module LED                  local  _CSFCN1              EQU 003B
+module LED                  local  _WDTCN               EQU 003E
+module LED                  local  _AD1H                EQU 003F
+module LED                  local  _AD1M                EQU 0040
+module LED                  local  _AD1L                EQU 0041
+module LED                  local  _AD1CN0              EQU 0042
+module LED                  local  _AD1CN1              EQU 0043
+module LED                  local  _AD1CN2              EQU 0044
+module LED                  local  _AD1CN3              EQU 0045
+module LED                  local  _AD1CN4              EQU 0046
+module LED                  local  _AD1CN5              EQU 0047
+module LED                  local  _LVDCN               EQU 0048
+module LED                  local  _TMA1CN              EQU 0049
+module LED                  local  _TMA1R               EQU 004A
+module LED                  local  _TMA1C               EQU 004B
+module LED                  local  _TB1FLAG             EQU 004C
+module LED                  local  _TB1CN0              EQU 004D
+module LED                  local  _TB1CN1              EQU 004E
+module LED                  local  _TB1RH               EQU 004F
+module LED                  local  _TB1RL               EQU 0050
+module LED                  local  _TB1C0H              EQU 0051
+module LED                  local  _TB1C0L              EQU 0052
+module LED                  local  _TB1C1H              EQU 0053
+module LED                  local  _TB1C1L              EQU 0054
+module LED                  local  _TB1C2H              EQU 0055
+module LED                  local  _TB1C2L              EQU 0056
+module LED                  local  _TC1CN0              EQU 0057
+module LED                  local  _TC1CN1              EQU 0058
+module LED                  local  _TC1R0H              EQU 0059
+module LED                  local  _TC1R0L              EQU 005A
+module LED                  local  _TC1R1H              EQU 005B
+module LED                  local  _TC1R1L              EQU 005C
+module LED                  local  _PT1                 EQU 005D
+module LED                  local  _TRISC1              EQU 005E
+module LED                  local  _PT1DA               EQU 005F
+module LED                  local  _PT1PU               EQU 0060
+module LED                  local  _PT1M1               EQU 0061
+module LED                  local  _PT1M2               EQU 0062
+module LED                  local  _PT1INT              EQU 0063
+module LED                  local  _PT2                 EQU 0064
+module LED                  local  _TRISC2              EQU 0065
+module LED                  local  _PT2DA               EQU 0066
+module LED                  local  _PT2PU               EQU 0067
+module LED                  local  _PT2INT              EQU 006A
+module LED                  local  _PT2INTE             EQU 006B
+module LED                  local  _PT2INTF             EQU 006C
+module LED                  local  _PT4                 EQU 006D
+module LED                  local  _PT4DA               EQU 006F
+module LED                  local  _PT4PU               EQU 0070
+module LED                  local  _PT4INT              EQU 0073
+module LED                  local  _PT4INTE             EQU 0074
+module LED                  local  _PT4INTF             EQU 0075
+module LED                  local  _PT12                EQU 0076
+module LED                  local  _TRISC12             EQU 0077
+module LED                  local  _PT12DA              EQU 0078
+module LED                  local  _PT12PU              EQU 0079
+module LED                  local  _TMA2CN              EQU 007A
+module LED                  local  _TMA2R               EQU 007B
+module LED                  local  _TMA2C               EQU 007C
+module LED                  local  _SSPCN0              EQU 007D
+module LED                  local  _SSPSTA0             EQU 007E
+module LED                  local  _SSPBUF0             EQU 007F
+module LED                  local  _CFG0                EQU 0180
+module LED                  local  _ACT0                EQU 0181
+module LED                  local  _STA0                EQU 0182
+module LED                  local  _CRG0                EQU 0183
+module LED                  local  _TOC0                EQU 0184
+module LED                  local  _RDB0                EQU 0185
+module LED                  local  _TDB0                EQU 0186
+module LED                  local  _SID0                EQU 0187
+module LED                  local  _CFG2                EQU 0188
+module LED                  local  _ACT2                EQU 0189
+module LED                  local  _STA2                EQU 018A
+module LED                  local  _CRG2                EQU 018B
+module LED                  local  _TOC2                EQU 018C
+module LED                  local  _RDB2                EQU 018D
+module LED                  local  _TDB2                EQU 018E
+module LED                  local  _SID2                EQU 018F
+module LED                  local  _UR0CN               EQU 0190
+module LED                  local  _UR0STA              EQU 0191
+module LED                  local  _BA0CN               EQU 0192
+module LED                  local  _BG0RH               EQU 0193
+module LED                  local  _BG0RL               EQU 0194
+module LED                  local  _TX0R                EQU 0195
+module LED                  local  _RC0REG              EQU 0196
+module LED                  local  _UR2CN               EQU 0197
+module LED                  local  _UR2STA              EQU 0198
+module LED                  local  _BA2CN               EQU 0199
+module LED                  local  _BG2RH               EQU 019A
+module LED                  local  _BG2RL               EQU 019B
+module LED                  local  _TX2R                EQU 019C
+module LED                  local  _RC2REG              EQU 019D
+module LED                  local  _CCNT                EQU 019E
+module LED                  local  _ENCCMode            EQU 019F
+module LED                  local  _PT1AIE              EQU 01B0
+module LED                  local  _PT2AIE              EQU 01B1
+module LED                  local  _PT4AIE              EQU 01B3
+module LED                  local  _PT6AIE              EQU 01B5
+module LED                  local  _ADCRH               EQU 003F
+module LED                  local  _ADCRM               EQU 0040
+module LED                  local  _ADCRL               EQU 0041
+module HY17P52WR3           local  __SWTGTID            EQU A43354DA
+module HY17P52WR3           local  _INDF0               EQU 0000
+module HY17P52WR3           local  _POINC0              EQU 0001
+module HY17P52WR3           local  _PODEC0              EQU 0002
+module HY17P52WR3           local  _PRINC0              EQU 0003
+module HY17P52WR3           local  _PLUSW0              EQU 0004
+module HY17P52WR3           local  _INDF1               EQU 0005
+module HY17P52WR3           local  _POINC1              EQU 0006
+module HY17P52WR3           local  _PODEC1              EQU 0007
+module HY17P52WR3           local  _PRINC1              EQU 0008
+module HY17P52WR3           local  _PLUSW1              EQU 0009
+module HY17P52WR3           local  _INDF2               EQU 000A
+module HY17P52WR3           local  _POINC2              EQU 000B
+module HY17P52WR3           local  _PODEC2              EQU 000C
+module HY17P52WR3           local  _PRINC2              EQU 000D
+module HY17P52WR3           local  _PLUSW2              EQU 000E
+module HY17P52WR3           local  _FSR0H               EQU 000F
+module HY17P52WR3           local  _FSR0L               EQU 0010
+module HY17P52WR3           local  _FSR1H               EQU 0011
+module HY17P52WR3           local  _FSR1L               EQU 0012
+module HY17P52WR3           local  _FSR2H               EQU 0013
+module HY17P52WR3           local  _FSR2L               EQU 0014
+module HY17P52WR3           local  _TOSH                EQU 0016
+module HY17P52WR3           local  _TOSL                EQU 0017
+module HY17P52WR3           local  _SKCN                EQU 0018
+module HY17P52WR3           local  _PCLATH              EQU 001A
+module HY17P52WR3           local  _PCLATL              EQU 001B
+module HY17P52WR3           local  _TBLPTRH             EQU 001D
+module HY17P52WR3           local  _TBLPTRL             EQU 001E
+module HY17P52WR3           local  _TBLDH               EQU 001F
+module HY17P52WR3           local  _TBLDL               EQU 0020
+module HY17P52WR3           local  _PRODH               EQU 0021
+module HY17P52WR3           local  _PRODL               EQU 0022
+module HY17P52WR3           local  _INTE0               EQU 0023
+module HY17P52WR3           local  _INTE1               EQU 0024
+module HY17P52WR3           local  _INTF0               EQU 0026
+module HY17P52WR3           local  _INTF1               EQU 0027
+module HY17P52WR3           local  _WREG                EQU 0029
+module HY17P52WR3           local  _BSRCN               EQU 002A
+module HY17P52WR3           local  _STATUS              EQU 002B
+module HY17P52WR3           local  _MSTAT               EQU 002B
+module HY17P52WR3           local  _PSTAT               EQU 002C
+module HY17P52WR3           local  _BIECN               EQU 002E
+module HY17P52WR3           local  _BIEARH              EQU 002F
+module HY17P52WR3           local  _BIEARL              EQU 0030
+module HY17P52WR3           local  _BIEDRH              EQU 0031
+module HY17P52WR3           local  _BIEDRL              EQU 0032
+module HY17P52WR3           local  _PWRCN               EQU 0033
+module HY17P52WR3           local  _OSCCN0              EQU 0034
+module HY17P52WR3           local  _OSCCN1              EQU 0035
+module HY17P52WR3           local  _OSCCN2              EQU 0036
+module HY17P52WR3           local  _CSFCN0              EQU 0037
+module HY17P52WR3           local  _CSFCN1              EQU 0038
+module HY17P52WR3           local  _WDTCN               EQU 0039
+module HY17P52WR3           local  _AD1H                EQU 003A
+module HY17P52WR3           local  _AD1M                EQU 003B
+module HY17P52WR3           local  _AD1L                EQU 003C
+module HY17P52WR3           local  _AD1CN0              EQU 003D
+module HY17P52WR3           local  _AD1CN1              EQU 003E
+module HY17P52WR3           local  _AD1CN2              EQU 003F
+module HY17P52WR3           local  _AD1CN3              EQU 0040
+module HY17P52WR3           local  _AD1CN4              EQU 0041
+module HY17P52WR3           local  _AD1CN5              EQU 0042
+module HY17P52WR3           local  _LVDCN               EQU 0043
+module HY17P52WR3           local  _TMA1CN              EQU 0044
+module HY17P52WR3           local  _TMA1R               EQU 0045
+module HY17P52WR3           local  _TMA1C               EQU 0046
+module HY17P52WR3           local  _PT1                 EQU 0047
+module HY17P52WR3           local  _TRISC1              EQU 0048
+module HY17P52WR3           local  _PT1DA               EQU 0049
+module HY17P52WR3           local  _PT1PU               EQU 004A
+module HY17P52WR3           local  _PT1M1               EQU 004B
+module HY17P52WR3           local  _PT2                 EQU 004C
+module HY17P52WR3           local  _TRISC2              EQU 004D
+module HY17P52WR3           local  _PT2DA               EQU 004E
+module HY17P52WR3           local  _PT2PU               EQU 004F
+module HY17P52WR3           local  _PT8                 EQU 0050
+module HY17P52WR3           local  _TRISC8              EQU 0051
+module HY17P52WR3           local  _PT8PU               EQU 0053
+module HY17P52WR3           local  _UR0CN               EQU 0054
+module HY17P52WR3           local  _UR0STA              EQU 0055
+module HY17P52WR3           local  _BA0CN               EQU 0056
+module HY17P52WR3           local  _BG0RH               EQU 0057
+module HY17P52WR3           local  _BG0RL               EQU 0058
+module HY17P52WR3           local  _TX0R                EQU 0059
+module HY17P52WR3           local  _RC0REG              EQU 005A
+module HY17P52WR3           local  _LCDCN1              EQU 005B
+module HY17P52WR3           local  _LCDCN2              EQU 005C
+module HY17P52WR3           local  _LCDCN3              EQU 005D
+module HY17P52WR3           local  _LCDCN4              EQU 005E
+module HY17P52WR3           local  _LCD0                EQU 005F
+module HY17P52WR3           local  _LCD1                EQU 0060
+module HY17P52WR3           local  _LCD2                EQU 0061
+module HY17P52WR3           local  _LCD3                EQU 0062
+module HY17P52WR3           local  _LCD4                EQU 0063
+module HY17P52WR3           local  _LCD5                EQU 0064
+module HY17P52WR3           local  _LCD6                EQU 0065
+module HY17P52WR3           local  _Filter              EQU 0066
+module HY17P52WR3           local  _ADCRH               EQU 003A
+module HY17P52WR3           local  _ADCRM               EQU 003B
+module HY17P52WR3           local  _ADCRL               EQU 003C
+module HY17P52ADCSetting    local  __SWTGTID            EQU A43354DA
+module HY17P52ADCSetting    local  _INDF0               EQU 0000
+module HY17P52ADCSetting    local  _POINC0              EQU 0001
+module HY17P52ADCSetting    local  _PODEC0              EQU 0002
+module HY17P52ADCSetting    local  _PRINC0              EQU 0003
+module HY17P52ADCSetting    local  _PLUSW0              EQU 0004
+module HY17P52ADCSetting    local  _INDF1               EQU 0005
+module HY17P52ADCSetting    local  _POINC1              EQU 0006
+module HY17P52ADCSetting    local  _PODEC1              EQU 0007
+module HY17P52ADCSetting    local  _PRINC1              EQU 0008
+module HY17P52ADCSetting    local  _PLUSW1              EQU 0009
+module HY17P52ADCSetting    local  _INDF2               EQU 000A
+module HY17P52ADCSetting    local  _POINC2              EQU 000B
+module HY17P52ADCSetting    local  _PODEC2              EQU 000C
+module HY17P52ADCSetting    local  _PRINC2              EQU 000D
+module HY17P52ADCSetting    local  _PLUSW2              EQU 000E
+module HY17P52ADCSetting    local  _FSR0H               EQU 000F
+module HY17P52ADCSetting    local  _FSR0L               EQU 0010
+module HY17P52ADCSetting    local  _FSR1H               EQU 0011
+module HY17P52ADCSetting    local  _FSR1L               EQU 0012
+module HY17P52ADCSetting    local  _FSR2H               EQU 0013
+module HY17P52ADCSetting    local  _FSR2L               EQU 0014
+module HY17P52ADCSetting    local  _TOSH                EQU 0016
+module HY17P52ADCSetting    local  _TOSL                EQU 0017
+module HY17P52ADCSetting    local  _SKCN                EQU 0018
+module HY17P52ADCSetting    local  _PCLATH              EQU 001A
+module HY17P52ADCSetting    local  _PCLATL              EQU 001B
+module HY17P52ADCSetting    local  _TBLPTRH             EQU 001D
+module HY17P52ADCSetting    local  _TBLPTRL             EQU 001E
+module HY17P52ADCSetting    local  _TBLDH               EQU 001F
+module HY17P52ADCSetting    local  _TBLDL               EQU 0020
+module HY17P52ADCSetting    local  _PRODH               EQU 0021
+module HY17P52ADCSetting    local  _PRODL               EQU 0022
+module HY17P52ADCSetting    local  _INTE0               EQU 0023
+module HY17P52ADCSetting    local  _INTE1               EQU 0024
+module HY17P52ADCSetting    local  _INTF0               EQU 0026
+module HY17P52ADCSetting    local  _INTF1               EQU 0027
+module HY17P52ADCSetting    local  _WREG                EQU 0029
+module HY17P52ADCSetting    local  _BSRCN               EQU 002A
+module HY17P52ADCSetting    local  _STATUS              EQU 002B
+module HY17P52ADCSetting    local  _MSTAT               EQU 002B
+module HY17P52ADCSetting    local  _PSTAT               EQU 002C
+module HY17P52ADCSetting    local  _BIECN               EQU 002E
+module HY17P52ADCSetting    local  _BIEARH              EQU 002F
+module HY17P52ADCSetting    local  _BIEARL              EQU 0030
+module HY17P52ADCSetting    local  _BIEDRH              EQU 0031
+module HY17P52ADCSetting    local  _BIEDRL              EQU 0032
+module HY17P52ADCSetting    local  _PWRCN               EQU 0033
+module HY17P52ADCSetting    local  _OSCCN0              EQU 0034
+module HY17P52ADCSetting    local  _OSCCN1              EQU 0035
+module HY17P52ADCSetting    local  _OSCCN2              EQU 0036
+module HY17P52ADCSetting    local  _CSFCN0              EQU 0037
+module HY17P52ADCSetting    local  _CSFCN1              EQU 0038
+module HY17P52ADCSetting    local  _WDTCN               EQU 0039
+module HY17P52ADCSetting    local  _AD1H                EQU 003A
+module HY17P52ADCSetting    local  _AD1M                EQU 003B
+module HY17P52ADCSetting    local  _AD1L                EQU 003C
+module HY17P52ADCSetting    local  _AD1CN0              EQU 003D
+module HY17P52ADCSetting    local  _AD1CN1              EQU 003E
+module HY17P52ADCSetting    local  _AD1CN2              EQU 003F
+module HY17P52ADCSetting    local  _AD1CN3              EQU 0040
+module HY17P52ADCSetting    local  _AD1CN4              EQU 0041
+module HY17P52ADCSetting    local  _AD1CN5              EQU 0042
+module HY17P52ADCSetting    local  _LVDCN               EQU 0043
+module HY17P52ADCSetting    local  _TMA1CN              EQU 0044
+module HY17P52ADCSetting    local  _TMA1R               EQU 0045
+module HY17P52ADCSetting    local  _TMA1C               EQU 0046
+module HY17P52ADCSetting    local  _PT1                 EQU 0047
+module HY17P52ADCSetting    local  _TRISC1              EQU 0048
+module HY17P52ADCSetting    local  _PT1DA               EQU 0049
+module HY17P52ADCSetting    local  _PT1PU               EQU 004A
+module HY17P52ADCSetting    local  _PT1M1               EQU 004B
+module HY17P52ADCSetting    local  _PT2                 EQU 004C
+module HY17P52ADCSetting    local  _TRISC2              EQU 004D
+module HY17P52ADCSetting    local  _PT2DA               EQU 004E
+module HY17P52ADCSetting    local  _PT2PU               EQU 004F
+module HY17P52ADCSetting    local  _PT8                 EQU 0050
+module HY17P52ADCSetting    local  _TRISC8              EQU 0051
+module HY17P52ADCSetting    local  _PT8PU               EQU 0053
+module HY17P52ADCSetting    local  _UR0CN               EQU 0054
+module HY17P52ADCSetting    local  _UR0STA              EQU 0055
+module HY17P52ADCSetting    local  _BA0CN               EQU 0056
+module HY17P52ADCSetting    local  _BG0RH               EQU 0057
+module HY17P52ADCSetting    local  _BG0RL               EQU 0058
+module HY17P52ADCSetting    local  _TX0R                EQU 0059
+module HY17P52ADCSetting    local  _RC0REG              EQU 005A
+module HY17P52ADCSetting    local  _LCDCN1              EQU 005B
+module HY17P52ADCSetting    local  _LCDCN2              EQU 005C
+module HY17P52ADCSetting    local  _LCDCN3              EQU 005D
+module HY17P52ADCSetting    local  _LCDCN4              EQU 005E
+module HY17P52ADCSetting    local  _LCD0                EQU 005F
+module HY17P52ADCSetting    local  _LCD1                EQU 0060
+module HY17P52ADCSetting    local  _LCD2                EQU 0061
+module HY17P52ADCSetting    local  _LCD3                EQU 0062
+module HY17P52ADCSetting    local  _LCD4                EQU 0063
+module HY17P52ADCSetting    local  _LCD5                EQU 0064
+module HY17P52ADCSetting    local  _LCD6                EQU 0065
+module HY17P52ADCSetting    local  _Filter              EQU 0066
+module HY17P52ADCSetting    local  _ADCRH               EQU 003A
+module HY17P52ADCSetting    local  _ADCRM               EQU 003B
+module HY17P52ADCSetting    local  _ADCRL               EQU 003C
+module _fsmul               local  _STATUS              EQU 002B
+module _fs2slong            local  _STATUS              EQU 002B
+module _fslt                local  _STATUS              EQU 002B
+module _fsadd               local  _STATUS              EQU 002B
+module gsinit256fsr2        local  __SWTGTID            EQU D3109A37
+module gsinit256fsr2        local  _INDF0               EQU 0000
+module gsinit256fsr2        local  _POINC0              EQU 0001
+module gsinit256fsr2        local  _PODEC0              EQU 0002
+module gsinit256fsr2        local  _PRINC0              EQU 0003
+module gsinit256fsr2        local  _PLUSW0              EQU 0004
+module gsinit256fsr2        local  _INDF1               EQU 0005
+module gsinit256fsr2        local  _POINC1              EQU 0006
+module gsinit256fsr2        local  _PODEC1              EQU 0007
+module gsinit256fsr2        local  _PRINC1              EQU 0008
+module gsinit256fsr2        local  _PLUSW1              EQU 0009
+module gsinit256fsr2        local  _INDF2               EQU 000A
+module gsinit256fsr2        local  _POINC2              EQU 000B
+module gsinit256fsr2        local  _PODEC2              EQU 000C
+module gsinit256fsr2        local  _PRINC2              EQU 000D
+module gsinit256fsr2        local  _PLUSW2              EQU 000E
+module gsinit256fsr2        local  _FSR0H               EQU 000F
+module gsinit256fsr2        local  _FSR0L               EQU 0010
+module gsinit256fsr2        local  _FSR1H               EQU 0011
+module gsinit256fsr2        local  _FSR1L               EQU 0012
+module gsinit256fsr2        local  _FSR2H               EQU 0013
+module gsinit256fsr2        local  _FSR2L               EQU 0014
+module gsinit256fsr2        local  _TOSH                EQU 0016
+module gsinit256fsr2        local  _TOSL                EQU 0017
+module gsinit256fsr2        local  _SKCN                EQU 0018
+module gsinit256fsr2        local  _PCLATH              EQU 001A
+module gsinit256fsr2        local  _PCLATL              EQU 001B
+module gsinit256fsr2        local  _TBLPTRH             EQU 001D
+module gsinit256fsr2        local  _TBLPTRL             EQU 001E
+module gsinit256fsr2        local  _TBLDH               EQU 001F
+module gsinit256fsr2        local  _TBLDL               EQU 0020
+module gsinit256fsr2        local  _PRODH               EQU 0021
+module gsinit256fsr2        local  _PRODL               EQU 0022
+module gsinit256fsr2        local  _INTE0               EQU 0023
+module gsinit256fsr2        local  _INTE1               EQU 0024
+module gsinit256fsr2        local  _INTE2               EQU 0025
+module gsinit256fsr2        local  _INTF0               EQU 0026
+module gsinit256fsr2        local  _INTF1               EQU 0027
+module gsinit256fsr2        local  _INTF2               EQU 0028
+module gsinit256fsr2        local  _WREG                EQU 0029
+module gsinit256fsr2        local  _BSRCN               EQU 002A
+module gsinit256fsr2        local  _STATUS              EQU 002B
+module gsinit256fsr2        local  _MSTAT               EQU 002B
+module gsinit256fsr2        local  _PSTAT               EQU 002C
+module gsinit256fsr2        local  _PWRCN               EQU 002E
+module gsinit256fsr2        local  _OSCCN0              EQU 002F
+module gsinit256fsr2        local  _OSCCN1              EQU 0030
+module gsinit256fsr2        local  _OSCCN2              EQU 0031
+module gsinit256fsr2        local  _CSFCN0              EQU 0032
+module gsinit256fsr2        local  _CSFCN1              EQU 0033
+module gsinit256fsr2        local  _WDTCN               EQU 0034
+module gsinit256fsr2        local  _AD1H                EQU 0035
+module gsinit256fsr2        local  _AD1M                EQU 0036
+module gsinit256fsr2        local  _AD1L                EQU 0037
+module gsinit256fsr2        local  _AD1CN0              EQU 0038
+module gsinit256fsr2        local  _AD1CN1              EQU 0039
+module gsinit256fsr2        local  _AD1CN2              EQU 003A
+module gsinit256fsr2        local  _AD1CN3              EQU 003B
+module gsinit256fsr2        local  _AD1CN4              EQU 003C
+module gsinit256fsr2        local  _AD1CN5              EQU 003D
+module gsinit256fsr2        local  _LVDCN               EQU 003E
+module gsinit256fsr2        local  _DACCN0              EQU 003F
+module gsinit256fsr2        local  _DACCN1              EQU 0040
+module gsinit256fsr2        local  _DACBitH             EQU 0041
+module gsinit256fsr2        local  _DACBITH             EQU 0041
+module gsinit256fsr2        local  _DACBitL             EQU 0042
+module gsinit256fsr2        local  _DACBITL             EQU 0042
+module gsinit256fsr2        local  _OP1CN0              EQU 0043
+module gsinit256fsr2        local  _OP1CN1              EQU 0044
+module gsinit256fsr2        local  _OP1INP              EQU 0045
+module gsinit256fsr2        local  _OP1INN1             EQU 0046
+module gsinit256fsr2        local  _OP1INN0             EQU 0047
+module gsinit256fsr2        local  _TMA1CN              EQU 0048
+module gsinit256fsr2        local  _TMA1R               EQU 0049
+module gsinit256fsr2        local  _TMA1C               EQU 004A
+module gsinit256fsr2        local  _TB1FLAG             EQU 004B
+module gsinit256fsr2        local  _TB1Flag             EQU 004B
+module gsinit256fsr2        local  _TB1CN0              EQU 004C
+module gsinit256fsr2        local  _TB1CN1              EQU 004D
+module gsinit256fsr2        local  _TB1RH               EQU 004E
+module gsinit256fsr2        local  _TB1RL               EQU 004F
+module gsinit256fsr2        local  _TB1C0H              EQU 0050
+module gsinit256fsr2        local  _TB1C0L              EQU 0051
+module gsinit256fsr2        local  _TB1C1H              EQU 0052
+module gsinit256fsr2        local  _TB1C1L              EQU 0053
+module gsinit256fsr2        local  _TB1C2H              EQU 0054
+module gsinit256fsr2        local  _TB1C2L              EQU 0055
+module gsinit256fsr2        local  _TC1CN0              EQU 0056
+module gsinit256fsr2        local  _PT1                 EQU 0057
+module gsinit256fsr2        local  _PT1IN               EQU 0058
+module gsinit256fsr2        local  _TRISC1              EQU 0059
+module gsinit256fsr2        local  _PT1DA               EQU 005A
+module gsinit256fsr2        local  _PT1PU               EQU 005B
+module gsinit256fsr2        local  _PT1M1               EQU 005C
+module gsinit256fsr2        local  _PT1M2               EQU 005D
+module gsinit256fsr2        local  _PT1M3               EQU 005E
+module gsinit256fsr2        local  _PT1INT              EQU 005F
+module gsinit256fsr2        local  _PT1INTE             EQU 0060
+module gsinit256fsr2        local  _PT1INTF             EQU 0061
+module gsinit256fsr2        local  _PT2                 EQU 0062
+module gsinit256fsr2        local  _PT2IN               EQU 0063
+module gsinit256fsr2        local  _TRISC2              EQU 0064
+module gsinit256fsr2        local  _PT2PU               EQU 0065
+module gsinit256fsr2        local  _PT2M1               EQU 0066
+module gsinit256fsr2        local  _PT2INT              EQU 0067
+module gsinit256fsr2        local  _PT2INTE             EQU 0068
+module gsinit256fsr2        local  _PT2INTF             EQU 0069
+module gsinit256fsr2        local  _PT3                 EQU 006A
+module gsinit256fsr2        local  _PT3IN               EQU 006B
+module gsinit256fsr2        local  _TRISC3              EQU 006C
+module gsinit256fsr2        local  _PT3DA               EQU 006D
+module gsinit256fsr2        local  _PT3PU               EQU 006E
+module gsinit256fsr2        local  _PT3M1               EQU 006F
+module gsinit256fsr2        local  _PT3M2               EQU 0070
+module gsinit256fsr2        local  _PT3INT              EQU 0071
+module gsinit256fsr2        local  _PT3INTE             EQU 0072
+module gsinit256fsr2        local  _PT3INTF             EQU 0073
+module gsinit256fsr2        local  _UR0CN               EQU 0074
+module gsinit256fsr2        local  _UR0STA              EQU 0075
+module gsinit256fsr2        local  _BA0CN               EQU 0076
+module gsinit256fsr2        local  _BG0RH               EQU 0077
+module gsinit256fsr2        local  _BG0RL               EQU 0078
+module gsinit256fsr2        local  _TX0R                EQU 0079
+module gsinit256fsr2        local  _RC0REG              EQU 007A
+module gsinit256fsr2        local  _MCCN0               EQU 007B
+module gsinit256fsr2        local  _MCCN1               EQU 007C
+module gsinit256fsr2        local  _MCCN2               EQU 007D
+module gsinit256fsr2        local  _MCCN3               EQU 007E
+module gsinit256fsr2        local  _FILTER              EQU 007F
+module gsinit256fsr2        local  _CFG0                EQU 0180
+module gsinit256fsr2        local  _ACT0                EQU 0181
+module gsinit256fsr2        local  _STA0                EQU 0182
+module gsinit256fsr2        local  _CRG0                EQU 0183
+module gsinit256fsr2        local  _TOC0                EQU 0184
+module gsinit256fsr2        local  _RDB0                EQU 0185
+module gsinit256fsr2        local  _TDB0                EQU 0186
+module gsinit256fsr2        local  _SID0                EQU 0187
+module gsinit256fsr2        local  _BIECN               EQU 0188
+module gsinit256fsr2        local  _BIEARH              EQU 0189
+module gsinit256fsr2        local  _BIEARL              EQU 018A
+module gsinit256fsr2        local  _BIEDRH              EQU 018B
+module gsinit256fsr2        local  _BIEDRL              EQU 018C
+module gsinit256fsr2        local  _BIE2CN              EQU 018D
+module gsinit256fsr2        local  _BIE2ARH             EQU 018E
+module gsinit256fsr2        local  _BIE2ARL             EQU 018F
+module gsinit256fsr2        local  _BIE2DRH             EQU 0190
+module gsinit256fsr2        local  _BIE2DRL             EQU 0191
+module gsinit256fsr2        local  _EECR1               EQU 0192
+module gsinit256fsr2        local  _EECR2               EQU 0193
+module gsinit256fsr2        local  _EECOUNTER1          EQU 0194
+module gsinit256fsr2        local  _EECounter1          EQU 0194
+module gsinit256fsr2        local  _EECOUNTER2          EQU 0195
+module gsinit256fsr2        local  _EECounter2          EQU 0195
+module gsinit256fsr2        local  _EEPPointer          EQU 0196
+module gsinit256fsr2        local  _EEPPOINTER          EQU 0196
+module gsinit256fsr2        local  _EERD0               EQU 0197
+module gsinit256fsr2        local  _EERD1               EQU 0198
+module gsinit256fsr2        local  _EERD2               EQU 0199
+module gsinit256fsr2        local  _EERD3               EQU 019A
+module gsinit256fsr2        local  _EERD4               EQU 019B
+module gsinit256fsr2        local  _EERD5               EQU 019C
+module gsinit256fsr2        local  _EERD6               EQU 019D
+module gsinit256fsr2        local  _EERD7               EQU 019E
+module gsinit256fsr2        local  _EERD8               EQU 019F
+module gsinit256fsr2        local  _EERD9               EQU 01A0
+module gsinit256fsr2        local  _EERD10              EQU 01A1
+module gsinit256fsr2        local  _EERD11              EQU 01A2
+module gsinit256fsr2        local  _EERD12              EQU 01A3
+module gsinit256fsr2        local  _EERD13              EQU 01A4
+module gsinit256fsr2        local  _EERD14              EQU 01A5
+module gsinit256fsr2        local  _EERD15              EQU 01A6
+module gsinit256fsr2        local  _EERD16              EQU 01A7
+module gsinit256fsr2        local  _EERD17              EQU 01A8
+module gsinit256fsr2        local  _EERD18              EQU 01A9
+module gsinit256fsr2        local  _EERD19              EQU 01AA
+module gsinit256fsr2        local  _EERD20              EQU 01AB
+module gsinit256fsr2        local  _EERD21              EQU 01AC
+module gsinit256fsr2        local  _EERD22              EQU 01AD
+module gsinit256fsr2        local  _EERD23              EQU 01AE
+module gsinit256fsr2        local  _EERD24              EQU 01AF
+module gsinit256fsr2        local  _EERD25              EQU 01B0
+module gsinit256fsr2        local  _EERD26              EQU 01B1
+module gsinit256fsr2        local  _EERD27              EQU 01B2
+module gsinit256fsr2        local  _EERD28              EQU 01B3
+module gsinit256fsr2        local  _EERD29              EQU 01B4
+module gsinit256fsr2        local  _EERD30              EQU 01B5
+module gsinit256fsr2        local  _EERD31              EQU 01B6
+module gsinit256fsr2        local  _ADRH                EQU 0035
+module gsinit256fsr2        local  _ADRM                EQU 0036
+module gsinit256fsr2        local  _ADRL                EQU 0037
+module _modslong            local  _STATUS              EQU 002B
+module _mullong_nomvff      local  __SWTGTID            EQU 2B05
+module _mullong_nomvff      local  _INDF0               EQU 0000
+module _mullong_nomvff      local  _POINC0              EQU 0001
+module _mullong_nomvff      local  _PODEC0              EQU 0002
+module _mullong_nomvff      local  _PRINC0              EQU 0003
+module _mullong_nomvff      local  _PLUSW0              EQU 0004
+module _mullong_nomvff      local  _INDF1               EQU 0005
+module _mullong_nomvff      local  _POINC1              EQU 0006
+module _mullong_nomvff      local  _PODEC1              EQU 0007
+module _mullong_nomvff      local  _PRINC1              EQU 0008
+module _mullong_nomvff      local  _PLUSW1              EQU 0009
+module _mullong_nomvff      local  _FSR0H               EQU 000F
+module _mullong_nomvff      local  _FSR0L               EQU 0010
+module _mullong_nomvff      local  _FSR1H               EQU 0011
+module _mullong_nomvff      local  _FSR1L               EQU 0012
+module _mullong_nomvff      local  _TOSH                EQU 0016
+module _mullong_nomvff      local  _TOSL                EQU 0017
+module _mullong_nomvff      local  _STKPTR              EQU 0018
+module _mullong_nomvff      local  _PCLATH              EQU 001A
+module _mullong_nomvff      local  _PCLATL              EQU 001B
+module _mullong_nomvff      local  _TBLPTRH             EQU 001D
+module _mullong_nomvff      local  _TBLPTRL             EQU 001E
+module _mullong_nomvff      local  _TBLDH               EQU 001F
+module _mullong_nomvff      local  _TBLDL               EQU 0020
+module _mullong_nomvff      local  _PRODH               EQU 0021
+module _mullong_nomvff      local  _PRODL               EQU 0022
+module _mullong_nomvff      local  _INTE1               EQU 0023
+module _mullong_nomvff      local  _INTE2               EQU 0024
+module _mullong_nomvff      local  _INTF1               EQU 0026
+module _mullong_nomvff      local  _INTF2               EQU 0027
+module _mullong_nomvff      local  _WREG                EQU 0029
+module _mullong_nomvff      local  _BSRCN               EQU 002A
+module _mullong_nomvff      local  _STATUS              EQU 002B
+module _mullong_nomvff      local  _PSTATUS             EQU 002C
+module _mullong_nomvff      local  _LVDCN               EQU 002D
+module _mullong_nomvff      local  _PWRCN               EQU 0030
+module _mullong_nomvff      local  _MCKCN1              EQU 0031
+module _mullong_nomvff      local  _MCKCN2              EQU 0032
+module _mullong_nomvff      local  _MCKCN3              EQU 0033
+module _mullong_nomvff      local  _OPCN1               EQU 0037
+module _mullong_nomvff      local  _ADCRH               EQU 0039
+module _mullong_nomvff      local  _ADCRM               EQU 003A
+module _mullong_nomvff      local  _ADCRL               EQU 003B
+module _mullong_nomvff      local  _ADCCN1              EQU 003C
+module _mullong_nomvff      local  _ADCCN2              EQU 003D
+module _mullong_nomvff      local  _ADCCN3              EQU 003E
+module _mullong_nomvff      local  _AINET1              EQU 003F
+module _mullong_nomvff      local  _AINET2              EQU 0040
+module _mullong_nomvff      local  _TMACN               EQU 0041
+module _mullong_nomvff      local  _TMAR                EQU 0042
+module _mullong_nomvff      local  _TMBCN               EQU 0043
+module _mullong_nomvff      local  _TMBRH               EQU 0044
+module _mullong_nomvff      local  _TMBRL               EQU 0045
+module _mullong_nomvff      local  _TMCCN               EQU 0046
+module _mullong_nomvff      local  _PRC                 EQU 0047
+module _mullong_nomvff      local  _TMCR                EQU 0048
+module _mullong_nomvff      local  _CCPCN               EQU 0049
+module _mullong_nomvff      local  _CCP0RH              EQU 004A
+module _mullong_nomvff      local  _CCP0RL              EQU 004B
+module _mullong_nomvff      local  _CCP1RH              EQU 004C
+module _mullong_nomvff      local  _CCP1RL              EQU 004D
+module _mullong_nomvff      local  _PASC                EQU 004E
+module _mullong_nomvff      local  _PWMCN               EQU 004F
+module _mullong_nomvff      local  _PWMR                EQU 0051
+module _mullong_nomvff      local  _LCDCN1              EQU 0052
+module _mullong_nomvff      local  _LCDCN2              EQU 0053
+module _mullong_nomvff      local  _LCD0                EQU 0054
+module _mullong_nomvff      local  _LCD1                EQU 0055
+module _mullong_nomvff      local  _LCD2                EQU 0056
+module _mullong_nomvff      local  _LCD3                EQU 0057
+module _mullong_nomvff      local  _LCD4                EQU 0058
+module _mullong_nomvff      local  _LCD5                EQU 0059
+module _mullong_nomvff      local  _LCD6                EQU 005A
+module _mullong_nomvff      local  _LCD7                EQU 005B
+module _mullong_nomvff      local  _LCD8                EQU 005C
+module _mullong_nomvff      local  _LCD9                EQU 005D
+module _mullong_nomvff      local  _SSPCON1             EQU 005E
+module _mullong_nomvff      local  _SSPSTA              EQU 0060
+module _mullong_nomvff      local  _SSPBUF              EQU 0061
+module _mullong_nomvff      local  _PT1                 EQU 006D
+module _mullong_nomvff      local  _TRISC1              EQU 006E
+module _mullong_nomvff      local  _PT1DA               EQU 006F
+module _mullong_nomvff      local  _PT1PU               EQU 0070
+module _mullong_nomvff      local  _PT1M1               EQU 0071
+module _mullong_nomvff      local  _PT1M2               EQU 0072
+module _mullong_nomvff      local  _PT2                 EQU 0074
+module _mullong_nomvff      local  _TRISC2              EQU 0075
+module _mullong_nomvff      local  _PT2PU               EQU 0077
+module _mullong_nomvff      local  _PT2M1               EQU 0078
+module _mullong_nomvff      local  _PT2M2               EQU 0079
+module _g2ptrget1           local  __SWTGTID            EQU 2B05
+module _g2ptrget1           local  _INDF0               EQU 0000
+module _g2ptrget1           local  _POINC0              EQU 0001
+module _g2ptrget1           local  _PODEC0              EQU 0002
+module _g2ptrget1           local  _PRINC0              EQU 0003
+module _g2ptrget1           local  _PLUSW0              EQU 0004
+module _g2ptrget1           local  _INDF1               EQU 0005
+module _g2ptrget1           local  _POINC1              EQU 0006
+module _g2ptrget1           local  _PODEC1              EQU 0007
+module _g2ptrget1           local  _PRINC1              EQU 0008
+module _g2ptrget1           local  _PLUSW1              EQU 0009
+module _g2ptrget1           local  _FSR0H               EQU 000F
+module _g2ptrget1           local  _FSR0L               EQU 0010
+module _g2ptrget1           local  _FSR1H               EQU 0011
+module _g2ptrget1           local  _FSR1L               EQU 0012
+module _g2ptrget1           local  _TOSH                EQU 0016
+module _g2ptrget1           local  _TOSL                EQU 0017
+module _g2ptrget1           local  _STKPTR              EQU 0018
+module _g2ptrget1           local  _PCLATH              EQU 001A
+module _g2ptrget1           local  _PCLATL              EQU 001B
+module _g2ptrget1           local  _TBLPTRH             EQU 001D
+module _g2ptrget1           local  _TBLPTRL             EQU 001E
+module _g2ptrget1           local  _TBLDH               EQU 001F
+module _g2ptrget1           local  _TBLDL               EQU 0020
+module _g2ptrget1           local  _PRODH               EQU 0021
+module _g2ptrget1           local  _PRODL               EQU 0022
+module _g2ptrget1           local  _INTE1               EQU 0023
+module _g2ptrget1           local  _INTE2               EQU 0024
+module _g2ptrget1           local  _INTF1               EQU 0026
+module _g2ptrget1           local  _INTF2               EQU 0027
+module _g2ptrget1           local  _WREG                EQU 0029
+module _g2ptrget1           local  _BSRCN               EQU 002A
+module _g2ptrget1           local  _STATUS              EQU 002B
+module _g2ptrget1           local  _PSTATUS             EQU 002C
+module _g2ptrget1           local  _LVDCN               EQU 002D
+module _g2ptrget1           local  _PWRCN               EQU 0030
+module _g2ptrget1           local  _MCKCN1              EQU 0031
+module _g2ptrget1           local  _MCKCN2              EQU 0032
+module _g2ptrget1           local  _MCKCN3              EQU 0033
+module _g2ptrget1           local  _OPCN1               EQU 0037
+module _g2ptrget1           local  _ADCRH               EQU 0039
+module _g2ptrget1           local  _ADCRM               EQU 003A
+module _g2ptrget1           local  _ADCRL               EQU 003B
+module _g2ptrget1           local  _ADCCN1              EQU 003C
+module _g2ptrget1           local  _ADCCN2              EQU 003D
+module _g2ptrget1           local  _ADCCN3              EQU 003E
+module _g2ptrget1           local  _AINET1              EQU 003F
+module _g2ptrget1           local  _AINET2              EQU 0040
+module _g2ptrget1           local  _TMACN               EQU 0041
+module _g2ptrget1           local  _TMAR                EQU 0042
+module _g2ptrget1           local  _TMBCN               EQU 0043
+module _g2ptrget1           local  _TMBRH               EQU 0044
+module _g2ptrget1           local  _TMBRL               EQU 0045
+module _g2ptrget1           local  _TMCCN               EQU 0046
+module _g2ptrget1           local  _PRC                 EQU 0047
+module _g2ptrget1           local  _TMCR                EQU 0048
+module _g2ptrget1           local  _CCPCN               EQU 0049
+module _g2ptrget1           local  _CCP0RH              EQU 004A
+module _g2ptrget1           local  _CCP0RL              EQU 004B
+module _g2ptrget1           local  _CCP1RH              EQU 004C
+module _g2ptrget1           local  _CCP1RL              EQU 004D
+module _g2ptrget1           local  _PASC                EQU 004E
+module _g2ptrget1           local  _PWMCN               EQU 004F
+module _g2ptrget1           local  _PWMR                EQU 0051
+module _g2ptrget1           local  _LCDCN1              EQU 0052
+module _g2ptrget1           local  _LCDCN2              EQU 0053
+module _g2ptrget1           local  _LCD0                EQU 0054
+module _g2ptrget1           local  _LCD1                EQU 0055
+module _g2ptrget1           local  _LCD2                EQU 0056
+module _g2ptrget1           local  _LCD3                EQU 0057
+module _g2ptrget1           local  _LCD4                EQU 0058
+module _g2ptrget1           local  _LCD5                EQU 0059
+module _g2ptrget1           local  _LCD6                EQU 005A
+module _g2ptrget1           local  _LCD7                EQU 005B
+module _g2ptrget1           local  _LCD8                EQU 005C
+module _g2ptrget1           local  _LCD9                EQU 005D
+module _g2ptrget1           local  _SSPCON1             EQU 005E
+module _g2ptrget1           local  _SSPSTA              EQU 0060
+module _g2ptrget1           local  _SSPBUF              EQU 0061
+module _g2ptrget1           local  _PT1                 EQU 006D
+module _g2ptrget1           local  _TRISC1              EQU 006E
+module _g2ptrget1           local  _PT1DA               EQU 006F
+module _g2ptrget1           local  _PT1PU               EQU 0070
+module _g2ptrget1           local  _PT1M1               EQU 0071
+module _g2ptrget1           local  _PT1M2               EQU 0072
+module _g2ptrget1           local  _PT2                 EQU 0074
+module _g2ptrget1           local  _TRISC2              EQU 0075
+module _g2ptrget1           local  _PT2PU               EQU 0077
+module _g2ptrget1           local  _PT2M1               EQU 0078
+module _g2ptrget1           local  _PT2M2               EQU 0079
+module _g2ptrput1           local  __SWTGTID            EQU 2B05
+module _g2ptrput1           local  _INDF0               EQU 0000
+module _g2ptrput1           local  _POINC0              EQU 0001
+module _g2ptrput1           local  _PODEC0              EQU 0002
+module _g2ptrput1           local  _PRINC0              EQU 0003
+module _g2ptrput1           local  _PLUSW0              EQU 0004
+module _g2ptrput1           local  _INDF1               EQU 0005
+module _g2ptrput1           local  _POINC1              EQU 0006
+module _g2ptrput1           local  _PODEC1              EQU 0007
+module _g2ptrput1           local  _PRINC1              EQU 0008
+module _g2ptrput1           local  _PLUSW1              EQU 0009
+module _g2ptrput1           local  _FSR0H               EQU 000F
+module _g2ptrput1           local  _FSR0L               EQU 0010
+module _g2ptrput1           local  _FSR1H               EQU 0011
+module _g2ptrput1           local  _FSR1L               EQU 0012
+module _g2ptrput1           local  _TOSH                EQU 0016
+module _g2ptrput1           local  _TOSL                EQU 0017
+module _g2ptrput1           local  _STKPTR              EQU 0018
+module _g2ptrput1           local  _PCLATH              EQU 001A
+module _g2ptrput1           local  _PCLATL              EQU 001B
+module _g2ptrput1           local  _TBLPTRH             EQU 001D
+module _g2ptrput1           local  _TBLPTRL             EQU 001E
+module _g2ptrput1           local  _TBLDH               EQU 001F
+module _g2ptrput1           local  _TBLDL               EQU 0020
+module _g2ptrput1           local  _PRODH               EQU 0021
+module _g2ptrput1           local  _PRODL               EQU 0022
+module _g2ptrput1           local  _INTE1               EQU 0023
+module _g2ptrput1           local  _INTE2               EQU 0024
+module _g2ptrput1           local  _INTF1               EQU 0026
+module _g2ptrput1           local  _INTF2               EQU 0027
+module _g2ptrput1           local  _WREG                EQU 0029
+module _g2ptrput1           local  _BSRCN               EQU 002A
+module _g2ptrput1           local  _STATUS              EQU 002B
+module _g2ptrput1           local  _PSTATUS             EQU 002C
+module _g2ptrput1           local  _LVDCN               EQU 002D
+module _g2ptrput1           local  _PWRCN               EQU 0030
+module _g2ptrput1           local  _MCKCN1              EQU 0031
+module _g2ptrput1           local  _MCKCN2              EQU 0032
+module _g2ptrput1           local  _MCKCN3              EQU 0033
+module _g2ptrput1           local  _OPCN1               EQU 0037
+module _g2ptrput1           local  _ADCRH               EQU 0039
+module _g2ptrput1           local  _ADCRM               EQU 003A
+module _g2ptrput1           local  _ADCRL               EQU 003B
+module _g2ptrput1           local  _ADCCN1              EQU 003C
+module _g2ptrput1           local  _ADCCN2              EQU 003D
+module _g2ptrput1           local  _ADCCN3              EQU 003E
+module _g2ptrput1           local  _AINET1              EQU 003F
+module _g2ptrput1           local  _AINET2              EQU 0040
+module _g2ptrput1           local  _TMACN               EQU 0041
+module _g2ptrput1           local  _TMAR                EQU 0042
+module _g2ptrput1           local  _TMBCN               EQU 0043
+module _g2ptrput1           local  _TMBRH               EQU 0044
+module _g2ptrput1           local  _TMBRL               EQU 0045
+module _g2ptrput1           local  _TMCCN               EQU 0046
+module _g2ptrput1           local  _PRC                 EQU 0047
+module _g2ptrput1           local  _TMCR                EQU 0048
+module _g2ptrput1           local  _CCPCN               EQU 0049
+module _g2ptrput1           local  _CCP0RH              EQU 004A
+module _g2ptrput1           local  _CCP0RL              EQU 004B
+module _g2ptrput1           local  _CCP1RH              EQU 004C
+module _g2ptrput1           local  _CCP1RL              EQU 004D
+module _g2ptrput1           local  _PASC                EQU 004E
+module _g2ptrput1           local  _PWMCN               EQU 004F
+module _g2ptrput1           local  _PWMR                EQU 0051
+module _g2ptrput1           local  _LCDCN1              EQU 0052
+module _g2ptrput1           local  _LCDCN2              EQU 0053
+module _g2ptrput1           local  _LCD0                EQU 0054
+module _g2ptrput1           local  _LCD1                EQU 0055
+module _g2ptrput1           local  _LCD2                EQU 0056
+module _g2ptrput1           local  _LCD3                EQU 0057
+module _g2ptrput1           local  _LCD4                EQU 0058
+module _g2ptrput1           local  _LCD5                EQU 0059
+module _g2ptrput1           local  _LCD6                EQU 005A
+module _g2ptrput1           local  _LCD7                EQU 005B
+module _g2ptrput1           local  _LCD8                EQU 005C
+module _g2ptrput1           local  _LCD9                EQU 005D
+module _g2ptrput1           local  _SSPCON1             EQU 005E
+module _g2ptrput1           local  _SSPSTA              EQU 0060
+module _g2ptrput1           local  _SSPBUF              EQU 0061
+module _g2ptrput1           local  _PT1                 EQU 006D
+module _g2ptrput1           local  _TRISC1              EQU 006E
+module _g2ptrput1           local  _PT1DA               EQU 006F
+module _g2ptrput1           local  _PT1PU               EQU 0070
+module _g2ptrput1           local  _PT1M1               EQU 0071
+module _g2ptrput1           local  _PT1M2               EQU 0072
+module _g2ptrput1           local  _PT2                 EQU 0074
+module _g2ptrput1           local  _TRISC2              EQU 0075
+module _g2ptrput1           local  _PT2PU               EQU 0077
+module _g2ptrput1           local  _PT2M1               EQU 0078
+module _g2ptrput1           local  _PT2M2               EQU 0079
+module _ulong2fs            local  _STATUS              EQU 002B
+module _ulong2fs            local  _WREG                EQU 0029
+module _fs2ulong            local  _STATUS              EQU 002B
+module _shr_slong           local  __SWTGTID            EQU 2B05
+module _shr_slong           local  _INDF0               EQU 0000
+module _shr_slong           local  _POINC0              EQU 0001
+module _shr_slong           local  _PODEC0              EQU 0002
+module _shr_slong           local  _PRINC0              EQU 0003
+module _shr_slong           local  _PLUSW0              EQU 0004
+module _shr_slong           local  _INDF1               EQU 0005
+module _shr_slong           local  _POINC1              EQU 0006
+module _shr_slong           local  _PODEC1              EQU 0007
+module _shr_slong           local  _PRINC1              EQU 0008
+module _shr_slong           local  _PLUSW1              EQU 0009
+module _shr_slong           local  _FSR0H               EQU 000F
+module _shr_slong           local  _FSR0L               EQU 0010
+module _shr_slong           local  _FSR1H               EQU 0011
+module _shr_slong           local  _FSR1L               EQU 0012
+module _shr_slong           local  _TOSH                EQU 0016
+module _shr_slong           local  _TOSL                EQU 0017
+module _shr_slong           local  _STKPTR              EQU 0018
+module _shr_slong           local  _PCLATH              EQU 001A
+module _shr_slong           local  _PCLATL              EQU 001B
+module _shr_slong           local  _TBLPTRH             EQU 001D
+module _shr_slong           local  _TBLPTRL             EQU 001E
+module _shr_slong           local  _TBLDH               EQU 001F
+module _shr_slong           local  _TBLDL               EQU 0020
+module _shr_slong           local  _PRODH               EQU 0021
+module _shr_slong           local  _PRODL               EQU 0022
+module _shr_slong           local  _INTE1               EQU 0023
+module _shr_slong           local  _INTE2               EQU 0024
+module _shr_slong           local  _INTF1               EQU 0026
+module _shr_slong           local  _INTF2               EQU 0027
+module _shr_slong           local  _WREG                EQU 0029
+module _shr_slong           local  _BSRCN               EQU 002A
+module _shr_slong           local  _STATUS              EQU 002B
+module _shr_slong           local  _PSTATUS             EQU 002C
+module _shr_slong           local  _LVDCN               EQU 002D
+module _shr_slong           local  _PWRCN               EQU 0030
+module _shr_slong           local  _MCKCN1              EQU 0031
+module _shr_slong           local  _MCKCN2              EQU 0032
+module _shr_slong           local  _MCKCN3              EQU 0033
+module _shr_slong           local  _OPCN1               EQU 0037
+module _shr_slong           local  _ADCRH               EQU 0039
+module _shr_slong           local  _ADCRM               EQU 003A
+module _shr_slong           local  _ADCRL               EQU 003B
+module _shr_slong           local  _ADCCN1              EQU 003C
+module _shr_slong           local  _ADCCN2              EQU 003D
+module _shr_slong           local  _ADCCN3              EQU 003E
+module _shr_slong           local  _AINET1              EQU 003F
+module _shr_slong           local  _AINET2              EQU 0040
+module _shr_slong           local  _TMACN               EQU 0041
+module _shr_slong           local  _TMAR                EQU 0042
+module _shr_slong           local  _TMBCN               EQU 0043
+module _shr_slong           local  _TMBRH               EQU 0044
+module _shr_slong           local  _TMBRL               EQU 0045
+module _shr_slong           local  _TMCCN               EQU 0046
+module _shr_slong           local  _PRC                 EQU 0047
+module _shr_slong           local  _TMCR                EQU 0048
+module _shr_slong           local  _CCPCN               EQU 0049
+module _shr_slong           local  _CCP0RH              EQU 004A
+module _shr_slong           local  _CCP0RL              EQU 004B
+module _shr_slong           local  _CCP1RH              EQU 004C
+module _shr_slong           local  _CCP1RL              EQU 004D
+module _shr_slong           local  _PASC                EQU 004E
+module _shr_slong           local  _PWMCN               EQU 004F
+module _shr_slong           local  _PWMR                EQU 0051
+module _shr_slong           local  _LCDCN1              EQU 0052
+module _shr_slong           local  _LCDCN2              EQU 0053
+module _shr_slong           local  _LCD0                EQU 0054
+module _shr_slong           local  _LCD1                EQU 0055
+module _shr_slong           local  _LCD2                EQU 0056
+module _shr_slong           local  _LCD3                EQU 0057
+module _shr_slong           local  _LCD4                EQU 0058
+module _shr_slong           local  _LCD5                EQU 0059
+module _shr_slong           local  _LCD6                EQU 005A
+module _shr_slong           local  _LCD7                EQU 005B
+module _shr_slong           local  _LCD8                EQU 005C
+module _shr_slong           local  _LCD9                EQU 005D
+module _shr_slong           local  _SSPCON1             EQU 005E
+module _shr_slong           local  _SSPSTA              EQU 0060
+module _shr_slong           local  _SSPBUF              EQU 0061
+module _shr_slong           local  _PT1                 EQU 006D
+module _shr_slong           local  _TRISC1              EQU 006E
+module _shr_slong           local  _PT1DA               EQU 006F
+module _shr_slong           local  _PT1PU               EQU 0070
+module _shr_slong           local  _PT1M1               EQU 0071
+module _shr_slong           local  _PT1M2               EQU 0072
+module _shr_slong           local  _PT2                 EQU 0074
+module _shr_slong           local  _TRISC2              EQU 0075
+module _shr_slong           local  _PT2PU               EQU 0077
+module _shr_slong           local  _PT2M1               EQU 0078
+module _shr_slong           local  _PT2M2               EQU 0079
+module _modulong            local  _STATUS              EQU 002B
+module _divulong            local  _STATUS              EQU 002B
+
+********************
+Linker Generated Symbols:
+********************
+l_STARTUP           : 0x8
+e_STARTUP           : 0x8
+l_c_interrupt       : 0x38
+s_c_interrupt       : 0x8
+e_c_interrupt       : 0x40
+l_UDATA             : 0x4
+s_UDATA             : 0x168
+e_UDATA             : 0x16C
+l_DSEG              : 0x14
+s_DSEG              : 0x16C
+e_DSEG              : 0x180
+s_IDATA             : 0x168
+e_IDATA             : 0x168
+e_LOCALSTK          : 0xB
+l_CONST             : 0x1D
+s_CONST             : 0x1A6C
+e_CONST             : 0x1A89
+a_STKTOP            : 0x80
+l_CODE              : 0x36
+s_CODE              : 0x1A8A
+e_CODE              : 0x1AC0
+e_STK               : 0x1
+__SWTGTID           : 0xA43354DA
+
+MAP file generated at 2020-05-30 09:48:48.
