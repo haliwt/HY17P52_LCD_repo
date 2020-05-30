@@ -49,47 +49,7 @@ void DisplayHycon(void)
   LCD_WriteData(&LCD6,0x00);
 }
 
-/***************************************************************************
-  *
-  *Function Name:Index_Subsection()
-  *Function : serch table be responds psi volue,voltage transition psi
-  *
-  *                                                        
-****************************************************************************/
-void EEPROM_WriteWord(void)
-{
-        unsigned char Flag;
-        unsigned int read_t,read_h;
-   
-        
-          //BIE Read   
-          BIEARL=0;                                //addr=0
-          BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-          while((BIECN& 0x01)==1);   
-          read_t = BIEDRL;
-          read_h = BIEDRH;
-          if(read_h == 0x00){
-              GPIO_PT16_HIGH();
-                
 
-            
-                //BIE Write
-              HY17P52WR3(0,0xAA,0x11);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-              if(Flag== 1)
-              {
-                while(1);    //fail
-              }
-          }
-          if(read_t == 0x11){
-
-              GPIO_PT15_HIGH();
-                
-              
-               
-
-          }
-
-}
 /*---------------------------------------------------------------------------
 	*
 	* Function Name:DisplayNum(long Num)
@@ -116,9 +76,6 @@ void DisplayNum(long Num)
     LCD_WriteData(&LCD0,0X08);
   else
   LCD_WriteData(&LCD0,0);
-  LCD_WriteData(&LCD0,symbol_t0);
-
- 
  
 }
 
@@ -127,23 +84,7 @@ void DisplayNum(long Num)
 /*---------------------------------------------------------------------------*/
 void DisplayHex(unsigned int Num)
 {
-  unsigned char count,*LCDAddr,LCDData;
-
-
-  LCDAddr = &LCD3; 
-  for(count=1;count<4;count++)
-  {
-    LCDData=seg[Num%0x10];
-    LCD_WriteData(LCDAddr,LCDData);
-    Num=Num/0x10 ;
-    LCDAddr--;
-  }
-   
-  if(adS.Pressure_sign==1)
-    LCD_WriteData(&LCD0,0X08);
-  else
-  LCD_WriteData(&LCD0,0);
-  LCD_WriteData(&LCD4,symbol_t0);
+  
 }
 /*****************************************************************************
   *
@@ -183,3 +124,85 @@ void Delay(unsigned int ms)
   for(;ms>0;ms--)
     __asm__("NOP");
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name :Reverse 
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+long Reverse_Data(long number)
+  {
+    long tmp=0;
+    while(number!=0)
+    {
+     tmp=(tmp*10 + number%10);
+     number=number*0.1;
+    }
+   if(number<0) return (-tmp);
+    else return tmp;
+  }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name :void DisplayHHH(void) 
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayHHH(void)
+{
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD1,Char_H );
+  LCD_WriteData(&LCD2,Char_H );
+  LCD_WriteData(&LCD3,Char_H ); 
+
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name :DisplayLLL(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayLLL(void)
+{
+ 
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD1,Char_L);
+  LCD_WriteData(&LCD2,Char_L);
+  LCD_WriteData(&LCD3,Char_L); 
+
+}
+
+
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayBatteryCapacityFull(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayBatteryCapacityFull(void)
+{
+  LCD_WriteData(&LCD0,0xff);
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayBatteryCapacityFull(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayBatteryCapacityHalf(void)
+{
+  LCD_WriteData(&LCD0,0xd0);
+ 
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayBatteryCapacityFull(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DispalyBatteryCapacityLow(void)
+{
+  LCD_WriteData(&LCD0,0x90);
+ 
+}
+
+

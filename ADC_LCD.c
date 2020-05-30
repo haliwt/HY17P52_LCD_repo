@@ -144,55 +144,55 @@ void main(void)
 		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
 		    
 			
-		 if(adS.second_5_over >= 10000){ /*unit set mode*/
+		 if(adS.delayTimes_5 >= 10000){ /*unit set mode*/
 			
 			 if(GPIO_READ_PT10()){
 	          
-			    adS.second_5_over=8000;
-				adS.second_5_over =0;
-				adS.uint_set_mode =1;
-				//adS.zero_point_mode =0;
-				adS.measure_mode =1;
+			  adS.delayTimes_5=8000;
+			adS.delayTimes_5 =0;
+				adS.unit_setMode =1;
+				//adS.zeroPoint_Mode =0;
+				adS.testMode =1;
 				DisplayUnit();
 				
-				adS.second_3_over=0;
+				adS.delayTimes_3=0;
 				
 			     switch(adS.plus_uint){
 					case psi: 
 					     adS.plus_uint++;
-						 adS.unit_plus = psi;
+						 adS.unitChoose = psi;
 						 LCD_WriteData(&LCD4,seg_psi);
-						  adS.second_5_over=8000;
+						adS.delayTimes_5=8000;
 					    break;
 					case bar:
 						adS.plus_uint++;
-						 adS.unit_plus = bar;
+						 adS.unitChoose = bar;
 						  LCD_WriteData(&LCD4,seg_bar);
-						  adS.second_5_over=8000;
+						adS.delayTimes_5=8000;
 					     break;
 					case kgf:
 						adS.plus_uint++;
-						adS.unit_plus = kgf;
+						adS.unitChoose = kgf;
 						 LCD_WriteData(&LCD4,seg_kgf);
-						  adS.second_5_over=8000;
+						adS.delayTimes_5=8000;
 					     break;
 				    case mpa:
 					     adS.plus_uint=0;
-						 adS.unit_plus = mpa;
+						 adS.unitChoose = mpa;
 						  LCD_WriteData(&LCD4,seg_mpa);
-						   adS.second_5_over=8000;
+						 adS.delayTimes_5=8000;
 					     break;
 				}
 			
 			}
 		 }
-		 if(adS.second_3_over >=5000){ /* zero point mode*/
+		 if(adS.delayTimes_3 >=5000){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
-				 adS.zero_point_mode = 1;
-				//adS.uint_set_mode = 0;
-				adS.measure_mode =1;
-			    adS.second_3_over=0;
+				 adS.zeroPoint_Mode = 1;
+				//adS.unit_setMode = 0;
+				adS.testMode =1;
+			 adS.delayTimes_3=0;
 				//display LCD "2Er"
 			     Display2Er();
                 // Delay(20000);
@@ -205,10 +205,10 @@ void main(void)
 		else{
 		   	
 		   
-		   if(adS.measure_mode == 0){ /* measure mode */
-		       	adS.zero_point_mode=0;
+		   if(adS.testMode == 0){ /* measure mode */
+		       	adS.zeroPoint_Mode=0;
 				adS.key_flag =0;
-				adS.uint_set_mode=0;
+				adS.unit_setMode=0;
 				ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
 				ADIF_ClearFlag();
 				ADIE_Enable();
@@ -320,10 +320,10 @@ void main(void)
 					}
 		     }
 		    
-		   if(adS.zero_point_mode == 1){ /*zero point mode */
+		   if(adS.zeroPoint_Mode == 1){ /*zero point mode */
      
-				adS.zero_point_mode =0;
-			     adS.measure_mode=0;
+				adS.zeroPoint_Mode =0;
+			     adS.testMode=0;
 				ADC=ADC>>6;
 				ADC = ADC * 0.1;
 				if((ADC<0)||(ADC>0x80000000))
@@ -356,10 +356,10 @@ void main(void)
 			}
 		 
 		 
-			if(adS.uint_set_mode ==1){
+			if(adS.unit_setMode ==1){
 
-				adS.uint_set_mode =0 ;
-				adS.measure_mode = 0;
+				adS.unit_setMode =0 ;
+				adS.testMode = 0;
 		
 										#if 1
 								//BIE Write
@@ -409,13 +409,13 @@ void ISR(void) __interrupt
 	if(TA1IF_IsFlag())  //PT1.0  Timer A1 interrupt flag 
 	{
 		TA1IF_ClearFlag();
-		adS.second_3_over ++;
-		adS.second_5_over++;
+		adS.delayTimes_3 ++;
+		adS.delayTimes_5++;
 	 #if 1
 		if(adS.key_flag ==1||adS.key_flag==0) {
-			adS.second_5_over = 0;
+			adS.delayTimes_5 = 0;
 		
-			adS.second_3_over =0;
+			adS.delayTimes_3 =0;
 		
 			adS.key_flag =2;
 			GPIO_PT15_HIGH();
