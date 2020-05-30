@@ -4,8 +4,8 @@
 004                     ;--------------------------------------------------------
 005                     ; Port for HYCON CPU
 006                     ;--------------------------------------------------------
-007                     ;	;CCFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
-008                     ;;	.file	"E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"
+007                     ;	;CCFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
+008                     ;;	.file	"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"
 009                     	.module LED
 010                     	;.list	p=HY17P52
 011                     	;--cdb--S:G$GetDisplay$0$0({2}DF,SC:U),C,0,0
@@ -22,13 +22,13 @@
 022                     ;--------------------------------------------------------
 023                     	.FUNC _GetDisplay:2:$L:r0x1141:$L:_GetDisplay_STK00:$L:r0x1143:$L:r0x1144
 024                     ;--------------------------------------------------------
-025                     ;	;.line	63; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRTemp=(RRTemp<<1);
+025                     ;	;.line	63; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRTemp=(RRTemp<<1);
 026                     _GetDisplay:	;Function start
 027                     	MVF	r0x1141,1,0
 028                     	BCF	_STATUS,4
 029                     	RLFC	r0x1141,0,0
 030                     	MVF	r0x1144,1,0
-031                     ;	;.line	64; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRR=(RRR<<ledx);
+031                     ;	;.line	64; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRR=(RRR<<ledx);
 032                     	SETF	r0x1143,0
 033                     	MVF	_GetDisplay_STK00,0,0
 034                     	SUBL	0x00
@@ -40,10 +40,10 @@
 040                     	BTSS	_STATUS,4
 041                     	JMP	_00111_DS_
 042                     _00112_DS_:
-043                     ;	;.line	65; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRTemp &= RRR;
+043                     ;	;.line	65; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRTemp &= RRR;
 044                     	MVF	r0x1143,0,0
 045                     	ANDF	r0x1144,1,0
-046                     ;	;.line	68; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRR=RRR>>(8-ledx);
+046                     ;	;.line	68; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRR=RRR>>(8-ledx);
 047                     	MVF	_GetDisplay_STK00,0,0
 048                     	SUBL	0x08
 049                     	MVF	_GetDisplay_STK00,1,0
@@ -58,15 +58,15 @@
 058                     	BTSS	_STATUS,4
 059                     	JMP	_00113_DS_
 060                     _00114_DS_:
-061                     ;	;.line	69; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RLTemp &= RRR;
+061                     ;	;.line	69; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RLTemp &= RRR;
 062                     	MVF	r0x1143,0,0
 063                     	ANDF	r0x1141,1,0
-064                     ;	;.line	70; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRR= RLTemp | RRTemp;
+064                     ;	;.line	70; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	RRR= RLTemp | RRTemp;
 065                     	MVF	r0x1141,0,0
 066                     	IORF	r0x1144,1,0
-067                     ;	;.line	72; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	return RRR;
+067                     ;	;.line	72; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	return RRR;
 068                     	MVF	r0x1144,0,0
-069                     ;	;.line	73; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	}
+069                     ;	;.line	73; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	}
 070                     	RET	
 071                     ; exit point of _GetDisplay
 072                     	.ENDFUNC	_GetDisplay
@@ -77,27 +77,27 @@
 077                     ;--------------------------------------------------------
 078                     	.FUNC _LEDSetting:1:$L:r0x113F
 079                     ;--------------------------------------------------------
-080                     ;	;.line	33; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	void LEDSetting(unsigned char cclevel)
+080                     ;	;.line	33; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	void LEDSetting(unsigned char cclevel)
 081                     _LEDSetting:	;Function start
 082                     	MVF	r0x113F,1,0
-083                     ;	;.line	35; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	CCNT_CCLevelSel(cclevel);
+083                     ;	;.line	35; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	CCNT_CCLevelSel(cclevel);
 084                     	MVL	0xf8
 085                     	ANDF	_CCNT,0,0
 086                     	IORF	r0x113F,0,0
 087                     	MVF	_CCNT,1,0
-088                     ;	;.line	36; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	ENCCALL_Enable();
+088                     ;	;.line	36; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	ENCCALL_Enable();
 089                     	SETF	_ENCCMode,0
-090                     ;	;.line	37; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	PT12DA=0x00;
+090                     ;	;.line	37; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	PT12DA=0x00;
 091                     	CLRF	_PT12DA,0
-092                     ;	;.line	38; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	INTE2 |= 0x40;
+092                     ;	;.line	38; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	INTE2 |= 0x40;
 093                     	BSF	_INTE2,6
-094                     ;	;.line	39; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	TMA2CN=0xc0;
+094                     ;	;.line	39; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	TMA2CN=0xc0;
 095                     	MVL	0xc0
 096                     	MVF	_TMA2CN,1,0
-097                     ;	;.line	40; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	TMA2C=2;		     //Set Scan Rate
+097                     ;	;.line	40; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	TMA2C=2;		     //Set Scan Rate
 098                     	MVL	0x02
 099                     	MVF	_TMA2C,1,0
-100                     ;	;.line	41; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\LED.c"	}
+100                     ;	;.line	41; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\LED.c"	}
 101                     	RET	
 102                     ; exit point of _LEDSetting
 103                     	.ENDFUNC	_LEDSetting

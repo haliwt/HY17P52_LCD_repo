@@ -4,8 +4,8 @@
 0004                       ;--------------------------------------------------------
 0005                       ; Port for HYCON CPU
 0006                       ;--------------------------------------------------------
-0007                       ;	;CCFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
-0008                       ;;	.file	"E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"
+0007                       ;	;CCFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
+0008                       ;;	.file	"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"
 0009                       	.module ADC_52
 0010                       	;.list	p=HY17P52
 0011                       	;--cdb--S:G$ADC_GetData$0$0({2}DF,SL:SL),C,0,0
@@ -28,14 +28,14 @@
 0028                       ;--------------------------------------------------------
 0029 0000 --              	.FUNC _ENSDRVDisable:0
 0030                       ;--------------------------------------------------------
-0031                       ;	;.line	120; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONEnable();
+0031                       ;	;.line	120; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONEnable();
 0032 0000                  _ENSDRVDisable:	;Function start
 0033 0000 9033             	BSF	_PWRCN,0
-0034                       ;	;.line	121; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CSFCN1 &= 0x7F;
+0034                       ;	;.line	121; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CSFCN1 &= 0x7F;
 0035 0001 8E38             	BCF	_CSFCN1,7
-0036                       ;	;.line	122; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONDisable();
+0036                       ;	;.line	122; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONDisable();
 0037 0002 8033             	BCF	_PWRCN,0
-0038                       ;	;.line	123; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0038                       ;	;.line	123; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
 0039 0003 000A             	RET	
 0040                       ; exit point of _ENSDRVDisable
 0041 0004 --              	.ENDFUNC	_ENSDRVDisable
@@ -46,14 +46,14 @@
 0046                       ;--------------------------------------------------------
 0047 0004 --              	.FUNC _ENSDRVEnable:0
 0048                       ;--------------------------------------------------------
-0049                       ;	;.line	114; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONEnable();
+0049                       ;	;.line	114; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONEnable();
 0050 0004                  _ENSDRVEnable:	;Function start
 0051 0004 9033             	BSF	_PWRCN,0
-0052                       ;	;.line	115; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CSFCN1 |= 0x80;
+0052                       ;	;.line	115; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CSFCN1 |= 0x80;
 0053 0005 9E38             	BSF	_CSFCN1,7
-0054                       ;	;.line	116; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONDisable();
+0054                       ;	;.line	116; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	PWR_CSFONDisable();
 0055 0006 8033             	BCF	_PWRCN,0
-0056                       ;	;.line	117; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0056                       ;	;.line	117; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
 0057 0007 000A             	RET	
 0058                       ; exit point of _ENSDRVEnable
 0059 0008 --              	.ENDFUNC	_ENSDRVEnable
@@ -64,27 +64,27 @@
 0064                       ;--------------------------------------------------------
 0065 0008 --              	.FUNC _ADC_GetData:0:$L:_ADC_GetData_ADCData_65536_8
 0066                       ;--------------------------------------------------------
-0067                       ;	;.line	98; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[0] = AD1L; /* ADC low byte register*/
+0067                       ;	;.line	98; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[0] = AD1L; /* ADC low byte register*/
 0068 0008                  _ADC_GetData:	;Function start
 0069 0008 643C             	MVF	_AD1L,0,0
 0070 0009 6600             	MVF	(_ADC_GetData_ADCData_65536_8 + 0),1,0
-0071                       ;	;.line	99; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[1] = AD1M; /* ADC middle byte*/
+0071                       ;	;.line	99; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[1] = AD1M; /* ADC middle byte*/
 0072 000A 643B             	MVF	_AD1M,0,0
 0073 000B 6600             	MVF	(_ADC_GetData_ADCData_65536_8 + 1),1,0
-0074                       ;	;.line	100; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[2] = AD1H; /* ADC high byte register */
+0074                       ;	;.line	100; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[2] = AD1H; /* ADC high byte register */
 0075 000C 643A             	MVF	_AD1H,0,0
 0076 000D 6600             	MVF	(_ADC_GetData_ADCData_65536_8 + 2),1,0
-0077                       ;	;.line	102; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	if (ADCData&0x800000L)  //2^(24-1) -1 = 8388607  
+0077                       ;	;.line	102; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	if (ADCData&0x800000L)  //2^(24-1) -1 = 8388607  
 0078 000E BE00             	BTSS	(_ADC_GetData_ADCData_65536_8 + 2),7
 0079 000F C200 F000        	JMP	_00110_DS_
-0080                       ;	;.line	103; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[3] = 0xFF;
+0080                       ;	;.line	103; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[3] = 0xFF;
 0081 0011 0A00             	SETF	(_ADC_GetData_ADCData_65536_8 + 3),0
 0082 0012 C200 F000        	JMP	_00111_DS_
 0083 0014                  _00110_DS_:
-0084                       ;	;.line	105; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[3] = 0x00;
+0084                       ;	;.line	105; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	((char *)(&ADCData))[3] = 0x00;
 0085 0014 0C00             	CLRF	(_ADC_GetData_ADCData_65536_8 + 3),0
 0086 0015                  _00111_DS_:
-0087                       ;	;.line	106; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	return ADCData;
+0087                       ;	;.line	106; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	return ADCData;
 0088 0015 6400             	MVF	_ADC_GetData_ADCData_65536_8,0,0
 0089 0016 6600             	MVF	STK02,1,0
 0090 0017 6400             	MVF	(_ADC_GetData_ADCData_65536_8 + 1),0,0
@@ -92,7 +92,7 @@
 0092 0019 6400             	MVF	(_ADC_GetData_ADCData_65536_8 + 2),0,0
 0093 001A 6600             	MVF	STK00,1,0
 0094 001B 6400             	MVF	(_ADC_GetData_ADCData_65536_8 + 3),0,0
-0095                       ;	;.line	107; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0095                       ;	;.line	107; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
 0096 001C 000A             	RET	
 0097                       ; exit point of _ADC_GetData
 0098 001D --              	.ENDFUNC	_ADC_GetData
@@ -105,24 +105,24 @@
 0105                       :$L:_ADC_Open_STK04:$L:_ADC_Open_STK05:$L:_ADC_Open_STK06:$L:_ADC_Open_STK07:$L:_ADC_Open_STK08\
 0106 001D --              :$L:_ADC_Open_STK09:$L:_ADC_Open_STK10
 0107                       ;--------------------------------------------------------
-0108                       ;	;.line	52; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	void ADC_Open(unsigned char ck,    //Selector of SD18 peripheral operating clock source
+0108                       ;	;.line	52; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	void ADC_Open(unsigned char ck,    //Selector of SD18 peripheral operating clock source
 0109 001D                  _ADC_Open:	;Function start
 0110 001D 6600             	MVF	r0x113F,1,0
-0111                       ;	;.line	67; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_CLK_DivSelect(ck);
+0111                       ;	;.line	67; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_CLK_DivSelect(ck);
 0112 001E 06CF             	MVL	0xcf
 0113 001F 2835             	ANDF	_OSCCN1,0,0
 0114 0020 2C00             	IORF	r0x113F,0,0
 0115 0021 6635             	MVF	_OSCCN1,1,0
-0116                       ;	;.line	68; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CLK_DHSCKSelect(cks);
+0116                       ;	;.line	68; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	CLK_DHSCKSelect(cks);
 0117 0022 06CF             	MVL	0xcf
 0118 0023 2834             	ANDF	_OSCCN0,0,0
 0119 0024 2C00             	IORF	_ADC_Open_STK00,0,0
 0120 0025 6634             	MVF	_OSCCN0,1,0
-0121                       ;	;.line	71; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VINSelect(inh,inl);             // Config ADC Input Channel
+0121                       ;	;.line	71; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VINSelect(inh,inl);             // Config ADC Input Channel
 0122 0026 6400             	MVF	_ADC_Open_STK02,0,0
 0123 0027 2C00             	IORF	_ADC_Open_STK01,0,0
 0124 0028 6640             	MVF	_AD1CN3,1,0
-0125                       ;	;.line	72; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VRINSelect(vrh,vrl);            // Config ADC Ref. Voltage Input Channel
+0125                       ;	;.line	72; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VRINSelect(vrh,vrl);            // Config ADC Ref. Voltage Input Channel
 0126 0029 060F             	MVL	0x0f
 0127 002A 2841             	ANDF	_AD1CN4,0,0
 0128 002B 6600             	MVF	r0x113F,1,0
@@ -131,7 +131,7 @@
 0131 002E 6400             	MVF	_ADC_Open_STK03,0,0
 0132 002F 2C00             	IORF	r0x113F,0,0
 0133 0030 6641             	MVF	_AD1CN4,1,0
-0134                       ;	;.line	73; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_GainSelect(adgn,pgagn);         // Config PGA Gain and AD Gain
+0134                       ;	;.line	73; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_GainSelect(adgn,pgagn);         // Config PGA Gain and AD Gain
 0135 0031 06E0             	MVL	0xe0
 0136 0032 283E             	ANDF	_AD1CN1,0,0
 0137 0033 6600             	MVF	r0x113F,1,0
@@ -140,31 +140,31 @@
 0140 0036 6400             	MVF	_ADC_Open_STK05,0,0
 0141 0037 2C00             	IORF	r0x113F,0,0
 0142 0038 663E             	MVF	_AD1CN1,1,0
-0143                       ;	;.line	74; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VRXSelect(vrgn);             // Config Ref. Gain and DC offset
+0143                       ;	;.line	74; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VRXSelect(vrgn);             // Config Ref. Gain and DC offset
 0144 0039 06DF             	MVL	0xdf
 0145 003A 283E             	ANDF	_AD1CN1,0,0
 0146 003B 2C00             	IORF	_ADC_Open_STK07,0,0
 0147 003C 663E             	MVF	_AD1CN1,1,0
-0148                       ;	;.line	75; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_DCSETSelect(dcset);             // Config Ref. Gain and DC offset
+0148                       ;	;.line	75; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_DCSETSelect(dcset);             // Config Ref. Gain and DC offset
 0149 003D 06F0             	MVL	0xf0
 0150 003E 283F             	ANDF	_AD1CN2,0,0
 0151 003F 2C00             	IORF	_ADC_Open_STK08,0,0
 0152 0040 663F             	MVF	_AD1CN2,1,0
-0153                       ;	;.line	76; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_OSRSelect(osr);                 // Config Over sampling ratio
+0153                       ;	;.line	76; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_OSRSelect(osr);                 // Config Over sampling ratio
 0154 0041 06E1             	MVL	0xe1
 0155 0042 283D             	ANDF	_AD1CN0,0,0
 0156 0043 2C00             	IORF	_ADC_Open_STK09,0,0
 0157 0044 663D             	MVF	_AD1CN0,1,0
-0158                       ;	;.line	77; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VCMSSelect(vcms); 
+0158                       ;	;.line	77; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_VCMSSelect(vcms); 
 0159 0045 06DF             	MVL	0xdf
 0160 0046 2842             	ANDF	_AD1CN5,0,0
 0161 0047 2C00             	IORF	_ADC_Open_STK10,0,0
 0162 0048 6642             	MVF	_AD1CN5,1,0
-0163                       ;	;.line	79; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_ENACMEnable();
+0163                       ;	;.line	79; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_ENACMEnable();
 0164 0049 9E42             	BSF	_AD1CN5,7
-0165                       ;	;.line	80; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_Enable();
+0165                       ;	;.line	80; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	ADC_Enable();
 0166 004A 9E3D             	BSF	_AD1CN0,7
-0167                       ;	;.line	81; "E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
+0167                       ;	;.line	81; "D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\ADC_52.c"	}
 0168 004B 000A             	RET	
 0169                       ; exit point of _ADC_Open
 0170 004C --              	.ENDFUNC	_ADC_Open

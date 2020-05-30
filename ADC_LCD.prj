@@ -30,7 +30,7 @@
 <PeepHoleOff>FALSE</PeepHoleOff>
 <Debug>FALSE</Debug>
 <DependencyLibPathName>HY17P52ADCSetting.lib;HY17P52WR3.lib</DependencyLibPathName>
-<IncludeFilePath>E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P</IncludeFilePath>
+<IncludeFilePath>D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P</IncludeFilePath>
 </Compiler>
 <Burner>
 <EnableProgTime>FALSE</EnableProgTime>

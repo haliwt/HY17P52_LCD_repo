@@ -1,7 +1,7 @@
 $MOD:display:".\obj\display.rel"
 $VER:SDASHYA_201
-$ASFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
-$SRC:"E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\display.asm"
+$ASFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
+$SRC:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\obj\display.asm"
 $EXPORT:_DispalyBatteryCapacityLow
 $CDB:"S:G$DispalyBatteryCapacityLow$0$0({2}DF,SV:S),C,0,0"
 $EXPORT:_DisplayBatteryCapacityHalf
@@ -31,7 +31,7 @@ $CDB:"S:G$ClearLCD$0$0({2}DF,SV:S),C,0,0"
 $EXPORT:_GPIO_Iint
 $CDB:"S:G$GPIO_Iint$0$0({2}DF,SV:S),C,0,0"
 $EXPORT:_adS
-$CDB:"S:G$adS$0$0({14}ST_adc_works_:S),E,0,0"
+$CDB:"S:G$adS$0$0({22}ST_adc_works_:S),E,0,0"
 $EXPORT:_DisplayNum_STK00
 $EXPORT:_DisplayNum_STK01
 $EXPORT:_DisplayNum_STK02
@@ -722,7 +722,7 @@ $WDATA:538:1:1:0xA:",obj/display.asm:538"
 $ENDFUNC
 $AREA:DSEG:2:0:0:0
 $LAB:744:_adS:",obj/display.asm:744"
-$BLANK:744:14:",obj/display.asm:744"
+$BLANK:744:22:",obj/display.asm:744"
 $AREA:DSEG:2:0:0:0
 $AREA:DSEG:2:0:0:0
 $AREA:DSEG:2:0:0:0

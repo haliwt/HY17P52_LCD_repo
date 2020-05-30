@@ -1,7 +1,7 @@
 $MOD:GPIO:".\obj\GPIO.rel"
 $VER:SDASHYA_201
-$ASFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
-$SRC:"E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\GPIO.asm"
+$ASFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
+$SRC:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\obj\GPIO.asm"
 $AREA:_CODE:1:0:0:0
 $AREA:CCODE:1:0:0:0
 $AREA:IDATA:2:0:0:0

@@ -4,11 +4,11 @@
 ;--------------------------------------------------------
 ; Port for HYCON CPU
 ;--------------------------------------------------------
-;	;CCFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
+;	;CCFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
 ;;	.file	".\display.c"
 	.module display
 	;.list	p=HY17P52
-	;--cdb--T:Fdisplay$_adc_works_[({0}S:S$save_mode$0$0({1}SB0$1:U),Z,0,0)({0}S:S$unit_setMode$0$0({1}SB1$1:U),Z,0,0)({1}S:S$plus_uint$0$0({1}SC:U),Z,0,0)({2}S:S$unitChoose$0$0({1}SC:U),Z,0,0)({3}S:S$testMode$0$0({1}SB0$1:U),Z,0,0)({3}S:S$zeroPoint_Mode$0$0({1}SB1$1:U),Z,0,0)({3}S:S$error_mod$0$0({1}SB2$1:U),Z,0,0)({4}S:S$key_flag$0$0({1}SC:U),Z,0,0)({5}S:S$resetZeroDisplay$0$0({1}SC:U),Z,0,0)({6}S:S$quitCurrentMode$0$0({1}SB0$1:U),Z,0,0)({6}S:S$LVD_2V4_flag$0$0({1}SB1$1:U),Z,0,0)({6}S:S$LVD_3V_flag$0$0({1}SB2$1:U),Z,0,0)({6}S:S$plus_revise_flag$0$0({1}SB3$1:U),Z,0,0)({6}S:S$minus_revise_flag$0$0({1}SB4$1:U),Z,0,0)({6}S:S$Presskey_flag$0$0({1}SB5$1:U),Z,0,0)({6}S:S$Pressure_sign$0$0({1}SB6$1:U),Z,0,0)({7}S:S$eepromRead_high_bit$0$0({1}SC:U),Z,0,0)({8}S:S$eepromRead_low_bit$0$0({1}SC:U),Z,0,0)({9}S:S$reload_ADCInterrupt$0$0({1}SB0$1:U),Z,0,0)({10}S:S$m_offset_value$0$0({2}SI:S),Z,0,0)({12}S:S$p_offset_value$0$0({2}SI:S),Z,0,0)]
+	;--cdb--T:Fdisplay$_adc_works_[({0}S:S$save_mode$0$0({1}SB0$1:U),Z,0,0)({0}S:S$unit_setMode$0$0({1}SB1$1:U),Z,0,0)({1}S:S$plus_uint$0$0({1}SC:U),Z,0,0)({2}S:S$unitChoose$0$0({1}SC:U),Z,0,0)({3}S:S$testMode$0$0({1}SB0$1:U),Z,0,0)({3}S:S$zeroPoint_Mode$0$0({1}SB1$1:U),Z,0,0)({3}S:S$error_mod$0$0({1}SB2$1:U),Z,0,0)({4}S:S$key_flag$0$0({1}SC:U),Z,0,0)({5}S:S$resetZeroDisplay$0$0({1}SC:U),Z,0,0)({6}S:S$quitCurrentMode$0$0({1}SB0$1:U),Z,0,0)({6}S:S$LVD_2V4_flag$0$0({1}SB1$1:U),Z,0,0)({6}S:S$LVD_3V_flag$0$0({1}SB2$1:U),Z,0,0)({6}S:S$plus_revise_flag$0$0({1}SB3$1:U),Z,0,0)({6}S:S$minus_revise_flag$0$0({1}SB4$1:U),Z,0,0)({6}S:S$Presskey_flag$0$0({1}SB5$1:U),Z,0,0)({6}S:S$Pressure_sign$0$0({1}SB6$1:U),Z,0,0)({7}S:S$eepromRead_PositiveDeltaLow_bit1$0$0({1}SC:U),Z,0,0)({8}S:S$eepromRead_PositiveDeltaLow_bit2$0$0({1}SC:U),Z,0,0)({9}S:S$eepromRead_NegativeDeltaLow_bit1$0$0({1}SC:U),Z,0,0)({10}S:S$eepromRead_NegativeDeltaLow_bit2$0$0({1}SC:U),Z,0,0)({11}S:S$eepromRead_UnithHigh_bit$0$0({1}SC:U),Z,0,0)({12}S:S$eepromRead_UnitLow_bit$0$0({1}SC:U),Z,0,0)({13}S:S$reload_ADCInterrupt$0$0({1}SB0$1:U),Z,0,0)({14}S:S$delayTimes_5$0$0({2}SI:U),Z,0,0)({16}S:S$delayTimes_3$0$0({2}SI:U),Z,0,0)({18}S:S$m_offset_value$0$0({2}SI:S),Z,0,0)({20}S:S$p_offset_value$0$0({2}SI:S),Z,0,0)]
 	;--cdb--S:G$DispalyBatteryCapacityLow$0$0({2}DF,SV:S),C,0,0
 	;--cdb--F:display:G$DispalyBatteryCapacityLow$0$0({2}DF,SV:S),C,0,0,0,0,0
 	;--cdb--S:G$DisplayBatteryCapacityHalf$0$0({2}DF,SV:S),C,0,0
@@ -564,7 +564,7 @@ _GPIO_Iint:	;Function start
 	;--cdb--S:G$FSR1$0$0({2}DD,SC:U),E,0,0
 	;--cdb--S:G$FSR2$0$0({2}DD,SC:U),E,0,0
 	;--cdb--S:G$ADCR$0$0({4}SL:SL),E,0,0
-	;--cdb--S:G$adS$0$0({14}ST_adc_works_:S),E,0,0
+	;--cdb--S:G$adS$0$0({22}ST_adc_works_:S),E,0,0
 	;--cdb--S:G$seg$0$0({29}DA29d,SC:U),D,0,0
 	;--cdb--S:G$_SWTGTID$0$0({1}SC:U),I,0,0
 	;--cdb--S:G$INDF0$0$0({1}SC:U),I,0,0
@@ -741,7 +741,7 @@ _GPIO_Iint:	;Function start
 ; global -2 definitions
 ;--------------------------------------------------------
 	.area DSEG(DATA)
-_adS:	.ds	14
+_adS:	.ds	22
 
 	.area DSEG(DATA)
 __SWTGTID	.equ	0xA43354DA

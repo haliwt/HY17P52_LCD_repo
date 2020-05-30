@@ -4,8 +4,8 @@
 ;--------------------------------------------------------
 ; Port for HYCON CPU
 ;--------------------------------------------------------
-;	;CCFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
-;;	.file	"E:\HY17P52_TestSoft\HY17P52_LCD_soft\Driver\HY17P\GPIO.c"
+;	;CCFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
+;;	.file	"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\Driver\HY17P\GPIO.c"
 	.module GPIO
 	;.list	p=HY17P52
 ;--------------------------------------------------------

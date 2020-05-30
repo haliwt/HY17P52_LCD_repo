@@ -1,7 +1,7 @@
 $MOD:ADC_52:".\obj\ADC_52.rel"
 $VER:SDASHYA_201
-$ASFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
-$SRC:"E:\HY17P52_TestSoft\HY17P52_LCD_soft\obj\ADC_52.asm"
+$ASFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
+$SRC:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft\obj\ADC_52.asm"
 $EXPORT:_ENSDRVDisable
 $CDB:"S:G$ENSDRVDisable$0$0({2}DF,SV:S),C,0,0"
 $EXPORT:_ENSDRVEnable

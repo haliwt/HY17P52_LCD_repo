@@ -4,11 +4,11 @@
 004                     ;--------------------------------------------------------
 005                     ; Port for HYCON CPU
 006                     ;--------------------------------------------------------
-007                     ;	;CCFROM:"E:\HY17P52_TestSoft\HY17P52_LCD_soft"
+007                     ;	;CCFROM:"D:\NZSE20A_project\NZSE20A_Soft_proj\HY17P52_LCD_soft"
 008                     ;;	.file	".\display.c"
 009                     	.module display
 010                     	;.list	p=HY17P52
-011                     	;--cdb--T:Fdisplay$_adc_works_[({0}S:S$save_mode$0$0({1}SB0$1:U),Z,0,0)({0}S:S$unit_setMode$0$0({1}SB1$1:U),Z,0,0)({1}S:S$plus_uint$0$0({1}SC:U),Z,0,0)({2}S:S$unitChoose$0$0({1}SC:U),Z,0,0)({3}S:S$testMode$0$0({1}SB0$1:U),Z,0,0)({3}S:S$zeroPoint_Mode$0$0({1}SB1$1:U),Z,0,0)({3}S:S$error_mod$0$0({1}SB2$1:U),Z,0,0)({4}S:S$key_flag$0$0({1}SC:U),Z,0,0)({5}S:S$resetZeroDisplay$0$0({1}SC:U),Z,0,0)({6}S:S$quitCurrentMode$0$0({1}SB0$1:U),Z,0,0)({6}S:S$LVD_2V4_flag$0$0({1}SB1$1:U),Z,0,0)({6}S:S$LVD_3V_flag$0$0({1}SB2$1:U),Z,0,0)({6}S:S$plus_revise_flag$0$0({1}SB3$1:U),Z,0,0)({6}S:S$minus_revise_flag$0$0({1}SB4$1:U),Z,0,0)({6}S:S$Presskey_flag$0$0({1}SB5$1:U),Z,0,0)({6}S:S$Pressure_sign$0$0({1}SB6$1:U),Z,0,0)({7}S:S$eepromRead_high_bit$0$0({1}SC:U),Z,0,0)({8}S:S$eepromRead_low_bit$0$0({1}SC:U),Z,0,0)({9}S:S$reload_ADCInterrupt$0$0({1}SB0$1:U),Z,0,0)({10}S:S$m_offset_value$0$0({2}SI:S),Z,0,0)({12}S:S$p_offset_value$0$0({2}SI:S),Z,0,0)]
+011                     	;--cdb--T:Fdisplay$_adc_works_[({0}S:S$save_mode$0$0({1}SB0$1:U),Z,0,0)({0}S:S$unit_setMode$0$0({1}SB1$1:U),Z,0,0)({1}S:S$plus_uint$0$0({1}SC:U),Z,0,0)({2}S:S$unitChoose$0$0({1}SC:U),Z,0,0)({3}S:S$testMode$0$0({1}SB0$1:U),Z,0,0)({3}S:S$zeroPoint_Mode$0$0({1}SB1$1:U),Z,0,0)({3}S:S$error_mod$0$0({1}SB2$1:U),Z,0,0)({4}S:S$key_flag$0$0({1}SC:U),Z,0,0)({5}S:S$resetZeroDisplay$0$0({1}SC:U),Z,0,0)({6}S:S$quitCurrentMode$0$0({1}SB0$1:U),Z,0,0)({6}S:S$LVD_2V4_flag$0$0({1}SB1$1:U),Z,0,0)({6}S:S$LVD_3V_flag$0$0({1}SB2$1:U),Z,0,0)({6}S:S$plus_revise_flag$0$0({1}SB3$1:U),Z,0,0)({6}S:S$minus_revise_flag$0$0({1}SB4$1:U),Z,0,0)({6}S:S$Presskey_flag$0$0({1}SB5$1:U),Z,0,0)({6}S:S$Pressure_sign$0$0({1}SB6$1:U),Z,0,0)({7}S:S$eepromRead_PositiveDeltaLow_bit1$0$0({1}SC:U),Z,0,0)({8}S:S$eepromRead_PositiveDeltaLow_bit2$0$0({1}SC:U),Z,0,0)({9}S:S$eepromRead_NegativeDeltaLow_bit1$0$0({1}SC:U),Z,0,0)({10}S:S$eepromRead_NegativeDeltaLow_bit2$0$0({1}SC:U),Z,0,0)({11}S:S$eepromRead_UnithHigh_bit$0$0({1}SC:U),Z,0,0)({12}S:S$eepromRead_UnitLow_bit$0$0({1}SC:U),Z,0,0)({13}S:S$reload_ADCInterrupt$0$0({1}SB0$1:U),Z,0,0)({14}S:S$delayTimes_5$0$0({2}SI:U),Z,0,0)({16}S:S$delayTimes_3$0$0({2}SI:U),Z,0,0)({18}S:S$m_offset_value$0$0({2}SI:S),Z,0,0)({20}S:S$p_offset_value$0$0({2}SI:S),Z,0,0)]
 012                     	;--cdb--S:G$DispalyBatteryCapacityLow$0$0({2}DF,SV:S),C,0,0
 013                     	;--cdb--F:display:G$DispalyBatteryCapacityLow$0$0({2}DF,SV:S),C,0,0,0,0,0
 014                     	;--cdb--S:G$DisplayBatteryCapacityHalf$0$0({2}DF,SV:S),C,0,0
@@ -55,10 +55,10 @@
 055                     ;--------------------------------------------------------
 056                     ;	;.line	204; ".\display.c"	LCD_WriteData(&LCD0,0x90);
 057                     _DispalyBatteryCapacityLow:	;Function start
-058 00BF [00] 0690      	MVL	0x90
-059 00C0 [00] 665F      	MVF	_LCD0,1,0
+058 00C4 [00] 0690      	MVL	0x90
+059 00C5 [00] 665F      	MVF	_LCD0,1,0
 060                     ;	;.line	206; ".\display.c"	}
-061 00C1 [00] 000A      	RET	
+061 00C6 [00] 000A      	RET	
 062                     ; exit point of _DispalyBatteryCapacityLow
 063                     	.ENDFUNC	_DispalyBatteryCapacityLow
 064                     ;--------------------------------------------------------
@@ -70,10 +70,10 @@
 070                     ;--------------------------------------------------------
 071                     ;	;.line	193; ".\display.c"	LCD_WriteData(&LCD0,0xd0);
 072                     _DisplayBatteryCapacityHalf:	;Function start
-073 00C2 [00] 06D0      	MVL	0xd0
-074 00C3 [00] 665F      	MVF	_LCD0,1,0
+073 00C7 [00] 06D0      	MVL	0xd0
+074 00C8 [00] 665F      	MVF	_LCD0,1,0
 075                     ;	;.line	195; ".\display.c"	}
-076 00C4 [00] 000A      	RET	
+076 00C9 [00] 000A      	RET	
 077                     ; exit point of _DisplayBatteryCapacityHalf
 078                     	.ENDFUNC	_DisplayBatteryCapacityHalf
 079                     ;--------------------------------------------------------
@@ -85,9 +85,9 @@
 085                     ;--------------------------------------------------------
 086                     ;	;.line	183; ".\display.c"	LCD_WriteData(&LCD0,0xff);
 087                     _DisplayBatteryCapacityFull:	;Function start
-088 00C5 [00] 0A5F      	SETF	_LCD0,0
+088 00CA [00] 0A5F      	SETF	_LCD0,0
 089                     ;	;.line	184; ".\display.c"	}
-090 00C6 [00] 000A      	RET	
+090 00CB [00] 000A      	RET	
 091                     ; exit point of _DisplayBatteryCapacityFull
 092                     	.ENDFUNC	_DisplayBatteryCapacityFull
 093                     ;--------------------------------------------------------
@@ -144,146 +144,146 @@
 144                     :$L:r0x1171:$L:r0x1170:$L:r0x1177
 145                     ;--------------------------------------------------------
 146                     ;	;.line	133; ".\display.c"	long Reverse_Data(long number)
-147 0776 [00] C48A      _Reverse_Data:	;Function start
-148 0777 [10] 6689      	MVF	r0x116B,1,0
+147 0478 [00] C48A      _Reverse_Data:	;Function start
+148 0479 [10] 6689      	MVF	r0x116B,1,0
 149                     ;	;.line	135; ".\display.c"	long tmp=0;
-150 0778 [10] 0C88      	CLRF	r0x116C,0
-151 0779 [10] 0C87      	CLRF	r0x116D,0
-152 077A [10] 0C86      	CLRF	r0x116E,0
-153 077B [10] 0C85      	CLRF	r0x116F,0
+150 047A [10] 0C88      	CLRF	r0x116C,0
+151 047B [10] 0C87      	CLRF	r0x116D,0
+152 047C [10] 0C86      	CLRF	r0x116E,0
+153 047D [10] 0C85      	CLRF	r0x116F,0
 154                     _00152_DS_:
 155                     ;	;.line	136; ".\display.c"	while(number!=0)
-156 077C [10] 648C      	MVF	_Reverse_Data_STK02,0,0
-157 077D [10] 2C8B      	IORF	_Reverse_Data_STK01,0,0
-158 077E [10] 2C8A      	IORF	_Reverse_Data_STK00,0,0
-159 077F [10] 2C89      	IORF	r0x116B,0,0
-160 0780 [10] A02B      	BTSZ	_STATUS,0
-161 0781 [10] 7854      	JMP	_00154_DS_
+156 047E [10] 648C      	MVF	_Reverse_Data_STK02,0,0
+157 047F [10] 2C8B      	IORF	_Reverse_Data_STK01,0,0
+158 0480 [10] 2C8A      	IORF	_Reverse_Data_STK00,0,0
+159 0481 [10] 2C89      	IORF	r0x116B,0,0
+160 0482 [10] A02B      	BTSZ	_STATUS,0
+161 0483 [10] 7855      	JMP	_00154_DS_
 162                     ;	;.line	138; ".\display.c"	tmp=(tmp*10 + number%10);
-163 0782 [10] C608      	MVF	r0x116C,0,0
-164 0783 [10] F00D      	MVF	__mullong_STK06,1,0
-165 0784 [11] C608      	MVF	r0x116D,0,0
-166 0785 [11] F00D      	MVF	__mullong_STK05,1,0
-167 0786 [12] C608      	MVF	r0x116E,0,0
-168 0787 [12] F00D      	MVF	__mullong_STK04,1,0
-169 0788 [13] C608      	MVF	r0x116F,0,0
-170 0789 [13] F00D      	MVF	__mullong_STK03,1,0
-171 078A [14] C50A      	MVL	0x0a
+163 0484 [10] C608      	MVF	r0x116C,0,0
+164 0485 [10] F00D      	MVF	__mullong_STK06,1,0
+165 0486 [11] C608      	MVF	r0x116D,0,0
+166 0487 [11] F00D      	MVF	__mullong_STK05,1,0
+167 0488 [12] C608      	MVF	r0x116E,0,0
+168 0489 [12] F00D      	MVF	__mullong_STK04,1,0
+169 048A [13] C608      	MVF	r0x116F,0,0
+170 048B [13] F00D      	MVF	__mullong_STK03,1,0
+171 048C [14] C50A      	MVL	0x0a
 172                     	MVF	__mullong_STK02,1,0
-173 078B [15] 0C0D      	CLRF	__mullong_STK01,0
-174 078C [16] 0C0D      	CLRF	__mullong_STK00,0
-175 078D [17] 0600      	MVL	0x00
-176 078E [17] CB25      	CALL	__mullong
+173 048D [15] 0C0D      	CLRF	__mullong_STK01,0
+174 048E [16] 0C0D      	CLRF	__mullong_STK00,0
+175 048F [17] 0600      	MVL	0x00
+176 0490 [17] CA9E      	CALL	__mullong
 177                     	.CHKPARA __mullong 8
-178 078F [10] 6684      	MVF	r0x1173,1,0
-179 0790 [10] 6420      	MVF	STK00,0,0
-180 0791 [10] 6683      	MVF	r0x1172,1,0
-181 0792 [10] 641F      	MVF	STK01,0,0
-182 0793 [10] 6682      	MVF	r0x1171,1,0
-183 0794 [10] 641E      	MVF	STK02,0,0
-184 0795 [10] 6681      	MVF	r0x1170,1,0
-185 0796 [10] C50A      	MVL	0x0a
+178 0491 [10] 6684      	MVF	r0x1173,1,0
+179 0492 [10] 6420      	MVF	STK00,0,0
+180 0493 [10] 6683      	MVF	r0x1172,1,0
+181 0494 [10] 641F      	MVF	STK01,0,0
+182 0495 [10] 6682      	MVF	r0x1171,1,0
+183 0496 [10] 641E      	MVF	STK02,0,0
+184 0497 [10] 6681      	MVF	r0x1170,1,0
+185 0498 [10] C50A      	MVL	0x0a
 186                     	MVF	__modslong_STK06,1,0
-187 0797 [11] 0C0D      	CLRF	__modslong_STK05,0
-188 0798 [12] 0C0D      	CLRF	__modslong_STK04,0
-189 0799 [13] 0C0D      	CLRF	__modslong_STK03,0
-190 079A [14] C610      	MVF	_Reverse_Data_STK02,0,0
-191 079B [14] F00D      	MVF	__modslong_STK02,1,0
-192 079C [15] C610      	MVF	_Reverse_Data_STK01,0,0
-193 079D [15] F00D      	MVF	__modslong_STK01,1,0
-194 079E [16] C610      	MVF	_Reverse_Data_STK00,0,0
-195 079F [16] F00D      	MVF	__modslong_STK00,1,0
-196 07A0 [17] 6490      	MVF	r0x116B,0,0
-197 07A1 [17] CA9C      	CALL	__modslong
+187 0499 [11] 0C0D      	CLRF	__modslong_STK05,0
+188 049A [12] 0C0D      	CLRF	__modslong_STK04,0
+189 049B [13] 0C0D      	CLRF	__modslong_STK03,0
+190 049C [14] C610      	MVF	_Reverse_Data_STK02,0,0
+191 049D [14] F00D      	MVF	__modslong_STK02,1,0
+192 049E [15] C610      	MVF	_Reverse_Data_STK01,0,0
+193 049F [15] F00D      	MVF	__modslong_STK01,1,0
+194 04A0 [16] C610      	MVF	_Reverse_Data_STK00,0,0
+195 04A1 [16] F00D      	MVF	__modslong_STK00,1,0
+196 04A2 [17] 6490      	MVF	r0x116B,0,0
+197 04A3 [17] CB5D      	CALL	__modslong
 198                     	.CHKPARA __modslong 8
-199 07A2 [10] 6680      	MVF	r0x1177,1,0
-200 07A3 [10] 641E      	MVF	STK02,0,0
-201 07A4 [10] 1081      	ADDF	r0x1170,0,0
-202 07A5 [10] 6688      	MVF	r0x116C,1,0
-203 07A6 [10] 6482      	MVF	r0x1171,0,0
-204 07A7 [10] 141F      	ADDC	STK01,0,0
-205 07A8 [10] 6687      	MVF	r0x116D,1,0
-206 07A9 [10] 6483      	MVF	r0x1172,0,0
-207 07AA [10] 1420      	ADDC	STK00,0,0
-208 07AB [10] 6686      	MVF	r0x116E,1,0
-209 07AC [10] 6484      	MVF	r0x1173,0,0
-210 07AD [10] 1480      	ADDC	r0x1177,0,0
-211 07AE [10] 6685      	MVF	r0x116F,1,0
+199 04A4 [10] 6680      	MVF	r0x1177,1,0
+200 04A5 [10] 641E      	MVF	STK02,0,0
+201 04A6 [10] 1081      	ADDF	r0x1170,0,0
+202 04A7 [10] 6688      	MVF	r0x116C,1,0
+203 04A8 [10] 6482      	MVF	r0x1171,0,0
+204 04A9 [10] 141F      	ADDC	STK01,0,0
+205 04AA [10] 6687      	MVF	r0x116D,1,0
+206 04AB [10] 6483      	MVF	r0x1172,0,0
+207 04AC [10] 1420      	ADDC	STK00,0,0
+208 04AD [10] 6686      	MVF	r0x116E,1,0
+209 04AE [10] 6484      	MVF	r0x1173,0,0
+210 04AF [10] 1480      	ADDC	r0x1177,0,0
+211 04B0 [10] 6685      	MVF	r0x116F,1,0
 212                     ;	;.line	139; ".\display.c"	number=number*0.1;
-213 07AF [10] C60C      	MVF	_Reverse_Data_STK02,0,0
-214 07B0 [10] F00D      	MVF	___slong2fs_STK02,1,0
-215 07B1 [11] C60C      	MVF	_Reverse_Data_STK01,0,0
-216 07B2 [11] F00D      	MVF	___slong2fs_STK01,1,0
-217 07B3 [12] C60C      	MVF	_Reverse_Data_STK00,0,0
-218 07B4 [12] F00D      	MVF	___slong2fs_STK00,1,0
-219 07B5 [13] 648C      	MVF	r0x116B,0,0
-220 07B6 [13] CF99      	CALL	___slong2fs
+213 04B1 [10] C60C      	MVF	_Reverse_Data_STK02,0,0
+214 04B2 [10] F00D      	MVF	___slong2fs_STK02,1,0
+215 04B3 [11] C60C      	MVF	_Reverse_Data_STK01,0,0
+216 04B4 [11] F00D      	MVF	___slong2fs_STK01,1,0
+217 04B5 [12] C60C      	MVF	_Reverse_Data_STK00,0,0
+218 04B6 [12] F00D      	MVF	___slong2fs_STK00,1,0
+219 04B7 [13] 648C      	MVF	r0x116B,0,0
+220 04B8 [13] C838      	CALL	___slong2fs
 221                     	.CHKPARA ___slong2fs 4
-222 07B7 [10] 6684      	MVF	r0x1173,1,0
-223 07B8 [10] D01E      	MVF	STK02,0,0
-224 07B9 [10] F00D      	MVF	___fsmul_STK06,1,0
-225 07BA [11] D01F      	MVF	STK01,0,0
-226 07BB [11] F00D      	MVF	___fsmul_STK05,1,0
-227 07BC [12] D020      	MVF	STK00,0,0
-228 07BD [12] F00D      	MVF	___fsmul_STK04,1,0
-229 07BE [13] C607      	MVF	r0x1173,0,0
-230 07BF [13] F00D      	MVF	___fsmul_STK03,1,0
-231 07C0 [14] C5CD      	MVL	0xcd
+222 04B9 [10] 6684      	MVF	r0x1173,1,0
+223 04BA [10] D01E      	MVF	STK02,0,0
+224 04BB [10] F00D      	MVF	___fsmul_STK06,1,0
+225 04BC [11] D01F      	MVF	STK01,0,0
+226 04BD [11] F00D      	MVF	___fsmul_STK05,1,0
+227 04BE [12] D020      	MVF	STK00,0,0
+228 04BF [12] F00D      	MVF	___fsmul_STK04,1,0
+229 04C0 [13] C607      	MVF	r0x1173,0,0
+230 04C1 [13] F00D      	MVF	___fsmul_STK03,1,0
+231 04C2 [14] C5CD      	MVL	0xcd
 232                     	MVF	___fsmul_STK02,1,0
-233 07C1 [15] C5CC      	MVL	0xcc
+233 04C3 [15] C5CC      	MVL	0xcc
 234                     	MVF	___fsmul_STK01,1,0
-235 07C2 [16] C5CC      	MVF	___fsmul_STK00,1,0
-236 07C3 [17] 063D      	MVL	0x3d
-237 07C4 [17] CBCE      	CALL	___fsmul
+235 04C4 [16] C5CC      	MVF	___fsmul_STK00,1,0
+236 04C5 [17] 063D      	MVL	0x3d
+237 04C6 [17] C000 F922 	CALL	___fsmul
 238                     	.CHKPARA ___fsmul 8
-239 07C5 [10] 6684      	MVF	r0x1173,1,0
-240 07C6 [10] D01E      	MVF	STK02,0,0
-241 07C7 [10] F00D      	MVF	___fs2slong_STK02,1,0
-242 07C8 [11] D01F      	MVF	STK01,0,0
-243 07C9 [11] F00D      	MVF	___fs2slong_STK01,1,0
-244 07CA [12] D020      	MVF	STK00,0,0
-245 07CB [12] F00D      	MVF	___fs2slong_STK00,1,0
-246 07CC [13] 6487      	MVF	r0x1173,0,0
-247 07CD [13] C820      	CALL	___fs2slong
+239 04C8 [10] 6684      	MVF	r0x1173,1,0
+240 04C9 [10] D01E      	MVF	STK02,0,0
+241 04CA [10] F00D      	MVF	___fs2slong_STK02,1,0
+242 04CB [11] D01F      	MVF	STK01,0,0
+243 04CC [11] F00D      	MVF	___fs2slong_STK01,1,0
+244 04CD [12] D020      	MVF	STK00,0,0
+245 04CE [12] F00D      	MVF	___fs2slong_STK00,1,0
+246 04CF [13] 6487      	MVF	r0x1173,0,0
+247 04D0 [13] C9CB      	CALL	___fs2slong
 248                     	.CHKPARA ___fs2slong 4
-249 07CE [10] 6689      	MVF	r0x116B,1,0
-250 07CF [10] 6420      	MVF	STK00,0,0
-251 07D0 [10] 668A      	MVF	_Reverse_Data_STK00,1,0
-252 07D1 [10] 641F      	MVF	STK01,0,0
-253 07D2 [10] 668B      	MVF	_Reverse_Data_STK01,1,0
-254 07D3 [10] 641E      	MVF	STK02,0,0
-255 07D4 [10] 668C      	MVF	_Reverse_Data_STK02,1,0
-256 07D5 [10] 7FA6      	JMP	_00152_DS_
+249 04D1 [10] 6689      	MVF	r0x116B,1,0
+250 04D2 [10] 6420      	MVF	STK00,0,0
+251 04D3 [10] 668A      	MVF	_Reverse_Data_STK00,1,0
+252 04D4 [10] 641F      	MVF	STK01,0,0
+253 04D5 [10] 668B      	MVF	_Reverse_Data_STK01,1,0
+254 04D6 [10] 641E      	MVF	STK02,0,0
+255 04D7 [10] 668C      	MVF	_Reverse_Data_STK02,1,0
+256 04D8 [10] 7FA5      	JMP	_00152_DS_
 257                     _00154_DS_:
 258                     ;	;.line	141; ".\display.c"	if(number<0) return (-tmp);
-259 07D6 [10] BE89      	BTSS	r0x116B,7
-260 07D7 [10] 780E      	JMP	_00156_DS_
-261 07D8 [10] 2488      	COMF	r0x116C,0,0
-262 07D9 [10] 661E      	MVF	STK02,1,0
-263 07DA [10] 2487      	COMF	r0x116D,0,0
-264 07DB [10] 661F      	MVF	STK01,1,0
-265 07DC [10] 2486      	COMF	r0x116E,0,0
-266 07DD [10] 6620      	MVF	STK00,1,0
-267 07DE [10] 2485      	COMF	r0x116F,0,0
-268 07DF [10] 6689      	MVF	r0x116B,1,0
-269 07E0 [10] 3A1E      	INF	STK02,1,0
-270 07E1 [10] 0600      	MVL	0x00
-271 07E2 [10] 161F      	ADDC	STK01,1,0
-272 07E3 [10] 1620      	ADDC	STK00,1,0
-273 07E4 [10] 1489      	ADDC	r0x116B,0,0
-274 07E5 [10] 7807      	JMP	_00158_DS_
+259 04D9 [10] BE89      	BTSS	r0x116B,7
+260 04DA [10] 780E      	JMP	_00156_DS_
+261 04DB [10] 2488      	COMF	r0x116C,0,0
+262 04DC [10] 661E      	MVF	STK02,1,0
+263 04DD [10] 2487      	COMF	r0x116D,0,0
+264 04DE [10] 661F      	MVF	STK01,1,0
+265 04DF [10] 2486      	COMF	r0x116E,0,0
+266 04E0 [10] 6620      	MVF	STK00,1,0
+267 04E1 [10] 2485      	COMF	r0x116F,0,0
+268 04E2 [10] 6689      	MVF	r0x116B,1,0
+269 04E3 [10] 3A1E      	INF	STK02,1,0
+270 04E4 [10] 0600      	MVL	0x00
+271 04E5 [10] 161F      	ADDC	STK01,1,0
+272 04E6 [10] 1620      	ADDC	STK00,1,0
+273 04E7 [10] 1489      	ADDC	r0x116B,0,0
+274 04E8 [10] 7807      	JMP	_00158_DS_
 275                     _00156_DS_:
 276                     ;	;.line	142; ".\display.c"	else return tmp;
-277 07E6 [10] C608      	MVF	r0x116C,0,0
-278 07E7 [10] F01E      	MVF	STK02,1,0
-279 07E8 [10] C607      	MVF	r0x116D,0,0
-280 07E9 [10] F01F      	MVF	STK01,1,0
-281 07EA [10] C606      	MVF	r0x116E,0,0
-282 07EB [10] F020      	MVF	STK00,1,0
-283 07EC [10] 6485      	MVF	r0x116F,0,0
+277 04E9 [10] C608      	MVF	r0x116C,0,0
+278 04EA [10] F01E      	MVF	STK02,1,0
+279 04EB [10] C607      	MVF	r0x116D,0,0
+280 04EC [10] F01F      	MVF	STK01,1,0
+281 04ED [10] C606      	MVF	r0x116E,0,0
+282 04EE [10] F020      	MVF	STK00,1,0
+283 04EF [10] 6485      	MVF	r0x116F,0,0
 284                     _00158_DS_:
 285                     ;	;.line	143; ".\display.c"	}
-286 07ED [10] C4F3      	RET	
+286 04F0 [10] C4F3      	RET	
 287                     ; exit point of _Reverse_Data
 288                     	.ENDFUNC	_Reverse_Data
 289                     ;--------------------------------------------------------
@@ -294,24 +294,24 @@
 294                     	.FUNC _Delay:2:$L:r0x1166:$L:_Delay_STK00
 295                     ;--------------------------------------------------------
 296                     ;	;.line	122; ".\display.c"	void Delay(unsigned int ms)
-297 0174 [00] C481      _Delay:	;Function start
-298 0175 [01] 6680      	MVF	r0x1166,1,0
+297 00ED [00] C481      _Delay:	;Function start
+298 00EE [01] 6680      	MVF	r0x1166,1,0
 299                     _00145_DS_:
 300                     ;	;.line	124; ".\display.c"	for(;ms>0;ms--)
-301 0176 [01] 6481      	MVF	_Delay_STK00,0,0
-302 0177 [01] 2C80      	IORF	r0x1166,0,0
-303 0178 [01] A02B      	BTSZ	_STATUS,0
-304 0179 [01] 7805      	JMP	_00147_DS_
+301 00EF [01] 6481      	MVF	_Delay_STK00,0,0
+302 00F0 [01] 2C80      	IORF	r0x1166,0,0
+303 00F1 [01] A02B      	BTSZ	_STATUS,0
+304 00F2 [01] 7805      	JMP	_00147_DS_
 305                     ;	;.line	125; ".\display.c"	 ..asm
-306 017A [01] 0000      	NOP
+306 00F3 [01] 0000      	NOP
 307                     ;	;.line	124; ".\display.c"	for(;ms>0;ms--)
-308 017B [01] 3281      	DCF	_Delay_STK00,1,0
-309 017C [01] 4081      	INSUZ	_Delay_STK00,0,0
-310 017D [01] 3280      	DCF	r0x1166,1,0
-311 017E [01] 7FF7      	JMP	_00145_DS_
+308 00F4 [01] 3281      	DCF	_Delay_STK00,1,0
+309 00F5 [01] 4081      	INSUZ	_Delay_STK00,0,0
+310 00F6 [01] 3280      	DCF	r0x1166,1,0
+311 00F7 [01] 7FF7      	JMP	_00145_DS_
 312                     _00147_DS_:
 313                     ;	;.line	126; ".\display.c"	}
-314 017F [01] C4FE      	RET	
+314 00F8 [01] C4FE      	RET	
 315                     ; exit point of _Delay
 316                     	.ENDFUNC	_Delay
 317                     ;--------------------------------------------------------
@@ -323,18 +323,18 @@
 323                     ;--------------------------------------------------------
 324                     ;	;.line	114; ".\display.c"	LCD_WriteData(&LCD0,0x00);
 325                     _DisplayUnit:	;Function start
-326 00C7 [00] 0C5F      	CLRF	_LCD0,0
+326 00CC [00] 0C5F      	CLRF	_LCD0,0
 327                     ;	;.line	115; ".\display.c"	LCD_WriteData(&LCD1,Char_I);
-328 00C8 [00] 0602      	MVL	0x02
-329 00C9 [00] 6660      	MVF	_LCD1,1,0
+328 00CD [00] 0602      	MVL	0x02
+329 00CE [00] 6660      	MVF	_LCD1,1,0
 330                     ;	;.line	116; ".\display.c"	LCD_WriteData(&LCD2,Char_N);
-331 00CA [00] 0626      	MVL	0x26
-332 00CB [00] 6661      	MVF	_LCD2,1,0
+331 00CF [00] 0626      	MVL	0x26
+332 00D0 [00] 6661      	MVF	_LCD2,1,0
 333                     ;	;.line	117; ".\display.c"	LCD_WriteData(&LCD3,Char_CAP_U); 
-334 00CC [00] 067A      	MVL	0x7a
-335 00CD [00] 6662      	MVF	_LCD3,1,0
+334 00D1 [00] 067A      	MVL	0x7a
+335 00D2 [00] 6662      	MVF	_LCD3,1,0
 336                     ;	;.line	118; ".\display.c"	}
-337 00CE [00] 000A      	RET	
+337 00D3 [00] 000A      	RET	
 338                     ; exit point of _DisplayUnit
 339                     	.ENDFUNC	_DisplayUnit
 340                     ;--------------------------------------------------------
@@ -346,18 +346,18 @@
 346                     ;--------------------------------------------------------
 347                     ;	;.line	98; ".\display.c"	LCD_WriteData(&LCD0,0x00);
 348                     _Display2Er:	;Function start
-349 00CF [00] 0C5F      	CLRF	_LCD0,0
+349 00D4 [00] 0C5F      	CLRF	_LCD0,0
 350                     ;	;.line	99; ".\display.c"	LCD_WriteData(&LCD3,Char_2);
-351 00D0 [00] 06BC      	MVL	0xbc
-352 00D1 [00] 6662      	MVF	_LCD3,1,0
+351 00D5 [00] 06BC      	MVL	0xbc
+352 00D6 [00] 6662      	MVF	_LCD3,1,0
 353                     ;	;.line	100; ".\display.c"	LCD_WriteData(&LCD2,Char_E);
-354 00D2 [00] 06F4      	MVL	0xf4
-355 00D3 [00] 6661      	MVF	_LCD2,1,0
+354 00D7 [00] 06F4      	MVL	0xf4
+355 00D8 [00] 6661      	MVF	_LCD2,1,0
 356                     ;	;.line	101; ".\display.c"	LCD_WriteData(&LCD1,Char_R);   
-357 00D4 [00] 0624      	MVL	0x24
-358 00D5 [00] 6660      	MVF	_LCD1,1,0
+357 00D9 [00] 0624      	MVL	0x24
+358 00DA [00] 6660      	MVF	_LCD1,1,0
 359                     ;	;.line	104; ".\display.c"	}
-360 00D6 [00] 000A      	RET	
+360 00DB [00] 000A      	RET	
 361                     ; exit point of _Display2Er
 362                     	.ENDFUNC	_Display2Er
 363                     ;--------------------------------------------------------
@@ -382,87 +382,87 @@
 382                     :$L:r0x1148:$L:r0x1149:$L:r0x114A
 383                     ;--------------------------------------------------------
 384                     ;	;.line	61; ".\display.c"	void DisplayNum(long Num)
-385 0829 [00] C485      _DisplayNum:	;Function start
-386 082A [05] 6684      	MVF	r0x1146,1,0
+385 06D6 [00] C485      _DisplayNum:	;Function start
+386 06D7 [05] 6684      	MVF	r0x1146,1,0
 387                     ;	;.line	66; ".\display.c"	LCDAddr=&LCD3;
-388 082B [05] 0662      	MVL	(_LCD3 + 0)
-389 082C [05] 6683      	MVF	r0x1147,1,0
-390 082D [05] 0600      	MVL	high (_LCD3 + 0)
-391 082E [05] 6682      	MVF	r0x1148,1,0
+388 06D8 [05] 0662      	MVL	(_LCD3 + 0)
+389 06D9 [05] 6683      	MVF	r0x1147,1,0
+390 06DA [05] 0600      	MVL	high (_LCD3 + 0)
+391 06DB [05] 6682      	MVF	r0x1148,1,0
 392                     ;	;.line	67; ".\display.c"	for(count=1;count<4;count++)
-393 082F [05] 0603      	MVL	0x03
-394 0830 [05] 6681      	MVF	r0x1149,1,0
+393 06DC [05] 0603      	MVL	0x03
+394 06DD [05] 6681      	MVF	r0x1149,1,0
 395                     _00125_DS_:
 396                     ;	;.line	69; ".\display.c"	LCDData=seg[Num%10];
-397 0831 [05] C50A      	MVL	0x0a
+397 06DE [05] C50A      	MVL	0x0a
 398                     	MVF	__modslong_STK06,1,0
-399 0832 [06] 0C0D      	CLRF	__modslong_STK05,0
-400 0833 [07] 0C0D      	CLRF	__modslong_STK04,0
-401 0834 [08] 0C0D      	CLRF	__modslong_STK03,0
-402 0835 [09] C60B      	MVF	_DisplayNum_STK02,0,0
-403 0836 [09] F00D      	MVF	__modslong_STK02,1,0
-404 0837 [10] C60B      	MVF	_DisplayNum_STK01,0,0
-405 0838 [10] F00D      	MVF	__modslong_STK01,1,0
-406 0839 [11] C60B      	MVF	_DisplayNum_STK00,0,0
-407 083A [11] F00D      	MVF	__modslong_STK00,1,0
-408 083B [12] 648B      	MVF	r0x1146,0,0
-409 083C [12] CA01      	CALL	__modslong
-410 083D [05] 641E      	MVF	STK02,0,0
-411 083E [05] 046C      	ADDL	(_seg + 0)
-412 083F [05] 6680      	MVF	r0x114A,1,0
-413 0840 [05] 061A      	MVL	high (_seg + 0)
-414 0841 [05] 141F      	ADDC	STK01,0,0
-415 0842 [05] C600 F00D 	MVSF	r0x114A,__g2ptrget1_STK00
-416 0844 [06] 0280      	IORL	0x80
-417 0845 [06] CAAC      	CALL	__g2ptrget1
+399 06DF [06] 0C0D      	CLRF	__modslong_STK05,0
+400 06E0 [07] 0C0D      	CLRF	__modslong_STK04,0
+401 06E1 [08] 0C0D      	CLRF	__modslong_STK03,0
+402 06E2 [09] C60B      	MVF	_DisplayNum_STK02,0,0
+403 06E3 [09] F00D      	MVF	__modslong_STK02,1,0
+404 06E4 [10] C60B      	MVF	_DisplayNum_STK01,0,0
+405 06E5 [10] F00D      	MVF	__modslong_STK01,1,0
+406 06E6 [11] C60B      	MVF	_DisplayNum_STK00,0,0
+407 06E7 [11] F00D      	MVF	__modslong_STK00,1,0
+408 06E8 [12] 648B      	MVF	r0x1146,0,0
+409 06E9 [12] C917      	CALL	__modslong
+410 06EA [05] 641E      	MVF	STK02,0,0
+411 06EB [05] 0466      	ADDL	(_seg + 0)
+412 06EC [05] 6680      	MVF	r0x114A,1,0
+413 06ED [05] 0618      	MVL	high (_seg + 0)
+414 06EE [05] 141F      	ADDC	STK01,0,0
+415 06EF [05] C600 F00D 	MVSF	r0x114A,__g2ptrget1_STK00
+416 06F1 [06] 0280      	IORL	0x80
+417 06F2 [06] C949      	CALL	__g2ptrget1
 418                     ;	;.line	70; ".\display.c"	LCD_WriteData(LCDAddr,LCDData);
-419 0846 [05] 660D      	MVF	__g2ptrput1_STK01,1,0
-420 0847 [06] C604      	MVF	r0x1147,0,0
-421 0848 [06] F00D      	MVF	__g2ptrput1_STK00,1,0
-422 0849 [07] 6484      	MVF	r0x1148,0,0
-423 084A [07] CAB8      	CALL	__g2ptrput1
+419 06F3 [05] 660D      	MVF	__g2ptrput1_STK01,1,0
+420 06F4 [06] C604      	MVF	r0x1147,0,0
+421 06F5 [06] F00D      	MVF	__g2ptrput1_STK00,1,0
+422 06F6 [07] 6484      	MVF	r0x1148,0,0
+423 06F7 [07] C955      	CALL	__g2ptrput1
 424                     ;	;.line	71; ".\display.c"	Num=Num/10 ;
-425 084B [05] C50A      	MVL	0x0a
+425 06F8 [05] C50A      	MVL	0x0a
 426                     	MVF	__divslong_STK06,1,0
-427 084C [06] 0C0D      	CLRF	__divslong_STK05,0
-428 084D [07] 0C0D      	CLRF	__divslong_STK04,0
-429 084E [08] 0C0D      	CLRF	__divslong_STK03,0
-430 084F [09] C60B      	MVF	_DisplayNum_STK02,0,0
-431 0850 [09] F00D      	MVF	__divslong_STK02,1,0
-432 0851 [10] C60B      	MVF	_DisplayNum_STK01,0,0
-433 0852 [10] F00D      	MVF	__divslong_STK01,1,0
-434 0853 [11] C60B      	MVF	_DisplayNum_STK00,0,0
-435 0854 [11] F00D      	MVF	__divslong_STK00,1,0
-436 0855 [12] 648B      	MVF	r0x1146,0,0
-437 0856 [12] CA22      	CALL	__divslong
+427 06F9 [06] 0C0D      	CLRF	__divslong_STK05,0
+428 06FA [07] 0C0D      	CLRF	__divslong_STK04,0
+429 06FB [08] 0C0D      	CLRF	__divslong_STK03,0
+430 06FC [09] C60B      	MVF	_DisplayNum_STK02,0,0
+431 06FD [09] F00D      	MVF	__divslong_STK02,1,0
+432 06FE [10] C60B      	MVF	_DisplayNum_STK01,0,0
+433 06FF [10] F00D      	MVF	__divslong_STK01,1,0
+434 0700 [11] C60B      	MVF	_DisplayNum_STK00,0,0
+435 0701 [11] F00D      	MVF	__divslong_STK00,1,0
+436 0702 [12] 648B      	MVF	r0x1146,0,0
+437 0703 [12] CB4C      	CALL	__divslong
 438                     	.CHKPARA __divslong 8
-439 0857 [05] 6684      	MVF	r0x1146,1,0
-440 0858 [05] 6420      	MVF	STK00,0,0
-441 0859 [05] 6685      	MVF	_DisplayNum_STK00,1,0
-442 085A [05] 641F      	MVF	STK01,0,0
-443 085B [05] 6686      	MVF	_DisplayNum_STK01,1,0
-444 085C [05] 641E      	MVF	STK02,0,0
-445 085D [05] 6687      	MVF	_DisplayNum_STK02,1,0
+439 0704 [05] 6684      	MVF	r0x1146,1,0
+440 0705 [05] 6420      	MVF	STK00,0,0
+441 0706 [05] 6685      	MVF	_DisplayNum_STK00,1,0
+442 0707 [05] 641F      	MVF	STK01,0,0
+443 0708 [05] 6686      	MVF	_DisplayNum_STK01,1,0
+444 0709 [05] 641E      	MVF	STK02,0,0
+445 070A [05] 6687      	MVF	_DisplayNum_STK02,1,0
 446                     ;	;.line	72; ".\display.c"	LCDAddr--;
-447 085E [05] 3283      	DCF	r0x1147,1,0
-448 085F [05] 4083      	INSUZ	r0x1147,0,0
-449 0860 [05] 3282      	DCF	r0x1148,1,0
-450 0861 [05] 3681      	DCSZ	r0x1149,1,0
+447 070B [05] 3283      	DCF	r0x1147,1,0
+448 070C [05] 4083      	INSUZ	r0x1147,0,0
+449 070D [05] 3282      	DCF	r0x1148,1,0
+450 070E [05] 3681      	DCSZ	r0x1149,1,0
 451                     ;	;.line	67; ".\display.c"	for(count=1;count<4;count++)
-452 0862 [05] 7FCE 0011 	JMP	_00125_DS_
+452 070F [05] 7FCE 0011 	JMP	_00125_DS_
 453                     ;	;.line	75; ".\display.c"	if(adS.Pressure_sign==1)
-454 0864 [05] BD78      	BTSS	(_adS+6),6
-455 0865 [05] 7803      	JMP	_00121_DS_
+454 0711 [05] BD70      	BTSS	(_adS+6),6
+455 0712 [05] 7803      	JMP	_00121_DS_
 456                     ;	;.line	76; ".\display.c"	LCD_WriteData(&LCD0,0X08);
-457 0866 [05] 0608      	MVL	0x08
-458 0867 [05] 665F      	MVF	_LCD0,1,0
-459 0868 [05] 7801      	JMP	_00126_DS_
+457 0713 [05] 0608      	MVL	0x08
+458 0714 [05] 665F      	MVF	_LCD0,1,0
+459 0715 [05] 7801      	JMP	_00126_DS_
 460                     _00121_DS_:
 461                     ;	;.line	78; ".\display.c"	LCD_WriteData(&LCD0,0);
-462 0869 [05] 0C5F      	CLRF	_LCD0,0
+462 0716 [05] 0C5F      	CLRF	_LCD0,0
 463                     _00126_DS_:
 464                     ;	;.line	80; ".\display.c"	}
-465 086A [05] C4F8      	RET	
+465 0717 [05] C4F8      	RET	
 466                     ; exit point of _DisplayNum
 467                     	.ENDFUNC	_DisplayNum
 468                     ;--------------------------------------------------------
@@ -523,19 +523,19 @@
 523                     ;--------------------------------------------------------
 524                     ;	;.line	14; ".\display.c"	GPIO_PT15_OUTUT();  // SETTING PT4.4 OUTPUT
 525                     _GPIO_Iint:	;Function start
-526 00D7 [00] 06DF      	MVL	0xdf
-527 00D8 [00] 2848      	ANDF	_TRISC1,0,0
-528 00D9 [00] 0220      	IORL	0x20
-529 00DA [00] 6648      	MVF	_TRISC1,1,0
+526 00F9 [00] 06DF      	MVL	0xdf
+527 00FA [00] 2848      	ANDF	_TRISC1,0,0
+528 00FB [00] 0220      	IORL	0x20
+529 00FC [00] 6648      	MVF	_TRISC1,1,0
 530                     ;	;.line	15; ".\display.c"	GPIO_PT16_OUTUT();  // SETTING PT4.3 OUTPUT
-531 00DB [00] 06BF      	MVL	0xbf
-532 00DC [00] 2848      	ANDF	_TRISC1,0,0
-533 00DD [00] 0240      	IORL	0x40
-534 00DE [00] 6648      	MVF	_TRISC1,1,0
+531 00FD [00] 06BF      	MVL	0xbf
+532 00FE [00] 2848      	ANDF	_TRISC1,0,0
+533 00FF [00] 0240      	IORL	0x40
+534 0100 [00] 6648      	MVF	_TRISC1,1,0
 535                     ;	;.line	17; ".\display.c"	GPIO_PT10_INPUT();
-536 00DF [00] 8048      	BCF	_TRISC1,0
+536 0101 [00] 8048      	BCF	_TRISC1,0
 537                     ;	;.line	18; ".\display.c"	}
-538 00E0 [00] 000A      	RET	
+538 0102 [00] 000A      	RET	
 539                     ; exit point of _GPIO_Iint
 540                     	.ENDFUNC	_GPIO_Iint
 541                     ;--------------------------------------------------------
@@ -564,7 +564,7 @@
 564                     	;--cdb--S:G$FSR1$0$0({2}DD,SC:U),E,0,0
 565                     	;--cdb--S:G$FSR2$0$0({2}DD,SC:U),E,0,0
 566                     	;--cdb--S:G$ADCR$0$0({4}SL:SL),E,0,0
-567                     	;--cdb--S:G$adS$0$0({14}ST_adc_works_:S),E,0,0
+567                     	;--cdb--S:G$adS$0$0({22}ST_adc_works_:S),E,0,0
 568                     	;--cdb--S:G$seg$0$0({29}DA29d,SC:U),D,0,0
 569                     	;--cdb--S:G$_SWTGTID$0$0({1}SC:U),I,0,0
 570                     	;--cdb--S:G$INDF0$0$0({1}SC:U),I,0,0
@@ -741,7 +741,7 @@
 741                     ; global -2 definitions
 742                     ;--------------------------------------------------------
 743                     	.area DSEG(DATA)
-744 0172 -- -- -- -- -- -- -- -- -- -- -- -- -- -- _adS:	.ds	14
+744 016A -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- _adS:	.ds	22
 745                     
 746                     	.area DSEG(DATA)
 747                     __SWTGTID	.equ	0xA43354DA
@@ -1132,35 +1132,35 @@
 1132                     	.area	CONST   (CODE)	 ;display-0-code, const
 1133                     
 1134                     _seg:
-1135 0D36 FA             	.db #0xfa	; 250
-1136 0D36 0A             	.db #0x0a	; 10
-1137 0D37 BC             	.db #0xbc	; 188
-1138 0D37 9E             	.db #0x9e	; 158
-1139 0D38 4E             	.db #0x4e	; 78	'N'
-1140 0D38 D6             	.db #0xd6	; 214
-1141 0D39 F6             	.db #0xf6	; 246
-1142 0D39 CA             	.db #0xca	; 202
-1143 0D3A FE             	.db #0xfe	; 254
-1144 0D3A DE             	.db #0xde	; 222
-1145 0D3B EE             	.db #0xee	; 238
-1146 0D3B 76             	.db #0x76	; 118	'v'
-1147 0D3C F0             	.db #0xf0	; 240
-1148 0D3C 3E             	.db #0x3e	; 62
-1149 0D3D F4             	.db #0xf4	; 244
-1150 0D3D E4             	.db #0xe4	; 228
-1151 0D3E 6E             	.db #0x6e	; 110	'n'
-1152 0D3E 02             	.db #0x02	; 2
-1153 0D3F 1E             	.db #0x1e	; 30
-1154 0D3F 70             	.db #0x70	; 112	'p'
-1155 0D40 26             	.db #0x26	; 38
-1156 0D40 36             	.db #0x36	; 54	'6'
-1157 0D41 EC             	.db #0xec	; 236
-1158 0D41 CE             	.db #0xce	; 206
-1159 0D42 24             	.db #0x24	; 36
-1160 0D42 74             	.db #0x74	; 116	't'
-1161 0D43 32             	.db #0x32	; 50	'2'
-1162 0D43 5E             	.db #0x5e	; 94
-1163 0D44 7A             	.db #0x7a	; 122	'z'
+1135 0C33 FA             	.db #0xfa	; 250
+1136 0C33 0A             	.db #0x0a	; 10
+1137 0C34 BC             	.db #0xbc	; 188
+1138 0C34 9E             	.db #0x9e	; 158
+1139 0C35 4E             	.db #0x4e	; 78	'N'
+1140 0C35 D6             	.db #0xd6	; 214
+1141 0C36 F6             	.db #0xf6	; 246
+1142 0C36 CA             	.db #0xca	; 202
+1143 0C37 FE             	.db #0xfe	; 254
+1144 0C37 DE             	.db #0xde	; 222
+1145 0C38 EE             	.db #0xee	; 238
+1146 0C38 76             	.db #0x76	; 118	'v'
+1147 0C39 F0             	.db #0xf0	; 240
+1148 0C39 3E             	.db #0x3e	; 62
+1149 0C3A F4             	.db #0xf4	; 244
+1150 0C3A E4             	.db #0xe4	; 228
+1151 0C3B 6E             	.db #0x6e	; 110	'n'
+1152 0C3B 02             	.db #0x02	; 2
+1153 0C3C 1E             	.db #0x1e	; 30
+1154 0C3C 70             	.db #0x70	; 112	'p'
+1155 0C3D 26             	.db #0x26	; 38
+1156 0C3D 36             	.db #0x36	; 54	'6'
+1157 0C3E EC             	.db #0xec	; 236
+1158 0C3E CE             	.db #0xce	; 206
+1159 0C3F 24             	.db #0x24	; 36
+1160 0C3F 74             	.db #0x74	; 116	't'
+1161 0C40 32             	.db #0x32	; 50	'2'
+1162 0C40 5E             	.db #0x5e	; 94
+1163 0C41 7A             	.db #0x7a	; 122	'z'
 1164                     
 1165                     ;--------------------------------------------------------
 1166                     ; initialized data - mirror
