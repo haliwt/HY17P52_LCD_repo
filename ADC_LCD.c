@@ -258,81 +258,13 @@ void main(void)
 										
 				}//end else 
 			    else { /*Input Negative pressure mode*/
-						adS.Pressure_sign =1;
-						delta  = ADC ;
-                        
-					    theta= abs(ADC) - adS.m_offset_value;  
-					   if(adS.minus_revise_flag==1){
-
-					   	 
-					
-						//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
-					   	   if(delta >=0 ){
-					   	   	 LCDDisplay= 200 - 0.126*theta ;//y = -0.0126x + 20.075
-							 DisplayNum( LCDDisplay);
-							 Delay(20000);
-
-					   	   }
-					   	   else{
-						            #if 0
-						     		if(abs(delta)> 6343){
-										DisplayHycon();
-										Delay(20000);
-						     		}
-						       
-						    		#endif 
-									LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
-									DisplayNum( LCDDisplay);
-									Delay(20000);
-								
-						    }
-						}
-					
-									
-						else{
-							ADC = abs(ADC);
-							DisplayNum(ADC);
-							Delay(20000);
-						}
+						NegativePressureWorks_Mode();
 					}
 		        }
 		   }
-		   if(adS.zeroPoint_Mode == 1){ /*zero point mode */
-     
-				adS.zeroPoint_Mode =0;
+		   if(adS.zeroPoint_Mode ==1){
+					adS.zeroPoint_Mode =0;
 			     adS.testMode=0;
-				ADC=ADC>>6;
-				ADC = ADC * 0.1;
-				if((ADC<0)||(ADC>0x80000000))
-				{
-					
-					adS.Pressure_sign =1;
-				}
-				else
-				{
-					adS.Pressure_sign =0;
-					
-				}
-		   
-			//	adS.Error_Positive_flag++; //cyclic 
-		       /* 找误�?*/
-				if(adS.Pressure_sign==1){ /*negative pressure "-"*/
-					adS.m_offset_value = abs(ADC) - STD_NEGATIVE_VOLTAGE + 1;
-					adS.minus_revise_flag=1;
-					
-				}
-				else{ /*positive pressure +*/
-					
-					
-					adS.p_offset_value= abs(STD_VALUE) -abs(ADC) + 1; 
-					adS.plus_revise_flag =1;
-					DisplayNum( adS.p_offset_value);
-					Delay(20000);
-				}
-			
-			}
-		    if(adS.zeroPoint_Mode ==1){
-				
 					SetupZeroPoint_Mode();
 			}
 		    if(adS.unit_setMode ==1){
