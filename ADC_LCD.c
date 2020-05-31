@@ -82,8 +82,8 @@ void SetupZeroPoint_Mode(void);
 void SetupUnit_Mode(void);
 void PositivePressureWorks_Mode(void);
 void NegativePressureWorks_Mode(void);
-void SetupUnitAndZeroPoint_Mode(void);
-
+void SetupUnitSelection(void);
+void SetupZeroPointSelection(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -157,58 +157,19 @@ void main(void)
 		 if(adS.delayTimes_5 >= 10000){ /*unit set mode*/
 			
 			 if(GPIO_READ_PT10()){
-	          
-			  adS.delayTimes_5=8000;
-			adS.delayTimes_5 =0;
-				adS.unit_setMode =1;
-				//adS.zeroPoint_Mode =0;
-				adS.testMode =1;
-				DisplayUnit();
-				
-				adS.delayTimes_3=0;
-				
-			     switch(adS.plus_uint){
-					case psi: 
-					     adS.plus_uint++;
-						 adS.unitChoose = psi;
-						 LCD_WriteData(&LCD4,seg_psi);
-						adS.delayTimes_5=8000;
-					    break;
-					case bar:
-						adS.plus_uint++;
-						 adS.unitChoose = bar;
-						  LCD_WriteData(&LCD4,seg_bar);
-						adS.delayTimes_5=8000;
-					     break;
-					case kgf:
-						adS.plus_uint++;
-						adS.unitChoose = kgf;
-						 LCD_WriteData(&LCD4,seg_kgf);
-						adS.delayTimes_5=8000;
-					     break;
-				    case mpa:
-					     adS.plus_uint=0;
-						 adS.unitChoose = mpa;
-						  LCD_WriteData(&LCD4,seg_mpa);
-						 adS.delayTimes_5=8000;
-					     break;
-				}
-			
+	          	
+	          	SetupUnitSelection();
 			}
-		 }
+			
+		  }
+		 
 		 if(adS.delayTimes_3 >=5000){ /* zero point mode*/
 
 			   if(GPIO_READ_PT10()){
-				 adS.zeroPoint_Mode = 1;
-				//adS.unit_setMode = 0;
-				adS.testMode =1;
-			 adS.delayTimes_3=0;
-				//display LCD "2Er"
-			     Display2Er();
-                // Delay(20000);
-				 
-                
-			}
+
+			   	SetupZeroPointSelection();
+				
+				}
 		 }
 		 
 		}
@@ -716,65 +677,65 @@ void NegativePressureWorks_Mode(void)
 	*
 	*
 ***********************************************************************/
-void SetupUnitAndZeroPoint_Mode(void)
+void SetupUnitSelection(void)
 {
-//	adS.key_flag=adS.key_flag ^ 0x01; /* check process	ISR()__inptrrupt reference */
-		
+	adS.delayTimes_5=8000;
+	adS.delayTimes_5 =0;
+	adS.unit_setMode =1;
+	//adS.zeroPoint_Mode =0;
+	adS.testMode =1;
+	DisplayUnit();
 
-				   //Delay(5000);  
-				
-			  
-				   adS.unit_setMode =1;
-				   adS.zeroPoint_Mode =0;
-				   adS.testMode =1;
-				   DisplayUnit();
-				
-			   
-			   
-				switch(adS.unitChoose){
-				   case psi: 
-						adS.unitChoose++;
-						adS.unitChoose = psi;
-					   // EEPROM_WriteWord(0,0,0x00);
-						
-						GPIO_PT15_HIGH();
-					   LCD_WriteData(&LCD4,seg_psi);
-						Delay(20000);  
-						Delay(10000);
-					   break;
-				   case bar:
-						adS.unitChoose++;
-						adS.unitChoose = bar;
-						GPIO_PT15_LOW();
-						// EEPROM_WriteWord(0 ,0,0x01);
-						 LCD_WriteData(&LCD4,seg_bar);
-						 Delay(20000); 
-						 Delay(10000);
-						break;
-				   case kgf:
-					   adS.unitChoose++;
-					   adS.unitChoose = kgf;
-						GPIO_PT15_HIGH();
-						//EEPROM_WriteWord(0 ,0,0x03);
-						LCD_WriteData(&LCD4,seg_kgf);
-						Delay(20000);
-						Delay(10000);  
-				   
-						break;
-				   case mpa:
-						adS.unitChoose=0;
-						adS.unitChoose = mpa;
-						GPIO_PT15_LOW();
-						// EEPROM_WriteWord(0 ,0,0x04);
-						 LCD_WriteData(&LCD4,seg_mpa);
-						 
-						Delay(20000);
-						Delay(10000);  
-						break;
-					}
+	adS.delayTimes_3=0;
+
+	switch(adS.plus_uint){
+	case psi: 
+	     adS.plus_uint++;
+		 adS.unitChoose = psi;
+		// LCD_WriteData(&LCD4,seg_psi);
+		adS.delayTimes_5=8000;
+	    break;
+	case bar:
+		adS.plus_uint++;
+		 adS.unitChoose = bar;
+		//  LCD_WriteData(&LCD4,seg_bar);
+		adS.delayTimes_5=8000;
+	     break;
+	case kgf:
+		adS.plus_uint++;
+		adS.unitChoose = kgf;
+		// LCD_WriteData(&LCD4,seg_kgf);
+		adS.delayTimes_5=8000;
+	     break;
+	case mpa:
+	     adS.plus_uint=0;
+		 adS.unitChoose = mpa;
+		//  LCD_WriteData(&LCD4,seg_mpa);
+		 adS.delayTimes_5=8000;
+	     break; 
+	}
+
 }
+/**********************************************************************
+	*
+	*Function Name :SetupZeroPointSelection
+	*
+	*
+	*
+	*
+***********************************************************************/
+void SetupZeroPointSelection(void)
+{
+	adS.zeroPoint_Mode = 1;
+	adS.unit_setMode = 0;
+	adS.testMode =1;
+	adS.delayTimes_3=0;
+	//display LCD "2Er"
+	Display2Er();
+	// Delay(20000);
 
-/*----------------------------------------------------------------------------*/
+}
+/******************************************************************************/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/
 void ISR(void) __interrupt
