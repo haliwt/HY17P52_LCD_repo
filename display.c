@@ -75,7 +75,7 @@ void DisplayNum(long Num)
   if(adS.Pressure_sign==1)
     LCD_WriteData(&LCD0,0X08);
   else
-  LCD_WriteData(&LCD0,0);
+    LCD_WriteData(&LCD0,0);
  
 }
 

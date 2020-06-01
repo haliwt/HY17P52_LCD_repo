@@ -530,13 +530,10 @@ void PositivePressureWorks_Mode(void)
 				if(delta<2000)DisplayNum(ADC);
 
 				else if( (LCDDisplay *10) < 2875){
-					LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
-					LCDDisplay=Reverse_Data(LCDDisplay);
-					LCDDisplay=UnitConverter(LCDDisplay);
-					DisplayNum(LCDDisplay);
-					LowVoltageDisplay();
-
-					Delay(20000);
+						LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
+						LCDDisplay=Reverse_Data(LCDDisplay);
+						LCDDisplay=UnitConverter(LCDDisplay);
+						
 
 				}
 				else {
@@ -544,16 +541,28 @@ void PositivePressureWorks_Mode(void)
 						LCDDisplay= 56193  - (8.47 * delta) ;//y=-0.846x + 5619.3
 						LCDDisplay=Reverse_Data(LCDDisplay);
 						LCDDisplay=UnitConverter(LCDDisplay);
-						DisplayNum( LCDDisplay);
-						LowVoltageDisplay();
-						Delay(20000);
+						
 										
 					}
+
+				if(LCDDisplay >=100)DisplayNum(LCDDisplay);
+				else if(LCDDisplay <100 && LCDDisplay >=10){
+						LCD_WriteData(&LCD2,seg_p);
+						DisplayNum(LCDDisplay);
+				    }
+				    else if(LCDDisplay <10){
+				    	LCD_WriteData(&LCD1,seg_p);
+						DisplayNum(LCDDisplay);
+				    }
+			    
+				LowVoltageDisplay();
+				Delay(20000);
 										
 			}
 			else
 			{
 				ADC=Reverse_Data(ADC);
+				ADC=UnitConverter(ADC);
 				DisplayNum(ADC);
 				LowVoltageDisplay();
 			
@@ -601,33 +610,40 @@ void NegativePressureWorks_Mode(void)
 
 		if(adS.minus_revise_flag==1){
 
-			//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
-		if( omega >=0 ){
-			LCDDisplay= 200 - 0.126*theta ;//y = -0.0126x + 20.075
-			LCDDisplay=Reverse_Data(LCDDisplay);
-			LCDDisplay=UnitConverter(LCDDisplay);
-			DisplayNum(LCDDisplay);
-			LowVoltageDisplay();
+				//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
+			if( omega >=0 ){
+				LCDDisplay= 200 - 0.126*theta ;//y = -0.0126x + 20.075
+				LCDDisplay=Reverse_Data(LCDDisplay);
+				LCDDisplay=UnitConverter(LCDDisplay);
+				
 
-			Delay(20000);
-
-		}
-		else{
-				
-					LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
-					LCDDisplay=Reverse_Data(LCDDisplay);
-					LCDDisplay=UnitConverter(LCDDisplay);
-					DisplayNum( LCDDisplay);
-					LowVoltageDisplay();
-				
-					Delay(20000);
-				
 			}
+			else{
+					
+						LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
+						LCDDisplay=Reverse_Data(LCDDisplay);
+						LCDDisplay=UnitConverter(LCDDisplay);
+						
+					
+				}
+				if(LCDDisplay >=100)DisplayNum(LCDDisplay);
+				else if(LCDDisplay <100 && LCDDisplay >=10){
+					LCD_WriteData(&LCD2,seg_p);
+					DisplayNum(LCDDisplay);
+				}
+				else if(LCDDisplay <10){
+			    	LCD_WriteData(&LCD1,seg_p);
+					DisplayNum(LCDDisplay);
+				}
+				LowVoltageDisplay();
+
+				Delay(20000);
 		}
 		else{
 
 			ADC = abs(ADC);
 			ADC=Reverse_Data(ADC);
+			ADC=UnitConverter(ADC);
 			DisplayNum(ADC);
 			LowVoltageDisplay();
 
