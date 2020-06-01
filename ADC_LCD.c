@@ -33,6 +33,7 @@ void HY17P52WR3Delay(char ms);
 #define STD_VALUE                 6524
 
 #define STD_NEGATIVE_VOLTAGE      6346//6344//6343
+#define DEGUG     				0
 
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
@@ -40,8 +41,6 @@ void HY17P52WR3Delay(char ms);
 
 unsigned char Flag;
 long	ADC;
-
-
 
 
 volatile typedef union _MCUSTATUS
@@ -70,10 +69,7 @@ MCUSTATUS  MCUSTATUSbits;
 void PGAandADCAccuracyMode(void);
 void AccuracyModeADCOFF(void);
 void ADCAccuracyMode(void);
-
-void ShowADC (void);
 void DisplayNum(long Num);
-void GPIO_Init(void);
 long UnitConverter(long data);
 unsigned char LowVoltageDetect_3V(void);
 unsigned char LowVoltageDetect_2V4(void);
@@ -84,18 +80,16 @@ void PositivePressureWorks_Mode(void);
 void NegativePressureWorks_Mode(void);
 void SetupUnitSelection(void);
 void SetupZeroPointSelection(void);
+void TestWorksPrecondition(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
 
 void main(void)
 {
-   
-    float LCDDisplay=0;
-	long delta=0,theta=0,n=0;
-
-   //CLK Setting
-	//CLK_CPUCKSelect(CPUS_DHSCK) ;
+     
+    unsigned char firstPower = 0;
+    adS.testMode =0;
 	//CLK Setting
 	CLK_OSCSelect(OSCS_HAO); //OSCS_HAO = 3.686MHz
 	CLK_CPUCK_Sel(DHS_HSCKDIV1,CPUS_HSCK); //fre = 3.686Mhz /2 =1.843Mhz
@@ -148,7 +142,7 @@ void main(void)
 	{
 	    
 		
-		if(GPIO_READ_PT10())
+		if(GPIO_READ_PT10()&& firstPower !=0)
 		{
 		
 		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
@@ -177,74 +171,54 @@ void main(void)
 		   	
 		   
 		   if(adS.testMode == 0){ /* measure mode */
+		   	    firstPower =1;
 		       	adS.zeroPoint_Mode=0;
 				adS.key_flag =0;
 				adS.unit_setMode=0;
-				ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
-				ADIF_ClearFlag();
-				ADIE_Enable();
-				GIE_Enable();
-				
+				if(adS.reload_ADCInterrupt ==1){
+					adS.reload_ADCInterrupt ++ ;
+					ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
+					ADIF_ClearFlag();
+					ADIE_Enable();
+					GIE_Enable();
+				}
 				if(MCUSTATUSbits.b_ADCdone==1)
 				{
 					MCUSTATUSbits.b_ADCdone=0;
 					
-					ADC=ADC>>6;
-					
-					ADC = ADC * 0.1 ;
-					GPIO_PT16_HIGH();
-					Delay(20000);
-				     GPIO_PT16_LOW();
-					if((ADC<0)||(ADC>0x80000000))
-					{
-						
-						adS.Pressure_sign =1;
-					}
-					else
-					{
-						if( ADC < 1600 && ADC >=0 ) {
-							adS.Pressure_sign =1;
-						
-						}
-				        else{
-						       adS.Pressure_sign =0;
-						      
-						}
-					}
-				   
-				
-				if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
+					TestWorksPrecondition();
+                    
+				   if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
 
 				        PositivePressureWorks_Mode();
 										
-				}//end else 
-			    else { /*Input Negative pressure mode*/
+					}else{ /*Input Negative pressure mode*/
 						NegativePressureWorks_Mode();
 					}
 		        }
 		   }
 		   if(adS.zeroPoint_Mode ==1){
-					adS.zeroPoint_Mode =0;
-			     adS.testMode=0;
+					
 					SetupZeroPoint_Mode();
 			}
 		    if(adS.unit_setMode ==1){
 
 				 SetupUnit_Mode();
-
-				
-
 			}
-		
 		}
 
     }
 
 }
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
 /******************************************************************************
 	*
 	*Function Name: long UnitConverter_2V4(long data)
-	*Input Reference : converter unit value
+	*Input Reference : converter unit value,This is kgf value
 	*Return Reference : NO
 	*
 	*
@@ -374,96 +348,97 @@ void LowVoltageDisplay(void)
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-	              //  adS.key_flag =0;
-	                adS.resetZeroDisplay=0;
-					adS.zeroPoint_Mode =0;
-					adS.testMode=0;
-					ADC=ADC>>6;
-					ADC = ADC * 0.1;
-					if((ADC<0)||(ADC>0x80000000))
-					{
-						
-						adS.Pressure_sign =1;
-					}
-					else
-					{
-						adS.Pressure_sign =0;
-						
-					}
-			
-				//	adS.Error_Positive_flag++; //cyclic 
-				/* ???*/
-					if(adS.Pressure_sign==1){ /*negative pressure "-"*/
+		adS.zeroPoint_Mode =0;
+		adS.testMode=0;
+		adS.resetZeroDisplay=0;
+		adS.zeroPoint_Mode =0;
+		adS.testMode=0;
+		adS.reload_ADCInterrupt = 1; 
+		ADC=ADC>>6;
+		ADC = ADC * 0.1;
+		if((ADC<0)||(ADC>0x80000000))
+		{
 
-						adS.minus_revise_flag=1;   
-						adS.m_offset_value = abs(ADC) - STD_NEGATIVE_VOLTAGE + 1; //
-						if(adS.m_offset_value >=0){
-							//write delta data in eeprom
-								HY17P52WR3(3,0x33,adS.m_offset_value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-								if(Flag== 1)
-								{
-								GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-								HY17P52WR3(4,0x20,0x0);
-								if(Flag== 1)
-								{
-								GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-						    }
-						    else{
-								adS.m_offset_value = abs(adS.m_offset_value); //write delta data in eeprom
-								HY17P52WR3(4,0x44,adS.m_offset_value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-								if(Flag== 1)
-								{
-								GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-								HY17P52WR3(3,0x20,0x0);
-								if(Flag== 1)
-								{
-								GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-						    }
-					 }
-					 else{ /*positive pressure +*/
-						
-							adS.plus_revise_flag =1;
-							adS.p_offset_value= abs(ADC) -STD_VALUE + 1; 
-							if(adS.p_offset_value >=0){
-							
-								adS.p_offset_value = abs(adS.p_offset_value); //Write delta data in eeprom
-								HY17P52WR3(1,0x11,adS.p_offset_value);	//addr=01,BIE_DataH=0xAA,BIE_DataL=0x11
-								if(Flag== 1)
-								{
-								GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-								HY17P52WR3(2,0x10,0x0);
-								if(Flag== 1)
-								{
-								GPIO_PT16_HIGH();
-									while(1);    //fail
-								}
-							}
-					        else{
-									adS.p_offset_value = abs(adS.p_offset_value); //Write delta data in eeprom
-									HY17P52WR3(2,0x22,adS.p_offset_value);	//addr=01,BIE_DataH=0xAA,BIE_DataL=0x11
-									if(Flag== 1)
-									{
-									GPIO_PT16_HIGH();
-										while(1);    //fail
-									}
-									HY17P52WR3(1,0x11,0x0);
-									if(Flag== 1)
-									{
-									GPIO_PT16_HIGH();
-										while(1);    //fail
-									}
-							}
-					 	}
+			adS.Pressure_sign =1;
+		}
+		else
+		{
+			adS.Pressure_sign =0;
+
+		}
+
+		//	adS.Error_Positive_flag++; //cyclic 
+		/* ???*/
+		if(adS.Pressure_sign==1){ /*negative pressure "-"*/
+
+			adS.minus_revise_flag=1;   
+			adS.m_offset_value = abs(ADC) - STD_NEGATIVE_VOLTAGE + 1; //delta value
+			if(adS.m_offset_value >=0){
+			    //write delta data in eeprom
+				HY17P52WR3(3,0x33,adS.m_offset_value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+				if(Flag== 1)
+				{
+				GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+				HY17P52WR3(4,0x20,0x0); //be instead of 
+				if(Flag== 1)
+				{
+				GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+		    }else{
+				adS.m_offset_value = abs(adS.m_offset_value); //write delta data in eeprom
+				HY17P52WR3(4,0x44,adS.m_offset_value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+				if(Flag== 1)
+				{
+				GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+				HY17P52WR3(3,0x20,0x0);
+				if(Flag== 1)
+				{
+				GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+		    }
+		}
+		else{ /*positive pressure +*/
+
+			adS.plus_revise_flag =1;
+			adS.p_offset_value= abs(ADC) -STD_VALUE + 1; 
+			if(adS.p_offset_value >=0){
+
+				adS.p_offset_value = abs(adS.p_offset_value); //Write delta data in eeprom
+				HY17P52WR3(1,0x11,adS.p_offset_value);	//addr=01,BIE_DataH=0xAA,BIE_DataL=0x11
+				if(Flag== 1)
+				{
+					GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+				HY17P52WR3(2,0x10,0x0);
+				if(Flag== 1)
+				{
+					GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+		    }
+		    else{/*+ pressure difference delat < 0*/
+					adS.p_offset_value = abs(adS.p_offset_value); //Write delta data in eeprom
+					HY17P52WR3(2,0x22,adS.p_offset_value);	//addr=01,BIE_DataH=0xAA,BIE_DataL=0x11
+					if(Flag== 1)
+					{
+						GPIO_PT16_HIGH();
+						while(1);    //fail
+					}
+					HY17P52WR3(1,0x11,0x0);
+					if(Flag== 1)
+					{
+						GPIO_PT16_HIGH();
+						while(1);    //fail
+					}
+		        }
+	}
 
 
 }
@@ -482,7 +457,7 @@ void SetupUnit_Mode(void)
 	adS.reload_ADCInterrupt = 1;
 	adS.resetZeroDisplay=0;
     adS.key_flag =0;
-
+  #if DEGUG 
 	GPIO_PT16_HIGH();
 	Delay(20000);
 	GPIO_PT16_LOW();
@@ -490,6 +465,7 @@ void SetupUnit_Mode(void)
 	GPIO_PT16_HIGH();
 	Delay(20000);
 	GPIO_PT16_LOW();
+	#endif
 #if 1
 	//BIE Write
 	HY17P52WR3(0,0xAA,adS.unitChoose);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -540,7 +516,7 @@ void PositivePressureWorks_Mode(void)
 
 			if(adS.eepromRead_PositiveDeltaLow_bit1 ==0 ){
 
-				delta =abs(ADC) + adS.eepromRead_PositiveDeltaLow_bit2 ;
+				delta =abs(ADC) + adS.eepromRead_PositiveDeltaLow_bit2 ; //delta < 0 
 			}
 			else{
 
@@ -565,14 +541,12 @@ void PositivePressureWorks_Mode(void)
 				}
 				else {
 								
-								
-					LCDDisplay= 56193  - (8.47 * delta) ;//y=-0.846x + 5619.3
-					LCDDisplay=Reverse_Data(LCDDisplay);
-					LCDDisplay=UnitConverter(LCDDisplay);
-					DisplayNum( LCDDisplay);
-					LowVoltageDisplay();
-				
-					Delay(20000);
+						LCDDisplay= 56193  - (8.47 * delta) ;//y=-0.846x + 5619.3
+						LCDDisplay=Reverse_Data(LCDDisplay);
+						LCDDisplay=UnitConverter(LCDDisplay);
+						DisplayNum( LCDDisplay);
+						LowVoltageDisplay();
+						Delay(20000);
 										
 					}
 										
@@ -617,7 +591,7 @@ void NegativePressureWorks_Mode(void)
 
 		if(adS.eepromRead_NegativeDeltaLow_bit1 ==0 ){
 			
-				theta =abs(ADC) + adS.eepromRead_NegativeDeltaLow_bit2 ;
+				theta =abs(ADC) + adS.eepromRead_NegativeDeltaLow_bit2 ; //delta voltage < 0
 		}
 		else{
 
@@ -639,13 +613,7 @@ void NegativePressureWorks_Mode(void)
 
 		}
 		else{
-					#if 0
-					if(abs(delta)> 6343){
-						DisplayHycon();
-						Delay(20000);
-					}
-			
-					#endif 
+				
 					LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
 					LCDDisplay=Reverse_Data(LCDDisplay);
 					LCDDisplay=UnitConverter(LCDDisplay);
@@ -682,7 +650,7 @@ void SetupUnitSelection(void)
 	adS.delayTimes_5=8000;
 	adS.delayTimes_5 =0;
 	adS.unit_setMode =1;
-	//adS.zeroPoint_Mode =0;
+	adS.zeroPoint_Mode =0;
 	adS.testMode =1;
 	DisplayUnit();
 
@@ -696,7 +664,7 @@ void SetupUnitSelection(void)
 		adS.delayTimes_5=8000;
 	    break;
 	case bar:
-		adS.plus_uint++;
+		 adS.plus_uint++;
 		 adS.unitChoose = bar;
 		//  LCD_WriteData(&LCD4,seg_bar);
 		adS.delayTimes_5=8000;
@@ -734,6 +702,41 @@ void SetupZeroPointSelection(void)
 	Display2Er();
 	// Delay(20000);
 
+}
+/**********************************************************************
+	*
+	*Function Name :SetupZeroPointSelection
+	*
+	*
+	*
+	*
+***********************************************************************/
+void TestWorksPrecondition(void)
+{
+	ADC=ADC>>6;
+
+	ADC = ADC * 0.1 ;
+	#if DEGUG 
+		GPIO_PT16_HIGH();
+		Delay(20000);
+		GPIO_PT16_LOW();
+	#endif 
+	if((ADC<0)||(ADC>0x80000000))
+	{
+		
+		adS.Pressure_sign =1;
+	}
+	else
+	{
+		if( ADC < 1600 && ADC >=0 ) {
+			adS.Pressure_sign =1;
+		
+		}
+	    else{
+		       adS.Pressure_sign =0;
+		      
+		}
+	}
 }
 /******************************************************************************/
 /* Interrupt Service Routines                                                 */
