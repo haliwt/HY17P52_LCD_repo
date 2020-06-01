@@ -54,12 +54,9 @@ struct _adc_works_
    unsigned int   delayTimes_3;
 
    
-   int m_offset_value;
-   int p_offset_value;
+   long  minusOffset_Value;
+   long  plusOffset_Value;
     
-    
-
-
 };
 
 extern struct _adc_works_ adS; 
