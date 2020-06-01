@@ -561,10 +561,10 @@ void PositivePressureWorks_Mode(void)
 
 			if(adS.plus_revise_flag ==1){
 
-				if(delta<2000){
-					delta=Reverse_Data(ADC);
+				if(delta<2000 ){
+					//delta=Reverse_Data(ADC);
 					DisplayNum(delta);
-					LowVoltageDisplay();
+					//LowVoltageDisplay();
 				}
 
 				else if( eta  <= 6500){
@@ -578,7 +578,7 @@ void PositivePressureWorks_Mode(void)
 					
 
 				}
-				else {
+				else if(eta > 6500){
 								
 								
 					LCDDisplay= 56193  - (8.47 * delta) ;//y=-0.846x + 5619.3
