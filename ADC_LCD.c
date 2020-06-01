@@ -491,6 +491,41 @@ void SetupUnit_Mode(void)
 }
 /**********************************************************************
 	*
+	*Function Name :SetupZeroPointSelection
+	*
+	*
+	*
+	*
+***********************************************************************/
+void TestWorksPrecondition(void)
+{
+	ADC=ADC>>6;
+
+	//ADC = ADC * 0.1 ;
+	#if DEGUG 
+		GPIO_PT16_HIGH();
+		Delay(20000);
+		GPIO_PT16_LOW();
+	#endif 
+	if((ADC<0)||(ADC>0x80000000))
+	{
+		
+		adS.Pressure_sign =1;
+	}
+	else
+	{
+		if( ADC < 1600 && ADC >=0 ) {
+			adS.Pressure_sign =1;
+		
+		}
+	    else{
+		       adS.Pressure_sign =0;
+		      
+		}
+	}
+}
+/**********************************************************************
+	*
 	*Function Name :void PositivePressureWorks_Mode(void)
 	*
 	*
@@ -500,7 +535,7 @@ void SetupUnit_Mode(void)
 void PositivePressureWorks_Mode(void)
 {
             long delta ;
-		
+		    long int i;
 			long LCDDisplay;
 			//BIE Read   
 			BIEARL=1;                                //addr=1
@@ -531,21 +566,25 @@ void PositivePressureWorks_Mode(void)
 
 			if(adS.plus_revise_flag > 0){
 
-				if(delta<2000)DisplayNum(ADC);
+				if(delta<2000){   //DisplayNum(ADC);
 
-				else if( (LCDDisplay *10) < 2875){
+					ADC=Reverse_Data(ADC) * 0.001;
+					DisplayNum(ADC);
+					adS.economyPower_flag = 1;
+				}
+				else if( (LCDDisplay *10) < 28759){
 						LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
-						LCDDisplay=Reverse_Data(LCDDisplay);
+						LCDDisplay=Reverse_Data(LCDDisplay)* 0.001;
 						LCDDisplay=UnitConverter(LCDDisplay);
-						
+						LCD_DisplayOn();
 
 				}
 				else {
 								
 						LCDDisplay= 56193  - (8.47 * delta) ;//y=-0.846x + 5619.3
-						LCDDisplay=Reverse_Data(LCDDisplay);
+						LCDDisplay=Reverse_Data(LCDDisplay) * 0.001;
 						LCDDisplay=UnitConverter(LCDDisplay);
-						
+						LCD_DisplayOn();
 										
 					}
 
@@ -553,10 +592,17 @@ void PositivePressureWorks_Mode(void)
 				else if(LCDDisplay <100 && LCDDisplay >=10){
 						LCD_WriteData(&LCD2,seg_p);
 						DisplayNum(LCDDisplay);
+						i=0;
 				    }
 				    else if(LCDDisplay <10){
 				    	LCD_WriteData(&LCD1,seg_p);
 						DisplayNum(LCDDisplay);
+						i=0;
+				    }
+				    else if(adS.economyPower_flag ==1){
+
+				    	i++ ;
+				    	if(i>65535)LCD_DisplayOff() ; 
 				    }
 			    
 				LowVoltageDisplay();
@@ -565,7 +611,7 @@ void PositivePressureWorks_Mode(void)
 			}
 			else
 			{
-				ADC=Reverse_Data(ADC);
+				ADC=Reverse_Data(ADC) * 0.001;
 				ADC=UnitConverter(ADC);
 				Delay(1000);
 				DisplayNum(ADC);
@@ -651,7 +697,7 @@ void NegativePressureWorks_Mode(void)
 		else{
 
 			ADC = abs(ADC);
-			ADC=Reverse_Data(ADC);
+			ADC=Reverse_Data(ADC) ;
 			ADC=UnitConverter(ADC);
 			Delay(1000);
 			DisplayNum(ADC);
@@ -729,41 +775,7 @@ void SetupZeroPointSelection(void)
 	// Delay(20000);
 
 }
-/**********************************************************************
-	*
-	*Function Name :SetupZeroPointSelection
-	*
-	*
-	*
-	*
-***********************************************************************/
-void TestWorksPrecondition(void)
-{
-	ADC=ADC>>6;
 
-	ADC = ADC * 0.1 ;
-	#if DEGUG 
-		GPIO_PT16_HIGH();
-		Delay(20000);
-		GPIO_PT16_LOW();
-	#endif 
-	if((ADC<0)||(ADC>0x80000000))
-	{
-		
-		adS.Pressure_sign =1;
-	}
-	else
-	{
-		if( ADC < 1600 && ADC >=0 ) {
-			adS.Pressure_sign =1;
-		
-		}
-	    else{
-		       adS.Pressure_sign =0;
-		      
-		}
-	}
-}
 /******************************************************************************/
 /* Interrupt Service Routines                                                 */
 /*----------------------------------------------------------------------------*/
