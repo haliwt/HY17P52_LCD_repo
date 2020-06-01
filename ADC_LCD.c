@@ -374,20 +374,20 @@ void SetupZeroPoint_Mode(void)
 			adS.minus_revise_flag=1;   
 			adS.m_offset_value = abs(ADC) - STD_NEGATIVE_VOLTAGE + 1; //delta value
 			if(adS.m_offset_value >=0){
-			    //write delta data in eeprom
+			    //write delta data in eeprom negative pressure "-"
 				HY17P52WR3(3,0x33,adS.m_offset_value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
 				if(Flag== 1)
 				{
 				GPIO_PT16_HIGH();
 					while(1);    //fail
 				}
-				HY17P52WR3(4,0x20,0x0); //be instead of 
+				HY17P52WR3(4,0x00,0x0); //be instead of 
 				if(Flag== 1)
 				{
 				GPIO_PT16_HIGH();
 					while(1);    //fail
 				}
-		    }else{
+		    }else{//delta < 0 
 				adS.m_offset_value = abs(adS.m_offset_value); //write delta data in eeprom
 				HY17P52WR3(4,0x44,adS.m_offset_value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
 				if(Flag== 1)
@@ -395,7 +395,7 @@ void SetupZeroPoint_Mode(void)
 				GPIO_PT16_HIGH();
 					while(1);    //fail
 				}
-				HY17P52WR3(3,0x20,0x0);
+				HY17P52WR3(3,0x00,0x0);
 				if(Flag== 1)
 				{
 				GPIO_PT16_HIGH();
@@ -407,7 +407,7 @@ void SetupZeroPoint_Mode(void)
 
 			adS.plus_revise_flag =1;
 			adS.p_offset_value= abs(ADC) -STD_VALUE + 1; 
-			if(adS.p_offset_value >=0){
+			if(adS.p_offset_value >=0){   // "+" delta > 0
 
 				adS.p_offset_value = abs(adS.p_offset_value); //Write delta data in eeprom
 				HY17P52WR3(1,0x11,adS.p_offset_value);	//addr=01,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -416,7 +416,7 @@ void SetupZeroPoint_Mode(void)
 					GPIO_PT16_HIGH();
 					while(1);    //fail
 				}
-				HY17P52WR3(2,0x10,0x0);
+				HY17P52WR3(2,0x0,0x0);
 				if(Flag== 1)
 				{
 					GPIO_PT16_HIGH();
@@ -431,7 +431,7 @@ void SetupZeroPoint_Mode(void)
 						GPIO_PT16_HIGH();
 						while(1);    //fail
 					}
-					HY17P52WR3(1,0x11,0x0);
+					HY17P52WR3(1,0x0,0x0);
 					if(Flag== 1)
 					{
 						GPIO_PT16_HIGH();
@@ -506,26 +506,30 @@ void PositivePressureWorks_Mode(void)
 			BIEARL=1;                                //addr=1
 			BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 			while((BIECN& 0x01)==1); 
+			adS.eepromRead_PositiveHigh_bit1=BIEDRH;
 			adS.eepromRead_PositiveDeltaLow_bit1=BIEDRL;
 
 			//BIE Read   
 			BIEARL=2;                                //addr=1
 			BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 			while((BIECN& 0x01)==1); 
+			adS.eepromRead_PositiveHigh_bit2=BIEDRH;
 			adS.eepromRead_PositiveDeltaLow_bit2=BIEDRL;
 
 			if(adS.eepromRead_PositiveDeltaLow_bit1 ==0 ){
 
 				delta =abs(ADC) + adS.eepromRead_PositiveDeltaLow_bit2 ; //delta < 0 
+				adS.plus_revise_flag=adS.eepromRead_PositiveHigh_bit2;
 			}
 			else{
 
 				delta =abs(ADC) - adS.eepromRead_PositiveDeltaLow_bit1 ;
+				adS.plus_revise_flag=adS.eepromRead_PositiveHigh_bit1;
 			}
 
 			LCDDisplay= (0.1 * delta)-364 ;  //y = 0.0175x - 36.495  //= 0.0175x - 36.495 
 
-			if(adS.plus_revise_flag ==1){
+			if(adS.plus_revise_flag > 0){
 
 				if(delta<2000)DisplayNum(ADC);
 
@@ -563,6 +567,7 @@ void PositivePressureWorks_Mode(void)
 			{
 				ADC=Reverse_Data(ADC);
 				ADC=UnitConverter(ADC);
+				Delay(1000);
 				DisplayNum(ADC);
 				LowVoltageDisplay();
 			
@@ -590,25 +595,29 @@ void NegativePressureWorks_Mode(void)
 		BIEARL=3;                                //addr=1
 		BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 		while((BIECN& 0x01)==1); 
+		adS.eepromRead_NegativeHigh_bit1 = BIEDRH;
 		adS.eepromRead_NegativeDeltaLow_bit1=BIEDRL;
 
 		//BIE Read   
 		BIEARL=4;                                //addr=1
 		BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 		while((BIECN& 0x01)==1); 
+		adS.eepromRead_NegativeHigh_bit2 = BIEDRH;
 		adS.eepromRead_NegativeDeltaLow_bit2=BIEDRL;
 
 		if(adS.eepromRead_NegativeDeltaLow_bit1 ==0 ){
 			
 				theta =abs(ADC) + adS.eepromRead_NegativeDeltaLow_bit2 ; //delta voltage < 0
+				adS.minus_revise_flag=adS.eepromRead_NegativeHigh_bit2 = BIEDRH;
 		}
 		else{
 
 			theta =abs(ADC) - adS.eepromRead_NegativeDeltaLow_bit1 ;
+			adS.minus_revise_flag=adS.eepromRead_NegativeHigh_bit1 = BIEDRH;
 		}
 
 
-		if(adS.minus_revise_flag==1){
+		if(adS.minus_revise_flag>0){
 
 				//LCDDisplay= 0.12*theta + 255;//LCDDisplay= 0.012*p + 24.76;
 			if( omega >=0 ){
@@ -644,6 +653,7 @@ void NegativePressureWorks_Mode(void)
 			ADC = abs(ADC);
 			ADC=Reverse_Data(ADC);
 			ADC=UnitConverter(ADC);
+			Delay(1000);
 			DisplayNum(ADC);
 			LowVoltageDisplay();
 
