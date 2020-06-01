@@ -660,25 +660,25 @@ void SetupUnitSelection(void)
 	case psi: 
 	     adS.plus_uint++;
 		 adS.unitChoose = psi;
-		// LCD_WriteData(&LCD4,seg_psi);
+		 LCD_WriteData(&LCD4,seg_psi);
 		adS.delayTimes_5=8000;
 	    break;
 	case bar:
 		 adS.plus_uint++;
 		 adS.unitChoose = bar;
-		//  LCD_WriteData(&LCD4,seg_bar);
+		 LCD_WriteData(&LCD4,seg_bar);
 		adS.delayTimes_5=8000;
 	     break;
 	case kgf:
 		adS.plus_uint++;
 		adS.unitChoose = kgf;
-		// LCD_WriteData(&LCD4,seg_kgf);
+		LCD_WriteData(&LCD4,seg_kgf);
 		adS.delayTimes_5=8000;
 	     break;
 	case mpa:
 	     adS.plus_uint=0;
 		 adS.unitChoose = mpa;
-		//  LCD_WriteData(&LCD4,seg_mpa);
+		 LCD_WriteData(&LCD4,seg_mpa);
 		 adS.delayTimes_5=8000;
 	     break; 
 	}
