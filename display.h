@@ -78,6 +78,7 @@ void Display2Er(void);
 void DisplayUnit(void);
 void DisplayHHH(void);
 void DisplayLLL(void);
+void DisplayBAT(void);
 void Delay(unsigned int ms);
 void GPIO_Iint(void) ;
 long Reverse_Data(long number);

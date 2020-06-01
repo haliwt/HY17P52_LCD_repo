@@ -60,7 +60,7 @@ void DisplayHycon(void)
 *---------------------------------------------------------------------------*/
 void DisplayNum(long Num)
 {
-  unsigned char count,MINUS;
+  unsigned char count;
   unsigned char *LCDAddr,LCDData;
   
   LCDAddr=&LCD3;
@@ -167,11 +167,23 @@ void DisplayLLL(void)
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD1,Char_L);
   LCD_WriteData(&LCD2,Char_L);
-  LCD_WriteData(&LCD3,Char_L); 
+  LCD_WriteData(&LCD3,Char_L); //the first address &LCD3
 
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name :DisplayBAT(void)
+  *Function :LCD display "bAt"
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayBAT(void)
+{
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD1,Char_T); //the third address &LCD1
+  LCD_WriteData(&LCD2,Char_A);
+  LCD_WriteData(&LCD3,Char_B);  //the first address &LCD3
 
-
+}
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayBatteryCapacityFull(void)
