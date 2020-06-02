@@ -374,7 +374,7 @@ void SetupZeroPoint_Mode(void)
 
 			adS.minus_revise_flag=1;
 			ADC =ADC * 0.01;
-			LCD_WriteData(&LCD0,0x08);// "-"minus sign bit   
+		
 			adS.minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE ; //delta value
 			
 			
@@ -498,7 +498,7 @@ void TestWorksPrecondition(void)
 	{
 		
 		adS.Pressure_sign =1;
-		LCD_WriteData(&LCD0,0X08);// "-"minus sign bit
+		//LCD_WriteData(&LCD0,0X08);// "-"minus sign bit
  
 	}
 	else
@@ -523,7 +523,7 @@ void PositivePressureWorks_Mode(void)
 			long LCDDisplay;
 		
 			delta =abs(ADC) - adS.plusOffset_Value;
-			if(adS.plus_revise_flag ==1){
+			//if(adS.plus_revise_flag ==1){
 
 				//BIE Read   
 					BIEARL=1;                                //addr=1
@@ -545,8 +545,10 @@ void PositivePressureWorks_Mode(void)
             
 				if(rho == 0x11){
 			    if( ADC*  0.01  >=100){
+
+			    	eta = delta * 0.01;
 					//LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
-					LCDDisplay= 0.118 *delta- 25;      //y = 0.1189x - 24.587
+					LCDDisplay= 0.118 *eta- 25;      //y = 0.1189x - 24.587
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
 					DisplayNum(LCDDisplay);
@@ -556,7 +558,7 @@ void PositivePressureWorks_Mode(void)
 				}
 				else {
 								
-								
+					eta = delta * 0.01;			
 					
 					LCDDisplay= (0.0115 * delta) -20.347 ; //0.0115x - 20.347
 					LCDDisplay=UnitConverter(LCDDisplay);
@@ -568,9 +570,9 @@ void PositivePressureWorks_Mode(void)
 										
 					}
 				}
-			}						
+									
 			
-         else
+        if(rho != 0x11)
 			{
 				
 				ADC=Reverse_Data(ADC);
@@ -599,24 +601,26 @@ void NegativePressureWorks_Mode(void)
 	    omega =ADC ;
      
 		adS.Pressure_sign =1;
-		//BIE Read   
-		BIEARL=2;                                //addr=1
-		BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-		while((BIECN& 0x01)==1); 
-		adS.eepromRead_NegativeHigh_bit1 = BIEDRH;
-		adS.eepromRead_NegativeDeltaLow_bit1=BIEDRL; //delat > 0 
+		if(adS.minus_revise_flag==1){
+			adS.minus_revise_flag++;
+			//BIE Read   
+			BIEARL=2;                                //addr=1
+			BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+			while((BIECN& 0x01)==1); 
+			adS.eepromRead_NegativeHigh_bit1 = BIEDRH;
+			adS.eepromRead_NegativeDeltaLow_bit1=BIEDRL; //delat > 0 
 
-        if(adS.eepromRead_NegativeDeltaLow_bit1 + ADC * 0.01 >= STD_NEGATIVE_VOLTAGE ){
-			
-				theta =abs(ADC) - adS.eepromRead_NegativeDeltaLow_bit1 ; //delta voltage < 0
+	        if(adS.eepromRead_NegativeDeltaLow_bit1 + ADC * 0.01 >= STD_NEGATIVE_VOLTAGE ){
+				
+					theta =abs(ADC) - adS.eepromRead_NegativeDeltaLow_bit1 ; //delta voltage < 0
+					adS.minus_revise_flag=adS.eepromRead_NegativeHigh_bit1 ;
+			}
+			else{
+
+				theta =abs(ADC) + adS.eepromRead_NegativeDeltaLow_bit1 ;
 				adS.minus_revise_flag=adS.eepromRead_NegativeHigh_bit1 ;
-		}
-		else{
-
-			theta =abs(ADC) + adS.eepromRead_NegativeDeltaLow_bit1 ;
-			adS.minus_revise_flag=adS.eepromRead_NegativeHigh_bit1 ;
-		}
-
+			}
+        }
        
 	     if(adS.eepromRead_NegativeHigh_bit1==0x22){
       
