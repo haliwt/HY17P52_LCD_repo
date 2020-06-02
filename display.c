@@ -73,9 +73,8 @@ void DisplayNum(long Num)
   }
   
   if(adS.Pressure_sign==1)
-    LCD_WriteData(&LCD0,0X08);
-  else
-    LCD_WriteData(&LCD0,0);
+    LCD_WriteData(&LCD0,0X08);// "-"minus sign bit
+ 
  
 }
 
@@ -93,8 +92,8 @@ void DisplayHex(unsigned int Num)
     LCD_WriteData(LCDAddr,LCDData);
     Num=Num/0x10 ;
     LCDAddr--;
-  }  
-  LCD_WriteData(&LCD0,symbol_t0);// "-"minus sign bit
+  } 
+ 
 }
 /*****************************************************************************
   *

@@ -193,7 +193,7 @@ void main(void)
 				        PositivePressureWorks_Mode();
 										
 					}else{ /*Input Negative pressure mode*/
-						LCD_WriteData(&LCD0,0x08);// "-"minus sign bit
+					
 						NegativePressureWorks_Mode();
 					}
 		        }
@@ -498,6 +498,8 @@ void TestWorksPrecondition(void)
 	{
 		
 		adS.Pressure_sign =1;
+		LCD_WriteData(&LCD0,0X08);// "-"minus sign bit
+ 
 	}
 	else
 	{
@@ -595,7 +597,7 @@ void NegativePressureWorks_Mode(void)
 		long LCDDisplay ;
 	    
 	    omega =ADC ;
-        LCD_WriteData(&LCD0,0x08);// "-"
+     
 		adS.Pressure_sign =1;
 		//BIE Read   
 		BIEARL=2;                                //addr=1
@@ -604,7 +606,6 @@ void NegativePressureWorks_Mode(void)
 		adS.eepromRead_NegativeHigh_bit1 = BIEDRH;
 		adS.eepromRead_NegativeDeltaLow_bit1=BIEDRL; //delat > 0 
 
-	     LCD_WriteData(&LCD0,0x08);// "-"
         if(adS.eepromRead_NegativeDeltaLow_bit1 + ADC * 0.01 >= STD_NEGATIVE_VOLTAGE ){
 			
 				theta =abs(ADC) - adS.eepromRead_NegativeDeltaLow_bit1 ; //delta voltage < 0
@@ -616,9 +617,9 @@ void NegativePressureWorks_Mode(void)
 			adS.minus_revise_flag=adS.eepromRead_NegativeHigh_bit1 ;
 		}
 
-        LCD_WriteData(&LCD0,0x08);// "-"
+       
 	     if(adS.eepromRead_NegativeHigh_bit1==0x22){
-	     	
+      
 			LCDDisplay= 0.125*theta + 204; //y = 0.0125x + 19.849//y = 0.0125x + 19.854
 			LCDDisplay=UnitConverter(LCDDisplay);
 			LCDDisplay=Reverse_Data(LCDDisplay) ;
@@ -627,10 +628,9 @@ void NegativePressureWorks_Mode(void)
 					
 				
 				if(LCDDisplay >=100){
-
+					
 					DisplayNum(LCDDisplay);
 					
-					LCD_WriteData(&LCD0,0x08);//"-"
 					LowVoltageDisplay(); 
 					Delay(20000);
 				}
@@ -638,14 +638,13 @@ void NegativePressureWorks_Mode(void)
 					LCD_WriteData(&LCD2,seg_p); //decimal point 
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
-					LCD_WriteData(&LCD0,0x08);// "-"minus sign bit
 					Delay(20000);
 				}
 				else if(LCDDisplay <10){
 			    	LCD_WriteData(&LCD1,seg_p);//小数点第二位
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
-					LCD_WriteData(&LCD0,0x08);// "-"minus sign bit
+	
 					Delay(20000);
 
 				}
@@ -654,10 +653,11 @@ void NegativePressureWorks_Mode(void)
 		if(adS.minus_revise_flag !=0x22){
 
 			ADC = abs(ADC);
+			ADC=UnitConverter(ADC);
 			ADC=Reverse_Data(ADC) ;
 		    DisplayNum(ADC);
 			LowVoltageDisplay();
-			LCD_WriteData(&LCD0,0x08);// "-"minus sign bit
+			
             Delay(20000);
 		}
 
