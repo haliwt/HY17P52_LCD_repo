@@ -13,6 +13,10 @@
 #define   symbol_t2     0x40
 #define   symbol_t0     0x80   //battery outline 
 
+#define   symbol_full   (0x10 + 0x20+ 0x40 + 0x80)
+#define   symbol_half   (0x10 + 0x40 + 0x80)
+#define   symbol_low    (0x10 + 0x80)
+
 enum unit_t{psi,bar,kgf,mpa};
 
 

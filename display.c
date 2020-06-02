@@ -94,6 +94,7 @@ void DisplayHex(unsigned int Num)
     Num=Num/0x10 ;
     LCDAddr--;
   }  
+  LCD_WriteData(&LCD0,symbol_t0);// "-"minus sign bit
 }
 /*****************************************************************************
   *
@@ -201,7 +202,7 @@ void DisplayBAT(void)
 ----------------------------------------------------------------------------*/
 void DisplayBatteryCapacityFull(void)
 {
-  LCD_WriteData(&LCD0,0xff);
+  LCD_WriteData(&LCD0, symbol_full);
 }
 /*----------------------------------------------------------------------------
   *
@@ -211,7 +212,7 @@ void DisplayBatteryCapacityFull(void)
 ----------------------------------------------------------------------------*/
 void DisplayBatteryCapacityHalf(void)
 {
-  LCD_WriteData(&LCD0,0xd0);
+  LCD_WriteData(&LCD0,symbol_half );
  
 }
 /*----------------------------------------------------------------------------
