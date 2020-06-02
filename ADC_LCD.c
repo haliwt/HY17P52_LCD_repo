@@ -554,7 +554,7 @@ void PositivePressureWorks_Mode(void)
 		            Delay(20000);
 
 				}
-			    else if( ADC*  0.1  >=10000){
+			    else if( ADC  >=100000){
 
 			    	eta = delta * 0.01;
 					//LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
@@ -574,9 +574,10 @@ void PositivePressureWorks_Mode(void)
 						Delay(20000);
 					}
 					else{
+						//LCD_WriteData(&LCD2,seg_p);
 						DisplayNum(LCDDisplay);
 						LowVoltageDisplay();
-						LCD_WriteData(&LCD2,seg_p);
+						
 						Delay(20000);
 				    }
 					
@@ -589,12 +590,12 @@ void PositivePressureWorks_Mode(void)
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
 					
-			
+			        LCD_WriteData(&LCD2,seg_p);
 					DisplayNum( LCDDisplay);
-					LCD_WriteData(&LCD2,seg_p);
+				
 					LowVoltageDisplay();
 				    Delay(20000);
-					
+					LCD_WriteData(&LCD2,seg_p);
 										
 					}
 				}
