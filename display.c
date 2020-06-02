@@ -41,12 +41,6 @@ void ClearLCD(void)
 void DisplayHycon(void)
 {
   LCD_WriteData(&LCD0,0x00);
-  LCD_WriteData(&LCD1,Char_L);
-  LCD_WriteData(&LCD2,Char_L);
-  LCD_WriteData(&LCD3,Char_L);   /*HY17P52 com3 */
-  LCD_WriteData(&LCD4,Char_L);
-  LCD_WriteData(&LCD5,Char_L);
-  LCD_WriteData(&LCD6,0x00);
 }
 
 

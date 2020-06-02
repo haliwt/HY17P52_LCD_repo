@@ -518,10 +518,10 @@ void TestWorksPrecondition(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-            long delta,eta ;
+            long delta,eta;
 		    unsigned char rho;
 			long LCDDisplay;
-		
+		   
 			delta =abs(ADC) - adS.plusOffset_Value;
 			//if(adS.plus_revise_flag ==1){
 
@@ -544,7 +544,17 @@ void PositivePressureWorks_Mode(void)
 					}
             
 				if(rho == 0x11){
-			    if( ADC*  0.01  >=100){
+
+				if(ADC * 0.1< 2000 ){
+
+					
+				    ADC=UnitConverter(ADC);
+					DisplayNum(0);
+				    LowVoltageDisplay();
+		            Delay(20000);
+
+				}
+			    else if( ADC*  0.1  >=10000){
 
 			    	eta = delta * 0.01;
 					//LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
@@ -556,21 +566,32 @@ void PositivePressureWorks_Mode(void)
 					DisplayHHH();
 					LowVoltageDisplay();
 					Delay(20000);
-					}else{
+					}
+					else if(LCDDisplay >=100 && LCDDisplay <102){
+
 						DisplayNum(LCDDisplay);
 						LowVoltageDisplay();
+						Delay(20000);
+					}
+					else{
+						DisplayNum(LCDDisplay);
+						LowVoltageDisplay();
+						LCD_WriteData(&LCD2,seg_p);
 						Delay(20000);
 				    }
 					
 				}
 				else {
 								
-					eta = delta * 0.01;			
+					eta = delta * 0.1;			
 					
-					LCDDisplay= (0.0116 * delta) -20 ; //0.0115x - 20.347
+					LCDDisplay= (0.0115 * eta) -20.34 ; //0.0115x - 20.347//y = 0.0115x - 20.347
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
+					
+			
 					DisplayNum( LCDDisplay);
+					LCD_WriteData(&LCD2,seg_p);
 					LowVoltageDisplay();
 				    Delay(20000);
 					

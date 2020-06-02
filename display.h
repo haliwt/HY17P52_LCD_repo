@@ -1,5 +1,5 @@
 
-#define  seg_p  0x01  
+#define   seg_p  0x01  
 #define   seg_kgf    0x01
 #define   seg_bar    0x02
 #define   seg_psi    0x04
