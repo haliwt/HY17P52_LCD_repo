@@ -548,19 +548,26 @@ void PositivePressureWorks_Mode(void)
 
 			    	eta = delta * 0.01;
 					//LCDDisplay= 0.125 *delta- 202.86; //y = 0.0125x - 20.286
-					LCDDisplay= 0.118 *eta- 25;      //y = 0.1189x - 24.587
+					LCDDisplay= 0.119 *eta- 24;      //y = 0.1189x - 24.587
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
-					DisplayNum(LCDDisplay);
+					if(LCDDisplay >=102){
+
+					DisplayHHH();
 					LowVoltageDisplay();
 					Delay(20000);
+					}else{
+						DisplayNum(LCDDisplay);
+						LowVoltageDisplay();
+						Delay(20000);
+				    }
 					
 				}
 				else {
 								
 					eta = delta * 0.01;			
 					
-					LCDDisplay= (0.0115 * delta) -20.347 ; //0.0115x - 20.347
+					LCDDisplay= (0.0116 * delta) -20 ; //0.0115x - 20.347
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
 					DisplayNum( LCDDisplay);
