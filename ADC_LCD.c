@@ -386,9 +386,9 @@ void SetupZeroPoint_Mode(void)
 				}
 				
 		    
-			  DisplayNum(adS.minusOffset_Value);
+			//  DisplayNum(adS.minusOffset_Value);
 		
-		    Delay(20000);
+		    //Delay(20000);
 		   
 		}
 		else{ /*positive pressure +*/
@@ -414,9 +414,9 @@ void SetupZeroPoint_Mode(void)
 			
 		
 		
-		         DisplayNum(adS.minusOffset_Value);
-		         LCD_WriteData(&LCD0,0x04);// "-"minus sign bit   
-		         Delay(20000);
+		    //     DisplayNum(adS.minusOffset_Value);
+		      //   LCD_WriteData(&LCD0,0x04);// "-"minus sign bit   
+		       //  Delay(20000);
 		 
 	        }
 	       
@@ -624,15 +624,16 @@ void NegativePressureWorks_Mode(void)
 	    omega =ADC ;
      
 		adS.Pressure_sign =1;
-		if(adS.minus_revise_flag==1){
+	//	if(adS.minus_revise_flag==1){
 			//adS.minus_revise_flag++;
-			//BIE Read   
+			//BIE Read 
+			
 			BIEARL=2;                                //addr=1
 			BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 			while((BIECN& 0x01)==1); 
-			adS.eepromRead_NegativeHigh_bit = BIEDRH;
+			adS.minus_revise_flag = BIEDRH;
 			adS.eepromRead_NegativeDeltaLow_bit=BIEDRL; //delat > 0 
-
+#if 0
 	        if(adS.eepromRead_NegativeDeltaLow_bit+ ADC * 0.1 >= STD_NEGATIVE_VOLTAGE ){
 				
 					theta =abs(ADC)* 0.1 - adS.eepromRead_NegativeDeltaLow_bit ; //delta voltage < 0
@@ -646,14 +647,17 @@ void NegativePressureWorks_Mode(void)
 				flag =2;
 			}
         }
+#endif 
        
 	    //if(adS.eepromRead_NegativeHigh_bit==0x22)
 		if(adS.minus_revise_flag ==0x22)
 		{
       
-			theta =abs(ADC)* 0.1 - adS.eepromRead_NegativeDeltaLow_bit ;
-		//	if(flag ==1)theta =abs(ADC)* 0.1 - adS.eepromRead_NegativeDeltaLow_bit ; //delta voltage < 0
-		//	else if(flag ==2)theta =abs(ADC) * 0.1+ adS.eepromRead_NegativeDeltaLow_bit ;
+			if(adS.eepromRead_NegativeDeltaLow_bit+ ADC * 0.1 >= STD_NEGATIVE_VOLTAGE ){
+
+				theta =abs(ADC)* 0.1 - adS.eepromRead_NegativeDeltaLow_bit ; //delta voltage < 0
+			}
+			else theta =abs(ADC) * 0.1+ adS.eepromRead_NegativeDeltaLow_bit ; 
 	
 		    phi =theta  ; 
 		
