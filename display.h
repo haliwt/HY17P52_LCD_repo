@@ -33,7 +33,7 @@ struct _adc_works_
    unsigned char error_mod:1;
    unsigned char key_flag;
    unsigned char resetZeroDisplay;
-   unsigned char quitCurrentMode: 1;
+   unsigned char negativePressureSpecial_flag: 1;
    unsigned char LVD_2V4_flag : 1;
    unsigned char LVD_3V_flag : 1;
   
@@ -43,14 +43,14 @@ struct _adc_works_
    unsigned char  Presskey_flag:1;
    unsigned char  Pressure_sign :1;
    unsigned char  economyPower_flag: 1;
-   unsigned char  eepromRead_PositiveHigh_bit1;
-   unsigned char  eepromRead_PositiveHigh_bit2;
-   unsigned char  eepromRead_NegativeHigh_bit1;
-   unsigned char  eepromRead_NegativeHigh_bit2;
-   unsigned char  eepromRead_PositiveDeltaLow_bit1 ;
-   unsigned char  eepromRead_PositiveDeltaLow_bit2 ;
-   unsigned char  eepromRead_NegativeDeltaLow_bit1;
-   unsigned char  eepromRead_NegativeDeltaLow_bit2;
+   unsigned char  eepromRead_PositiveHigh_bit;
+ 
+   unsigned char  eepromRead_NegativeHigh_bit;
+
+   unsigned char  eepromRead_PositiveDeltaLow_bit ;
+ 
+   unsigned char  eepromRead_NegativeDeltaLow_bit;
+
    unsigned char  eepromRead_UnithHigh_bit ; 
    unsigned char  eepromRead_UnitLow_bit ;
    unsigned char  reload_ADCInterrupt :1; 
