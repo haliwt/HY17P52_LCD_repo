@@ -33,8 +33,8 @@ struct _adc_works_
    unsigned char LVD_2V4_flag : 1;
    unsigned char LVD_3V_flag : 1;
   
-   unsigned char  plus_revise_flag:1;
-   unsigned char  minus_revise_flag:1;
+   unsigned char  plus_revise_flag;
+   unsigned char  minus_revise_flag;
   
    unsigned char  Presskey_flag:1;
    unsigned char  Pressure_sign :1;
@@ -52,6 +52,7 @@ struct _adc_works_
    unsigned char  reload_ADCInterrupt :1; 
    unsigned  int  delayTimes_5;
    unsigned int   delayTimes_3;
+
 
    
    long  minusOffset_Value;
@@ -82,3 +83,4 @@ long Reverse_Data(long number);
 void DisplayBatteryCapacityFull(void);
 void DisplayBatteryCapacityHalf(void);
 void DispalyBatteryCapacityLow(void);
+int DecimalToHex(int number);

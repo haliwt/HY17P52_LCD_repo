@@ -84,7 +84,16 @@ void DisplayNum(long Num)
 /*---------------------------------------------------------------------------*/
 void DisplayHex(unsigned int Num)
 {
-  
+  unsigned char count,*LCDAddr,LCDData;
+
+  LCDAddr=&LCD5;
+  for(count=0;count<6;count++)
+  {
+    LCDData=seg[Num%0x10];
+    LCD_WriteData(LCDAddr,LCDData);
+    Num=Num/0x10 ;
+    LCDAddr--;
+  }  
 }
 /*****************************************************************************
   *
@@ -216,5 +225,37 @@ void DispalyBatteryCapacityLow(void)
   LCD_WriteData(&LCD0,0x90);
  
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayBatteryCapacityFull(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+int DecimalToHex(int number)
+{
+   int n,a1,count=0;//count 用于角标的计数，j 控制 for 循环
+  //int a[100];
+  int hex;
+  int a[2];
+  a[0]=0;
+  a[1]=0;
+ 
+ while(number!=0) {
+    a1=number;
+    number=number/16;
+      a[count]=a1%16;
+      count++;
+    }
+  
+  
+#if 1
 
+  hex =a[1] << 4 | a[0];
+
+ // printf("hex = %#x\r\n",hex);
+
+#endif
+  return hex ;
+
+}
 
