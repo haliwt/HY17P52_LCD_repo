@@ -522,38 +522,67 @@ void PositivePressureWorks_Mode(void)
             
 				if(adS.plus_revise_flag == 0x11){
 
-				if(ADC * 0.1< 2000 ){
+					if(ADC * 0.1< 2000 ){
 
-					
-				    ADC=UnitConverter(ADC);
-					DisplayNum(0);
-				    LowVoltageDisplay();
-		            Delay(20000);
+						
+					    ADC=UnitConverter(ADC);
+						DisplayNum(0);
+					    LowVoltageDisplay();
+			            Delay(20000);
+			            saveTimes ++;
 
-					}
-					else {   // ADC  >=100000
-						eta = delta ;  //WT.EDIT 2020-06-03 MODIYF
-						//eta = delta * 0.1;
-						//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
-						LCDDisplay= 0.115 *eta- 215; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.12
-
-						if(LCDDisplay >=1030){
-
-							DisplayHHH();
-							LCDDisplay=UnitConverter(LCDDisplay);
-							LowVoltageDisplay();
-							Delay(20000);
 						}
-						else {
-							LCDDisplay=UnitConverter(LCDDisplay);
-						    LCDDisplay=Reverse_Data(LCDDisplay);
-							DisplayNum(LCDDisplay);
-							LowVoltageDisplay();
-							Delay(20000);
-					   }
+						else {   // ADC  >=100000
+							eta = delta ;  //WT.EDIT 2020-06-03 MODIYF
+							//eta = delta * 0.1;
+							//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
+							LCDDisplay= 0.115 *eta- 215; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.12
+
+							if(LCDDisplay >=1040){
+
+								
+								Delay(10000);
+								if(LCDDisplay >=1040){
+									DisplayHHH();
+									LCDDisplay=UnitConverter(LCDDisplay);
+									LowVoltageDisplay();
+									Delay(20000);
+									saveTimes ++;
+								}
+							}
+							else {
+								LCDDisplay=UnitConverter(LCDDisplay);
+							    LCDDisplay=Reverse_Data(LCDDisplay);
+								DisplayNum(LCDDisplay);
+								LowVoltageDisplay();
+								Delay(20000);
+								saveTimes ++;
+						   }
+
 				    }
-				}	
-							
+						#if 1
+					    if(adS.zeroTo60times ==1){
+					    		adS.zeroTo60times =0;
+					    		saveTimes =0;
+					    		//adS.delayDisplay =0;
+					    		i=0;
+					    	}
+						 else{
+						 	#endif 
+						 	   if(saveTimes >65535){
+									i++;
+									saveTimes =0;
+									if(i>=108){
+										i=0;
+									   LCD_DisplayOff();
+									   
+									}
+
+							}
+						}
+			}	
+			
+			#if 0				
 			/* This is to test codes 2020-06-03    */
 			if(adS.plus_revise_flag!= 0x11)
 			{
@@ -587,7 +616,9 @@ void PositivePressureWorks_Mode(void)
 				}
 
 		}
+		#endif 
 			
+    
 }
 /**********************************************************************
 	*
@@ -668,24 +699,7 @@ void NegativePressureWorks_Mode(void)
 				}	
 										
 				
-						
-				
 			}     
-			#if 1
-			if(adS.minus_revise_flag !=0x22){
-
-			    ADC = abs(ADC);
-				ADC=UnitConverter(ADC);
-			    ADC=Reverse_Data(ADC);
-				
-			    adS.Pressure_sign =1;
-			    DisplayNum(ADC);
-		 
-	            Delay(20000);
-			}
-
-
-			#endif 
 	}
 }
 /**********************************************************************
