@@ -538,7 +538,7 @@ void PositivePressureWorks_Mode(void)
 							//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
 							LCDDisplay= 0.115 *eta- 215; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.12
 
-							if(LCDDisplay >=1040){
+							if(LCDDisplay >=1050){
 
 								
 								Delay(10000);
@@ -559,7 +559,7 @@ void PositivePressureWorks_Mode(void)
 								saveTimes ++;
 						   }
 
-				    }
+				        }
 						#if 1
 					    if(adS.zeroTo60times ==1){
 					    		adS.zeroTo60times =0;
@@ -689,9 +689,9 @@ void NegativePressureWorks_Mode(void)
 			    phi =theta  ; 
 		
 					
-				LCDDisplay= (0.115 * phi) + 202;        //y = 0.0115x + 20.253
+				LCDDisplay= (0.115 * phi) + 190;        //y = 0.0115x + 20.253
 				adS.Pressure_sign =1;
-				if(LCDDisplay >1010){
+				if(LCDDisplay >1090){
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
 					LowVoltageDisplay();
