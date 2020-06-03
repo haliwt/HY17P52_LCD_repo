@@ -146,7 +146,7 @@ void main(void)
 		{
 		
 		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
-		 adS.zeroTo60times =1;   
+		
 			
 		 if(adS.delayTimes_5 >= 10000){ /*unit set mode*/
 			
@@ -164,6 +164,15 @@ void main(void)
 			   	SetupZeroPointSelection();
 				
 				}
+		 }
+		 if(adS.delayDisplay >= 1000){
+
+		 	 if(GPIO_READ_PT10()){
+	          	 
+	          	   adS.zeroTo60times=1;
+		          	LCD_DisplayOn();
+			 	 }
+
 		 }
 		 
 		}
@@ -358,17 +367,29 @@ void SetupZeroPoint_Mode(void)
 		{
 
 			adS.Pressure_sign =1;
+			ADC = ADC * 0.001;
+			adS.plus_revise_flag =1;
+			adS.plusOffset_Value= abs(ADC) -STD_VALUE ; 
+			
+
+		
+
+				adS.plusOffset_Value =(unsigned char)abs(adS.plusOffset_Value);
+				adS.plusOffset_Value=DecimalToHex(adS.plusOffset_Value);
+				HY17P52WR3(1,0x11,adS.plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+				if(Flag== 1)
+				{
+				GPIO_PT16_HIGH();
+					while(1);    //fail
+				}
+		
+		    //     DisplayNum(adS.minusOffset_Value);
+		      //   LCD_WriteData(&LCD0,0x04);// "-"minus sign bit   
+		       //  Delay(20000);
 		}
 		else
 		{
 			adS.Pressure_sign =0;
-
-		}
-       // ADC = ADC * 0.1;
-		//	adS.Error_Positive_flag++; //cyclic 
-		/* ???*/
-		if(adS.Pressure_sign==1){ /*negative pressure "-"*/
-
 			adS.minus_revise_flag=1;
 			//ADC =ADC * 0.1;
 		
@@ -389,33 +410,9 @@ void SetupZeroPoint_Mode(void)
 			//  DisplayNum(adS.minusOffset_Value);
 		
 		    //Delay(20000);
-		   
+
 		}
-		else{ /*positive pressure +*/
-
-			
-			ADC = ADC * 0.001;
-			adS.plus_revise_flag =1;
-			adS.plusOffset_Value= abs(ADC) -STD_VALUE ; 
-			
-
-		
-
-				adS.plusOffset_Value =(unsigned char)abs(adS.plusOffset_Value);
-				adS.plusOffset_Value=DecimalToHex(adS.plusOffset_Value);
-				HY17P52WR3(1,0x11,adS.plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-				if(Flag== 1)
-				{
-				GPIO_PT16_HIGH();
-					while(1);    //fail
-				}
-		
-		    //     DisplayNum(adS.minusOffset_Value);
-		      //   LCD_WriteData(&LCD0,0x04);// "-"minus sign bit   
-		       //  Delay(20000);
-		 
-	        }
-	       
+      
 
 
 }
@@ -432,7 +429,6 @@ void SetupUnit_Mode(void)
 	adS.unit_setMode =0 ;
 	adS.testMode = 0;
 	adS.reload_ADCInterrupt = 1;
-	adS.resetZeroDisplay=0;
     adS.key_flag =0;
   #if DEGUG 
 	GPIO_PT16_HIGH();
@@ -611,26 +607,32 @@ void PositivePressureWorks_Mode(void)
 		{
 				
 				
-				ADC=Reverse_Data(ADC);
-				ADC=UnitConverter(ADC);
+			//	ADC=Reverse_Data(ADC);
+			//	ADC=UnitConverter(ADC);
 				DisplayNum(ADC);
-				LowVoltageDisplay();
+			//	LowVoltageDisplay();
 			    Delay(20000);
                 saveTimes ++;
-
-			   // if(adS.zeroTo60times !=1){
-			    	//adS.zeroTo60times=0;
-				 if(saveTimes >65535){
+#if 1
+			    if(adS.zeroTo60times ==1){
+			    		adS.zeroTo60times =0;
+			    		saveTimes =0;
+			    		//adS.delayDisplay =0;
+			    		i=0;
+			    	}
+				 else{
+				 	#endif 
+				 	   if(saveTimes >65535){
 							i++;
 							saveTimes =0;
 							if(i>=108){
 								i=0;
 							   LCD_DisplayOff();
-							   adS.zeroTo60times=1;
+							   
 							}
 
 					}
-			//	}
+				}
 
 		}
 			
@@ -645,9 +647,9 @@ void PositivePressureWorks_Mode(void)
 ***********************************************************************/
 void NegativePressureWorks_Mode(void)
 {
-		long theta,omega,phi;
+		long theta;//omega;
 		long LCDDisplay ;
-	    omega =ADC ;
+	   // omega =ADC ;
      
 		adS.Pressure_sign =1;
 	//	if(adS.minus_revise_flag==1){
@@ -671,12 +673,12 @@ void NegativePressureWorks_Mode(void)
 			}
 			else theta =abs(ADC) * 0.1+ adS.eepromRead_NegativeDeltaLow_bit ; 
 	
-		    phi =theta  ; 
+		    //phi =theta  ; 
 		
 		#if 1
 			if( ADC <  2000 && ADC > 0){
 			
-					LCDDisplay= 20.194 - (0.0115 * phi);   //y = -0.0115x + 20.194y = -0.0115x + 20.194
+					LCDDisplay= 20.194 - (0.0115 * theta);   //y = -0.0115x + 20.194y = -0.0115x + 20.194
 				//	LCDDisplay=UnitConverter(LCDDisplay);
 				//    LCDDisplay=Reverse_Data(LCDDisplay) ;
 				  //  LCD_WriteData(&LCD2,seg_p); //decimal point 
@@ -690,7 +692,7 @@ void NegativePressureWorks_Mode(void)
 				
 		   #endif 
 			//	{
-				    LCDDisplay= (0.115 * phi) + 202.53;            //y = 0.0115x + 20.253
+				    LCDDisplay= (0.115 * theta) + 202.53;            //y = 0.0115x + 20.253
 			        adS.Pressure_sign =1;
 					if(LCDDisplay >1009){
 					LCDDisplay=UnitConverter(LCDDisplay);
@@ -812,12 +814,13 @@ void ISR(void) __interrupt
 		TA1IF_ClearFlag();
 		adS.delayTimes_3 ++;
 		adS.delayTimes_5++;
+		adS.delayDisplay++ ;
 	 #if 1
 		if(adS.key_flag ==1||adS.key_flag==0) {
 			adS.delayTimes_5 = 0;
 		
 			adS.delayTimes_3 =0;
-		
+		    adS.delayDisplay =0;
 			adS.key_flag =2;
 			GPIO_PT15_HIGH();
 			

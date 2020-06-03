@@ -54,6 +54,7 @@ struct _adc_works_
    unsigned char  reload_ADCInterrupt :1; 
    unsigned  int  delayTimes_5;
    unsigned int   delayTimes_3;
+   unsigned int   delayDisplay ;
 
 
    
