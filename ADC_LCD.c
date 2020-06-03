@@ -368,7 +368,7 @@ void SetupZeroPoint_Mode(void)
 
 		  	ADC =ADC * 0.1;
 		
-			adS.minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE + 1; //delta value
+			adS.minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE ; //delta value
 		
 			    adS.minusOffset_Value=abs(adS.minusOffset_Value);
 				adS.minusOffset_Value=(unsigned char)adS.minusOffset_Value;
@@ -386,7 +386,7 @@ void SetupZeroPoint_Mode(void)
 		{
 			adS.Pressure_sign =0;
 						ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
-			adS.plusOffset_Value= abs(ADC) -STD_VALUE +1  ; 
+			adS.plusOffset_Value= abs(ADC) -STD_VALUE  ; 
 			
 
 		
@@ -638,13 +638,22 @@ void NegativePressureWorks_Mode(void)
 			        phi = ADC * 0.1;
 	
 			        LCDDisplay= 20.084 - (0.0116 * phi)   ;       //y = -0.0116x + 20.084
-				    adS.Pressure_sign =1;
+				    
+				    if(phi >=1543){
+
+	                    LCDDisplay=UnitConverter(0);
+	                    LCDDisplay = 0;
+
+				    }
+				    else{
+	                    LCDDisplay=UnitConverter(LCDDisplay);
+						LCDDisplay=Reverse_Data(LCDDisplay);
+					}
+					adS.Pressure_sign =1;
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
-				//	LCD_WriteData(&LCD0,0x08);// "-"minus sign bit   
-					Delay(20000);	
-
-		}
+					Delay(20000);
+		}	
 		else{
      
 				//BIE Read 
@@ -680,9 +689,9 @@ void NegativePressureWorks_Mode(void)
 			    phi =theta  ; 
 		
 					
-				LCDDisplay= (0.115 * phi) + 202.53;            //y = 0.0115x + 20.253
+				LCDDisplay= (0.115 * phi) + 202;        //y = 0.0115x + 20.253
 				adS.Pressure_sign =1;
-				if(LCDDisplay >1009){
+				if(LCDDisplay >1010){
 					LCDDisplay=UnitConverter(LCDDisplay);
 					LCDDisplay=Reverse_Data(LCDDisplay);
 					LowVoltageDisplay();
