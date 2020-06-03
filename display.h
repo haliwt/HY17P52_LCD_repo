@@ -33,7 +33,7 @@ struct _adc_works_
    unsigned char error_mod:1;
    unsigned char key_flag;
    unsigned char resetZeroDisplay;
-   unsigned char negativePressureSpecial_flag: 1;
+   unsigned char negativeInPositive_flag: 1;
    unsigned char LVD_2V4_flag : 1;
    unsigned char LVD_3V_flag : 1;
    unsigned char zeroTo60times : 1;
