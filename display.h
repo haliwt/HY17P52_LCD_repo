@@ -43,10 +43,7 @@ struct _adc_works_
    unsigned char  Presskey_flag:1;
    unsigned char  Pressure_sign :1;
    unsigned char  economyPower_flag: 1;
-   unsigned char  eepromRead_PositiveHigh_bit;
- 
-   unsigned char  eepromRead_NegativeHigh_bit;
-
+  
    unsigned char  eepromRead_PositiveDeltaLow_bit ;
  
    unsigned char  eepromRead_NegativeDeltaLow_bit;
