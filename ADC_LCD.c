@@ -146,7 +146,7 @@ void main(void)
 		{
 		
 		//  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
-		 adS.economyPower_flag =1;   
+		 adS.zeroTo60times =1;   
 			
 		 if(adS.delayTimes_5 >= 10000){ /*unit set mode*/
 			
@@ -409,10 +409,6 @@ void SetupZeroPoint_Mode(void)
 				GPIO_PT16_HIGH();
 					while(1);    //fail
 				}
-			
-
-			
-		
 		
 		    //     DisplayNum(adS.minusOffset_Value);
 		      //   LCD_WriteData(&LCD0,0x04);// "-"minus sign bit   
@@ -447,7 +443,7 @@ void SetupUnit_Mode(void)
 	Delay(20000);
 	GPIO_PT16_LOW();
 	#endif
-#if 1
+
 	//BIE Write
 	HY17P52WR3(0,0xAA,adS.unitChoose);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
 	if(Flag== 1)
@@ -455,7 +451,7 @@ void SetupUnit_Mode(void)
 		GPIO_PT16_HIGH();
 		while(1);    //fail
 	}
-
+#if DEGUG
 	//BIE Read   
 	BIEARL=0;                                //addr=0
 	BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
@@ -466,8 +462,8 @@ void SetupUnit_Mode(void)
 	else if(adS.eepromRead_UnitLow_bit==1)LCD_WriteData(&LCD4, seg_bar ) ; 
 	else if(adS.eepromRead_UnitLow_bit==2)LCD_WriteData(&LCD4, seg_kgf) ; 
 	else if(adS.eepromRead_UnitLow_bit==3)LCD_WriteData(&LCD4, seg_mpa) ; 
-#endif 
-					
+ 
+#endif 					
 					
 }
 /**********************************************************************
@@ -513,22 +509,20 @@ void TestWorksPrecondition(void)
 void PositivePressureWorks_Mode(void)
 {
             long delta,eta;
-		  
+		    unsigned long saveTimes ;
 			long LCDDisplay;
+			static unsigned char i=0;
 		   
 			//delta =abs(ADC) - adS.plusOffset_Value; //WT.edit 2020-06-03
-			//if(adS.plus_revise_flag ==1){
 
-				//BIE Read   
-					BIEARL=1;                                //addr=1
-					BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-					while((BIECN& 0x01)==1); 
-					adS.plus_revise_flag =BIEDRH ;
-					adS.eepromRead_PositiveDeltaLow_bit=BIEDRL;
+	        //BIE Read   
+			BIEARL=1;                                //addr=1
+			BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+			while((BIECN& 0x01)==1); 
+			adS.plus_revise_flag =BIEDRH ;
+			adS.eepromRead_PositiveDeltaLow_bit=BIEDRL;
 
-					
-            
-				if(adS.plus_revise_flag == 0x11){
+			if(adS.plus_revise_flag == 0x11){
 
 					if(adS.eepromRead_PositiveDeltaLow_bit+ (ADC * 0.001) >= STD_VALUE){
 
@@ -549,6 +543,7 @@ void PositivePressureWorks_Mode(void)
 				    LowVoltageDisplay();
 		            Delay(20000);
 
+
 				}
 			    else if( ADC  >=100000){
 
@@ -562,12 +557,14 @@ void PositivePressureWorks_Mode(void)
 					DisplayHHH();
 					LowVoltageDisplay();
 					Delay(20000);
+					saveTimes ++;
 					}
 					else if(LCDDisplay >=100 && LCDDisplay <102){
 
 						DisplayNum(LCDDisplay);
 						LowVoltageDisplay();
 						Delay(20000);
+						saveTimes ++;
 					}
 					else{
 						//LCD_WriteData(&LCD2,seg_p);
@@ -575,6 +572,7 @@ void PositivePressureWorks_Mode(void)
 						LowVoltageDisplay();
 						
 						Delay(20000);
+						saveTimes ++;
 				    }
 					
 				}
@@ -592,22 +590,49 @@ void PositivePressureWorks_Mode(void)
 					LowVoltageDisplay();
 				    Delay(20000);
 					LCD_WriteData(&LCD2,seg_p);
+					saveTimes ++;
 										
 					}
+					if(adS.zeroTo60times !=1){
+					if(saveTimes > 65535){
+							i++;
+							if(i==10){
+								i=0;
+							   LCD_DisplayOff();
+
+							}
+
+					}
 				}
+
+		}
 									
-			
-        if(adS.plus_revise_flag  != 0x11)
-			{
+		if(adS.plus_revise_flag  != 0x11)
+		{
+				
 				
 				ADC=Reverse_Data(ADC);
 				ADC=UnitConverter(ADC);
 				DisplayNum(ADC);
 				LowVoltageDisplay();
-			
-				Delay(20000);
+			    Delay(20000);
+                saveTimes ++;
 
-			}
+			   // if(adS.zeroTo60times !=1){
+			    	//adS.zeroTo60times=0;
+				 if(saveTimes >65535){
+							i++;
+							saveTimes =0;
+							if(i>=108){
+								i=0;
+							   LCD_DisplayOff();
+							   adS.zeroTo60times=1;
+							}
+
+					}
+			//	}
+
+		}
 			
 }
 /**********************************************************************
@@ -622,7 +647,6 @@ void NegativePressureWorks_Mode(void)
 {
 		long theta,omega,phi;
 		long LCDDisplay ;
-	    unsigned char flag =0;
 	    omega =ADC ;
      
 		adS.Pressure_sign =1;
