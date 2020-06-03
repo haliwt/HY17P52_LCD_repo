@@ -326,7 +326,7 @@
 
 /*PT1M1 output model selection */
 #define INTEG0                    0       /* HY17P52 */
-#define INTEG0_MSK               (3 << INTEG0)
+#define INTEG0_MSK               (3 << INTEG0) 
 #define INTEG0_LEV               (3 << INTEG0)
 //#define INTEG0_LEV             (2 << INTEG0)
 #define INTEG0_EDGERISE          (1 << INTEG0)

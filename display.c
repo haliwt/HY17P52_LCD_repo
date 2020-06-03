@@ -32,18 +32,6 @@ void ClearLCD(void)
 }
 
 
-/***************************************************************************
-  *
-  *Display char "HYCon"
-  *
-  *                                                        
-****************************************************************************/
-void DisplayHycon(void)
-{
-  LCD_WriteData(&LCD0,0x00);
-}
-
-
 /*---------------------------------------------------------------------------
 	*
 	* Function Name:DisplayNum(long Num)
@@ -66,8 +54,9 @@ void DisplayNum(long Num)
     LCDAddr--;
   }
   
-  if(adS.Pressure_sign==1)
-    LCD_WriteData(&LCD0,0X08);// "-"minus sign bit
+ // if(adS.Pressure_sign==1)
+  //  LCD_WriteData(&LCD0,symbol_plus);//LCD_WriteData(&LCD0,symbol_minus );// "-"minus sign bit
+  //else  LCD_WriteData(&LCD0,symbol_minus );//LCD_WriteData(&LCD0,symbol_plus);
  
  
 }
@@ -75,6 +64,7 @@ void DisplayNum(long Num)
 /*---------------------------------------------------------------------------*/
 /* LCD DISPLAY Hexadecimal                                                   */
 /*---------------------------------------------------------------------------*/
+#if 0
 void DisplayHex(unsigned int Num)
 {
   unsigned char count,*LCDAddr,LCDData;
@@ -89,6 +79,7 @@ void DisplayHex(unsigned int Num)
   } 
  
 }
+#endif 
 /*****************************************************************************
   *
   *Function Name :void Display2Er(void)
@@ -195,7 +186,7 @@ void DisplayBAT(void)
 ----------------------------------------------------------------------------*/
 void DisplayBatteryCapacityFull(void)
 {
-  LCD_WriteData(&LCD0, symbol_full);
+  LCD_WriteData(&LCD0, symbol_battery_full);
 }
 /*----------------------------------------------------------------------------
   *
@@ -205,7 +196,7 @@ void DisplayBatteryCapacityFull(void)
 ----------------------------------------------------------------------------*/
 void DisplayBatteryCapacityHalf(void)
 {
-  LCD_WriteData(&LCD0,symbol_half );
+  LCD_WriteData(&LCD0, symbol_battery_half);
  
 }
 /*----------------------------------------------------------------------------
@@ -216,7 +207,7 @@ void DisplayBatteryCapacityHalf(void)
 ----------------------------------------------------------------------------*/
 void DispalyBatteryCapacityLow(void)
 {
-  LCD_WriteData(&LCD0,0x90);
+  LCD_WriteData(&LCD0,symbol_battery_low);
  
 }
 /*----------------------------------------------------------------------------
@@ -252,4 +243,48 @@ int DecimalToHex(int number)
   return hex ;
 
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayPointP3(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayPointP3(void)
+{
+  LCD_WriteData(&LCD2,POINT_P3);  
 
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayPointP2(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayPointP2(void)
+{
+  LCD_WriteData(&LCD3,seg_p);  
+
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayPointP1(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayPointP1(void)
+{
+  LCD_WriteData(&LCD0,seg_p);  
+
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplaySignMinus(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplaySignMinus(void)
+{
+
+  LCD_WriteData(&LCD0,symbol_minus);  
+
+}

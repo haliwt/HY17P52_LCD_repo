@@ -1,26 +1,50 @@
+#ifndef __DISPLAY_H__
+#define __DISPLAY_H__
 
-#define   seg_p  0x01  
+
+//
+#define   seg_p      0x01
+/* unit sign */  
 #define   seg_kgf    0x01
 #define   seg_bar    0x02
 #define   seg_psi    0x04
 #define   seg_mpa    0x08
-
+/* vector sign*/
 #define   symbol_c      0x02
 #define   symbol_b      0x04
 #define   symbol_g      0x08
+/*battery sign symbol */
 #define   symbol_t1     0x10     //battery value t1 
 #define   symbol_t3     0x20  
 #define   symbol_t2     0x40
-#define   symbol_t0     0x80   //battery outline 
+#define   symbol_t0     0x80   //battery outline
 
-#define   symbol_full   (0x10 + 0x20+ 0x40 + 0x80)
-#define   symbol_half   (0x10 + 0x40 + 0x80)
-#define   symbol_low    (0x10 + 0x80)
+
+#define   symbol_full   4
+#define   symbol_battery_full     (LCD0 |=(0x0f<< symbol_full ))
+
+#define   symbol_half  4
+#define   symbol_battery_half  (LCD0 |=(0x0d << symbol_half ))
+
+#define   symbol_low   4
+#define   symbol_battery_low    (LCD0 |=(0x09 << symbol_low))
+
+#define   symbol_minus_bit      3
+#define   symbol_minus           (LCD0 |=(0x01 << symbol_minus_bit))
+#define   symbol_plus            (LCD0 &= ~(0x01 << symbol_minus_bit))
+
+#define  POINTP3             0
+#define  POINT_P3       (LCD2 |=(0x01<<POINTP3))
+
+#define  POINT2            0
+#define  POINT_P2       (LCD3 |=(0x01<<POINTP2))
+
+#define  POINT1           0
+#define  POINT_P1       (LCD0 |=(0x01<<POINTP1))
+
+
 
 enum unit_t{psi,bar,kgf,mpa};
-
-
-
 
 struct _adc_works_
 {
@@ -87,3 +111,9 @@ void DisplayBatteryCapacityFull(void);
 void DisplayBatteryCapacityHalf(void);
 void DispalyBatteryCapacityLow(void);
 int DecimalToHex(int number);
+void DisplayPointP3(void);
+void DisplayPointP2(void);
+void DisplayPointP1(void);
+void DisplaySignMinus(void);
+
+#endif 
