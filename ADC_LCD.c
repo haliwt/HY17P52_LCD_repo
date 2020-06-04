@@ -28,7 +28,7 @@ void HY17P52WR3Delay(char ms);
 
 #define kgfTOpsi(kgf)       (0.145 * (kgf))
 #define kgfTObar(kgf)   	(0.01 * (kgf))
-#define kgfTOmpa(kgf)	 	(0.1 * (kgf))
+#define kgfTOmpa(kgf)	 	(0.001 * (kgf))
 
 #define STD_VALUE                 105000//WT.EDIT 2020-06-03 //10400//10440//10400
 
