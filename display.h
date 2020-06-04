@@ -42,6 +42,10 @@
 #define  POINT1           0
 #define  POINT_P1       (LCD0 |=(0x01<<POINTP1))
 
+#define seg_lcd3_data   0
+#define seg_lcd3_mask   (LCD3 &= (0x01<<seg_lcd3_data))
+
+
 
 
 enum unit_t{psi,bar,kgf,mpa};
@@ -115,5 +119,6 @@ void DisplayPointP3(void);
 void DisplayPointP2(void);
 void DisplayPointP1(void);
 void DisplaySignMinus(void);
+void DisplayNum2Bit(int  num);
 
 #endif 

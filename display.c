@@ -60,6 +60,31 @@ void DisplayNum(long Num)
  
  
 }
+/*---------------------------------------------------------------------------
+  *
+  * Function Name:DisplayNum(long Num)
+  * Function :LCD display 
+  * Input Reference: need display number
+  *
+  *
+*---------------------------------------------------------------------------*/
+void DisplayNum2Bit(int Num)
+{
+  unsigned char count;
+  unsigned char *LCDAddr,LCDData;
+  
+  LCDAddr=&LCD2;
+  for(count=2;count<4;count++)
+  {
+    LCDData=seg[Num%10];
+    LCD_WriteData(LCDAddr,LCDData);
+    Num=Num/10 ;
+    LCDAddr--;
+  }
+  LCD_WriteData(&LCD3,seg_lcd3_mask);
+ 
+ 
+}
 
 /*---------------------------------------------------------------------------*/
 /* LCD DISPLAY Hexadecimal                                                   */

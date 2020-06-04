@@ -521,7 +521,7 @@ void PositivePressureWorks_Mode(void)
 
 				if(adS.plus_revise_flag == 0x11){
 
-					if(ADC * 0.1< 2000 ){
+					if(ADC < 20000 ){
 						UnitConverter(0);
 						DisplayNum(0);
 					    LowVoltageDisplay();
@@ -533,10 +533,10 @@ void PositivePressureWorks_Mode(void)
 							eta = delta ;  //WT.EDIT 2020-06-03 MODIYF
 							//eta = delta * 0.1;
 							//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
-							LCDDisplay= 0.115 *eta- 215; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.12
+							LCDDisplay= 0.115 *eta- 217; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.12
 
 							if(LCDDisplay >=1060){
-	              Delay(10000);
+	              					Delay(10000);
 								if(LCDDisplay >=1060){
 									DisplayHHH();
 									LCDDisplay=UnitConverter(LCDDisplay);
@@ -546,6 +546,7 @@ void PositivePressureWorks_Mode(void)
 								}
 							}
 							else if(LCDDisplay <1060 && LCDDisplay >=1000){
+					
 								LCDDisplay=UnitConverter(LCDDisplay);
 							    LCDDisplay=Reverse_Data(LCDDisplay);
 								DisplayNum(LCDDisplay);
@@ -554,12 +555,26 @@ void PositivePressureWorks_Mode(void)
 								//saveTimes ++;
 						   }
 						   else{
-						   		LCDDisplay=UnitConverter(LCDDisplay);
+
+						   	   if(LCDDisplay < 100 ){
+
+
+                                  LCDDisplay=UnitConverter(LCDDisplay);
+							       LCDDisplay=Reverse_Data(LCDDisplay);
+						   	   	   DisplayNum2Bit(LCDDisplay);
+						   	   	   LowVoltageDisplay();
+									DisplayPointP3();
+									Delay(20000);
+						   	    	
+						   	    }
+						   	    else{
+						   	    LCDDisplay=UnitConverter(LCDDisplay);
 							    LCDDisplay=Reverse_Data(LCDDisplay);
 								DisplayNum(LCDDisplay);
 								LowVoltageDisplay();
 								DisplayPointP3();
 								Delay(20000);
+							    }
 								//saveTimes ++;
 
 
