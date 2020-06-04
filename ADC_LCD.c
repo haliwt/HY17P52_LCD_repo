@@ -237,7 +237,8 @@ void main(void)
 long UnitConverter(long data)
 {
 
-		BIEARL=0;                                //addr=0
+
+      BIEARL=0;                                //addr=0
 	    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 	    while((BIECN& 0x01)==1);
 	    adS.eepromRead_UnitLow_bit=BIEDRL;
@@ -303,7 +304,7 @@ unsigned char LowVoltageDetect_3V(void)
 unsigned char LowVoltageDetect_2V4(void)
 {
     unsigned char flag;
-    LVD_VolSelect(VLDX_24);
+    LVD_VolSelect(VLDX_20);
     LVD_PWRSelect(PWRS_VDD);
     Delay(10);
   if(LVD_GetLVDO())
@@ -525,6 +526,7 @@ void PositivePressureWorks_Mode(void)
 						UnitConverter(0);
 						DisplayNum(0);
 					    LowVoltageDisplay();
+					    DisplaySignPlus();
 			            Delay(20000);
 			          //  saveTimes ++;
 
@@ -541,39 +543,48 @@ void PositivePressureWorks_Mode(void)
 									DisplayHHH();
 									LCDDisplay=UnitConverter(LCDDisplay);
 									LowVoltageDisplay();
+									DisplaySignPlus();
 									Delay(20000);
 									//saveTimes ++;
 								}
 							}
 							else if(LCDDisplay <1060 && LCDDisplay >=1000){
-					
+
 								LCDDisplay=UnitConverter(LCDDisplay);
 							    LCDDisplay=Reverse_Data(LCDDisplay);
+				                if(adS.eepromRead_UnitLow_bit==psi){
+				                    DisplayPointP3();
+				                }
+				                else if(adS.eepromRead_UnitLow_bit==bar){
+				                    DisplayPointP2();
+				                }
 								DisplayNum(LCDDisplay);
 								LowVoltageDisplay();
+								DisplaySignPlus();
+								
 								Delay(20000);
 								//saveTimes ++;
 						   }
 						   else{
 
 						   	   if(LCDDisplay < 100 ){
-
-
-                                  LCDDisplay=UnitConverter(LCDDisplay);
-							       LCDDisplay=Reverse_Data(LCDDisplay);
-						   	   	   DisplayNum2Bit(LCDDisplay);
-						   	   	   LowVoltageDisplay();
+									LCDDisplay=UnitConverter(LCDDisplay);
+									LCDDisplay=Reverse_Data(LCDDisplay);
+									DisplayNum2Bit(LCDDisplay);
+									LowVoltageDisplay();
 									DisplayPointP3();
+									DisplaySignPlus();
 									Delay(20000);
-						   	    	
+
 						   	    }
 						   	    else{
-						   	    LCDDisplay=UnitConverter(LCDDisplay);
-							    LCDDisplay=Reverse_Data(LCDDisplay);
-								DisplayNum(LCDDisplay);
-								LowVoltageDisplay();
-								DisplayPointP3();
-								Delay(20000);
+			                        LCDDisplay=UnitConverter(LCDDisplay);
+			                        LCDDisplay=Reverse_Data(LCDDisplay);
+			                        DisplayNum(LCDDisplay);
+			                        LowVoltageDisplay();
+			                        DisplayPointP3();
+			                        DisplaySignPlus();
+			                        Delay(20000);
 							    }
 								//saveTimes ++;
 
@@ -626,22 +637,25 @@ void NegativePressureWorks_Mode(void)
 
 			        LCDDisplay= 20.084 - (0.0116 * theta)   ;       //y = -0.0116x + 20.084
 
-				    if(theta >=1543){
+				    if(theta >=1534){
 
 	                    UnitConverter(0);
 	                    LCDDisplay = 0;
+	                    DisplayNum(LCDDisplay);
+	                    DisplaySignMinus();
 	                    Delay(20000);
 
 				    }
 				    else {
 
-				    	if(theta < 1543 && theta > 880){
-						
+				    	if(theta < 1534  && theta > 880){
+
 							LCDDisplay=UnitConverter(LCDDisplay);
 							LCDDisplay=Reverse_Data(LCDDisplay);
 							DisplayNum2Bit(LCDDisplay);
 					    	LowVoltageDisplay();
 					    	DisplayPointP3();
+					    	DisplaySignMinus();
 							Delay(20000);
 
 				    	}
@@ -651,7 +665,8 @@ void NegativePressureWorks_Mode(void)
 							DisplayNum(LCDDisplay);
 					    	LowVoltageDisplay();
 					    	DisplayPointP3();
-							Delay(20000);
+					    	DisplaySignMinus();
+					    	Delay(20000);
 						}
 
 					}
@@ -692,6 +707,7 @@ void NegativePressureWorks_Mode(void)
 					LowVoltageDisplay();
 
 				    DisplayLLL();
+				    DisplaySignMinus();
 					Delay(20000);
 				}
 				else if(LCDDisplay <1090 && LCDDisplay >=1000){
@@ -702,6 +718,7 @@ void NegativePressureWorks_Mode(void)
 
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
+					DisplaySignMinus();
 					Delay(20000);
 				}
 				else{
@@ -712,6 +729,7 @@ void NegativePressureWorks_Mode(void)
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
 					DisplayPointP3();
+					DisplaySignMinus();
 					Delay(20000);
 				}
 

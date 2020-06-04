@@ -313,3 +313,13 @@ void DisplaySignMinus(void)
   LCD_WriteData(&LCD0,symbol_minus);  
 
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplaySignPlus(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplaySignPlus(void)
+{
+     LCD_WriteData(&LCD0,symbol_plus);                
+}

@@ -119,6 +119,7 @@ void DisplayPointP3(void);
 void DisplayPointP2(void);
 void DisplayPointP1(void);
 void DisplaySignMinus(void);
+void DisplaySignPlus(void);
 void DisplayNum2Bit(int  num);
 
 #endif 
