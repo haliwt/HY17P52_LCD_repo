@@ -36,10 +36,10 @@
 #define  POINTP3             0
 #define  POINT_P3       (LCD2 |=(0x01<<POINTP3))
 
-#define  POINT2            0
+#define  POINTP2            0
 #define  POINT_P2       (LCD3 |=(0x01<<POINTP2))
 
-#define  POINT1           0
+#define  POINTP1           0
 #define  POINT_P1       (LCD0 |=(0x01<<POINTP1))
 
 #define seg_lcd3_data   0
