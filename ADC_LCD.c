@@ -686,7 +686,7 @@ void PositivePressureWorks_Mode(void)
 void NegativePressureWorks_Mode(void)
 {
 		long theta;
-		long LCDDisplay ;
+		long LCDDisplay ; //"-"
 	    adS.Pressure_sign=1;
 		if(adS.negativeInPositive_flag==1){
 					adS.negativeInPositive_flag=0;
@@ -706,22 +706,22 @@ void NegativePressureWorks_Mode(void)
 				    	if(theta < 1534  && theta > 880){
 
 							LCDDisplay=UnitConverter(LCDDisplay);
-							//LCDDisplay=Reverse_Data(LCDDisplay);
-							DisplaySelectionUintPoint();
+							
 							DisplayNum2Bit(LCDDisplay);
 					    	LowVoltageDisplay();
 					    	DisplaySignMinus();
+					    	DisplaySelectionUintPoint();
 							Delay(20000);
 
 				    	}
 				    	else{
 
 		                    LCDDisplay=UnitConverter(LCDDisplay);
-							//LCDDisplay=Reverse_Data(LCDDisplay);
-							DisplaySelectionUintPoint();
+							
 							DisplayNum(LCDDisplay);
 					    	LowVoltageDisplay();
 					    	DisplaySignMinus();
+					    	DisplaySelectionUintPoint();
 					    	Delay(20000);
 						}
 
@@ -771,23 +771,23 @@ void NegativePressureWorks_Mode(void)
 
 					
 					LCDDisplay=UnitConverter(LCDDisplay);
-			
-					DisplaySelectionUintPoint();
+		
 					DisplayNum4Bytes(LCDDisplay);
 
 					LowVoltageDisplay();
 					DisplaySignMinus();
+					DisplaySelectionUintPoint();
+					
 					Delay(20000);
 				}
 				else{
 
 					LCDDisplay=UnitConverter(LCDDisplay);
-				//	LCDDisplay=Reverse_Data(LCDDisplay);
-					DisplaySelectionUintPoint();
+					
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
-					DisplayPointP3();
 					DisplaySignMinus();
+				    DisplaySelectionUintPoint();
 					Delay(20000);
 				}
 
