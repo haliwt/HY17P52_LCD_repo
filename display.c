@@ -53,7 +53,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr++;
   }
-  
+  LCD_WriteData(&LCD0,highestPlus) ; 
 }
 /*---------------------------------------------------------------------------
   *

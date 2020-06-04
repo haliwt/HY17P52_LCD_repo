@@ -47,6 +47,7 @@
 
 #define highestbit      0 
 #define highestByte     (LCD0 |=(0x06<< highestbit))
+#define highestPlus     (LCD0 &= ~(0x06<< highestbit))
 
 
 
