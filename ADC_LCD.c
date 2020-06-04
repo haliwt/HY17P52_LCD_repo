@@ -530,7 +530,7 @@ void TestWorksPrecondition(void)
 	}
 	else
 	{
-		if(ADC < 17500){
+		if(ADC < 17000){
 		     adS.Pressure_sign =1;
 			 adS.negativeInPositive_flag=1;
 		}
@@ -692,9 +692,9 @@ void NegativePressureWorks_Mode(void)
 					adS.negativeInPositive_flag=0;
 			        theta = ADC * 0.1;
 
-			        LCDDisplay= 20.084 - (0.0116 * theta)   ;       //y = -0.0116x + 20.084
+			        LCDDisplay= 200.84 - (0.115 * theta)   ;       //y = -0.0116x + 20.084//y = -0.0115x + 20.194
 
-				    if(theta >=1534){
+				    if(theta >=1600 && theta < 1750){
 
 	                    UnitConverter(0);
 	                    DisplayNum(0);
@@ -702,8 +702,9 @@ void NegativePressureWorks_Mode(void)
 
 				    }
 				    else {
-
-				    	if(theta < 1534  && theta > 880){
+				    	#if 0
+				    	
+				    	if(theta < 1600  && theta > 824 ){
 
 							LCDDisplay=UnitConverter(LCDDisplay);
 							
@@ -714,8 +715,10 @@ void NegativePressureWorks_Mode(void)
 							Delay(20000);
 
 				    	}
-				    	else{
-
+				    	else 
+                        #endif 
+				    		//if(theta >50 && theta < 824){
+				    		{
 		                    LCDDisplay=UnitConverter(LCDDisplay);
 							
 							DisplayNum(LCDDisplay);
@@ -755,14 +758,14 @@ void NegativePressureWorks_Mode(void)
 
 			 	     LCDDisplay= (0.115 * theta) + 190;        //y = 0.0115x + 20.253
 
-				  if( LCDDisplay > 1090 ){
+				  if( LCDDisplay >= 1020 ){
 
 
 					UnitConverter(0);
 				
 					LowVoltageDisplay();
 
-				    DisplayLLL();
+				    DisplayLLL();//"-"
 				  
 					Delay(20000);
 				}
