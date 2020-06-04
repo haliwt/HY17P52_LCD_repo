@@ -635,19 +635,24 @@ void NegativePressureWorks_Mode(void)
 				    }
 				    else {
 
-				    	if(theta < 1543 && theta > 700){
-
-						LCDDisplay  = LCDDisplay * 0.1;
-
+				    	if(theta < 1543 && theta > 880){
+						
+							LCDDisplay=UnitConverter(LCDDisplay);
+							LCDDisplay=Reverse_Data(LCDDisplay);
+							DisplayNum2Bit(LCDDisplay);
+					    	LowVoltageDisplay();
+					    	DisplayPointP3();
+							Delay(20000);
 
 				    	}
-
-	                    LCDDisplay=UnitConverter(LCDDisplay);
-						LCDDisplay=Reverse_Data(LCDDisplay);
-						DisplayNum(LCDDisplay);
-				    	LowVoltageDisplay();
-				    	DisplayPointP3();
-						Delay(20000);
+				    	else{
+		                    LCDDisplay=UnitConverter(LCDDisplay);
+							LCDDisplay=Reverse_Data(LCDDisplay);
+							DisplayNum(LCDDisplay);
+					    	LowVoltageDisplay();
+					    	DisplayPointP3();
+							Delay(20000);
+						}
 
 					}
 
