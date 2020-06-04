@@ -81,6 +81,8 @@ void NegativePressureWorks_Mode(void);
 void SetupUnitSelection(void);
 void SetupZeroPointSelection(void);
 void TestWorksPrecondition(void);
+void EEPROM_ReadData_Address0(void);
+void DisplaySelectionUintPoint(void);
 
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
@@ -228,6 +230,24 @@ void main(void)
 /*---------------------------------------------------------------------------*/
 /******************************************************************************
 	*
+	*Function Name: EEPROM_ReadData(void);
+	*Input Reference : converter unit value,This is kgf value
+	*
+	*
+	*
+******************************************************************************/
+void EEPROM_ReadData_Address0(void)
+{
+  
+       BIEARL=0;                                //addr=0
+	   BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+	   while((BIECN& 0x01)==1);
+	   adS.eepromRead_UnitLow_bit=BIEDRL;
+
+
+}
+/******************************************************************************
+	*
 	*Function Name: long UnitConverter_2V4(long data)
 	*Input Reference : converter unit value,This is kgf value
 	*Return Reference : NO
@@ -236,12 +256,7 @@ void main(void)
 ******************************************************************************/
 long UnitConverter(long data)
 {
-
-
-      BIEARL=0;                                //addr=0
-	    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-	    while((BIECN& 0x01)==1);
-	    adS.eepromRead_UnitLow_bit=BIEDRL;
+       EEPROM_ReadData_Address0();
 
      if(adS.eepromRead_UnitLow_bit==0){ /*psi*/
 
@@ -267,6 +282,27 @@ long UnitConverter(long data)
              return data;
 	 }
 
+}
+/******************************************************************************
+	*
+	*Function Name:DisplaySelectionUintPoint(void)
+	*
+	*
+	*
+******************************************************************************/
+void DisplaySelectionUintPoint(void)
+{
+	if(adS.eepromRead_UnitLow_bit==psi){
+		    DisplayPointP2(); //小数点不�?
+	}
+	else if(adS.eepromRead_UnitLow_bit==bar||adS.eepromRead_UnitLow_bit==mpa){
+	       DisplayPointP1();   //小数点不动的
+	}
+	else if(adS.eepromRead_UnitLow_bit==kgf){
+
+			DisplayPointP3(); //小数点不�?
+	}
+	
 }
 /******************************************************************************
 	*
@@ -501,6 +537,7 @@ void PositivePressureWorks_Mode(void)
 		 //   unsigned long saveTimes ;
 			long LCDDisplay;
 			adS.Pressure_sign =0;
+			eta = ADC * 0.1 ;
 		//	static unsigned char i=0;
 		   	//BIE Read
 			BIEARL=1;                                //addr=1
@@ -509,14 +546,14 @@ void PositivePressureWorks_Mode(void)
 			adS.plus_revise_flag =BIEDRH ;
 			adS.eepromRead_PositiveDeltaLow_bit=BIEDRL;
 
-					if(adS.eepromRead_PositiveDeltaLow_bit+ (ADC * 0.01) >= STD_VALUE){
-
-						delta =abs(ADC) * 0.1 - adS.eepromRead_PositiveDeltaLow_bit ;
+					//if(adS.eepromRead_PositiveDeltaLow_bit+ (ADC * 0.01) >= STD_VALUE){
+                   if(adS.eepromRead_PositiveDeltaLow_bit + eta >= STD_VALUE){
+						delta =eta - adS.eepromRead_PositiveDeltaLow_bit ;
 
 					}
 					else{
 
-						delta =abs(ADC)* 0.1 + adS.eepromRead_PositiveDeltaLow_bit ;
+						delta =eta  + adS.eepromRead_PositiveDeltaLow_bit ;
 
 					}
 
@@ -532,33 +569,26 @@ void PositivePressureWorks_Mode(void)
 
 						}
 						else {   // ADC  >=100000
-							eta = delta ;  //WT.EDIT 2020-06-03 MODIYF
+							//eta = delta ;  //WT.EDIT 2020-06-03 MODIYF
 							//eta = delta * 0.1;
 							//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
-							LCDDisplay= 0.115 *eta- 217; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.12
+							LCDDisplay= 0.115 *delta- 203.92; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.392
 
-							if(LCDDisplay >=1060){
-	              					Delay(10000);
-								if(LCDDisplay >=1060){
-									DisplayHHH();
-									LCDDisplay=UnitConverter(LCDDisplay);
+							if(LCDDisplay >=1070){
+	              				    DisplayHHH();
+									UnitConverter(0);
 									LowVoltageDisplay();
-									DisplaySignPlus();
-									Delay(20000);
+								    Delay(20000);
 									//saveTimes ++;
-								}
+								
 							}
 							else if(LCDDisplay <1060 && LCDDisplay >=1000){
 
 								LCDDisplay=UnitConverter(LCDDisplay);
-							    LCDDisplay=Reverse_Data(LCDDisplay);
-				                if(adS.eepromRead_UnitLow_bit==psi){
-				                    DisplayPointP3();
-				                }
-				                else if(adS.eepromRead_UnitLow_bit==bar){
-				                    DisplayPointP2();
-				                }
-								DisplayNum(LCDDisplay);
+							  //  LCDDisplay=Reverse_Data(LCDDisplay);
+							   // LCDDisplay = LCDDisplay * 0.01 ;
+				                DisplaySelectionUintPoint();
+				                DisplayNum4Bytes(LCDDisplay); 
 								LowVoltageDisplay();
 								DisplaySignPlus();
 								
@@ -569,20 +599,20 @@ void PositivePressureWorks_Mode(void)
 
 						   	   if(LCDDisplay < 100 ){
 									LCDDisplay=UnitConverter(LCDDisplay);
-									LCDDisplay=Reverse_Data(LCDDisplay);
+									//LCDDisplay=Reverse_Data(LCDDisplay);
+									DisplaySelectionUintPoint();
 									DisplayNum2Bit(LCDDisplay);
 									LowVoltageDisplay();
-									DisplayPointP3();
 									DisplaySignPlus();
 									Delay(20000);
 
 						   	    }
 						   	    else{
 			                        LCDDisplay=UnitConverter(LCDDisplay);
-			                        LCDDisplay=Reverse_Data(LCDDisplay);
+			                       // LCDDisplay=Reverse_Data(LCDDisplay);
+			                        DisplaySelectionUintPoint();
 			                        DisplayNum(LCDDisplay);
 			                        LowVoltageDisplay();
-			                        DisplayPointP3();
 			                        DisplaySignPlus();
 			                        Delay(20000);
 							    }
@@ -640,9 +670,7 @@ void NegativePressureWorks_Mode(void)
 				    if(theta >=1534){
 
 	                    UnitConverter(0);
-	                    LCDDisplay = 0;
-	                    DisplayNum(LCDDisplay);
-	                    DisplaySignMinus();
+	                    DisplayNum(0);
 	                    Delay(20000);
 
 				    }
@@ -651,20 +679,21 @@ void NegativePressureWorks_Mode(void)
 				    	if(theta < 1534  && theta > 880){
 
 							LCDDisplay=UnitConverter(LCDDisplay);
-							LCDDisplay=Reverse_Data(LCDDisplay);
+							//LCDDisplay=Reverse_Data(LCDDisplay);
+							DisplaySelectionUintPoint();
 							DisplayNum2Bit(LCDDisplay);
 					    	LowVoltageDisplay();
-					    	DisplayPointP3();
 					    	DisplaySignMinus();
 							Delay(20000);
 
 				    	}
 				    	else{
+
 		                    LCDDisplay=UnitConverter(LCDDisplay);
-							LCDDisplay=Reverse_Data(LCDDisplay);
+							//LCDDisplay=Reverse_Data(LCDDisplay);
+							DisplaySelectionUintPoint();
 							DisplayNum(LCDDisplay);
 					    	LowVoltageDisplay();
-					    	DisplayPointP3();
 					    	DisplaySignMinus();
 					    	Delay(20000);
 						}
@@ -702,21 +731,23 @@ void NegativePressureWorks_Mode(void)
 				  if( LCDDisplay > 1090 ){
 
 
-					LCDDisplay=UnitConverter(LCDDisplay);
-					LCDDisplay=Reverse_Data(LCDDisplay);
+					UnitConverter(0);
+				
 					LowVoltageDisplay();
 
 				    DisplayLLL();
-				    DisplaySignMinus();
+				  
 					Delay(20000);
 				}
 				else if(LCDDisplay <1090 && LCDDisplay >=1000){
 
 
+					
 					LCDDisplay=UnitConverter(LCDDisplay);
-					LCDDisplay=Reverse_Data(LCDDisplay);
+			
+					DisplaySelectionUintPoint();
+					DisplayNum4Bytes(LCDDisplay);
 
-					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
 					DisplaySignMinus();
 					Delay(20000);
@@ -724,8 +755,8 @@ void NegativePressureWorks_Mode(void)
 				else{
 
 					LCDDisplay=UnitConverter(LCDDisplay);
-					LCDDisplay=Reverse_Data(LCDDisplay);
-
+				//	LCDDisplay=Reverse_Data(LCDDisplay);
+					DisplaySelectionUintPoint();
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
 					DisplayPointP3();

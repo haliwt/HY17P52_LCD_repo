@@ -45,21 +45,48 @@ void DisplayNum(long Num)
   unsigned char count;
   unsigned char *LCDAddr,LCDData;
   
-  LCDAddr=&LCD3;
-  for(count=1;count<4;count++)
+  LCDAddr = &LCD1;//LCDAddr=&LCD3;
+  for(count=0;count<3;count++)
   {
     LCDData=seg[Num%10];
     LCD_WriteData(LCDAddr,LCDData);
     Num=Num/10 ;
-    LCDAddr--;
+    LCDAddr++;
   }
   
- // if(adS.Pressure_sign==1)
-  //  LCD_WriteData(&LCD0,symbol_plus);//LCD_WriteData(&LCD0,symbol_minus );// "-"minus sign bit
-  //else  LCD_WriteData(&LCD0,symbol_minus );//LCD_WriteData(&LCD0,symbol_plus);
- 
- 
 }
+/*---------------------------------------------------------------------------
+  *
+  * Function Name:DisplayNum(long Num)
+  * Function :LCD display 
+  * Input Reference: need display number
+  *
+  *
+*---------------------------------------------------------------------------*/
+void DisplayNum4Bytes( int Num)
+{
+  unsigned char count;
+  unsigned char *LCDAddr,LCDData;
+  
+  LCDAddr=&LCD0;
+  for(count=0;count<4;count++)
+  {
+      if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highestByte) ; 
+       
+      else {
+          LCDData=seg[Num%10];
+          LCD_WriteData(LCDAddr,LCDData);
+          Num=Num/10 ;
+         }
+        
+         LCDAddr++;
+     
+    }
+}
+      
+  
+
+/*---------------------------------------------------------------------------
 /*---------------------------------------------------------------------------
   *
   * Function Name:DisplayNum(long Num)
@@ -322,4 +349,15 @@ void DisplaySignMinus(void)
 void DisplaySignPlus(void)
 {
      LCD_WriteData(&LCD0,symbol_plus);                
+}
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplaySignPlus(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayHighestByte_One(void)
+{
+   LCD_WriteData(&LCD0,highestByte);       
+
 }

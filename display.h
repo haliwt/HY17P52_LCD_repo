@@ -45,6 +45,9 @@
 #define seg_lcd3_data   0
 #define seg_lcd3_mask   (LCD3 &= (0x01<<seg_lcd3_data))
 
+#define highestbit      0 
+#define highestByte     (LCD0 |=(0x06<< highestbit))
+
 
 
 
@@ -121,5 +124,7 @@ void DisplayPointP1(void);
 void DisplaySignMinus(void);
 void DisplaySignPlus(void);
 void DisplayNum2Bit(int  num);
+void DisplayHighestByte_One(void);
+void DisplayNum4Bytes(int number);
 
 #endif 
