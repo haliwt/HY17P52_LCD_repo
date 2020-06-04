@@ -238,13 +238,13 @@ void main(void)
 ******************************************************************************/
 unsigned char EEPROM_ReadData_Address0(void)
 {
-  
+       static unsigned char unitID = kgf;
        BIEARL=0;                                //addr=0
 	   BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 	   while((BIECN& 0x01)==1);
-	   adS.eepromRead_UnitLow_bit=BIEDRL;
+	   unitID=BIEDRL;
        
-       return adS.eepromRead_UnitLow_bit;
+       return unitID;
 
 }
 /******************************************************************************
@@ -257,30 +257,30 @@ unsigned char EEPROM_ReadData_Address0(void)
 ******************************************************************************/
 long UnitConverter(long data)
 {
-       static unsigned char  id=kgf;
+       
 
-      id =  EEPROM_ReadData_Address0();
+      adS.eepromRead_UnitLow_bit  =  EEPROM_ReadData_Address0();
     
 
 
-     if(id==psi){ /*psi*/
+     if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
 
          LCD_WriteData(&LCD4, seg_psi) ;
           DisplayPointP2(); 
          return  kgfTOpsi(data) ;
      }
-	 else if(id==bar){ /*unit bar*/
+	 else if(adS.eepromRead_UnitLow_bit==bar){ /*unit bar*/
      	 LCD_WriteData(&LCD4, seg_bar) ;
      	   DisplayPointP1();
      	 return	kgfTObar(data);
 	 }
-	 else if(id==kgf){ /* unit kgf*/
+	 else if(adS.eepromRead_UnitLow_bit==kgf){ /* unit kgf*/
 
          LCD_WriteData(&LCD4, seg_kgf) ;
          DisplayPointP3();
          return data;
 	 }
-	 else if(id==mpa){ /*uint mpa*/
+	 else if(adS.eepromRead_UnitLow_bit==mpa){ /*uint mpa*/
 
 	 	 LCD_WriteData(&LCD4, seg_mpa) ;
 	 	  DisplayPointP1();
@@ -302,19 +302,23 @@ long UnitConverter(long data)
 ******************************************************************************/
 void DisplaySelectionUintPoint(void)
 {
-	static unsigned char idp;
-	idp = EEPROM_ReadData_Address0();
-
-	if(idp==psi){
+	
+	if(adS.eepromRead_UnitLow_bit==psi){
 		    DisplayPointP2(); //小数点不�?
 	}
-	else if(idp==bar||idp==mpa){
+	else if(adS.eepromRead_UnitLow_bit==bar||adS.eepromRead_UnitLow_bit==mpa){
 	       DisplayPointP1();   //小数点不动的
 	}
-	else if(idp==kgf){
+	else if(adS.eepromRead_UnitLow_bit==kgf){
 
 			DisplayPointP3(); //小数点不�?
 	}
+	else{
+
+		 LCD_WriteData(&LCD4, seg_kgf) ;
+         DisplayPointP3();
+	}
+
 	
 }
 /******************************************************************************
