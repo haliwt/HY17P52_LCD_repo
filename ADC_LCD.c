@@ -26,9 +26,9 @@ void HY17P52WR3Delay(char ms);
 
 #define abs(value)            ((value) >0 ? (value) : (-value) )
 
-#define kgfTOpsi(kgf)       (14.55 * (kgf))
-#define kgfTObar(kgf)   	(1.0 * (kgf))
-#define kgfTOmpa(kgf)	 	(0.1 * (kgf))
+#define kgfTOpsi(kgf)       (0.1450 * (kgf))
+#define kgfTObar(kgf)   	(0.01 * (kgf))
+#define kgfTOmpa(kgf)	 	(0.001 * (kgf))
 
 #define STD_VALUE                 105000//WT.EDIT 2020-06-03 //10400//10440//10400
 
@@ -266,11 +266,11 @@ long UnitConverter(long data)
      if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
 
          LCD_WriteData(&LCD4, seg_psi) ;
-          DisplayPointP2(); 
+          DisplayPointP3(); 
          return  kgfTOpsi(data) ;
      }
 	 else if(adS.eepromRead_UnitLow_bit==bar){ /*unit bar*/
-     	 LCD_WriteData(&LCD4, seg_bar) ;
+     	   LCD_WriteData(&LCD4, seg_bar) ;
      	   DisplayPointP1();
      	 return	kgfTObar(data);
 	 }
@@ -304,14 +304,18 @@ void DisplaySelectionUintPoint(void)
 {
 	
 	if(adS.eepromRead_UnitLow_bit==psi){
-		    DisplayPointP2(); //小数点不�?
+		    DisplayPointP3(); //小数点不�?
 	}
-	else if(adS.eepromRead_UnitLow_bit==bar||adS.eepromRead_UnitLow_bit==mpa){
+	else if(adS.eepromRead_UnitLow_bit==bar){
 	       DisplayPointP1();   //小数点不动的
 	}
 	else if(adS.eepromRead_UnitLow_bit==kgf){
 
 			DisplayPointP3(); //小数点不�?
+	}
+	else if(adS.eepromRead_UnitLow_bit==mpa){
+
+		     DisplayPointP1();
 	}
 	else{
 
@@ -603,11 +607,12 @@ void PositivePressureWorks_Mode(void)
 
 								LCDDisplay=UnitConverter(LCDDisplay);
 							
-				            
+				                if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
+				                else 
 				                DisplayNum4Bytes(LCDDisplay); 
 								LowVoltageDisplay();
 								DisplaySignPlus();
-								 DisplaySelectionUintPoint();
+								DisplaySelectionUintPoint();
 								Delay(20000);
 								//saveTimes ++;
 						   }

@@ -65,13 +65,36 @@ void DisplayNum(long Num)
 *---------------------------------------------------------------------------*/
 void DisplayNum4Bytes( int Num)
 {
-  unsigned char count;
+  unsigned char count,count2;
   unsigned char *LCDAddr,LCDData;
+
+#if 0
+        LCDAddr=&LCD0;
   
+      if(LCDAddr != &LCD0){
+
+         for(count2=0;count2<3;count2++)
+          {
+            LCDData=seg[Num%10];
+            LCD_WriteData(LCDAddr,LCDData);
+            Num=Num/10 ;
+            LCDAddr++;
+          }
+
+      }
+      else if(LCDAddr == &LCD0){
+          LCDData=seg[Num%10];
+          LCD_WriteData(LCDAddr,highestByte);
+          Num=Num/10 ;
+          LCDAddr++;
+     
+        }
+ #endif  
+  #if 1
   LCDAddr=&LCD0;
   for(count=0;count<4;count++)
   {
-      if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highestByte) ; 
+       if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highestByte) ; 
        
       else {
           LCDData=seg[Num%10];
@@ -82,6 +105,7 @@ void DisplayNum4Bytes( int Num)
          LCDAddr++;
      
     }
+#endif 
 }
       
   
