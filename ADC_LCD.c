@@ -27,8 +27,8 @@ void HY17P52WR3Delay(char ms);
 #define abs(value)            ((value) >0 ? (value) : (-value) )
 
 #define kgfTOpsi(kgf)       (0.1450 * (kgf))
-#define kgfTObar(kgf)   	(0.01 * (kgf))
-#define kgfTOmpa(kgf)	 	(0.001 * (kgf))
+#define kgfTObar(kgf)   	(1.0 * (kgf))
+#define kgfTOmpa(kgf)	 	(0.1 * (kgf))
 
 #define STD_VALUE                 105000//WT.EDIT 2020-06-03 //10400//10440//10400
 
@@ -631,7 +631,7 @@ void PositivePressureWorks_Mode(void)
 						   	    }
 						   	    else{
 			                        LCDDisplay=UnitConverter(LCDDisplay);
-			                   
+			
 			                        DisplayNum(LCDDisplay);
 			                        LowVoltageDisplay();
 			                        DisplaySignPlus();

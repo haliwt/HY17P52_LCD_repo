@@ -29,7 +29,7 @@
 #define   symbol_low   4
 #define   symbol_battery_low    (LCD0 |=(0x09 << symbol_low))
 
-#define   symbol_minus_bit      3
+#define   symbol_minus_bit        3
 #define   symbol_minus           (LCD0 |=(0x01 << symbol_minus_bit))
 #define   symbol_plus            (LCD0 &= ~(0x01 << symbol_minus_bit))
 
