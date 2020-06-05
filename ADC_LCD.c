@@ -702,23 +702,8 @@ void NegativePressureWorks_Mode(void)
 
 				    }
 				    else {
-				    	#if 0
 				    	
-				    	if(theta < 1600  && theta > 824 ){
-
-							LCDDisplay=UnitConverter(LCDDisplay);
-							
-							DisplayNum2Bit(LCDDisplay);
-					    	LowVoltageDisplay();
-					    	DisplaySignMinus();
-					    	DisplaySelectionUintPoint();
-							Delay(20000);
-
-				    	}
-				    	else 
-                        #endif 
-				    		//if(theta >50 && theta < 824){
-				    		{
+				    
 		                    LCDDisplay=UnitConverter(LCDDisplay);
 							
 							DisplayNum(LCDDisplay);
@@ -726,9 +711,7 @@ void NegativePressureWorks_Mode(void)
 					    	DisplaySignMinus();
 					    	DisplaySelectionUintPoint();
 					    	Delay(20000);
-						}
-
-					}
+					   }
 
 
 		}
@@ -756,9 +739,9 @@ void NegativePressureWorks_Mode(void)
 			if(adS.minus_revise_flag ==0x22)
 			{
 
-			 	     LCDDisplay= (0.115 * theta) + 190;        //y = 0.0115x + 20.253
+			 	     LCDDisplay= (0.115 * theta) + 180;        //y = 0.0115x + 20.253
 
-				  if( LCDDisplay >= 1020 ){
+				  if( LCDDisplay >= 1030 ){
 
 
 					UnitConverter(0);
