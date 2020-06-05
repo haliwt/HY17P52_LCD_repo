@@ -608,7 +608,8 @@ void PositivePressureWorks_Mode(void)
 								LCDDisplay=UnitConverter(LCDDisplay);
 							
 				                if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
-				                else 
+				                else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
+				                else
 				                DisplayNum4Bytes(LCDDisplay); 
 								LowVoltageDisplay();
 								DisplaySignPlus();
@@ -621,7 +622,8 @@ void PositivePressureWorks_Mode(void)
 						   	   if(LCDDisplay < 100 ){
 									LCDDisplay=UnitConverter(LCDDisplay);
 									
-									
+									if(adS.eepromRead_UnitLow_bit==mpa)DisplayNumOneByte(LCDDisplay);
+									else
 									DisplayNum2Bit(LCDDisplay);
 									LowVoltageDisplay();
 									DisplaySignPlus();
@@ -631,7 +633,7 @@ void PositivePressureWorks_Mode(void)
 						   	    }
 						   	    else{
 			                        LCDDisplay=UnitConverter(LCDDisplay);
-			
+									
 			                        DisplayNum(LCDDisplay);
 			                        LowVoltageDisplay();
 			                        DisplaySignPlus();
@@ -763,6 +765,7 @@ void NegativePressureWorks_Mode(void)
 					
 					LCDDisplay=UnitConverter(LCDDisplay);
 					if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
+					else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
 				    else 	
 					DisplayNum4Bytes(LCDDisplay);
 

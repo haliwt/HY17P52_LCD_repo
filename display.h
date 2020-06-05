@@ -127,5 +127,6 @@ void DisplaySignPlus(void);
 void DisplayNum2Bit(int  num);
 void DisplayHighestByte_One(void);
 void DisplayNum4Bytes(int number);
+void DisplayNumOneByte(int number);
 
 #endif 

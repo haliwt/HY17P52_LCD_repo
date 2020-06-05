@@ -53,7 +53,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr++;
   }
-  LCD_WriteData(&LCD0,highestPlus) ; 
+  //LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
 }
 /*---------------------------------------------------------------------------
   *
@@ -136,7 +136,32 @@ void DisplayNum2Bit(int Num)
  
  
 }
-
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayNumOneByte(int number);
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayNumOneByte(int Num)
+{
+  
+  unsigned char count;
+  unsigned char *LCDAddr,LCDData;
+  
+LCDAddr = &LCD1;//LCDAddr=&LCD3;
+for(count=0;count<3;count++)
+{
+    if(LCDAddr != &LCD1){
+      LCDData=seg[0];
+      LCD_WriteData(LCDAddr,LCDData);
+    }
+    LCDData=seg[Num%10];
+    LCD_WriteData(LCDAddr,LCDData);
+    Num=Num/10 ;
+    LCDAddr++;
+  }
+  
+}
 /*---------------------------------------------------------------------------*/
 /* LCD DISPLAY Hexadecimal                                                   */
 /*---------------------------------------------------------------------------*/
