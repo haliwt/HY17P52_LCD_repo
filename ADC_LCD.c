@@ -720,7 +720,7 @@ void NegativePressureWorks_Mode(void)
 
 
 		}
-		else{
+		else if(ADC < 0){
 
 				//BIE Read
 
@@ -746,7 +746,7 @@ void NegativePressureWorks_Mode(void)
 
 			 	     LCDDisplay= (0.115 * theta) + 180;        //y = 0.0115x + 20.253
 
-				  if( LCDDisplay >= 1030 ){
+				  if( LCDDisplay >= 1050 ){
 
 
 					UnitConverter(0);
@@ -757,12 +757,13 @@ void NegativePressureWorks_Mode(void)
 				  
 					Delay(20000);
 				}
-				else if(LCDDisplay <1090 && LCDDisplay >=1000){
+				else if(LCDDisplay <1050 && LCDDisplay >=1000){
 
 
 					
 					LCDDisplay=UnitConverter(LCDDisplay);
-		
+					if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
+				    else 	
 					DisplayNum4Bytes(LCDDisplay);
 
 					LowVoltageDisplay();
