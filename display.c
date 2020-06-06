@@ -53,7 +53,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr++;
   }
-  LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
+  LCD_WriteData(&LCD0,highest_bit_NotOne) ;  //WT.EDIT 2020-06-05
 }
 /*---------------------------------------------------------------------------
   *
@@ -74,11 +74,17 @@ void DisplayNum4Bytes( int Num)
   {
 
       LCDData=seg[Num%10];
-      LCD_WriteData(LCDAddr,LCDData);
+      if(LCDAddr == &LCD4){
+        if(LCDData !=0 )
+          LCD_WriteData(&LCD0,highest_bit_One) ; 
+        else LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
+      }
+      else{
+            LCD_WriteData(LCDAddr,LCDData);
+        }
       Num=Num/10 ;
       LCDAddr++;
-      if(LCDAddr == &LCD4)LCD_WriteData(&LCD0,highestByte) ; 
-   
+    
       
   }
  // LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
@@ -353,7 +359,7 @@ void DisplaySignPlus(void)
 ----------------------------------------------------------------------------*/
 void DisplayHighestByte_One(void)
 {
-   LCD_WriteData(&LCD0,highestByte);       
+   LCD_WriteData(&LCD0,highest_bit_One);       
 
 }
 

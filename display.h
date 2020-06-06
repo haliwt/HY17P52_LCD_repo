@@ -33,6 +33,7 @@
 #define   symbol_minus           (LCD0 |=(0x01 << symbol_minus_bit))
 #define   symbol_plus            (LCD0 &= ~(0x01 << symbol_minus_bit))
 
+
 #define  POINTP3             0
 #define  POINT_P3       (LCD2 |=(0x01<<POINTP3))
 
@@ -46,8 +47,9 @@
 #define seg_lcd3_mask   (LCD3 &= (0x01<<seg_lcd3_data))
 
 #define highestbit      0
-#define highestByte     (LCD0 |=(0x06<< highestbit))
-#define highestPlus     (LCD0 &= ~(0x06<< highestbit))
+#define highest_bit_One     (LCD0 |=(0x06<< highestbit)) 
+#define highest_bit_NotOne     (LCD0 &=~(0x06<< highestbit)) 
+
 
 
 
@@ -116,11 +118,12 @@ void DisplayLLL(void);
 void DisplayBAT(void);
 void Delay(unsigned int ms);
 void GPIO_Iint(void) ;
-long Reverse_Data(long number);
+
+
 void DisplayBatteryCapacityFull(void);
 void DisplayBatteryCapacityHalf(void);
 void DispalyBatteryCapacityLow(void);
-int DecimalToHex(int number);
+
 void DisplayPointP3(void);
 void DisplayPointP2(void);
 void DisplayPointP1(void);
@@ -130,5 +133,5 @@ void DisplayNum2Bit(int  num);
 void DisplayHighestByte_One(void);
 void DisplayNum4Bytes(int number);
 void DisplayNumOneByte(int number);
-void Timer_Wait(unsigned long times);
+
 #endif
