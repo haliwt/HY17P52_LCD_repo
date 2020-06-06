@@ -53,7 +53,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr++;
   }
-  //LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
+  LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
 }
 /*---------------------------------------------------------------------------
   *
@@ -67,30 +67,7 @@ void DisplayNum4Bytes( int Num)
 {
   unsigned char count,count2;
   unsigned char *LCDAddr,LCDData;
-
-#if 0
-        LCDAddr=&LCD0;
-  
-      if(LCDAddr != &LCD0){
-
-         for(count2=0;count2<3;count2++)
-          {
-            LCDData=seg[Num%10];
-            LCD_WriteData(LCDAddr,LCDData);
-            Num=Num/10 ;
-            LCDAddr++;
-          }
-
-      }
-      else if(LCDAddr == &LCD0){
-          LCDData=seg[Num%10];
-          LCD_WriteData(LCDAddr,highestByte);
-          Num=Num/10 ;
-          LCDAddr++;
-     
-        }
- #endif  
-  #if 1
+ #if 1
   LCDAddr=&LCD0;
   for(count=0;count<4;count++)
   {
@@ -410,3 +387,53 @@ void DisplayHighestByte_One(void)
    LCD_WriteData(&LCD0,highestByte);       
 
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void Timer_Wait(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void Timer_Wait(unsigned long  saveTimes)
+{
+  
+  static unsigned char i=0;
+  #if 1
+  if(adS.zeroTo60times ==1){
+
+       LCD_DisplayOn();
+#if 0
+      if(saveTimes >100){
+         // i++;
+          saveTimes =0;
+         // if(i>=2){
+          //  i=0;
+           LCD_DisplayOn();
+           adS.zeroTo60times =0;
+          }
+      
+      saveTimes =0;
+      //adS.delayDisplay =0;
+       LCD_DisplayOn();
+      i=0;
+       #endif 
+    }
+
+    else
+   #endif
+      {
+        if(saveTimes >10){
+         // i++;
+         
+          saveTimes =0;
+         // if(i>=2){
+          //  i=0;
+            LCD_DisplayOff();
+            Delay(20000);
+          }
+
+      }
+
+}
+  
+          
+

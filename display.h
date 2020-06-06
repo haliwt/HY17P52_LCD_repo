@@ -4,7 +4,7 @@
 
 //
 #define   seg_p      0x01
-/* unit sign */  
+/* unit sign */
 #define   seg_kgf    0x01
 #define   seg_bar    0x02
 #define   seg_psi    0x04
@@ -14,8 +14,8 @@
 #define   symbol_b      0x04
 #define   symbol_g      0x08
 /*battery sign symbol */
-#define   symbol_t1     0x10     //battery value t1 
-#define   symbol_t3     0x20  
+#define   symbol_t1     0x10     //battery value t1
+#define   symbol_t3     0x20
 #define   symbol_t2     0x40
 #define   symbol_t0     0x80   //battery outline
 
@@ -45,7 +45,7 @@
 #define seg_lcd3_data   0
 #define seg_lcd3_mask   (LCD3 &= (0x01<<seg_lcd3_data))
 
-#define highestbit      0 
+#define highestbit      0
 #define highestByte     (LCD0 |=(0x06<< highestbit))
 #define highestPlus     (LCD0 &= ~(0x06<< highestbit))
 
@@ -64,38 +64,40 @@ struct _adc_works_
    unsigned char zeroPoint_Mode:1;
    unsigned char error_mod:1;
    unsigned char key_flag;
-   unsigned char resetZeroDisplay;
+
    unsigned char negativeInPositive_flag: 1;
    unsigned char LVD_2V4_flag : 1;
    unsigned char LVD_3V_flag : 1;
-   unsigned char zeroTo60times : 1;
-  
+   unsigned char zeroTo60times : 2;
+
    unsigned char  plus_revise_flag;
    unsigned char  minus_revise_flag;
-  
+
    unsigned char  Presskey_flag:1;
    unsigned char  Pressure_sign :1;
-  
-  
+   unsigned char  destroyTimes_3 : 1;
+   unsigned char  destroyTimes_5 : 1;
+   unsigned char  workstation_flag:1;
+
    unsigned char  eepromRead_PositiveDeltaLow_bit ;
- 
+
    unsigned char  eepromRead_NegativeDeltaLow_bit;
 
-   unsigned char  eepromRead_UnithHigh_bit ; 
+   unsigned char  eepromRead_UnithHigh_bit ;
    unsigned char  eepromRead_UnitLow_bit ;
-   unsigned char  reload_ADCInterrupt :1; 
+   unsigned char  reload_ADCInterrupt :1;
    unsigned  int  delayTimes_5;
    unsigned int   delayTimes_3;
    unsigned int   delayDisplay ;
+   unsigned long  getSaveTimes ;
 
 
-   
    long  minusOffset_Value;
    long  plusOffset_Value;
-    
+
 };
 
-extern struct _adc_works_ adS; 
+extern struct _adc_works_ adS;
 
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
@@ -128,5 +130,5 @@ void DisplayNum2Bit(int  num);
 void DisplayHighestByte_One(void);
 void DisplayNum4Bytes(int number);
 void DisplayNumOneByte(int number);
-
-#endif 
+void Timer_Wait(unsigned long times);
+#endif

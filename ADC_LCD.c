@@ -142,12 +142,10 @@ void main(void)
 	ADIE_Enable();
 	GIE_Enable();
 
-	while(1)
-	{
+    while(1)
+    {
 
-
-		
-		if(GPIO_READ_PT10()==0 && firstPower !=0)
+        if(GPIO_READ_PT10()==0 && firstPower !=0)
 		{
 
 		  //  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
@@ -158,107 +156,90 @@ void main(void)
 			if(GPIO_READ_PT10()==0)
 			{
 			    if(adS.destroyTimes_5 == 0){
-			    	
+
 			        adS.destroyTimes_3=1;
 	          	    SetupUnitSelection();
-
-	          }
+                }
 			}
 
 		  }
 
 		 if(adS.delayTimes_3 >=5000&& adS.destroyTimes_3 !=1){ /* zero point mode*/
 
-			  if(GPIO_READ_PT10()==0)
-		      {
-
-			   	SetupZeroPointSelection();
-
-				}
-		 }
+			  if(GPIO_READ_PT10()==0){
+                 SetupZeroPointSelection();
+                }
+        }
 		 if(adS.delayDisplay >= 1200 ){
 
-		 	 if(GPIO_READ_PT10()==0)
-		 	{
+		 	 if(GPIO_READ_PT10()==0){
 
-	          	
-	          	   if(adS.zeroTo60times==1){
-	          	   	    i++;
-	          	   	    Delay(1000);
-	          	   	    	if(GPIO_READ_PT10()==0){
-	          	   	    		 LCD_DisplayOn();
-                               adS.getSaveTimes=0;
-                              
-	          	   	    	}
-	          	   	    	else i=0;
-	          	   	   
+    	        if(adS.zeroTo60times==1){
+                    Delay(1000);
+          	   	    if(GPIO_READ_PT10()==0){
+              	   	    LCD_DisplayOn();
+                        adS.getSaveTimes=0;
+                        }
+                }else if(adS.zeroTo60times==2){
+                    Delay(1000);
+          	   	    if(GPIO_READ_PT10()==0){
+              	   	    LCD_DisplayOn();
+                        adS.getSaveTimes=0;
+                        }
 
-		           
+                }
+                else if(adS.workstation_flag ==1){
+                    Delay(1000);
+                     if(GPIO_READ_PT10()==0){
+                        adS.zeroTo60times=2;
+                     }
+                }
 
-			 }
+            }
+        }
+    }// GPIO_READ_PT10()=0 END
+  	else{
+        if(adS.testMode == 0){ /* measure mode */
+            firstPower =1;
+            adS.zeroPoint_Mode=0;
+            adS.key_flag =0;
+            adS.unit_setMode=0;
+            adS.destroyTimes_3=0;
+            adS.delayTimes_3=0;
+            adS.key_flag =0;
+            adS.delayTimes_5=0;
+            adS.destroyTimes_5=0;
+            adS.delayDisplay =0;
 
-		 }
-
-		}
-
-	}
-  		else{
-                
-            
-		   if(adS.testMode == 0){ /* measure mode */
-		   	    firstPower =1;
-		       	adS.zeroPoint_Mode=0;
-				adS.key_flag =0;
-				adS.unit_setMode=0;
-				adS.destroyTimes_3=0;
-				adS.delayTimes_3=0;
-				 adS.key_flag =0;
-				 adS.delayTimes_5=0;
-				 adS.destroyTimes_5=0;
-				 adS.delayDisplay =0;
-
-				if(adS.reload_ADCInterrupt ==1){
-					adS.reload_ADCInterrupt ++ ;
-					ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
-					ADIF_ClearFlag();
-					ADIE_Enable();
-					GIE_Enable();
-				}
-				if(MCUSTATUSbits.b_ADCdone==1)
-				{
+			if(adS.reload_ADCInterrupt ==1){
+				adS.reload_ADCInterrupt ++ ;
+				ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_16, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
+				ADIF_ClearFlag();
+				ADIE_Enable();
+				GIE_Enable();
+			}
+			if(MCUSTATUSbits.b_ADCdone==1){
 					MCUSTATUSbits.b_ADCdone=0;
-					
+
 					TestWorksPrecondition();
+                    if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
+                        PositivePressureWorks_Mode();
+                    }else if(adS.Pressure_sign ==1){ /*Input Negative pressure mode*/
 
-				   if(adS.Pressure_sign == 0){/*Input positive Pressure mode*/
-						
-				        PositivePressureWorks_Mode();
-				         
-
-					}else if(adS.Pressure_sign ==1){ /*Input Negative pressure mode*/
-				        
 						NegativePressureWorks_Mode();
-						
-					}
-					
-					 
-		        }
+                    }
+                }
+        }
+	    if(adS.zeroPoint_Mode ==1){
 
-		   }
-		   if(adS.zeroPoint_Mode ==1){
-
-					SetupZeroPoint_Mode();
+				SetupZeroPoint_Mode();
 			}
-		    if(adS.unit_setMode ==1){
-
-				 SetupUnit_Mode();
-			}
-	}
-
+	   if(adS.unit_setMode ==1){
+           SetupUnit_Mode();
+		}
+	   }
+   }
 }
-}
-
-
 /*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
@@ -279,7 +260,7 @@ unsigned char EEPROM_ReadData_Address0(void)
 	   BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 	   while((BIECN& 0x01)==1);
 	   unitID=BIEDRL;
-       
+
        return unitID;
 
 }
@@ -293,43 +274,38 @@ unsigned char EEPROM_ReadData_Address0(void)
 ******************************************************************************/
 long UnitConverter(long data)
 {
-       
-
-      adS.eepromRead_UnitLow_bit  =  EEPROM_ReadData_Address0();
-    
-     
-
-     if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
+    adS.eepromRead_UnitLow_bit  =  EEPROM_ReadData_Address0();
+      if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
 
          LCD_WriteData(&LCD4, seg_psi) ;
-          DisplayPointP3(); 
-       
+          DisplayPointP3();
+
          return  kgfTOpsi(data) ;
      }
 	 else if(adS.eepromRead_UnitLow_bit==bar){ /*unit bar*/
      	   LCD_WriteData(&LCD4, seg_bar) ;
      	   DisplayPointP1();
-     	  
+
      	 return	kgfTObar(data);
 	 }
 	 else if(adS.eepromRead_UnitLow_bit==kgf){ /* unit kgf*/
 
          LCD_WriteData(&LCD4, seg_kgf) ;
          DisplayPointP3();
-        
+
          return data;
 	 }
 	 else if(adS.eepromRead_UnitLow_bit==mpa){ /*uint mpa*/
 
 	 	 LCD_WriteData(&LCD4, seg_mpa) ;
 	 	  DisplayPointP1();
-	 
+
 	 	 return kgfTOmpa(data);
 	 }
 	 else{
              LCD_WriteData(&LCD4, seg_kgf) ;
              DisplayPointP3();
-           
+
              return data;
 	 }
 
@@ -343,16 +319,16 @@ long UnitConverter(long data)
 ******************************************************************************/
 void DisplaySelectionUintPoint(void)
 {
-	
+
 	if(adS.eepromRead_UnitLow_bit==psi){
-		    DisplayPointP3(); //小数点不�?
+		    DisplayPointP3(); //小数点不��?
 	}
 	else if(adS.eepromRead_UnitLow_bit==bar){
 	       DisplayPointP1();   //小数点不动的
 	}
 	else if(adS.eepromRead_UnitLow_bit==kgf){
 
-			DisplayPointP3(); //小数点不�?
+			DisplayPointP3(); //小数点不��?
 	}
 	else if(adS.eepromRead_UnitLow_bit==mpa){
 
@@ -363,8 +339,6 @@ void DisplaySelectionUintPoint(void)
 		 LCD_WriteData(&LCD4, seg_kgf) ;
          DisplayPointP3();
 	}
-
-	
 }
 /******************************************************************************
 	*
@@ -393,8 +367,7 @@ unsigned char LowVoltageDetect_3V(void)
 /*************************************************************************
   *
   *Function Name : unsigned char LowVoltageDetect
-  *
-  *
+  *Function : delected Low Voltage value
   *
   *
   *
@@ -418,10 +391,9 @@ unsigned char LowVoltageDetect_2V4(void)
 /*****************************************************************************
   *
   *Function Name : unsigned char LowVoltageDisplay(void)
-  *
-  *
-  *
-  *
+  *Function : detected low voltage is 3V
+  *Input Regerence : No
+  *Return Reference :NO
   *
 *******************************************************************************/
 void LowVoltageDisplay(void)
@@ -449,7 +421,6 @@ void LowVoltageDisplay(void)
 }
 /****************************************************************************
   *
-  *
   *Function Name : unsigned char LowVoltageDisplay(void)
   *
   *
@@ -466,7 +437,7 @@ void SetupZeroPoint_Mode(void)
         adS.destroyTimes_5 = 1;
 
 		 if(adS.Pressure_sign ==1){
-			adS.minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE ; //delta value
+			     adS.minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE ; //delta value
 
 			    adS.minusOffset_Value=abs(adS.minusOffset_Value);
 				adS.minusOffset_Value=(unsigned char)adS.minusOffset_Value;
@@ -475,38 +446,29 @@ void SetupZeroPoint_Mode(void)
 				HY17P52WR3(2,0x22,adS.minusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
 				if(Flag== 1)
 				{
-				GPIO_PT16_HIGH();
+				    GPIO_PT16_HIGH();
 					while(1);    //fail
 				}
-			
-				adS.delayTimes_5=0;
-
-		}
+                adS.delayTimes_5=0;
+            }
 		else
 		{
 			adS.Pressure_sign =0;
 			//ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
 			adS.plusOffset_Value= abs(ADC) -STD_VALUE  ;
 
+            adS.plusOffset_Value =(unsigned char)abs(adS.plusOffset_Value);
+            //	adS.plusOffset_Value=DecimalToHex(adS.plusOffset_Value); //WT.EDIT 2020-06-03
 
+            HY17P52WR3(1,0x11,adS.plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+            if(Flag== 1)
+            {
+            GPIO_PT16_HIGH();
+            	while(1);    //fail
+            }
 
-
-				adS.plusOffset_Value =(unsigned char)abs(adS.plusOffset_Value);
-			//	adS.plusOffset_Value=DecimalToHex(adS.plusOffset_Value); //WT.EDIT 2020-06-03
-
-				HY17P52WR3(1,0x11,adS.plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-				if(Flag== 1)
-				{
-				GPIO_PT16_HIGH();
-					while(1);    //fail
-				}
-				
-				adS.delayTimes_5=0;
-
-	}
-
-
-
+            adS.delayTimes_5=0;
+        }
 }
 /**************************************************************
 	*
@@ -516,7 +478,7 @@ void SetupZeroPoint_Mode(void)
 	*
 ***************************************************************/
 void SetupUnit_Mode(void)
-	{
+{
 	adS.Presskey_flag=0;
 	adS.unit_setMode =0 ;
 	adS.testMode = 0;
@@ -600,133 +562,127 @@ void TestWorksPrecondition(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-         
-            long delta,eta;
-		     
-			long LCDDisplay;
-			adS.Pressure_sign =0;
-			eta = ADC * 0.1 ;
-			 adS.getSaveTimes++;
-		   	//BIE Read
-			BIEARL=1;                                //addr=1
-			BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-			while((BIECN& 0x01)==1);
-			adS.plus_revise_flag =BIEDRH ;
-			adS.eepromRead_PositiveDeltaLow_bit=BIEDRL;
+    long delta,eta;
+    long LCDDisplay;
+    adS.Pressure_sign =0;
+    eta = ADC * 0.1 ;
+     adS.getSaveTimes++;
+    	//BIE Read
+    BIEARL=1;                                //addr=1
+    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+    while((BIECN& 0x01)==1);
+    adS.plus_revise_flag =BIEDRH ;
+    adS.eepromRead_PositiveDeltaLow_bit=BIEDRL;
 
-					//if(adS.eepromRead_PositiveDeltaLow_bit+ (ADC * 0.01) >= STD_VALUE){
-                   if(adS.eepromRead_PositiveDeltaLow_bit + eta >= STD_VALUE){
-						delta =eta - adS.eepromRead_PositiveDeltaLow_bit ;
+    		//if(adS.eepromRead_PositiveDeltaLow_bit+ (ADC * 0.01) >= STD_VALUE){
+           if(adS.eepromRead_PositiveDeltaLow_bit + eta >= STD_VALUE){
+    			delta =eta - adS.eepromRead_PositiveDeltaLow_bit ;
 
-					}
-					else{
+    		}
+    		else{
 
-						delta =eta  + adS.eepromRead_PositiveDeltaLow_bit ;
+    			delta =eta  + adS.eepromRead_PositiveDeltaLow_bit ;
 
-					}
+    		}
 
-				if(adS.plus_revise_flag == 0x11){
+    	if(adS.plus_revise_flag == 0x11){
 
-					if(ADC < 20000 ){
-						UnitConverter(0);
-						DisplayNum(0);
-					    LowVoltageDisplay();
-					    DisplaySignPlus();
-			            Delay(20000);
-			         
-			            adS.getSaveTimes++;
-			           // Timer_Wait(adS.getSaveTimes);
-			            
+    		if(ADC < 20000 ){
+    			UnitConverter(0);
+    			DisplayNum(0);
+    		    LowVoltageDisplay();
+    		    DisplaySignPlus();
+                Delay(20000);
 
-					}
-					else {   // ADC  >=100000
-							//eta = delta ;  //WT.EDIT 2020-06-03 MODIYF
-							//eta = delta * 0.1;
-							//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
-							LCDDisplay= 0.115 *delta- 220; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.392
-
-							if(LCDDisplay >=1070){
-	              				    DisplayHHH();
-									UnitConverter(0);
-									LowVoltageDisplay();
-								    Delay(20000);
-								    adS.getSaveTimes++;
-								//    Timer_Wait(adS.getSaveTimes);
-								
-							}
-							else if(LCDDisplay <1060 && LCDDisplay >=1000){
-
-								LCDDisplay=UnitConverter(LCDDisplay);
-							
-				                if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
-				                else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
-				                else
-				                DisplayNum4Bytes(LCDDisplay); 
-								LowVoltageDisplay();
-								DisplaySignPlus();
-								DisplaySelectionUintPoint();
-								Delay(20000);
-								adS.getSaveTimes++;
-							//	Timer_Wait(adS.getSaveTimes);
-							
-						   }
-						   else{
-
-						   	   if(LCDDisplay < 100 ){
-									LCDDisplay=UnitConverter(LCDDisplay);
-									
-									if(adS.eepromRead_UnitLow_bit==mpa)DisplayNumOneByte(LCDDisplay);
-									else
-									DisplayNum2Bit(LCDDisplay);
-									LowVoltageDisplay();
-									DisplaySignPlus();
-									DisplaySelectionUintPoint();
-									Delay(20000);
-									adS.getSaveTimes++;
-									//Timer_Wait(adS.getSaveTimes);
-									
-						   	    }
-						   	    else{
-			                        LCDDisplay=UnitConverter(LCDDisplay);
-									
-			                        DisplayNum(LCDDisplay);
-			                        LowVoltageDisplay();
-			                        DisplaySignPlus();
-			                        DisplaySelectionUintPoint();
-			                        Delay(20000);
-			                        adS.getSaveTimes++;
-			                       // Timer_Wait(adS.getSaveTimes);
-							    }
-								
+                adS.getSaveTimes++;
+                adS.workstation_flag =0;
 
 
-						   }
+    		}
+    		else {
+    				 adS.workstation_flag =1;
+    				//eta = delta * 0.1;
+    				//  LCDDisplay= 0.0115 *eta- 20.12; //WT.EDIT 2020-0603 MODIFY y = 0.0115x - 20.12
+    				LCDDisplay= 0.115 *delta- 220; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.392
 
-				        }
-
-				   if(adS.getSaveTimes>230){
-       
-				            LCD_DisplayOff();
-				            adS.zeroTo60times=1;
-					       }
-				     
-
-					    
-			}
-			if(adS.plus_revise_flag !=0x11){
-
-					ADC=UnitConverter(ADC);
-								                   
-					DisplayNum(ADC);
-					LowVoltageDisplay();
-					DisplaySignPlus();
-					DisplaySelectionUintPoint();
-					Delay(20000);
-
-			}
+    				if(LCDDisplay >=1070){
+          				    DisplayHHH();
+    						UnitConverter(0);
+    						LowVoltageDisplay();
+    					    Delay(20000);
+    					    adS.getSaveTimes++;
 
 
+    				}
+    				else if(LCDDisplay <1060 && LCDDisplay >=1000){
 
+    					LCDDisplay=UnitConverter(LCDDisplay);
+
+    	                if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
+    	                else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
+    	                else
+    	                DisplayNum4Bytes(LCDDisplay);
+    					LowVoltageDisplay();
+    					DisplaySignPlus();
+    					DisplaySelectionUintPoint();
+    					Delay(20000);
+    					adS.getSaveTimes++;
+
+
+    			   }
+    			   else{
+
+    			   	   if(LCDDisplay < 100 ){
+    						LCDDisplay=UnitConverter(LCDDisplay);
+
+    						if(adS.eepromRead_UnitLow_bit==mpa)DisplayNumOneByte(LCDDisplay);
+    						else
+    						DisplayNum2Bit(LCDDisplay);
+    						LowVoltageDisplay();
+    						DisplaySignPlus();
+    						DisplaySelectionUintPoint();
+    						Delay(20000);
+    						adS.getSaveTimes++;
+
+
+    			   	    }
+    			   	    else{
+                            LCDDisplay=UnitConverter(LCDDisplay);
+
+                            DisplayNum(LCDDisplay);
+                            LowVoltageDisplay();
+                            DisplaySignPlus();
+                            DisplaySelectionUintPoint();
+                            Delay(20000);
+                            adS.getSaveTimes++;
+
+    				    }
+
+                    }
+                }
+                if(adS.getSaveTimes>225){
+                    if(adS.zeroTo60times ==2){
+                        adS.zeroTo60times =0 ;
+                        adS.getSaveTimes=0;
+                    }
+                    else{
+                            LCD_DisplayOff();
+                            adS.zeroTo60times=1;
+                    }
+                }
+
+    }
+    if(adS.plus_revise_flag !=0x11){
+
+    		ADC=UnitConverter(ADC);
+
+    		DisplayNum(ADC);
+    		LowVoltageDisplay();
+    		DisplaySignPlus();
+    		DisplaySelectionUintPoint();
+    		Delay(20000);
+
+    }
 }
 /**********************************************************************
 	*
@@ -742,37 +698,31 @@ void NegativePressureWorks_Mode(void)
 		long LCDDisplay ; //"-"
 	    adS.Pressure_sign=1;
 		if(adS.negativeInPositive_flag==1){
-					adS.negativeInPositive_flag=0;
-			        theta = ADC * 0.1;
+            adS.negativeInPositive_flag=0;
+            theta = ADC * 0.1;
 
-			        LCDDisplay= 200.84 - (0.115 * theta)   ;       //y = -0.0116x + 20.084//y = -0.0115x + 20.194
+            LCDDisplay= 200.84 - (0.115 * theta)   ;       //y = -0.0116x + 20.084//y = -0.0115x + 20.194
 
-				    if(theta >=1600 && theta < 1750){
+            if(theta >=1600 && theta < 1750){
 
-	                    UnitConverter(0);
-	                    DisplayNum(0);
-	                    Delay(20000);
+                UnitConverter(0);
+                DisplayNum(0);
+                Delay(20000);
 
-				    }
-				    else {
-				    	
-				    
-		                    LCDDisplay=UnitConverter(LCDDisplay);
-							
-							DisplayNum(LCDDisplay);
-					    	LowVoltageDisplay();
-					    	DisplaySignMinus();
-					    	DisplaySelectionUintPoint();
-					    	Delay(20000);
-					   }
-
-
-		}
+            }
+            else {
+                LCDDisplay=UnitConverter(LCDDisplay);
+                DisplayNum(LCDDisplay);
+                LowVoltageDisplay();
+                DisplaySignMinus();
+                DisplaySelectionUintPoint();
+                Delay(20000);
+            }
+        }
 		else if(ADC < 0){
 
 				//BIE Read
-
-				BIEARL=2;                                //addr=1
+                BIEARL=2;                                //addr=1
 				BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 				while((BIECN& 0x01)==1);
 				adS.minus_revise_flag = BIEDRH;
@@ -792,39 +742,33 @@ void NegativePressureWorks_Mode(void)
 			if(adS.minus_revise_flag ==0x22)
 			{
 
-			 	     LCDDisplay= (0.115 * theta) + 180;        //y = 0.0115x + 20.253
+			 	   LCDDisplay= (0.115 * theta) + 180;        //y = 0.0115x + 20.253
 
 				  if( LCDDisplay >= 1050 ){
 
-
-					UnitConverter(0);
-				
-					LowVoltageDisplay();
-
-				    DisplayLLL();//"-"
-				  
-					Delay(20000);
+                    UnitConverter(0);
+                    LowVoltageDisplay();
+                    DisplayLLL();//"-"
+                    Delay(20000);
 				}
 				else if(LCDDisplay <1050 && LCDDisplay >=1000){
 
-
-					
-					LCDDisplay=UnitConverter(LCDDisplay);
+                    LCDDisplay=UnitConverter(LCDDisplay);
 					if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
 					else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
-				    else 	
+				    else
 					DisplayNum4Bytes(LCDDisplay);
 
 					LowVoltageDisplay();
 					DisplaySignMinus();
 					DisplaySelectionUintPoint();
-					
+
 					Delay(20000);
 				}
 				else{
 
 					LCDDisplay=UnitConverter(LCDDisplay);
-					
+
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
 					DisplaySignMinus();
@@ -846,7 +790,7 @@ void NegativePressureWorks_Mode(void)
 ***********************************************************************/
 void SetupUnitSelection(void)
 {
-	
+
 	adS.delayTimes_5 =0;
 	adS.unit_setMode =1;
 	adS.zeroPoint_Mode =0;
@@ -854,36 +798,33 @@ void SetupUnitSelection(void)
 	adS.destroyTimes_5=0;
 	DisplayUnit();
 
-	
-
-	switch(adS.plus_uint){
+    switch(adS.plus_uint){
 	case psi:
 	     adS.plus_uint++;
 		 adS.unitChoose = psi;
 		 LCD_WriteData(&LCD4,seg_psi);
 		 adS.delayTimes_5=8000;
-		
-	    break;
+         break;
 	case bar:
 		 adS.plus_uint++;
 		 adS.unitChoose = bar;
 		 LCD_WriteData(&LCD4,seg_bar);
 		 adS.delayTimes_5=8000;
-		
+
 	     break;
 	case kgf:
 		adS.plus_uint++;
 		adS.unitChoose = kgf;
 		LCD_WriteData(&LCD4,seg_kgf);
 		 adS.delayTimes_5=8000;
-	
+
 	     break;
 	case mpa:
 	     adS.plus_uint=0;
 		 adS.unitChoose = mpa;
 		 LCD_WriteData(&LCD4,seg_mpa);
 		 adS.delayTimes_5=8000;
-		
+
 	     break;
 	}
 
@@ -913,7 +854,7 @@ void SetupZeroPointSelection(void)
 /*----------------------------------------------------------------------------*/
 void ISR(void) __interrupt
 {
-    
+
 	if(ADIF_IsFlag())
 	{
 		ADIF_ClearFlag();
