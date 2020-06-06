@@ -65,9 +65,26 @@ void DisplayNum(long Num)
 *---------------------------------------------------------------------------*/
 void DisplayNum4Bytes( int Num)
 {
-  unsigned char count,count2;
+  unsigned char count;
   unsigned char *LCDAddr,LCDData;
- #if 1
+
+  
+  LCDAddr = &LCD1;//LCDAddr=&LCD3;
+  for(count=0;count<5;count++)
+  {
+
+      LCDData=seg[Num%10];
+      LCD_WriteData(LCDAddr,LCDData);
+      Num=Num/10 ;
+      LCDAddr++;
+      if(LCDAddr == &LCD4)LCD_WriteData(&LCD0,highestByte) ; 
+   
+      
+  }
+ // LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
+
+
+ #if 0
   LCDAddr=&LCD0;
   for(count=0;count<4;count++)
   {
@@ -196,23 +213,7 @@ void Delay(unsigned int ms)
   for(;ms>0;ms--)
     __asm__("NOP");
 }
-/*----------------------------------------------------------------------------
-  *
-  *Function Name :Reverse 
-  * 
-  *                                               
-----------------------------------------------------------------------------*/
-long Reverse_Data(long number)
-  {
-    long tmp=0;
-    while(number!=0)
-    {
-     tmp=(tmp*10 + number%10);
-     number=number*0.1;
-    }
-   if(number<0) return (-tmp);
-    else return tmp;
-  }
+
 /*----------------------------------------------------------------------------
   *
   *Function Name :void DisplayHHH(void) 
@@ -288,39 +289,7 @@ void DispalyBatteryCapacityLow(void)
   LCD_WriteData(&LCD0,symbol_battery_low);
  
 }
-/*----------------------------------------------------------------------------
-  *
-  *Function Name : void DisplayBatteryCapacityFull(void)
-  * 
-  *                                               
-----------------------------------------------------------------------------*/
-int DecimalToHex(int number)
-{
-   int n,a1,count=0;//count 用于角标的计数，j 控制 for 循环
-  //int a[100];
-  int hex;
-  int a[2];
-  a[0]=0;
-  a[1]=0;
- 
- while(number!=0) {
-    a1=number;
-    number=number/16;
-      a[count]=a1%16;
-      count++;
-    }
-  
-  
-#if 1
 
-  hex =a[1] << 4 | a[0];
-
- // printf("hex = %#x\r\n",hex);
-
-#endif
-  return hex ;
-
-}
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayPointP3(void)
@@ -387,53 +356,6 @@ void DisplayHighestByte_One(void)
    LCD_WriteData(&LCD0,highestByte);       
 
 }
-/*----------------------------------------------------------------------------
-  *
-  *Function Name : void Timer_Wait(void)
-  * 
-  *                                               
-----------------------------------------------------------------------------*/
-void Timer_Wait(unsigned long  saveTimes)
-{
-  
-  static unsigned char i=0;
-  #if 1
-  if(adS.zeroTo60times ==1){
 
-       LCD_DisplayOn();
-#if 0
-      if(saveTimes >100){
-         // i++;
-          saveTimes =0;
-         // if(i>=2){
-          //  i=0;
-           LCD_DisplayOn();
-           adS.zeroTo60times =0;
-          }
-      
-      saveTimes =0;
-      //adS.delayDisplay =0;
-       LCD_DisplayOn();
-      i=0;
-       #endif 
-    }
-
-    else
-   #endif
-      {
-        if(saveTimes >10){
-         // i++;
-         
-          saveTimes =0;
-         // if(i>=2){
-          //  i=0;
-            LCD_DisplayOff();
-            Delay(20000);
-          }
-
-      }
-
-}
-  
           
 
