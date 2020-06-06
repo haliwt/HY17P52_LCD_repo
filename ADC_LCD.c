@@ -697,7 +697,7 @@ void NegativePressureWorks_Mode(void)
 		long theta;
 		long LCDDisplay ; //"-"
 	    adS.Pressure_sign=1;
-        adS.workstation_flag =1;
+
 		if(adS.negativeInPositive_flag==1){
             adS.negativeInPositive_flag=0;
 
@@ -711,8 +711,10 @@ void NegativePressureWorks_Mode(void)
                 DisplayNum(0);
                 Delay(20000);
                 adS.getSaveTimes++;
+                adS.workstation_flag =0;
             }
             else {
+                adS.workstation_flag =1;
                 LCDDisplay=UnitConverter(LCDDisplay);
                 DisplayNum(LCDDisplay);
                 LowVoltageDisplay();
@@ -723,7 +725,7 @@ void NegativePressureWorks_Mode(void)
             }
         }
 		else if(ADC < 0){
-
+                adS.workstation_flag =1;
 				//BIE Read
                 BIEARL=2;                                //addr=1
 				BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
