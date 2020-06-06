@@ -697,8 +697,10 @@ void NegativePressureWorks_Mode(void)
 		long theta;
 		long LCDDisplay ; //"-"
 	    adS.Pressure_sign=1;
+        adS.workstation_flag =1;
 		if(adS.negativeInPositive_flag==1){
             adS.negativeInPositive_flag=0;
+
             theta = ADC * 0.1;
 
             LCDDisplay= 200.84 - (0.115 * theta)   ;       //y = -0.0116x + 20.084//y = -0.0115x + 20.194
@@ -708,7 +710,7 @@ void NegativePressureWorks_Mode(void)
                 UnitConverter(0);
                 DisplayNum(0);
                 Delay(20000);
-
+                adS.getSaveTimes++;
             }
             else {
                 LCDDisplay=UnitConverter(LCDDisplay);
@@ -717,6 +719,7 @@ void NegativePressureWorks_Mode(void)
                 DisplaySignMinus();
                 DisplaySelectionUintPoint();
                 Delay(20000);
+                adS.getSaveTimes++;
             }
         }
 		else if(ADC < 0){
@@ -750,6 +753,7 @@ void NegativePressureWorks_Mode(void)
                     LowVoltageDisplay();
                     DisplayLLL();//"-"
                     Delay(20000);
+                    adS.getSaveTimes++;
 				}
 				else if(LCDDisplay <1050 && LCDDisplay >=1000){
 
@@ -764,6 +768,7 @@ void NegativePressureWorks_Mode(void)
 					DisplaySelectionUintPoint();
 
 					Delay(20000);
+                    adS.getSaveTimes++;
 				}
 				else{
 
@@ -774,11 +779,22 @@ void NegativePressureWorks_Mode(void)
 					DisplaySignMinus();
 				    DisplaySelectionUintPoint();
 					Delay(20000);
+                    adS.getSaveTimes++;
 				}
 
 
 			}
 	}
+    if(adS.getSaveTimes>60){
+        if(adS.zeroTo60times ==2){
+            adS.zeroTo60times =0 ;
+            adS.getSaveTimes=0;
+        }
+        else{
+                LCD_DisplayOff();
+                adS.zeroTo60times=1;
+        }
+    }
 }
 /**********************************************************************
 	*

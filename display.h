@@ -89,7 +89,7 @@ struct _adc_works_
    unsigned  int  delayTimes_5;
    unsigned int   delayTimes_3;
    unsigned int   delayDisplay ;
-   unsigned long  getSaveTimes ;
+   unsigned int  getSaveTimes ;
 
 
    long  minusOffset_Value;
