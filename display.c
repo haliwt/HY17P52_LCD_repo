@@ -11,10 +11,12 @@ struct _adc_works_ adS;
 void GPIO_Iint(void) 
 {
   //GPIO Setting
-  GPIO_PT15_OUTUT();  // SETTING PT4.4 OUTPUT
-    GPIO_PT16_OUTUT();  // SETTING PT4.3 OUTPUT
- //   GPIO_PT17_OUTUT();  
-  GPIO_PT10_INPUT();
+  GPIO_DIR_PT1xInput(PT15);
+  GPIO_DIR_PT10_INPUT() ;
+  GPIO_PT1SETPU(PT15);
+  GPIO_PT1SETPU(PT10);  
+  GPIO_PT1SETPU(PT16);
+  GPIO_PT16_OUTUT();  
 }
 
 /************************************************************

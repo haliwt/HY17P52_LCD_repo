@@ -55,14 +55,17 @@
 #define PT13_MSK                 (1 << PT13)
 #define PT13_H                   (1 << PT13)
 #define PT13_L                   (0 << PT13)
+
 #define PT14                      4
 #define PT14_MSK                 (1 << PT14)
 #define PT14_H                   (1 << PT14)
 #define PT14_L                   (0 << PT14)
+
 #define PT15                      5
 #define PT15_MSK                 (1 << PT15)
 #define PT15_H                   (1 << PT15)
 #define PT15_L                   (0 << PT15)
+
 #define PT16                      6
 #define PT16_MSK                 (1 << PT16)
 #define PT16_H                   (1 << PT16)
@@ -73,7 +76,7 @@
 #define PT17_H                   (1 << PT17)
 #define PT17_L                   (0 << PT17)
 
-//// TRISC1 //
+//// TRISC1 Direction Register Inpurt OR Output //
 #define TC10                      0               /*PT1.0  TC1.0*/
 #define TC10_MSK                 (1 << TC10)
 #define TC10_H                   (1 << TC10)
@@ -399,18 +402,18 @@
 |-------------------------------------------------------------------------------------------------*/
 // Peripherals/GPIO Multiplexing Config for Peripherals were placed in each peripheral module
 // individually GPIO Config were declared/defined below
-#if 0
-#define GPIO_PT1OutputMode(BitSet)           (TRISC1 |= (1 << BitSet)) //output
-#define GPIO_PT1InputMode(BitSet)            (TRISC1 &= ~(1 << BitSet)) //input 
-#define GPIO_PT1SETPU(BitSet)                (PT1PU |= (1 << BitSet))
-#define GPIO_PT1CLRPU(BitSet)                (PT1PU &= ~(1 << BitSet))
-#define GPIO_PT1SETDA(BitSet)                (PT1DA |= (1 << BitSet))
-#define GPIO_PT1CLRDA(BitSet)                (PT1DA &= ~(1 << BitSet))
-#define GPIO_PT1GET(BitSet)                  (PT1 & (1 <<BitSet))
-#define GPIO_PT1SET(BitSet)                  (PT1 |= (1 << BitSet))
-#define GPIO_PT1CLR(BitSet)                  (PT1 &= ~(1 << BitSet))
+#if 1
+#define GPIO_DIR_PT1xOutputMode(BitSet)           (TRISC1 |= (1 << BitSet)) //output "1"
+#define GPIO_DIR_PT1xInputMode(BitSet)            (TRISC1 &= ~(1 << BitSet)) //input "0"
+#define GPIO_PT1SETPU(BitSet)                	(PT1PU |= (1 << BitSet))    //Port setup PULL UP
+#define GPIO_PT1CLRPU(BitSet)                	(PT1PU &= ~(1 << BitSet))
+#define GPIO_PT1SETDA(BitSet)                	(PT1DA |= (1 << BitSet))
+#define GPIO_PT1CLRDA(BitSet)                	(PT1DA &= ~(1 << BitSet))
+#define GPIO_PT1GET(BitSet)                  	(PT1 & (1 <<BitSet))
+#define GPIO_PT1SET(BitSet)                  	(PT1 |= (1 << BitSet))   /*setup = 1*/
+#define GPIO_PT1CLR(BitSet)                  	(PT1 &= ~(1 << BitSet))  /*clear = 0*/
 #endif 
-
+#if 0
 #define GPIO_INTEG0Sel(EG0Sel)               (PT1M1 = ((PT1M1 & (~INTEG0_MSK)) | EG0Sel))
 #define GPIO_INTEG1Sel(EG1Sel)               (PT1M1 = ((PT1M1 & (~INTEG1_MSK)) | EG1Sel))
 #define GPIO_PM12Sel(PM12Sel)                (PT1INT = ((PT1INT & (~INTEG2_MSK )) | PM12Sel))
@@ -443,9 +446,9 @@
 #define GPIO_PT1OutputHigh(BitSet)           (PT1 |= BitSet)
 #define GPIO_PT1OutputLow(BitSet)            (PT1 &= ~BitSet)    // Valid only when PT is Output mode
 
-#define GPIO_PT1InputMode(BitSet)            (TRISC1 &= ~ BitSet)
-#define GPIO_PT1InputEnable(BitSet)          (PT1IN |= BitSet)
-#define GPIO_PT1InputDisable(BitSet)         (PT1IN &= ~BitSet)
+#define GPIO_PT1InputMode(BitSet)            (TRISC1 &= ~ BitSet) //PORT direction input or output 
+//#define GPIO_INTERRUPT_PT1InputEnable(BitSet)          (PT1M1 |= BitSet)  /* HY17P52 isnot register*/
+//#define GPIO_INTERRUPT_P1InputDisable(BitSet)          (PT1MI &= ~BitSet) /* HY17P52 isnot register*/
 #define GPIO_PT1SETPU(BitSet)                (PT1PU |= BitSet)
 #define GPIO_PT1CLRPU(BitSet)                (PT1PU &= ~ BitSet)
 #define GPIO_PT1SETPUAll()                   (PT1PU = 0xff)
@@ -456,40 +459,12 @@
 #define GPIO_PT1GET(BitSet)                  (PT1 & BitSet)
 #define GPIO_PT1SET(BitSet)                  (PT1 |=  BitSet)
 #define GPIO_PT1CLR(BitSet)                  (PT1 &= ~BitSet)
-
+#endif 
 // PT1.7 
 #define GPIO_PT17_INPUT()                           (TRISC1=(TRISC1&(~TC15_MSK))| TC17_L ) //PT1.7
 #define	GPIO_PT17_OUTUT()							(TRISC1=(TRISC1&(~TC17_MSK ))| TC17_H )
 #define	GPIO_PT17_HIGH()							(PT1=(PT1&(~PT17_MSK))|PT17_H)
 #define	GPIO_PT17_LOW()								(PT1=(PT1&(~PT17_MSK))|PT17_L)
-
-// PT8.x // x=0~1
-#define GPIO_PT8OutputMode(BitSet)           (TRISC8 |= BitSet)
-#define GPIO_PT8OutputHigh(BitSet)           (PT8 |= BitSet)
-#define GPIO_PT8OutputLow(BitSet)            (PT8 &= ~BitSet)    // Valid only when PT is Output mode
-
-#define GPIO_PT81InputMode(BitSet)            (TRISC8 &= ~ BitSet)
-#define GPIO_PT81InputEnable(BitSet)          (PT8IN |= BitSet)
-#define GPIO_PT81InputDisable(BitSet)         (PT8IN &= ~BitSet)
-#define GPIO_PT81SETPU(BitSet)                (PT8PU |= BitSet)
-#define GPIO_PT81CLRPU(BitSet)                (PT8PU &= ~ BitSet)
-#define GPIO_PT81SETPUAll()                   (PT8PU = 0xff)
-
-#define GPIO_PT8CLRPU(BitSet)					 (PT8PU &= ~ BitSet)
-#define GPIO_PT8CLR(BitSet)						 (PT8 &= ~(1 << BitSet))
-
-#define	PT44			4
-	#define PT44_MASK			(1<<PT44)
-	#define PT44_HIGH			 (1<<PT44)
-	#define	PT44_LOW			 (0<<PT44)
-
-#define	GPIO_PT10_HIGH()				(PT1=(PT1&(~PT10_MSK))|PT10_H)
-#define	GPIO_PT10_LOW()					(PT1=(PT1&(~PT10_MASK))|PT10_L)
-
-#define	PT44			4
-	#define PT44_MASK			(1<<PT44)
-	#define PT44_HIGH			 (1<<PT44)
-	#define	PT44_LOW			 (0<<PT44)
 
 
 #define	GPIO_PT15_HIGH()				(PT1=(PT1&(~PT15_MSK))|PT15_H)
@@ -498,26 +473,19 @@
 #define	GPIO_PT16_HIGH()				(PT1=(PT1&(~PT16_MSK))|PT16_H)
 #define	GPIO_PT16_LOW()					(PT1=(PT1&(~PT16_MSK))|PT16_L)
 
-#define TC44						4
-	#define TC44_MASK				(1<<TC44)
-	#define TC44_OUTPUT				(1<<TC44)
-	#define TC44_INPUT				(0<<TC44)
 
-#define	GPIO_PT15_INPUT()				(TRISC1=(TRISC1&(~TC15_MSK))| TC15_L )
-#define	GPIO_PT15_OUTUT()				(TRISC1=(TRISC1&(~TC15_MSK ))| TC15_H )
+#define	GPIO_PT15_DIR_INPUT()				(TRISC1=(TRISC1&(~TC15_MSK))| TC15_L )
+#define	GPIO_PT15_DIR_OUTUT()				(TRISC1=(TRISC1&(~TC15_MSK ))| TC15_H )
+#define	GPIO_DIR_PT1xInput(bitset)		(TRISC1 &= ~(0x01<<(bitset)))//((PT1>>PT15)&0x1)
+#define GPIO_READ_PT15()				((PT1 & (0x01 << PT15)) >> PT15)//((PT1|<<PT15)&0x1)
 
 #define	GPIO_PT16_INPUT()				(TRISC1=(TRISC1&(~TC16_MSK))| TC16_L )
 #define	GPIO_PT16_OUTUT()				(TRISC1=(TRISC1&(~TC16_MSK ))| TC16_H )
 
-#define	GPIO_PT10_INPUT()				(TRISC1=(TRISC1&(~TC10_MSK))| TC10_L )
-#define	GPIO_PT10_OUTUT()				(TRISC1=(TRISC1&(~TC10_MSK ))| TC10_H )
-#define	GPIO_READ_PT10()			    ((PT1>>PT10)&0x1)
-//#define	GPIO_PT10_HIGH()				(PT1=(PT1&(~PT10_MASK))|PT10_HIGH)
-//#define	GPIO_PT10_LOW()					(PT1=(PT1&(~PT10_MASK))|PT10_LOW)
+#define	GPIO_DIR_PT10_INPUT()					(TRISC1=(TRISC1&(~TC10_MSK))| TC10_L )
+#define	GPIO_DIR_PT10_OUTUT()				   (TRISC1=(TRISC1&(~TC10_MSK ))| TC10_H )
+#define	GPIO_READ_PT10()			    		((PT1>>PT10)&0x1)    //PT10 = 0
 
-#define	GPIO_PT10_INTTrig(uinteg)	(PT1M1=(PT1M1&(~INTEG10_MASK))| uinteg)
-	
-#define	GPIO_PT10_INT(uinteg)	(PT1M1=(PT1M1&(~INTEG0_MSK))| uinteg)
 
 //#define INTEG10		0
 	#define INTEG10_MASK			(3<<INTEG10)
@@ -525,10 +493,11 @@
 	#define	INTEG10_RICE_EDGE		(1<<INTEG10)
 	#define	INTEG10_HIG_LOW			 (2<<INTEG10)
 
-//demo code
-#define	GPIO_READ_PT4x(upt4x)		((PT4>>upt4x)&0x1)
-#define GPIO_READ_PT4PORTS()	(PT4)
-#define GPIO_WRITE_PT4PROTS(UDATA)	(PT4=UDATA&0xF8)
+#define	GPIO_PT10_INTTrig(uinteg)	(PT1M1=(PT1M1&(~INTEG10_MASK))| uinteg)
+	
+#define	GPIO_PT10_INT(uinteg)	(PT1M1=(PT1M1&(~INTEG0_MSK))| uinteg)
+
+
 
 
 
