@@ -80,6 +80,7 @@ struct _adc_works_
    unsigned char  destroyTimes_3 : 1;
    unsigned char  destroyTimes_5 : 1;
    unsigned char  workstation_flag:1;
+   unsigned char  LowVoltage_flag : 1;
 
    unsigned char  eepromRead_PositiveDeltaLow_bit ;
 
