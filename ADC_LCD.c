@@ -646,7 +646,7 @@ void PositivePressureWorks_Mode(void)
 
 		    	if(adS.plus_revise_flag == 0x11){
 
-		    		if(ADC < 20800 ){
+		    		if(ADC < 27800 ){
 		    			UnitConverter(0);
 		    			DisplayNum(0);
 		    		    LowVoltageDisplay();
