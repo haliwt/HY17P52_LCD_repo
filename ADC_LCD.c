@@ -499,7 +499,18 @@ void SetupZeroPoint_Mode(void)
 			    adS.minusOffset_Value=abs(adS.minusOffset_Value);
 				adS.minusOffset_Value=(unsigned char)adS.minusOffset_Value;
 
-			if(GPIO_READ_PT15()== 0){
+				//BIE Read
+                BIEARL=2;                                //addr=1
+				BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+				while((BIECN& 0x01)==1);
+				adS.minus_revise_flag = BIEDRH;
+			
+				if(adS.minus_revise_flag==0x22 && GPIO_READ_PT15() !=0){
+
+							adS.delayTimes_5=0;
+				}
+              
+			    else{
 		
 					//write delta data in eeprom negative pressure "-"
 					HY17P52WR3(2,0x22,adS.minusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -509,11 +520,8 @@ void SetupZeroPoint_Mode(void)
 						while(1);    //fail
 					}
 	                adS.delayTimes_5=0;
-            }
-            else {
-
-            	adS.delayTimes_5=0;
-            }
+                }
+           
 
         }
 		else /* Positive revise data for "+*/
@@ -524,7 +532,17 @@ void SetupZeroPoint_Mode(void)
 
             adS.plusOffset_Value =(unsigned char)abs(adS.plusOffset_Value);
 
-           if(GPIO_READ_PT15()== 0){
+             BIEARL=1;                       //addr=1
+		    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+		    while((BIECN& 0x01)==1);
+		    adS.plus_revise_flag =BIEDRH ;
+		  
+		    if(adS.plus_revise_flag==0x11 && GPIO_READ_PT15() !=0 ){
+
+		    	adS.delayTimes_5=0;
+		    }
+
+           else{
 	            HY17P52WR3(1,0x11,adS.plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
 	            if(Flag== 1)
 	            {
@@ -534,10 +552,7 @@ void SetupZeroPoint_Mode(void)
 
 	            adS.delayTimes_5=0;
             }
-            else{
-
-            	adS.delayTimes_5=0;
-            }
+           
         }
 }
 /**************************************************************
