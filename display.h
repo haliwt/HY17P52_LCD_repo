@@ -47,8 +47,8 @@
 #define seg_lcd3_mask   (LCD3 &= (0x01<<seg_lcd3_data))
 
 #define highestbit      0
-#define highest_bit_One     (LCD0 |=(0x06<< highestbit)) 
-#define highest_bit_NotOne     (LCD0 &=~(0x06<< highestbit)) 
+#define highest_bit_One     (LCD0 |=(0x06<< highestbit))
+#define highest_bit_NotOne     (LCD0 &=~(0x06<< highestbit))
 
 
 
@@ -60,7 +60,7 @@ struct _adc_works_
 {
    unsigned char save_mode: 1;
    unsigned char unit_setMode:1;
-   unsigned char plus_uint;
+   //unsigned char plus_uint;
    unsigned char unitChoose;
    unsigned char testMode:1;
    unsigned char zeroPoint_Mode:1;
@@ -68,8 +68,6 @@ struct _adc_works_
    unsigned char key_flag;
 
    unsigned char negativeInPositive_flag: 1;
-   unsigned char LVD_2V4_flag : 1;
-   unsigned char LVD_3V_flag : 1;
    unsigned char zeroTo60times : 2;
 
    unsigned char  plus_revise_flag;
@@ -95,8 +93,8 @@ struct _adc_works_
    unsigned int  getSaveTimes ;
 
 
-   long  minusOffset_Value;
-   long  plusOffset_Value;
+  // long  minusOffset_Value;
+//   long  plusOffset_Value;
 
 };
 

@@ -1,3 +1,11 @@
+
+/****************************************************************************
+	*
+	*This is soft to hight pressure to 500 kpa (72.5psi)
+	*
+	*
+	*
+******************************************************************************/
 #define  USE_HY17P52_2M
 
 /*----------------------------------------------------------------------------*/
@@ -24,11 +32,11 @@ void HY17P52WR3Delay(char ms);
 /*----------------------------------------------------------------------------*/
 
 
-#define abs(value)            ((value) >0 ? (value) : (-value) )
+#define abs(value)          ((value) >0 ? (value) : (-value) )
 
 #define kgfTOpsi(kgf)       (0.1450 * (kgf))
-#define kgfTObar(kgf)   	(1.0 * (kgf))
-#define kgfTOmpa(kgf)	 	(0.1 * (kgf))
+#define kgfTObar(kgf)   	  (1.0 * (kgf))
+#define kgfTOmpa(kgf)	 	    (0.1 * (kgf))
 
 #define STD_VALUE                 105000//WT.EDIT 2020-06-03 //10400//10440//10400
 
@@ -76,14 +84,15 @@ unsigned char LowVoltageDetect_3V(void);
 unsigned char LowVoltageDetect_2V4(void);
 void LowVoltageDisplay(void);
 void SetupZeroPoint_Mode(void);
-void SetupUnit_Mode(void);
+//void SetupUnit_Mode(void);
+void SetupSaveUnit_Mode(void);
 void PositivePressureWorks_Mode(void);
 void NegativePressureWorks_Mode(void);
 void SetupUnitSelection(void);
 void SetupZeroPointSelection(void);
 void ProcessWorksPrecondition(void);
 unsigned char EEPROM_ReadData_Address0(void);
-void DisplaySelectionUintPoint(void);
+//void DisplaySelectionUintPoint(void);
 void ProcessRunsFlag(void);
 void LowVoltageBlink(void);
 /*----------------------------------------------------------------------------*/
@@ -130,7 +139,7 @@ void main(void)
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
 
-	TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
+	 TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
     TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
     TMA1_CompSet(255);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
     TA1IE_Enable();
@@ -147,8 +156,8 @@ void main(void)
     while(1)
     {
 
-       
-        if(GPIO_READ_PT10()==0 && firstPower !=0)
+
+    if(GPIO_READ_PT10()==0 && firstPower !=0)
 		{
 
 		  //  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
@@ -156,14 +165,14 @@ void main(void)
 
 		 if(adS.delayTimes_5 >= 12000 && adS.destroyTimes_5 !=1 ){ /*unit set mode*/
 
-			if(GPIO_READ_PT10()==0)
-			{
-			    if(adS.destroyTimes_5 == 0){
+  			if(GPIO_READ_PT10()==0)
+  			{
+  			    if(adS.destroyTimes_5 == 0){
 
-			        adS.destroyTimes_3=1;
-	          	    SetupUnitSelection();
-                }
-			}
+  			        adS.destroyTimes_3=1;
+  	          	    SetupUnitSelection();
+                  }
+  			}
 
 		  }
 
@@ -233,8 +242,8 @@ void main(void)
 				SetupZeroPoint_Mode();
 			}
 	   if(adS.unit_setMode ==1){
-           SetupUnit_Mode();
-		}
+           SetupSaveUnit_Mode();// SetupUnit_Mode();
+	   	}
 	   }
    }
 }
@@ -272,14 +281,12 @@ void ProcessRunsFlag(void)
 ******************************************************************************/
 unsigned char EEPROM_ReadData_Address0(void)
 {
-       static unsigned char unitID = kgf;
-       BIEARL=0;                                //addr=0
+     unsigned char unitID = kgf; //WT.EDIT 2020-06-09 EDIT cancel "static"
+     BIEARL=0;                                //addr=0
 	   BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 	   while((BIECN& 0x01)==1);
 	   unitID=BIEDRL;
-
-       return unitID;
-
+     return unitID;
 }
 /******************************************************************************
 	*
@@ -292,71 +299,46 @@ unsigned char EEPROM_ReadData_Address0(void)
 long UnitConverter(long data)
 {
     adS.eepromRead_UnitLow_bit  =  EEPROM_ReadData_Address0();
-      if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
+    switch(adS.eepromRead_UnitLow_bit){
 
+      case psi:
          LCD_WriteData(&LCD4, seg_psi) ;
-          DisplayPointP3();
-
-         return  kgfTOpsi(data) ;
-     }
-	 else if(adS.eepromRead_UnitLow_bit==bar){ /*unit bar*/
-     	   LCD_WriteData(&LCD4, seg_bar) ;
-     	   DisplayPointP1();
-
-     	 return	kgfTObar(data);
-	 }
-	 else if(adS.eepromRead_UnitLow_bit==kgf){ /* unit kgf*/
-
-         LCD_WriteData(&LCD4, seg_kgf) ;
          DisplayPointP3();
+         return kgfTOpsi(data);
 
+      break;
+
+      case bar:
+        LCD_WriteData(&LCD4, seg_bar) ;
+        DisplayPointP1();
+        return	kgfTObar(data);
+      break;
+
+      case kgf:
+        LCD_WriteData(&LCD4, seg_kgf) ;
+        DisplayPointP3();
          return data;
-	 }
-	 else if(adS.eepromRead_UnitLow_bit==mpa){ /*uint mpa*/
+      break;
 
-	 	 LCD_WriteData(&LCD4, seg_mpa) ;
-	 	  DisplayPointP1();
+      case mpa:
+       LCD_WriteData(&LCD4, seg_mpa) ;
+       DisplayPointP1();
+      return kgfTOmpa(data);
+      break;
 
-	 	 return kgfTOmpa(data);
-	 }
-	 else{
-             LCD_WriteData(&LCD4, seg_kgf) ;
-             DisplayPointP3();
+      default :
+          adS.eepromRead_UnitLow_bit=kgf;
+          LCD_WriteData(&LCD4, seg_kgf) ;
+          DisplayPointP3();
+          return data;
 
-             return data;
-	 }
+      break;
 
+
+
+    }
 }
-/******************************************************************************
-	*
-	*Function Name:DisplaySelectionUintPoint(void)
-	*
-	*
-	*
-******************************************************************************/
-void DisplaySelectionUintPoint(void)
-{
 
-	if(adS.eepromRead_UnitLow_bit==psi){
-		    DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿�? 
-	}
-	else if(adS.eepromRead_UnitLow_bit==bar){
-	       DisplayPointP1();   //å°æ•°ç‚¹ä¸åŠ¨çš�? *
-	}
-	else if(adS.eepromRead_UnitLow_bit==kgf){
-
-			DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿�? 
-	}
-	else if(adS.eepromRead_UnitLow_bit==mpa){
-
-		     DisplayPointP1();
-	}
-	else{
-
-		 LCD_WriteData(&LCD4, seg_kgf) ;
-         DisplayPointP3();
-	}
-}
 /******************************************************************************
 	*
 	*Function Name: long UnitConverter_3V(long data)
@@ -414,30 +396,26 @@ unsigned char LowVoltageDetect_2V4(void)
 *******************************************************************************/
 void LowVoltageBlink(void)
 {
+  if(adS.LowVoltage_flag==1){
 
-                
-                if(adS.LowVoltage_flag==1){
+  LCD_DisplayOff();
+  adS.zeroTo60times=1;
 
-                	 LCD_DisplayOff();
-                     adS.zeroTo60times=1;
+  }
+  else{
 
-                }
-               else{
+    DisplayBAT();
+    Delay(10000);
+    LCD_DisplayOff();
+    Delay(5000);
+    LCD_DisplayOn();
+    Delay(5000);
+    LCD_DisplayOff();
 
-               	    DisplayBAT();
-		       		Delay(10000);
-		       		LCD_DisplayOff();
-		            Delay(5000);
-	                LCD_DisplayOn();
-	                Delay(5000);
-	                LCD_DisplayOff();
-            
-			        adS.LowVoltage_flag=1;
-					LCD_DisplayOff();
-					adS.zeroTo60times=1;
-	                           
-	               
-               }
+    adS.LowVoltage_flag=1;
+    LCD_DisplayOff();
+    adS.zeroTo60times=1;
+  }
 }
 /*****************************************************************************
   *
@@ -449,101 +427,90 @@ void LowVoltageBlink(void)
 *******************************************************************************/
 void LowVoltageDisplay(void)
 {
-  
-	adS.LVD_3V_flag = LowVoltageDetect_3V();
-	if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
-
-	    // LCD_WriteData(&LCD0,symbol_t0);
-	     DisplayBatteryCapacityFull();
+  unsigned char LVD_2V4_flag=0 ;
+  unsigned char LVD_3V_flag =0;
+	LVD_3V_flag = LowVoltageDetect_3V();
+	if(LVD_3V_flag==0){ /* battery capacity is full*/
+      DisplayBatteryCapacityFull();
 	}
 	else{
-	       adS.LVD_2V4_flag = LowVoltageDetect_2V4();
-	       if(adS.LVD_2V4_flag == 0){
-
-	       			//LCD_WriteData(&LCD0,symbol_t0);
+	       LVD_2V4_flag = LowVoltageDetect_2V4();
+	       if(LVD_2V4_flag == 0){
 	       			DisplayBatteryCapacityHalf();
 	       }
 	       else{
-	       	//	LCD_WriteData(&LCD0,symbol_t0);
+
 	       		DispalyBatteryCapacityLow();
 	       	#ifndef TEST
 
 	       		LowVoltageBlink();
-                
-            #endif  
 
-	    }
-	}
-    
-
+            #endif
+           }
+         }
 }
 /****************************************************************************
   *
   *Function Name : unsigned char LowVoltageDisplay(void)
-  *
-  *
-  *
+  *Function :setup zero point basie
+  *Input Reference :NO
+  *Return Reference : NO
   *
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-		adS.zeroPoint_Mode =0;
+       long  minusOffset_Value;
+       long  plusOffset_Value;
+       adS.zeroPoint_Mode =0;
 		adS.testMode=0;
 		adS.reload_ADCInterrupt = 1;
 		ProcessWorksPrecondition();
         adS.destroyTimes_5 = 1;
 
 		 if(adS.Pressure_sign ==1){ /* Negative revise data "-"  */
-			     adS.minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE ; //delta value
+			     minusOffset_Value = abs(ADC)  - STD_NEGATIVE_VOLTAGE ; //delta value
 
-			    adS.minusOffset_Value=abs(adS.minusOffset_Value);
-				adS.minusOffset_Value=(unsigned char)adS.minusOffset_Value;
+			    minusOffset_Value=abs(minusOffset_Value);
+				minusOffset_Value=(unsigned char)minusOffset_Value;
 
 				//BIE Read
                 BIEARL=2;                                //addr=1
 				BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 				while((BIECN& 0x01)==1);
 				adS.minus_revise_flag = BIEDRH;
-			
+
 				if(adS.minus_revise_flag==0x22 && GPIO_READ_PT15() !=0){
 
 							adS.delayTimes_5=0;
 				}
-              
-			    else{
-		
-					//write delta data in eeprom negative pressure "-"
-					HY17P52WR3(2,0x22,adS.minusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-					if(Flag== 1)
-					{
-					    GPIO_PT16_HIGH();
-						while(1);    //fail
-					}
-	                adS.delayTimes_5=0;
-                }
-           
+        else{
 
+  					//write delta data in eeprom negative pressure "-"
+  					HY17P52WR3(2,0x22,minusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+  					if(Flag== 1){
+  					    GPIO_PT16_HIGH();
+  						  while(1);    //fail
+  					}
+  	                adS.delayTimes_5=0;
+          }
         }
-		else /* Positive revise data for "+*/
-		{
-			adS.Pressure_sign =0;
+		else{ /* Positive revise data for "+*/
+		  adS.Pressure_sign =0;
 			//ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
-			adS.plusOffset_Value= abs(ADC) -STD_VALUE  ;
+			plusOffset_Value= abs(ADC) -STD_VALUE  ;
+      		plusOffset_Value =(unsigned char)abs(plusOffset_Value);
 
-            adS.plusOffset_Value =(unsigned char)abs(adS.plusOffset_Value);
-
-             BIEARL=1;                       //addr=1
+        BIEARL=1;                       //addr=1
 		    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 		    while((BIECN& 0x01)==1);
 		    adS.plus_revise_flag =BIEDRH ;
-		  
+
 		    if(adS.plus_revise_flag==0x11 && GPIO_READ_PT15() !=0 ){
 
 		    	adS.delayTimes_5=0;
 		    }
-
-           else{
-	            HY17P52WR3(1,0x11,adS.plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+        else{
+	            HY17P52WR3(1,0x11,plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
 	            if(Flag== 1)
 	            {
 	            GPIO_PT16_HIGH();
@@ -552,17 +519,17 @@ void SetupZeroPoint_Mode(void)
 
 	            adS.delayTimes_5=0;
             }
-           
-        }
+
+      }
 }
 /**************************************************************
 	*
 	*Function Name: SetupUnit_Mode(void)
-	*
+	*Function : setup unit and save
 	*
 	*
 ***************************************************************/
-void SetupUnit_Mode(void)
+void SetupSaveUnit_Mode(void)
 {
 	adS.Presskey_flag=0;
 	adS.unit_setMode =0 ;
@@ -607,8 +574,8 @@ void ProcessWorksPrecondition(void)
 				else
 				adS.Pressure_sign =0;
 			}
-    
-    
+
+
 }
 /**********************************************************************
 	*
@@ -625,7 +592,7 @@ void PositivePressureWorks_Mode(void)
     adS.Pressure_sign =0;
     eta = ADC * 0.1 ;
     adS.getSaveTimes++;
-   
+
 		    //BIE Read
 		    BIEARL=1;                                //addr=1
 		    BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
@@ -665,8 +632,9 @@ void PositivePressureWorks_Mode(void)
 		    				LCDDisplay= 0.115 *delta- 220; //WT.EDIT 2020-06-03 //y = 0.0115x - 20.392
 
 		    				if(LCDDisplay >=1070){
-		          				    DisplayHHH();
-		    						UnitConverter(0);
+		          				   // DisplayHHH();
+		    						LCDDisplay=UnitConverter(LCDDisplay);
+		    						DisplayNum(LCDDisplay);
 		    						LowVoltageDisplay();
 		    					    Delay(20000);
 		    					    adS.getSaveTimes++;
@@ -675,50 +643,47 @@ void PositivePressureWorks_Mode(void)
 		    				}
 		    				else if(LCDDisplay <1060 && LCDDisplay >=1000){
 
-		    					LCDDisplay=UnitConverter(LCDDisplay);
+  		    					LCDDisplay=UnitConverter(LCDDisplay);
 
-		    	                if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
-		    	                else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
-		    	                else
-		    	                DisplayNum4Bytes(LCDDisplay);
-		    					LowVoltageDisplay();
-		    					DisplaySignPlus();
-		    					DisplaySelectionUintPoint();
-		    					Delay(20000);
-		    					adS.getSaveTimes++;
+  	                if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
+  	                else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
+  	                else
+  	                DisplayNum4Bytes(LCDDisplay);
+  		    					LowVoltageDisplay();
+  		    					DisplaySignPlus();
+  		    				//	DisplaySelectionUintPoint();
+  		    					Delay(20000);
+  		    					adS.getSaveTimes++;
 
 
 		    			   }
 		    			   else{
 
-		    			   	   if(LCDDisplay < 100 ){
-		    						LCDDisplay=UnitConverter(LCDDisplay);
+		    			   	  if(LCDDisplay < 100 ){
+  		    						LCDDisplay=UnitConverter(LCDDisplay);
 
-		    						if(adS.eepromRead_UnitLow_bit==mpa)DisplayNumOneByte(LCDDisplay);
-		    						else
-		    						DisplayNum2Bit(LCDDisplay);
-		    						LowVoltageDisplay();
-		    						DisplaySignPlus();
-		    						DisplaySelectionUintPoint();
-		    						Delay(20000);
-		    						adS.getSaveTimes++;
+  		    						if(adS.eepromRead_UnitLow_bit==mpa)DisplayNumOneByte(LCDDisplay);
+  		    						else
+  		    						DisplayNum2Bit(LCDDisplay);
+  		    						LowVoltageDisplay();
+  		    						DisplaySignPlus();
+  		    					//	DisplaySelectionUintPoint();
+  		    						Delay(20000);
+  		    						adS.getSaveTimes++;
+                    }
+		    			   	  else{
+                          LCDDisplay=UnitConverter(LCDDisplay);
 
-
-		    			   	    }
-		    			   	    else{
-		                            LCDDisplay=UnitConverter(LCDDisplay);
-
-		                            DisplayNum(LCDDisplay);
-		                            LowVoltageDisplay();
-		                            DisplaySignPlus();
-		                            DisplaySelectionUintPoint();
-		                            Delay(20000);
-		                            adS.getSaveTimes++;
-
-		    				    }
-
-		                    }
-		                }
+                          DisplayNum(LCDDisplay);
+                          LowVoltageDisplay();
+                          DisplaySignPlus();
+                          //DisplaySelectionUintPoint();
+                          Delay(20000);
+                          adS.getSaveTimes++;
+                        }
+                      }
+		            }
+		            #if 1
 		                if(adS.getSaveTimes>225){
 		                    if(adS.zeroTo60times ==2){
 		                        adS.zeroTo60times =0 ;
@@ -729,19 +694,20 @@ void PositivePressureWorks_Mode(void)
 		                            adS.zeroTo60times=1;
 		                    }
 		                }
+		            #endif
 
 		    }
 		    #if 1
 		    if(adS.plus_revise_flag !=0x11){
 
 		    		ADC=UnitConverter(ADC);
-					DisplayNum(ADC);
+					      DisplayNum(ADC);
 		    		LowVoltageDisplay();
 		    		//DisplaySignPlus();
-		    		DisplaySelectionUintPoint();
+		    	//	DisplaySelectionUintPoint();
 			}
-		    #endif 
-    
+		    #endif
+
 }
 /**********************************************************************
 	*
@@ -762,7 +728,7 @@ void NegativePressureWorks_Mode(void)
 
             theta = ADC * 0.1;
 
-            LCDDisplay= 200.84 - (0.115 * theta)   ;       //y = -0.0116x + 20.084//y = -0.0115x + 20.194
+            LCDDisplay= 200.84 - (0.115 * theta)   ;   //y = -0.0116x + 20.084//y = -0.0115x + 20.194
 
             if(theta >=1600 && theta < 1750){
 
@@ -778,7 +744,7 @@ void NegativePressureWorks_Mode(void)
                 DisplayNum(LCDDisplay);
                 LowVoltageDisplay();
                 DisplaySignMinus();
-                DisplaySelectionUintPoint();
+              //  DisplaySelectionUintPoint();
                 Delay(20000);
                 adS.getSaveTimes++;
             }
@@ -818,7 +784,7 @@ void NegativePressureWorks_Mode(void)
 				}
 				else if(LCDDisplay <1050 && LCDDisplay >=1000){
 
-                    LCDDisplay=UnitConverter(LCDDisplay);
+          LCDDisplay=UnitConverter(LCDDisplay);
 					if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
 					else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
 				    else
@@ -826,10 +792,10 @@ void NegativePressureWorks_Mode(void)
 
 					LowVoltageDisplay();
 					DisplaySignMinus();
-					DisplaySelectionUintPoint();
+					//DisplaySelectionUintPoint();
 
 					Delay(20000);
-                    adS.getSaveTimes++;
+          adS.getSaveTimes++;
 				}
 				else{
 
@@ -838,7 +804,7 @@ void NegativePressureWorks_Mode(void)
 					DisplayNum(LCDDisplay);
 					LowVoltageDisplay();
 					DisplaySignMinus();
-				    DisplaySelectionUintPoint();
+				   // DisplaySelectionUintPoint();
 					Delay(20000);
                     adS.getSaveTimes++;
 				}
@@ -856,19 +822,19 @@ void NegativePressureWorks_Mode(void)
                 adS.zeroTo60times=1;
         }
     }
-    
+
 }
 /**********************************************************************
 	*
 	*Function Name :void SetupUnitAndZeroPoint_Mode(void)
-	*
-	*
-	*
+	*Function : setup selection which unit
+	*Input Reference: NO
+	*Return Reference : NO
 	*
 ***********************************************************************/
 void SetupUnitSelection(void)
 {
-
+  unsigned char unit_s= kgf;
 	adS.delayTimes_5 =0;
 	adS.unit_setMode =1;
 	adS.zeroPoint_Mode =0;
@@ -876,36 +842,41 @@ void SetupUnitSelection(void)
 	adS.destroyTimes_5=0;
 	DisplayUnit();
 
-    switch(adS.plus_uint){
+  switch(unit_s){
 	case psi:
-	     adS.plus_uint++;
+	    unit_s++;
 		 adS.unitChoose = psi;
 		 LCD_WriteData(&LCD4,seg_psi);
 		 adS.delayTimes_5=9000;
-         break;
+      break;
 	case bar:
-		 adS.plus_uint++;
-		 adS.unitChoose = bar;
+      unit_s++;
+     adS.unitChoose = bar;
 		 LCD_WriteData(&LCD4,seg_bar);
 		 adS.delayTimes_5=9000;
 
 	     break;
 	case kgf:
-		adS.plus_uint++;
+		unit_s++;
 		adS.unitChoose = kgf;
 		LCD_WriteData(&LCD4,seg_kgf);
 		 adS.delayTimes_5=9000;
 
 	     break;
 	case mpa:
-	     adS.plus_uint++;
+      unit_s++;
 		 adS.unitChoose = mpa;
 		 LCD_WriteData(&LCD4,seg_mpa);
 		 adS.delayTimes_5=9000;
-		 adS.plus_uint=0;
-		
+		 if(unit_s==3)unit_s = psi;
+      break;
+  default :
+      unit_s=kgf;
+      adS.unitChoose = kgf;
+      LCD_WriteData(&LCD4,seg_kgf);
+       adS.delayTimes_5=9000;
 
-	     break;
+     break;
 	}
 
 }
