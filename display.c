@@ -77,41 +77,19 @@ void DisplayNum4Bytes( int Num)
 
       LCDData=seg[Num%10];
       if(LCDAddr == &LCD4){
-        if(LCDData !=0 )
-          LCD_WriteData(&LCD0,highest_bit_One) ; 
-        else LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
+            if(Num %10 !=0)
+              LCD_WriteData(&LCD0,highest_bit_One) ; 
+            else 
+              LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
       }
       else{
             LCD_WriteData(LCDAddr,LCDData);
-        }
+      }
       Num=Num/10 ;
       LCDAddr++;
-    
-      
   }
  // LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
-
-
- #if 0
-  LCDAddr=&LCD0;
-  for(count=0;count<4;count++)
-  {
-       if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highestByte) ; 
-       
-      else {
-          LCDData=seg[Num%10];
-          LCD_WriteData(LCDAddr,LCDData);
-          Num=Num/10 ;
-         }
-        
-         LCDAddr++;
-     
-    }
-#endif 
 }
-      
-  
-
 /*---------------------------------------------------------------------------
 /*---------------------------------------------------------------------------
   *
@@ -135,9 +113,7 @@ void DisplayNum2Bit(int Num)
     LCDAddr--;
   }
   LCD_WriteData(&LCD3,seg_lcd3_mask);
- 
- 
-}
+ }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayNumOneByte(int number);

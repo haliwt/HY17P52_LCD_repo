@@ -46,9 +46,9 @@
 #define seg_lcd3_data   0
 #define seg_lcd3_mask   (LCD3 &= (0x01<<seg_lcd3_data))
 
-#define highestbit      0
-#define highest_bit_One     (LCD0 |=(0x06<< highestbit))
-#define highest_bit_NotOne     (LCD0 &=~(0x06<< highestbit))
+#define highestbit              0
+#define highest_bit_One         (LCD0 |=(0x06<< highestbit))
+#define highest_bit_NotOne      (LCD0 &=~(0x06<< highestbit))
 
 
 
@@ -75,8 +75,8 @@ struct _adc_works_
 
    unsigned char  Presskey_flag:1;
    unsigned char  Pressure_sign :1;
-   unsigned char  destroyTimes_3 : 1;
-   unsigned char  destroyTimes_5 : 1;
+   unsigned char  access_id_3s : 1;
+   unsigned char  access_id_5s : 1;
    unsigned char  workstation_flag:1;
    unsigned char  LowVoltage_flag : 1;
 
@@ -84,17 +84,13 @@ struct _adc_works_
 
    unsigned char  eepromRead_NegativeDeltaLow_bit;
 
-   unsigned char  eepromRead_UnithHigh_bit ;
+   unsigned char  eepromRead_UnitHigh_bit ;
    unsigned char  eepromRead_UnitLow_bit ;
    unsigned char  reload_ADCInterrupt :1;
-   unsigned  int  delayTimes_5;
-   unsigned int   delayTimes_3;
+   unsigned int   delayTimes_5s;
+   unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
-   unsigned int  getSaveTimes ;
-
-
-  // long  minusOffset_Value;
-//   long  plusOffset_Value;
+   unsigned int   getSaveTimes ;
 
 };
 
@@ -103,9 +99,6 @@ extern struct _adc_works_ adS;
 /*----------------------------------------------------------------------------*/
 /* Function PROTOTYPES                                                        */
 /*----------------------------------------------------------------------------*/
-
-
-
 void ClearLCD(void);
 void DisplayHycon(void);
 void DisplayNum(long Num);
