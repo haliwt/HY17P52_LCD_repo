@@ -79,6 +79,7 @@ struct _adc_works_
    unsigned char  access_id_5s : 1;
    unsigned char  workstation_flag:1;
    unsigned char  LowVoltage_flag : 1;
+   unsigned char  plus_uint;
 
    unsigned char  eepromRead_PositiveDeltaLow_bit ;
 

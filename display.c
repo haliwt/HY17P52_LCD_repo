@@ -71,8 +71,8 @@ void DisplayNum4Bytes( int Num)
   unsigned char *LCDAddr,LCDData;
 
   
-  LCDAddr = &LCD1;//LCDAddr=&LCD3;
-  for(count=0;count<5;count++)
+  LCDAddr = &LCD0;//LCDAddr=&LCD3;
+  for(count=0;count<6;count++)
   {
 
       LCDData=seg[Num%10];
@@ -82,9 +82,9 @@ void DisplayNum4Bytes( int Num)
             else 
               LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
       }
-      else{
-            LCD_WriteData(LCDAddr,LCDData);
-      }
+      else if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
+      else LCD_WriteData(LCDAddr,LCDData);
+      
       Num=Num/10 ;
       LCDAddr++;
   }
