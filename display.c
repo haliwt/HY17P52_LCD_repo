@@ -65,33 +65,31 @@ void DisplayNum(long Num)
   *
   *
 *---------------------------------------------------------------------------*/
-void DisplayNum4Bytes( long int Num)
+void DisplayNum4Bytes( long Num)
 {
   unsigned char count;
   unsigned char *LCDAddr,LCDData;
 
   
-  LCDAddr = &LCD0;//LCDAddr=&LCD3;
-  for(count=0;count<6;count++)
+  LCDAddr = &LCD1;
+  for(count=0;count<4;count++)
   {
-          if(count ==0 ||count ==1){
-
-          }
-          else{
-            LCDData=seg[Num%10];
-            if(LCDAddr == &LCD4){
+        
+           LCDData=seg[Num%10];
+          if(count == 3){
                   if(Num %10 !=0)
                     LCD_WriteData(&LCD0,highest_bit_One) ; 
                   else 
                     LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
+                  count =5;
             }
-            else if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
-            else LCD_WriteData(LCDAddr,LCDData);
-            
-            Num=Num/10 ;
-            LCDAddr++;
-        }
-    
+            else{
+             
+              LCD_WriteData(LCDAddr,LCDData);
+              Num=Num/10 ;
+              LCDAddr++;
+
+            }
   }
  // LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
 }

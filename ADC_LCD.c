@@ -35,9 +35,9 @@ void HY17P52WR3Delay(char ms);
 
 #define abs(value)          ((value) >0 ? (value) : (-value) )
 
-#define kgfTOpsi(kgf)       (0.1450 * (kgf))
+#define kgfTOpsi(kgf)       (1.450 * (kgf))
 #define kgfTObar(kgf)   	  (1.0 * (kgf))
-#define kgfTOmpa(kgf)	 	    (0.1 * (kgf))
+#define kgfTOmpa(kgf)	 	    (1.0 * (kgf))
 
 #define STD_VALUE                 30510//WT.EDIT 2020-06-03 //10400//10440//10400
 
@@ -98,6 +98,7 @@ unsigned char EEPROM_ReadUnitData_Address0(void);
 //void DisplaySelectionUintPoint(void);
 void ProcessRunsFlag(void);
 void LowVoltageBlink(void);
+void DisplaySelectionUintPoint(void);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -317,13 +318,13 @@ long UnitConverter(long data)
 
       case bar:
         LCD_WriteData(&LCD4, seg_bar) ;
-        DisplayPointP1();
+        DisplayPointP2();
         return	kgfTObar(data);
       break;
 
       case kgf:
         LCD_WriteData(&LCD4, seg_kgf) ;
-        DisplayPointP3();
+       // DisplayPointP3();
          return data;
       break;
 
@@ -337,6 +338,28 @@ long UnitConverter(long data)
            
       break;
     }
+}
+/******************************************************************************
+  *
+  *Function Name:DisplaySelectionUintPoint(void)
+  *
+  *
+  *
+******************************************************************************/
+void DisplaySelectionUintPoint(void)
+{
+
+  if(adS.eepromRead_UnitLow_bit==psi){
+        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿¿ 
+  }
+  else if(adS.eepromRead_UnitLow_bit==bar){
+         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ¨çš‿ *
+  }
+  else if(adS.eepromRead_UnitLow_bit==mpa){
+
+         DisplayPointP1();
+  }
+  
 }
 /******************************************************************************
 	*
@@ -672,7 +695,8 @@ void PositivePressureWorks_Mode(void)
                           ADC= UnitConverter(ADC);
                           DisplayNum(ADC);
                           LowVoltageDisplay();
-                          DisplaySignPlus();
+                          //DisplaySignPlus();
+                         
                           Delay(20000);
                           adS.getSaveTimes++;
                           adS.workstation_flag =0;
@@ -687,6 +711,7 @@ void PositivePressureWorks_Mode(void)
                           DisplayNum(0);
                           LowVoltageDisplay();
                           DisplaySignPlus();
+                          
                           Delay(20000);
                           adS.getSaveTimes++;
                           adS.workstation_flag =0;
@@ -695,14 +720,15 @@ void PositivePressureWorks_Mode(void)
 		    				 adS.workstation_flag =1;
 		    				//eta = delta * 0.1;
 		    			
-		    				 LCDDisplay =  0.0171 *delta - 23.3;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
+		    				 LCDDisplay =  0.0171 *delta - 23;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
     
 
-		    				if(LCDDisplay >=1001){
+		    				if(LCDDisplay >=1003){
                     DisplayHHH();
                    // LCDDisplay=UnitConverter(LCDDisplay);
                   // DisplayNum4Bytes(LCDDisplay);//DisplayNum(LCDDisplay);
                     LowVoltageDisplay();
+
                     Delay(20000);
                     adS.getSaveTimes++;
                 }
@@ -713,10 +739,10 @@ void PositivePressureWorks_Mode(void)
   	                //if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
   	                //else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
   	                //else
-  	                 DisplayNum(LCDDisplay);
+  	                 DisplayNum4Bytes(LCDDisplay);// DisplayNum(LCDDisplay);
   		    					LowVoltageDisplay();
-  		    					DisplaySignPlus();
-  		    				//	DisplaySelectionUintPoint();
+  		    					//DisplaySignPlus();
+  		    					DisplaySelectionUintPoint();
   		    					Delay(20000);
   		    					adS.getSaveTimes++;
 
