@@ -483,7 +483,7 @@ void SetupZeroPoint_Mode(void)
               }
               else{
                   HY17P52WR3(1,0x11,plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                  GPIO_PT16_HIGH();
+                  GPIO_PT16_LOW();
                   if(Flag== 1){
                       //GPIO_PT16_HIGH();
                       while(1);    //fail
@@ -668,7 +668,7 @@ void PositivePressureWorks_Mode(void)
                    if(ADC <2500){
                      
                           adS.setThreshold =1;
-                          initialize_ADC[0]=ADC -200;
+                          initialize_ADC[0]=ADC -300;
                           ADC= UnitConverter(ADC);
                           DisplayNum(ADC);
                           LowVoltageDisplay();
@@ -682,6 +682,7 @@ void PositivePressureWorks_Mode(void)
 
               if(ADC <=initialize_ADC[0] && adS.setThreshold ==1){
                 
+                          if(initialize_ADC[0]>2500)adS.setThreshold =0;
                           UnitConverter(0);
                           DisplayNum(0);
                           LowVoltageDisplay();
@@ -722,33 +723,8 @@ void PositivePressureWorks_Mode(void)
 
 		    			   }
                }
-                 #if 0
-		    			   else{
-
-    		    			   	  if(LCDDisplay < 100 ){
-      		    						LCDDisplay=UnitConverter(LCDDisplay);
-
-      		    						if(adS.eepromRead_UnitLow_bit==mpa)DisplayNumOneByte(LCDDisplay);
-      		    						else
-      		    						DisplayNum2Bit(LCDDisplay);
-      		    						LowVoltageDisplay();
-      		    						DisplaySignPlus();
-      		    						Delay(20000);
-      		    						adS.getSaveTimes++;
-                        }
-    		    			   	  else{
-                              LCDDisplay=UnitConverter(LCDDisplay);
-
-                              DisplayNum(LCDDisplay);
-                              LowVoltageDisplay();
-                              DisplaySignPlus();
-                              Delay(20000);
-                              adS.getSaveTimes++;
-                            }
-                    }
-                  #endif 
-		         
-		            #if 1
+                 
+		         #if 1
 		                if(adS.getSaveTimes>225){
 		                    if(adS.zeroTo60times ==2){
 		                        adS.zeroTo60times =0 ;
