@@ -8,6 +8,7 @@
 #include <CLK.h>
 #include <PWR.h>
 #include <ADC_52.h>
+#include <RST.h>
 #include <GPIO.h>
 #include <LCD.h>
 #include <TMR_52.h>
@@ -180,6 +181,7 @@ void main(void)
     	        if(adS.zeroTo60times==1){
                     Delay(1000);
           	   	    if(GPIO_READ_PT10()==0){
+          	   	        SYS_WAKEUP()  ; //WT.EDTI 2020-06-13 
               	   	    LCD_DisplayOn();
                         adS.getSaveTimes=0;
                         adS.LowVoltage_flag=0;
@@ -187,6 +189,7 @@ void main(void)
                 }else if(adS.zeroTo60times==2){
                     Delay(1000);
           	   	    if(GPIO_READ_PT10()==0){
+          	   	        SYS_WAKEUP()  ; //WT.EDTI 2020-06-13 SYS_WEAKUP() 
               	   	    LCD_DisplayOn();
                         adS.getSaveTimes=0;
                         adS.LowVoltage_flag=0;
@@ -196,6 +199,7 @@ void main(void)
                 else if(adS.workstation_flag ==1){
                     Delay(1000);
                      if(GPIO_READ_PT10()==0){
+                      SYS_WAKEUP() ;//WT.EDTI 2020-06-13 
                         adS.zeroTo60times=2;
                         adS.LowVoltage_flag=0;
                      }
@@ -338,14 +342,14 @@ void DisplaySelectionUintPoint(void)
 {
 
 	if(adS.eepromRead_UnitLow_bit==psi){
-		    DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿�? 
+		    DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿�? 
 	}
 	else if(adS.eepromRead_UnitLow_bit==bar){
-	       DisplayPointP1();   //å°æ•°ç‚¹ä¸åŠ¨çš�? *
+	       DisplayPointP1();   //å°æ•°ç‚¹ä¸åŠ¨çš�? *
 	}
 	else if(adS.eepromRead_UnitLow_bit==kgf){
 
-			DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿�? 
+			DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿�? 
 	}
 	else if(adS.eepromRead_UnitLow_bit==mpa){
 
@@ -726,6 +730,7 @@ void PositivePressureWorks_Mode(void)
 		                    }
 		                    else{
 		                            LCD_DisplayOff();
+		                            Idle() ;//Sleep();
 		                            adS.zeroTo60times=1;
 		                    }
 		                }
