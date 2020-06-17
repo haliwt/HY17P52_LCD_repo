@@ -691,7 +691,7 @@ void PositivePressureWorks_Mode(void)
                    if(ADC <2500){
                      
                           adS.setThreshold =1;
-                          initialize_ADC[0]=ADC -300;
+                          initialize_ADC[0]=ADC -100;
                           ADC= UnitConverter(ADC);
                           DisplayNum(ADC);
                           LowVoltageDisplay();
@@ -720,7 +720,7 @@ void PositivePressureWorks_Mode(void)
 		    				 adS.workstation_flag =1;
 		    				//eta = delta * 0.1;
 		    			
-		    				 LCDDisplay =  0.0171 *delta - 23;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
+		    				 LCDDisplay =  0.0172 *delta - 25;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
     
 
 		    				if(LCDDisplay >=1003){
@@ -732,7 +732,20 @@ void PositivePressureWorks_Mode(void)
                     Delay(20000);
                     adS.getSaveTimes++;
                 }
-		    				else {
+		    				else if(LCDDisplay == 0x01 || LCDDisplay < 0x04){
+
+                          UnitConverter(0);
+                          DisplayNum(0);
+                          LowVoltageDisplay();
+                         
+                          Delay(20000);
+                          adS.getSaveTimes++;
+                          adS.workstation_flag =0;
+
+
+                }
+
+                else {
 
   		    					 LCDDisplay=UnitConverter(LCDDisplay);
 
