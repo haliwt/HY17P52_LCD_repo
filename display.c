@@ -55,7 +55,7 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr++;
   }
-  LCD_WriteData(&LCD0,highest_bit_NotOne) ;  //WT.EDIT 2020-06-05
+ // LCD_WriteData(&LCD0,highest_bit_NotOne) ;  //WT.EDIT 2020-06-05
 }
 /*---------------------------------------------------------------------------
   *
@@ -65,7 +65,7 @@ void DisplayNum(long Num)
   *
   *
 *---------------------------------------------------------------------------*/
-void DisplayNum4Bytes( int Num)
+void DisplayNum4Bytes( long int Num)
 {
   unsigned char count;
   unsigned char *LCDAddr,LCDData;
@@ -74,19 +74,24 @@ void DisplayNum4Bytes( int Num)
   LCDAddr = &LCD0;//LCDAddr=&LCD3;
   for(count=0;count<6;count++)
   {
+          if(count ==0 ||count ==1){
 
-      LCDData=seg[Num%10];
-      if(LCDAddr == &LCD4){
-            if(Num %10 !=0)
-              LCD_WriteData(&LCD0,highest_bit_One) ; 
-            else 
-              LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
-      }
-      else if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
-      else LCD_WriteData(LCDAddr,LCDData);
-      
-      Num=Num/10 ;
-      LCDAddr++;
+          }
+          else{
+            LCDData=seg[Num%10];
+            if(LCDAddr == &LCD4){
+                  if(Num %10 !=0)
+                    LCD_WriteData(&LCD0,highest_bit_One) ; 
+                  else 
+                    LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
+            }
+            else if(LCDAddr == &LCD0) LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
+            else LCD_WriteData(LCDAddr,LCDData);
+            
+            Num=Num/10 ;
+            LCDAddr++;
+        }
+    
   }
  // LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
 }

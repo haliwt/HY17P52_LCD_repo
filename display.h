@@ -92,6 +92,7 @@ struct _adc_works_
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
+   unsigned long  setThreshold;
 
 };
 
@@ -124,7 +125,7 @@ void DisplaySignMinus(void);
 void DisplaySignPlus(void);
 void DisplayNum2Bit(int  num);
 void DisplayHighestByte_One(void);
-void DisplayNum4Bytes(int number);
+void DisplayNum4Bytes(long int number);
 void DisplayNumOneByte(int number);
 
 #endif
