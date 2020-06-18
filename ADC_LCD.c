@@ -283,7 +283,7 @@ unsigned char EEPROM_ReadUnitData_Address0(void)
      BIEARL=0;                                //addr=0
 	   BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
 	   while((BIECN& 0x01)==1);
-     adS.eepromRead_UnitHigh_bit= BIEDRH;
+   //  adS.eepromRead_UnitHigh_bit= BIEDRH;
 	   unitID=BIEDRL;
      return unitID;
 }
@@ -297,6 +297,45 @@ unsigned char EEPROM_ReadUnitData_Address0(void)
 ******************************************************************************/
 long UnitConverter(long data)
 {
+    
+    adS.eepromRead_UnitLow_bit  =  EEPROM_ReadUnitData_Address0();
+      if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
+
+         LCD_WriteData(&LCD4, seg_psi) ;
+          DisplayPointP3();
+
+         return  kgfTOpsi(data) ;
+     }
+   else if(adS.eepromRead_UnitLow_bit==bar){ /*unit bar*/
+         LCD_WriteData(&LCD4, seg_bar) ;
+         DisplayPointP2();
+
+       return kgfTObar(data);
+   }
+   else if(adS.eepromRead_UnitLow_bit==kgf){ /* unit kgf*/
+
+         LCD_WriteData(&LCD4, seg_kgf) ;
+        
+
+         return data;
+   }
+   else if(adS.eepromRead_UnitLow_bit==mpa){ /*uint mpa*/
+
+     LCD_WriteData(&LCD4, seg_mpa) ;
+      DisplayPointP1();
+
+     return kgfTOmpa(data);
+   }
+   else{
+             LCD_WriteData(&LCD4, seg_kgf) ;
+           
+
+             return data;
+   }
+
+
+
+#if 0
     unsigned char uid=0;
 
     uid = EEPROM_ReadUnitData_Address0();
@@ -335,6 +374,7 @@ long UnitConverter(long data)
 
       break;
     }
+#endif
 }
 /******************************************************************************
   *
@@ -504,9 +544,11 @@ void SetupZeroPoint_Mode(void)
               while((BIECN& 0x01)==1);
               adS.plus_revise_flag =BIEDRH ;
 
-              if((adS.plus_revise_flag==0x11 ||adS.plus_revise_flag==0x11) && GPIO_READ_PT15() !=0 ){
+              if((adS.plus_revise_flag==0x11 ||adS.plus_revise_flag==0x22) && GPIO_READ_PT15() !=0 ){
 
                 adS.delayTimes_5s=0;
+                void Display2ErP3();
+                Delay(20000);
                 GPIO_PT16_LOW();
               }
               else{
@@ -743,12 +785,20 @@ void PositivePressureWorks_Mode(void)
               else{
 		    		adS.workstation_flag =1;
 		    		LCDDisplay =  0.0171 *ADC - 27 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
-                    if(LCDDisplay >=1003){
-                    DisplayHHH();
-                    LowVoltageDisplay();
+                    if(LCDDisplay >=1005){
+                        Delay(20000);
+                            if(LCDDisplay >=1005){
+                                DisplayHHH();
+                                LowVoltageDisplay();
 
-                    Delay(20000);
-                    adS.getSaveTimes++;
+                                Delay(20000);
+                                adS.getSaveTimes++;
+                            }else{
+
+                                 Delay(20000);
+                                 adS.getSaveTimes++;
+                            }
+
                 }
 		    				else if(LCDDisplay == 0x01 || LCDDisplay < 0x04){
 
@@ -766,16 +816,12 @@ void PositivePressureWorks_Mode(void)
                 else {
 
   		    					 LCDDisplay=UnitConverter(LCDDisplay);
-
-  	                //if(adS.eepromRead_UnitLow_bit==psi)DisplayNum(LCDDisplay);
-  	                //else if(adS.eepromRead_UnitLow_bit==mpa)DisplayNum(LCDDisplay);
-  	                //else
-  	                 DisplayNum4Bytes(LCDDisplay);// DisplayNum(LCDDisplay);
-  		    					LowVoltageDisplay();
-  		    					//DisplaySignPlus();
-  		    					DisplaySelectionUintPoint();
-  		    					Delay(20000);
-  		    					adS.getSaveTimes++;
+                     DisplayNum4Bytes(LCDDisplay);
+  		    					 LowVoltageDisplay();
+  		    	
+  		    					 DisplaySelectionUintPoint();
+  		    					 Delay(20000);
+  		    					 adS.getSaveTimes++;
 
 
 		    			   }

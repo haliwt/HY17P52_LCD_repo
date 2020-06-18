@@ -180,7 +180,7 @@ void Display2Er(void)
 }
 /*****************************************************************************
   *
-  *Function Name :void Display2Er(void)
+  *Function Name :void Display2ErP3(void)
   *Function :LCD display "2Er"
   *
   *
@@ -194,6 +194,7 @@ void Display2ErP3(void)
   LCD_WriteData(&LCD2,POINT_P3);  
 
 }
+
 
 /*****************************************************************************
   *

@@ -83,6 +83,7 @@ struct _adc_works_
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
    unsigned char  WriteEepromTimes ;
+   unsigned char  writeEepromTimes ;
 
    unsigned char  eepromRead_PositiveDeltaLow_bit ;
 
