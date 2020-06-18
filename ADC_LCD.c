@@ -229,6 +229,7 @@ while(1)
         				ADIF_ClearFlag();
         				ADIE_Enable();
         				GIE_Enable();
+                SYS_RESET() ;
     			    }
     			   if(MCUSTATUSbits.b_ADCdone==1){
       					MCUSTATUSbits.b_ADCdone=0;
@@ -527,63 +528,73 @@ void SetupZeroPoint_Mode(void)
     long  plusOffset_Value;
     adS.zeroPoint_Mode =0;
 		adS.testMode=0;
-		adS.reload_ADCInterrupt = 1;
+		
      adS.access_id_5s= 1;
-     if(MCUSTATUSbits.b_ADCdone==1){
-          MCUSTATUSbits.b_ADCdone=0;
-          ADC =ADC >>6;
+     if(adS.WriteEepromTimes <5){
+         if(MCUSTATUSbits.b_ADCdone==1){
+              MCUSTATUSbits.b_ADCdone=0;
+              adS.reload_ADCInterrupt = 1;
+              ADC =ADC >>6;
 
-		          formula_Value =  0.0171 *ADC - 23;
-             
-              //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
-              plusOffset_Value= formula_Value - 500  ;
-             
-             
-              BIEARL=1;                       //addr=1
-              BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-              while((BIECN& 0x01)==1);
-              adS.plus_revise_flag =BIEDRH ;
+    		          formula_Value =  0.0171 *ADC - 23;
+                 
+                  //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
+                  plusOffset_Value= formula_Value - 500  ;
+                 
+                 
 
-              if((adS.plus_revise_flag==0x11 ||adS.plus_revise_flag==0x22) && GPIO_READ_PT15() !=0 ){
+                          HY17P52WR3(1,0x0,0x0); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                          if(Flag== 1){
 
-                adS.delayTimes_5s=0;
-                void Display2ErP3();
-                Delay(20000);
-                GPIO_PT16_LOW();
-              }
-              else{
-                     if(plusOffset_Value >=0){
+                               while(1);  
+                          }  //fail
+                          GPIO_PT16_LOW();
+                          Delay(1000);
+                         if(plusOffset_Value >=0){
 
-                       HY17P52WR3(1,0x11,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                       GPIO_PT16_HIGH();
-                       if(Flag== 1){
-
-                       while(1);    //fail
-                        }
-
-                      }
-                      else{
-
-                           plusOffset_Value  = abs(plusOffset_Value);
-                           HY17P52WR3(1,0x22,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                           GPIO_PT16_HIGH();
+                           HY17P52WR3(1,0x11,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                            GPIO_PT16_HIGH();
                            if(Flag== 1){
 
                            while(1);    //fail
                             }
 
-                      }
+                          }
+                          else{
+
+                               plusOffset_Value  = abs(plusOffset_Value);
+                               HY17P52WR3(1,0x22,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                               GPIO_PT16_HIGH();
+                               
+                               if(Flag== 1){
+
+                               while(1);    //fail
+                                }
+
+                          
+                           }
+
+                     
+                      adS.delayTimes_5s=0;
+                  
+                  DisplayNum(plusOffset_Value);
+
+                  Delay(20000);
+                  adS.WriteEepromTimes++ ;
 
 
-                 
-                  adS.delayTimes_5s=0;
-              }
-              DisplayNum(plusOffset_Value);
-
-              Delay(20000);
-
-    }
+        }
+        
+  }
+  else {
+        
+          Display2ErP3();
+          Delay(20000);
+          GPIO_PT16_LOW();
+          adS.delayTimes_5s=0;
+          adS.WriteEepromTimes++ ;
+                  
+  }
 }
 /**************************************************************
 	*
@@ -800,7 +811,7 @@ void PositivePressureWorks_Mode(void)
                             }
 
                 }
-		    				else if(LCDDisplay == 0x01 || LCDDisplay < 0x04){
+		    				else if(LCDDisplay == 0x01 || LCDDisplay <= 0x05){
 
                           UnitConverter(0);
                           DisplayNum(0);
