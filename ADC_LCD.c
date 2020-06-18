@@ -560,31 +560,33 @@ void SetupUnitSelection(void)
   adS.testMode =1;
   adS.access_id_5s=0;
   DisplayUnit();
+  adS.plus_uint++;
+  if(adS.plus_uint >4)adS.plus_uint=1;
 
 #if 1
   switch(adS.plus_uint){
   case psi:
-       adS.plus_uint++;
+       
      adS.unitChoose = psi;
      LCD_WriteData(&LCD4,seg_psi);
      adS.delayTimes_5s=9000;
          break;
   case bar:
-     adS.plus_uint++;
+    
      adS.unitChoose = bar;
      LCD_WriteData(&LCD4,seg_bar);
      adS.delayTimes_5s=9000;
 
        break;
   case kgf:
-    adS.plus_uint++;
+    
     adS.unitChoose = kgf;
     LCD_WriteData(&LCD4,seg_kgf);
      adS.delayTimes_5s=9000;
 
        break;
   case mpa:
-       adS.plus_uint++;
+      
      adS.unitChoose = mpa;
      LCD_WriteData(&LCD4,seg_mpa);
      adS.delayTimes_5s=8000;
