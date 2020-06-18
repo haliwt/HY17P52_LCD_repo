@@ -229,7 +229,7 @@ while(1)
         				ADIF_ClearFlag();
         				ADIE_Enable();
         				GIE_Enable();
-                SYS_RESET() ;
+                Delay(10000);
     			    }
     			   if(MCUSTATUSbits.b_ADCdone==1){
       					MCUSTATUSbits.b_ADCdone=0;
@@ -333,49 +333,6 @@ long UnitConverter(long data)
 
              return data;
    }
-
-
-
-#if 0
-    unsigned char uid=0;
-
-    uid = EEPROM_ReadUnitData_Address0();
-    if(adS.eepromRead_UnitHigh_bit == 0xAA)
-       adS.eepromRead_UnitLow_bit  = uid;
-    else adS.eepromRead_UnitLow_bit = kgf;
-
-    switch(adS.eepromRead_UnitLow_bit){
-
-      case psi:
-         LCD_WriteData(&LCD4, seg_psi) ;
-         DisplayPointP3();
-         return kgfTOpsi(data);
-
-      break;
-
-      case bar:
-        LCD_WriteData(&LCD4, seg_bar) ;
-        DisplayPointP2();
-        return	kgfTObar(data);
-      break;
-
-      case kgf:
-        LCD_WriteData(&LCD4, seg_kgf) ;
-       // DisplayPointP3();
-         return data;
-      break;
-
-      case mpa:
-       LCD_WriteData(&LCD4, seg_mpa) ;
-       DisplayPointP1();
-      return kgfTOmpa(data);
-      break;
-
-      default :
-
-      break;
-    }
-#endif
 }
 /******************************************************************************
   *
@@ -769,7 +726,7 @@ void PositivePressureWorks_Mode(void)
                    if(ADC <2500){
 
                           adS.setThreshold =1;
-                          initialize_ADC[0]=ADC -200;
+                          initialize_ADC[0]=ADC -300;
                           ADC= UnitConverter(ADC);
                           DisplayNum(ADC);
                           LowVoltageDisplay();
