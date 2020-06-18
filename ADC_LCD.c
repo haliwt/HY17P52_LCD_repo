@@ -39,7 +39,7 @@ void HY17P52WR3Delay(char ms);
 #define kgfTObar(kgf)   	  (1.0 * (kgf))
 #define kgfTOmpa(kgf)	 	    (1.0 * (kgf))
 
-#define STD_VALUE                 30510//WT.EDIT 2020-06-03 //10400//10440//10400
+#define STD_VALUE                 30465//WT.EDIT 2020-06-03
 
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
@@ -483,7 +483,7 @@ void LowVoltageDisplay(void)
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-    long  minusOffset_Value;
+    long  formula_Value;
     long  plusOffset_Value;
     adS.zeroPoint_Mode =0;
 		adS.testMode=0;
@@ -493,30 +493,48 @@ void SetupZeroPoint_Mode(void)
           MCUSTATUSbits.b_ADCdone=0;
           ADC =ADC >>6;
 
-		 /* Positive revise data for "+*/
+		          formula_Value =  0.0172 *ADC - 24;
               adS.Pressure_sign =0;
               //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
-              plusOffset_Value= abs(ADC) -STD_VALUE  ;
-              plusOffset_Value =(unsigned char)abs(plusOffset_Value);
-
+              plusOffset_Value= formula_Value - 500  ;
+             
+             
               BIEARL=1;                       //addr=1
               BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
               while((BIECN& 0x01)==1);
               adS.plus_revise_flag =BIEDRH ;
 
-              if(adS.plus_revise_flag==0x11 && GPIO_READ_PT15() !=0 ){
+              if((adS.plus_revise_flag==0x11 ||adS.plus_revise_flag==0x11) && GPIO_READ_PT15() !=0 ){
 
                 adS.delayTimes_5s=0;
                 GPIO_PT16_LOW();
               }
               else{
-                  HY17P52WR3(1,0x11,plusOffset_Value);	//addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                  GPIO_PT16_HIGH();
-                  if(Flag== 1){
+                     if(plusOffset_Value >=0){
 
-                      while(1);    //fail
-                  }
+                       HY17P52WR3(1,0x11,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                       GPIO_PT16_HIGH();
+                       if(Flag== 1){
 
+                       while(1);    //fail
+                        }
+
+                      }
+                      else{
+
+                           plusOffset_Value  = abs(plusOffset_Value);
+                           HY17P52WR3(1,0x22,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                           GPIO_PT16_HIGH();
+                           GPIO_PT16_HIGH();
+                           if(Flag== 1){
+
+                           while(1);    //fail
+                            }
+
+                      }
+
+
+                 
                   adS.delayTimes_5s=0;
               }
               DisplayNum(plusOffset_Value);
@@ -663,7 +681,7 @@ void ProcessWorksPrecondition(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    long delta;
+    int delta;
     long LCDDisplay;
     unsigned long initialize_ADC[1] ;
 
@@ -681,18 +699,18 @@ void PositivePressureWorks_Mode(void)
 		    adS.eepromRead_PositiveDeltaLow_bit=BIEDRL;
 
 		    		//if(adS.eepromRead_PositiveDeltaLow_bit+ (ADC * 0.01) >= STD_VALUE){
-		    if(adS.eepromRead_PositiveDeltaLow_bit + ADC>= STD_VALUE){
+		    if(adS.plus_revise_flag==0x11){
 
-		    			delta =ADC - adS.eepromRead_PositiveDeltaLow_bit ;
+		    			delta = -(int)adS.eepromRead_PositiveDeltaLow_bit ;
 
 		    	}
-		    else{
+		    else if(adS.plus_revise_flag==0x22){
 
-		    			delta =ADC  + adS.eepromRead_PositiveDeltaLow_bit ;
+		    			delta = adS.eepromRead_PositiveDeltaLow_bit ;
 
 		    }
 
-		    if(adS.plus_revise_flag == 0x11){
+		    if(adS.plus_revise_flag == 0x11 || adS.plus_revise_flag==0x22 ){
 
                if(adS.setThreshold !=1){
                    if(ADC <2500){
@@ -725,7 +743,7 @@ void PositivePressureWorks_Mode(void)
               }
               else{
 		    		adS.workstation_flag =1;
-		    		LCDDisplay =  0.0172 *delta - 24;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
+		    		LCDDisplay =  0.0172 *ADC - 24 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
                     if(LCDDisplay >=1003){
                     DisplayHHH();
                     LowVoltageDisplay();
@@ -783,20 +801,9 @@ void PositivePressureWorks_Mode(void)
 		    }
 		    #if 1
 
-		    if(adS.plus_revise_flag !=0x11){
+		    if(adS.plus_revise_flag !=0x11 && adS.plus_revise_flag !=0x22){
 
 
-              #if 0
-               if(initialize_ADC != 0x33){
-                     initialize_ADC =(unsigned int) (ADC);
-                      //write delta data in eeprom negative pressure "-"
-                     HY17P52WR3(3,0x33,initialize_ADC); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                     if(Flag== 1){
-                      //  GPIO_PT16_HIGH();
-                      while(1);    //fail
-                    }
-              }
-              #endif
                 ADC = ADC >>6;
 
                 ADC=UnitConverter(ADC);
