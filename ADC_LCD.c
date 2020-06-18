@@ -493,8 +493,8 @@ void SetupZeroPoint_Mode(void)
           MCUSTATUSbits.b_ADCdone=0;
           ADC =ADC >>6;
 
-		          formula_Value =  0.0172 *ADC - 24;
-              adS.Pressure_sign =0;
+		          formula_Value =  0.0171 *ADC - 23;
+             
               //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
               plusOffset_Value= formula_Value - 500  ;
              
@@ -742,7 +742,7 @@ void PositivePressureWorks_Mode(void)
               }
               else{
 		    		adS.workstation_flag =1;
-		    		LCDDisplay =  0.0171 *ADC - 23 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
+		    		LCDDisplay =  0.0171 *ADC - 27 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
                     if(LCDDisplay >=1003){
                     DisplayHHH();
                     LowVoltageDisplay();
