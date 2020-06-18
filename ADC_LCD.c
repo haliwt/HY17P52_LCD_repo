@@ -44,7 +44,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-//#define TEST                    1
+#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -368,7 +368,7 @@ void DisplaySelectionUintPoint(void)
 unsigned char LowVoltageDetect_3V(void)
 {
     unsigned char flag;
-    LVD_VolSelect(VLDX_28);
+    LVD_VolSelect(VLDX_30);
     LVD_PWRSelect(PWRS_VDD);
     Delay(10);
   if(LVD_GetLVDO())
@@ -448,22 +448,29 @@ void LowVoltageBlink(void)
 *******************************************************************************/
 void LowVoltageDisplay(void)
 {
-  unsigned char LVD_2V4_flag=0 ;
-  unsigned char LVD_3V_flag =0;
-	LVD_3V_flag = LowVoltageDetect_3V();
-	if(LVD_3V_flag==0){ /* battery capacity is full*/
+  
+	adS.LVD_3V_flag = LowVoltageDetect_3V();
+	if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
       DisplayBatteryCapacityFull();
 	}
   else{
 
          DisplayBatteryCapacityHalf();
-         LVD_2V4_flag = LowVoltageDetect_2V4();
-	       if(LVD_2V4_flag == 1){
-	       			  DispalyBatteryCapacityLow();
-    	       	  #ifndef TEST
-                  LowVoltageBlink();
-                #endif
-          }
+         adS.LVD_2V4_flag = LowVoltageDetect_2V4();
+         if(adS.LVD_2V4_flag == 0){
+
+              DisplayBatteryCapacityHalf();
+         }
+         else{
+        
+            DispalyBatteryCapacityLow();
+          #ifndef TEST
+
+            LowVoltageBlink();
+                
+            #endif  
+
+         }
       }
 }
 /****************************************************************************

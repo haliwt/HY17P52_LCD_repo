@@ -54,7 +54,7 @@
 
 
 
-enum unit_t{psi,bar,kgf,mpa};
+enum unit_t{psi=1,bar,kgf,mpa};
 
 struct _adc_works_
 {
@@ -80,6 +80,9 @@ struct _adc_works_
    unsigned char  workstation_flag:1;
    unsigned char  LowVoltage_flag : 1;
    unsigned char  plus_uint;
+   unsigned char  LVD_2V4_flag : 1;
+   unsigned char  LVD_3V_flag :1;
+   unsigned char  WriteEepromTimes ;
 
    unsigned char  eepromRead_PositiveDeltaLow_bit ;
 
@@ -106,6 +109,8 @@ void DisplayHycon(void);
 void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);
+void Display2ErP3(void);
+
 void DisplayUnit(void);
 void DisplayHHH(void);
 void DisplayLLL(void);
@@ -126,6 +131,6 @@ void DisplaySignPlus(void);
 void DisplayNum2Bit(int  num);
 void DisplayHighestByte_One(void);
 void DisplayNum4Bytes(long number);
-void DisplayNumOneByte(int number);
+
 
 #endif
