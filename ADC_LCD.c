@@ -175,7 +175,7 @@ while(1)
 
               }
 
-              if(adS.delayTimes_3s >=4000&& adS.access_id_3s !=1){ /* zero point mode*/
+              if(adS.delayTimes_3s >=3000&& adS.access_id_3s !=1){ /* zero point mode*/
 
                 if(GPIO_READ_PT10()==0){
                      SetupZeroPointSelection();
@@ -795,7 +795,8 @@ void PositivePressureWorks_Mode(void)
               }
               else{
 		    		adS.workstation_flag =1;
-		    		LCDDisplay =  0.0171 *ADC - 27 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
+		    		//LCDDisplay =  0.0171 *ADC - 25 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
+             LCDDisplay= 0.0171 *ADC - 23 + (delta);
                     if(LCDDisplay >=1005){
                         Delay(20000);
                             if(LCDDisplay >=1005){

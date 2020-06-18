@@ -107,6 +107,7 @@
 #define SYS_ReadSLEEP()								 (PSTAT& PSTATUS_PD_SLEEP)
 //WT.EDIT 2020-06-13
 #define SYS_WAKEUP()                                  (PSTAT |= BOR_CLR   | PD_CLR |RST_CLR | RST_CLR )
+#define SYS_RESET()									  (PSTAT |= RST_RST)
 /*-------------------------------------------------------------------------------------------------|
 |  Function call:                                                                                  |
 |    For general and functional register access.                                                   |
