@@ -10,6 +10,7 @@ struct _adc_works_ adS;
 
 void GPIO_Iint(void) 
 {
+  #if 0
   //GPIO Setting
   GPIO_DIR_PT1xInput(PT15);
   GPIO_DIR_PT10_INPUT() ;
@@ -17,6 +18,13 @@ void GPIO_Iint(void)
   GPIO_PT1SETPU(PT10);  
   GPIO_PT1SETPU(PT16);
   GPIO_PT16_OUTUT();  
+   #endif 
+   GPIO_PT1InputMode(0) ;
+ 
+    GPIO_PT1SETPU(0);
+
+  
+  GPIO_PT1OutputMode(6);    //PT1.0
 }
 
 /************************************************************
@@ -361,6 +369,18 @@ void DisplayHighestByte_One(void)
    LCD_WriteData(&LCD0,highest_bit_One);       
 
 }
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplaySignPlus(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/
+void DisplayZero(void)
+{
+   LCD_WriteData(&LCD1,Zero_LCD1);  
+  //LCD_WriteData(&LCD2,Zero_LCD2); 
+   //  LCD_WriteData(&LCD3,Zero_LCD3);      
 
+}
           
 

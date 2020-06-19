@@ -130,3 +130,8 @@ const unsigned char seg[]={
 #define  S_Battery1  0x08  //&LCD6  Battery1
 #define  S_Battery2  0x04  //&LCD6  Battery2
 #define  S_Battery3  0x02  //&LCD6  Battery3
+
+
+#define Zero_LCD1              (LCD1 |=seg_a | seg_b | seg_c|seg_d|seg_e|seg_f)
+#define Zero_LCD2              (seg_a | seg_b | seg_c|seg_d|seg_e|seg_f)
+#define Zero_LCD3              (seg_a | seg_b | seg_c|seg_d|seg_e|seg_f)
