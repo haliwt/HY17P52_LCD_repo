@@ -105,7 +105,7 @@ void DisplaySelectionUintPoint(void);
 
 void main(void)
 {
-  //  static unsigned int delayTimes =0;
+   long thelta ;
     unsigned char firstPower = 0;
     adS.testMode =0;
 
@@ -354,10 +354,10 @@ void DisplaySelectionUintPoint(void)
 {
 
   if(adS.eepromRead_UnitLow_bit==psi){
-        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿? 
+        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï�? 
   }
   else if(adS.eepromRead_UnitLow_bit==bar){
-         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ¨çš?* *
+         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ¨ç�?* 
   }
   else if(adS.eepromRead_UnitLow_bit==mpa){
 
@@ -679,11 +679,22 @@ void PositivePressureWorks_Mode(void)
 
      ADC=ADC>>6;
 
+        if(adS.setThreshold==1){
+                          adS.setThreshold=0;
+                         UnitConverter(0);
+                          DisplayNum(0);
+                          LowVoltageDisplay();
+                          Delay(20000);
+                          adS.getSaveTimes++;
+                          adS.workstation_flag =0;
          //BIE Read
+        }
+        else{
         BIEARL=2;                        //addr=1
         BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
         while((BIECN& 0x01)==1);
         initialize_ADC[0]=BIEDRL;
+       
 
         //BIE Read
 		    BIEARL=1;                        //addr=1
@@ -706,11 +717,12 @@ void PositivePressureWorks_Mode(void)
 
 		    if(adS.plus_revise_flag == 0x11 || adS.plus_revise_flag==0x22 ){
 
-              LCDDisplay= 0.0171 *ADC ;
+            LCDDisplay= 0.0171 *ADC ;
             if( LCDDisplay <=initialize_ADC[0]){
 
+                         adS.setThreshold=1;
                           UnitConverter(0);
-                          DisplayNum4Bytes(0);
+                          DisplayNum(0);
                           LowVoltageDisplay();
                           Delay(20000);
                           adS.getSaveTimes++;
@@ -767,6 +779,7 @@ void PositivePressureWorks_Mode(void)
 		          
 
 		    }
+      }
 		    #if 1
 
 		    if(adS.plus_revise_flag !=0x11 && adS.plus_revise_flag !=0x22){
