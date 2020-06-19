@@ -225,23 +225,33 @@ while(1)
 
     			   if(adS.reload_ADCInterrupt ==1){
         				adS.reload_ADCInterrupt ++ ;
+                //CLK Setting
+                CLK_OSCSelect(OSCS_HAO); //OSCS_HAO = 3.686MHz
+                CLK_CPUCK_Sel(DHS_HSCKDIV1,CPUS_HSCK); //fre = 3.686Mhz /2 =1.843Mhz
+                //VDDA Setting
+                PWR_BGREnable();
+                PWR_LDOPLEnable();
+                PWR_LDOEnable();
+                PWR_LDOSel(LDOC_2V4);
         				ADC_Open(DADC_DHSCKDIV4, CPUS_DHSCK, INP_VSS ,INN_VSS, VRH_AI2, VRL_AI3, ADGN_1, PGAGN_8, VREGN_DIV2, DCSET_N0, OSR_65536,VCMS_V12);
         				ADIF_ClearFlag();
         				ADIE_Enable();
         				GIE_Enable();
-                Delay(10000);
+                Delay(1000);
     			    }
+              
     			   if(MCUSTATUSbits.b_ADCdone==1){
       					MCUSTATUSbits.b_ADCdone=0;
                         PositivePressureWorks_Mode();
-                    }
                 }
-  	      if(adS.zeroPoint_Mode ==1){
+          }
+          if(adS.zeroPoint_Mode ==1){
 
   				   SetupZeroPoint_Mode();
   			   }
            if(adS.unit_setMode ==1){
-              SetupUnit_Mode();
+                SetupUnit_Mode();
+                      
             }
 
 	   }
@@ -298,9 +308,9 @@ unsigned char EEPROM_ReadUnitData_Address0(void)
 ******************************************************************************/
 long UnitConverter(long data)
 {
-    
-    adS.eepromRead_UnitLow_bit  =  EEPROM_ReadUnitData_Address0();
-      if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
+  adS.reload_ADCInterrupt = 1;
+  adS.eepromRead_UnitLow_bit  =  EEPROM_ReadUnitData_Address0();
+  if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
 
          LCD_WriteData(&LCD4, seg_psi) ;
           DisplayPointP3();
@@ -317,8 +327,7 @@ long UnitConverter(long data)
 
          LCD_WriteData(&LCD4, seg_kgf) ;
         
-
-         return data;
+          return data;
    }
    else if(adS.eepromRead_UnitLow_bit==mpa){ /*uint mpa*/
 
@@ -327,12 +336,12 @@ long UnitConverter(long data)
 
      return kgfTOmpa(data);
    }
-   else{
-             LCD_WriteData(&LCD4, seg_kgf) ;
-           
+   else {
 
-             return data;
+          LCD_WriteData(&LCD4, seg_kgf) ;
+          return data;
    }
+  
 }
 /******************************************************************************
   *
@@ -487,6 +496,7 @@ void SetupZeroPoint_Mode(void)
 		adS.testMode=0;
 		
      adS.access_id_5s= 1;
+    if(GPIO_READ_PT10()!=0){
      if(adS.WriteEepromTimes <5){
          if(MCUSTATUSbits.b_ADCdone==1){
               MCUSTATUSbits.b_ADCdone=0;
@@ -498,15 +508,11 @@ void SetupZeroPoint_Mode(void)
                   //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
                   plusOffset_Value= formula_Value - 500  ;
                  
-                 
-
                           HY17P52WR3(1,0x0,0x0); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                           if(Flag== 1){
 
                                while(1);  
                           }  //fail
-                          GPIO_PT16_LOW();
-                          Delay(1000);
                          if(plusOffset_Value >=0){
 
                            HY17P52WR3(1,0x11,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -532,11 +538,10 @@ void SetupZeroPoint_Mode(void)
                            }
 
                      
-                      adS.delayTimes_5s=0;
+                  adS.delayTimes_5s=0;
                   
-                  DisplayNum(plusOffset_Value);
-
-                  Delay(20000);
+                 
+  
                   adS.WriteEepromTimes++ ;
 
 
@@ -552,26 +557,10 @@ void SetupZeroPoint_Mode(void)
           adS.WriteEepromTimes++ ;
                   
   }
+  
 }
-/**************************************************************
-	*
-	*Function Name: SetupUnit_Mode(void)
-	*Function : setup unit and save
-	*
-	*
-***************************************************************/
-void SetupSaveUnit_ID( unsigned char id)
-{
-	 //BIE Write
-	HY17P52WR3(0,0xAA,id);	//addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-	if(Flag== 1)
-	{
-	//	GPIO_PT16_HIGH();
-		while(1);    //fail
-	}
-
-
 }
+
 /**********************************************************************
   *
   *Function Name :void SetupUnitAndZeroPoint_Mode(void)
@@ -587,11 +576,12 @@ void SetupUnitSelection(void)
   adS.zeroPoint_Mode =0;
   adS.testMode =1;
   adS.access_id_5s=0;
+  adS.reload_ADCInterrupt = 1;
   DisplayUnit();
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
 
-#if 1
+
   switch(adS.plus_uint){
   case psi:
        
@@ -623,7 +613,25 @@ void SetupUnitSelection(void)
   }
 
 
-#endif
+}
+/**************************************************************
+  *
+  *Function Name: SetupUnit_Mode(void)
+  *Function : setup unit and save
+  *
+  *
+***************************************************************/
+void SetupSaveUnit_ID( unsigned char id)
+{
+   //BIE Write
+  HY17P52WR3(0,0xAA,id);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+  if(Flag== 1)
+  {
+  //  GPIO_PT16_HIGH();
+    while(1);    //fail
+  }
+
+
 }
 /**************************************************************
   *
@@ -637,50 +645,20 @@ void SetupUnit_Mode(void)
 
   adS.unit_setMode =0 ;
   adS.testMode = 0;
-  adS.reload_ADCInterrupt = 1;
+ adS.reload_ADCInterrupt = 1;
   adS.key_flag =0;
    //BIE Write
-  HY17P52WR3(0,0xAA,adS.unitChoose);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+  HY17P52WR3(0,0x00,0x00);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
   if(Flag== 1)
   {
     GPIO_PT16_HIGH();
     while(1);    //fail
   }
-
+  SetupSaveUnit_ID(adS.unitChoose);
+  
 
 }
-/**********************************************************************
-	*
-	*Function Name :SetupZeroPointSelection
-	*Funciton: positive pressure works preconditon
-	*
-	*
-	*
-***********************************************************************/
-#if NEGATIVE_PRESSURE
-void ProcessWorksPrecondition(void)
-{
-	  ADC=ADC>>6;
 
-	  if((ADC<0)||(ADC>0x80000000))
-			{
-
-				adS.Pressure_sign =1;
-				//LCD_WriteData(&LCD0,0X08);// "-"minus sign bit
-
-			}
-
-			else
-			{
-				if(ADC < 17000){
-				     adS.Pressure_sign =1;
-					 adS.negativeInPositive_flag=1;
-				}
-				else
-				adS.Pressure_sign =0;
-			}
-}
-#endif
 /**********************************************************************
 	*
 	*Function Name :void PositivePressureWorks_Mode(void)
@@ -726,7 +704,7 @@ void PositivePressureWorks_Mode(void)
                    if(ADC <2500){
 
                           adS.setThreshold =1;
-                          initialize_ADC[0]=ADC -300;
+                          initialize_ADC[0]=ADC -200;
                           ADC= UnitConverter(ADC);
                           DisplayNum(ADC);
                           LowVoltageDisplay();
@@ -817,14 +795,13 @@ void PositivePressureWorks_Mode(void)
 
 		    if(adS.plus_revise_flag !=0x11 && adS.plus_revise_flag !=0x22){
 
-
+               
                 ADC = ADC >>6;
-
                 ADC=UnitConverter(ADC);
-
-					      DisplayNum(ADC);
+                DisplayNum(ADC);
 		    		    LowVoltageDisplay();
-		    		    DisplaySignPlus();
+                DisplaySelectionUintPoint();
+                 Delay(20000);
 
 			}
 		  #endif
