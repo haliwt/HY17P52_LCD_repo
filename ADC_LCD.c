@@ -354,10 +354,10 @@ void DisplaySelectionUintPoint(void)
 {
 
   if(adS.eepromRead_UnitLow_bit==psi){
-        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿¿
+        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½ï¿? 
   }
   else if(adS.eepromRead_UnitLow_bit==bar){
-         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ¨çš‿ *
+         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ¨çš?* *
   }
   else if(adS.eepromRead_UnitLow_bit==mpa){
 
@@ -670,7 +670,7 @@ void SetupUnit_Mode(void)
 void PositivePressureWorks_Mode(void)
 {
     int delta;
-    long LCDDisplay;
+    long LCDDisplay,sigma ;
     unsigned long initialize_ADC[1] ;
 
     adS.Pressure_sign =0;
@@ -678,6 +678,12 @@ void PositivePressureWorks_Mode(void)
     adS.getSaveTimes++;
 
      ADC=ADC>>6;
+
+         //BIE Read
+        BIEARL=2;                        //addr=1
+        BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+        while((BIECN& 0x01)==1);
+        initialize_ADC[0]=BIEDRL;
 
         //BIE Read
 		    BIEARL=1;                        //addr=1
@@ -700,38 +706,20 @@ void PositivePressureWorks_Mode(void)
 
 		    if(adS.plus_revise_flag == 0x11 || adS.plus_revise_flag==0x22 ){
 
-               if(adS.setThreshold !=1){
-                   if(ADC <2500){
-
-                          adS.setThreshold =1;
-                          initialize_ADC[0]=ADC -200;
-                          ADC= UnitConverter(ADC);
-                          DisplayNum(ADC);
-                          LowVoltageDisplay();
-                          //DisplaySignPlus();
-
-                          Delay(20000);
-                          adS.getSaveTimes++;
-                          adS.workstation_flag =0;
-                    }
-
-               }
-
-              if(ADC <=initialize_ADC[0] && adS.setThreshold ==1){
+              LCDDisplay= 0.0171 *ADC ;
+            if( LCDDisplay <=initialize_ADC[0]){
 
                           UnitConverter(0);
-                          DisplayNum(0);
+                          DisplayNum4Bytes(0);
                           LowVoltageDisplay();
-                          DisplaySignPlus();
-
                           Delay(20000);
                           adS.getSaveTimes++;
                           adS.workstation_flag =0;
               }
               else{
-		    		adS.workstation_flag =1;
-		    		//LCDDisplay =  0.0171 *ADC - 25 + delta;//y=0.0171x - 23.297//   ADC =  0.0171 *ADC - 22;
-             LCDDisplay= 0.0171 *ADC - 23 + (delta);
+		    		       adS.workstation_flag =1;
+		    	
+                   LCDDisplay= 0.0171 *ADC - 23 + (delta);//y=0.0171x - 23.297//
                     if(LCDDisplay >=1005){
                         Delay(20000);
                             if(LCDDisplay >=1005){
@@ -745,18 +733,6 @@ void PositivePressureWorks_Mode(void)
                                  Delay(20000);
                                  adS.getSaveTimes++;
                             }
-
-                }
-		    				else if(LCDDisplay == 0x01 || LCDDisplay <= 0x05){
-
-                          UnitConverter(0);
-                          DisplayNum(0);
-                          LowVoltageDisplay();
-
-                          Delay(20000);
-                          adS.getSaveTimes++;
-                          adS.workstation_flag =0;
-
 
                 }
 
@@ -774,7 +750,7 @@ void PositivePressureWorks_Mode(void)
 		    			   }
                }
 
-		         #if 1
+		        
 		                if(adS.getSaveTimes>225){
 		                    if(adS.zeroTo60times ==2){
 		                        adS.zeroTo60times =0 ;
@@ -788,21 +764,29 @@ void PositivePressureWorks_Mode(void)
                                 #endif
 		                    }
 		                }
-		            #endif
+		          
 
 		    }
 		    #if 1
 
 		    if(adS.plus_revise_flag !=0x11 && adS.plus_revise_flag !=0x22){
 
+                sigma= 0.0171 *ADC +2 ;
                
-                ADC = ADC >>6;
-                ADC=UnitConverter(ADC);
-                DisplayNum(ADC);
+
+                 HY17P52WR3(2,0x33,sigma); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                           if(Flag== 1){
+
+                           while(1);    //fail
+                            }
+
+
+                UnitConverter(0);
+                DisplayNum4Bytes(sigma);
 		    		    LowVoltageDisplay();
                 DisplaySelectionUintPoint();
-                 Delay(20000);
-
+                Delay(20000);
+           
 			}
 		  #endif
 
