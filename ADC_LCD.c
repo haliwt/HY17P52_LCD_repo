@@ -242,7 +242,17 @@ while(1)
             LCD_DisplayOff();
             adS.unit_2=0;
          }
-         else{
+         else if( adS.setThreshold==1){
+
+                         adS.setThreshold=0;
+                          UnitConverter(0);
+                          DisplayNum(0);
+                          LowVoltageDisplay();
+                          Delay(20000);
+                          adS.getSaveTimes++;
+                          adS.workstation_flag =0;
+          }
+          else{
          if(adS.testMode == 0){ /* measure mode */
               adS.unit_2 =0;
               ProcessRunsFlag();
@@ -379,10 +389,10 @@ void DisplaySelectionUintPoint(void)
 {
 
   if(adS.eepromRead_UnitLow_bit==psi){
-        DisplayPointP3(); //å°æ•°ç‚¹ä¸�? 
+        DisplayPointP3(); //å°æ•°ç‚¹ä¸? 
   }
   else if(adS.eepromRead_UnitLow_bit==bar){
-         DisplayPointP2();   //å°æ•°ç‚¹ä¸�?* 
+         DisplayPointP2();   //å°æ•°ç‚¹ä¸?* 
   }
   else if(adS.eepromRead_UnitLow_bit==mpa){
 
