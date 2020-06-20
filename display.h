@@ -50,6 +50,11 @@
 #define highest_bit_One         (LCD0 |=(0x06<< highestbit))
 #define highest_bit_NotOne      (LCD0 &=~(0x06<< highestbit))
 
+#define NOPOINT                 0
+#define NOPOINT_P1             (LCD0 &= ~(0x01 << NOPOINT ))
+#define NOPOINT_P2             (LCD3 &= ~(0x01 << NOPOINT ))
+#define NOPOINT_P3             (LCD2 &= ~(0x01 << NOPOINT ))
+
 
 
 
@@ -132,6 +137,6 @@ void DisplayNum2Bit(int  num);
 void DisplayHighestByte_One(void);
 void DisplayNum4Bytes(long number);
 void DisplayZero(void);
-
+void DisplayNoPoint(void);
 
 #endif

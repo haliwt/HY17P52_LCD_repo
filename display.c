@@ -382,5 +382,17 @@ void DisplayZero(void)
    //  LCD_WriteData(&LCD3,Zero_LCD3);      
 
 }
-          
+/*----------------------------------------------------------------------------
+  *
+  *Function Name : void DisplayNoPoint(void)
+  * 
+  *                                               
+----------------------------------------------------------------------------*/    
+void DisplayNoPoint(void)
+{
+   LCD_WriteData(&LCD0,NOPOINT_P1);  
+   LCD_WriteData(&LCD3,NOPOINT_P2); 
+   LCD_WriteData(&LCD2,NOPOINT_P3);   
+
+}    
 
