@@ -106,7 +106,7 @@ void DisplaySelectionUintPoint(void);
 void main(void)
 {
    long thelta ;
-    unsigned char firstPower = 0;
+   
     adS.testMode =0;
 
 	//CLK Setting
@@ -142,7 +142,7 @@ void main(void)
 	LCD_PT61Mode(LCD);	 //COM1
 	LCD_PT62Mode(LCD);   //COM2
 	LCD_PT63Mode(LCD);   //COM3
-#if 1
+#if 0
   TMA1_CLKSelect(TMAS1_DMSCK); //freq = DMS_CK = 3.686Mhz/256 = 0.014398MHz      0.014398Mhz / 2= 7.2KHz
   TMA1_CLKDiv(DTMA1_TMA1CKDIV2); // fdiv = 7.2KHz ,T = 0.138ms
   TMA1_CompSet(250);    //TMA1C cycle=10*TMA1R cycle 8bit = 255
@@ -159,70 +159,86 @@ void main(void)
 
 while(1)
 {
-    if(GPIO_PT1GET(0)==0 && firstPower !=0)
+    if(GPIO_PT1GET(0)==0)
 		{
 
-              //  adS.key_flag=adS.key_flag ^ 0x01; /* check process  ISR()__inptrrupt reference */
-              adS.key_flag =2;
+            
+             Delay(20000);
+             if(adS.unit_2 == 0){
+            
+              {
+                    if(GPIO_PT1GET(0)==0){
 
-              if(adS.delayTimes_5s >= 10000 && adS.access_id_5s!=1 ){ /*unit set mode*/
+                        if(adS.zeroTo60times==1){
+                              Delay(1000);
+                              if(GPIO_PT1GET(0)==0){
+                                   SYS_WAKEUP() ; //WT.EDTI 2020-06-13
+                                  LCD_DisplayOn();
+                                  adS.getSaveTimes=0;
+                                  adS.LowVoltage_flag=0;
 
-                if(GPIO_PT1GET(0)==0){
+                                  }
+                          }else if(adS.zeroTo60times==2){
+                              Delay(1000);
+                              if(GPIO_PT1GET(0)==0){
+                                   SYS_WAKEUP() ; //WT.EDTI 2020-06-13
+                                  LCD_DisplayOn();
+                                  adS.getSaveTimes=0;
+                                  adS.LowVoltage_flag=0;
 
+                                  }
+
+                          }
+                          else if(adS.workstation_flag ==1){
+                              Delay(1000);
+                               if(GPIO_PT1GET(0)==0){
+                                  SYS_WAKEUP() ; //WT.EDTI 2020-06-13
+                                  adS.zeroTo60times=2;
+                                  adS.LowVoltage_flag=0;
+
+                               }
+                          }
+
+                    }
+                }
+                 Delay(50000);
+                 Delay(50000);
+               
+
+                  // if(adS.delayTimes_3s >=3000&& adS.access_id_3s !=1){ /* zero point mode*/
+               if(GPIO_PT1GET(0)==0 && adS.access_id_3s!=1){
+                     
+                  
+                       SetupZeroPointSelection();
+                       
+                }
+                Delay(50000);
+                Delay(50000);
+                if(GPIO_PT1GET(0)==0 && adS.access_id_5s!=1){
+
+                  adS.unit_2 =1;
                   adS.access_id_3s=1;
                   SetupUnitSelection();
                 }
+            }
+            else{
+                Delay(20000);
+                if(GPIO_PT1GET(0)==0 && adS.access_id_5s!=1){
 
-              }
-            
-              if(adS.delayTimes_3s >=3000&& adS.access_id_3s !=1){ /* zero point mode*/
+                  adS.unit_2 =1;
+                  adS.access_id_3s=1;
+                  SetupUnitSelection();
+                }
+            }
+
               
-                if(GPIO_PT1GET(0)==0){
-                     SetupZeroPointSelection();
-                     
-                    }
-          
-              }
-              if(adS.delayDisplay >= 1200 ){/* Wake up screen display wake up sleep*/
-
-                  if(GPIO_PT1GET(0)==0){
-
-                      if(adS.zeroTo60times==1){
-                            Delay(1000);
-                  	   	    if(GPIO_PT1GET(0)==0){
-                  	   	         SYS_WAKEUP() ; //WT.EDTI 2020-06-13
-                      	   	    LCD_DisplayOn();
-                                adS.getSaveTimes=0;
-                                adS.LowVoltage_flag=0;
-
-                                }
-                        }else if(adS.zeroTo60times==2){
-                            Delay(1000);
-                  	   	    if(GPIO_PT1GET(0)==0){
-								                 SYS_WAKEUP() ; //WT.EDTI 2020-06-13
-                      	   	    LCD_DisplayOn();
-                                adS.getSaveTimes=0;
-                                adS.LowVoltage_flag=0;
-
-                                }
-
-                        }
-                        else if(adS.workstation_flag ==1){
-                            Delay(1000);
-                             if(GPIO_PT1GET(0)==0){
-								                SYS_WAKEUP() ; //WT.EDTI 2020-06-13
-                                adS.zeroTo60times=2;
-                                adS.LowVoltage_flag=0;
-
-                             }
-                        }
-
-                  }
-              }
+              
+            
+             
     }// GPIO_PT1GET(0)=0 END
   	else{
           if(adS.testMode == 0){ /* measure mode */
-              firstPower =1;
+              adS.unit_2 =0;
               ProcessRunsFlag();
 
     			   if(adS.reload_ADCInterrupt ==1){
@@ -249,7 +265,8 @@ while(1)
           }
           if(adS.zeroPoint_Mode ==1){
 
-  				   SetupZeroPoint_Mode();
+  				  SetupZeroPoint_Mode();
+        
   			   }
            if(adS.unit_setMode ==1){
                 SetupUnit_Mode();
@@ -274,7 +291,7 @@ while(1)
 void ProcessRunsFlag(void)
 {
 	adS.zeroPoint_Mode=0;
-    adS.key_flag =0;
+
     adS.unit_setMode=0;
     adS.delayTimes_3s=0;
     adS.delayTimes_5s=0;
@@ -356,10 +373,10 @@ void DisplaySelectionUintPoint(void)
 {
 
   if(adS.eepromRead_UnitLow_bit==psi){
-        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿½? 
+        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿? 
   }
   else if(adS.eepromRead_UnitLow_bit==bar){
-         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ¨?* 
+         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ?* 
   }
   else if(adS.eepromRead_UnitLow_bit==mpa){
 
@@ -481,6 +498,23 @@ void LowVoltageDisplay(void)
 
          }
       }
+}
+/**********************************************************************
+  *
+  *Function Name :SetupZeroPointSelection
+  *
+  *
+  *
+  *
+***********************************************************************/
+void SetupZeroPointSelection(void)
+{
+  adS.zeroPoint_Mode = 1;
+  adS.unit_setMode = 0;
+  adS.testMode =1;
+  //display LCD "2Er"
+  Display2Er();
+  
 }
 /****************************************************************************
   *
@@ -648,7 +682,7 @@ void SetupUnit_Mode(void)
   adS.unit_setMode =0 ;
   adS.testMode = 0;
  adS.reload_ADCInterrupt = 1;
-  adS.key_flag =0;
+ 
    //BIE Write
   HY17P52WR3(0,0x00,0x00);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
   if(Flag== 1)
@@ -674,8 +708,8 @@ void PositivePressureWorks_Mode(void)
     int delta;
     long LCDDisplay,sigma ;
     unsigned long initialize_ADC[1] ;
-
-    adS.Pressure_sign =0;
+    adS.unit_2 =0;
+  
    // eta = ADC * 0.1 ;  //WT.EDIT 2020-06-12 CAECEL
     adS.getSaveTimes++;
 
@@ -808,25 +842,6 @@ void PositivePressureWorks_Mode(void)
 }
 
 
-/**********************************************************************
-	*
-	*Function Name :SetupZeroPointSelection
-	*
-	*
-	*
-	*
-***********************************************************************/
-void SetupZeroPointSelection(void)
-{
-	adS.zeroPoint_Mode = 1;
-	adS.unit_setMode = 0;
-	adS.testMode =1;
-  adS.access_id_3s=0;
-	//display LCD "2Er"
-	Display2Er();
-
-
-}
 
 /******************************************************************************/
 /* Interrupt Service Routines                                                 */
@@ -840,7 +855,7 @@ void ISR(void) __interrupt
 		ADC=ADC_GetData();
 		MCUSTATUSbits.b_ADCdone=1;
 	}
-	#if 1
+	#if 0
 	if(TA1IF_IsFlag())  //PT1.0  Timer A1 interrupt flag
 	{
 		TA1IF_ClearFlag();

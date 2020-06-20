@@ -65,7 +65,6 @@ struct _adc_works_
    unsigned char testMode:1;
    unsigned char zeroPoint_Mode:1;
    unsigned char error_mod:1;
-   unsigned char key_flag;
 
    unsigned char negativeInPositive_flag: 1;
    unsigned char zeroTo60times : 2;
@@ -73,8 +72,6 @@ struct _adc_works_
    unsigned char  plus_revise_flag;
    unsigned char  minus_revise_flag;
 
-   unsigned char  Presskey_flag:1;
-   unsigned char  Pressure_sign :1;
    unsigned char  access_id_3s : 1;
    unsigned char  access_id_5s : 1;
    unsigned char  workstation_flag:1;
@@ -82,6 +79,8 @@ struct _adc_works_
    unsigned char  plus_uint;
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
+   unsigned char  unit_2;
+
    unsigned char  WriteEepromTimes ;
  
 
