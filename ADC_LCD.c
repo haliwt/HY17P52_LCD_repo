@@ -93,7 +93,7 @@ void PositivePressureWorks_Mode(void);
 void SetupUnitSelection(void);
 void SetupZeroPointSelection(void);
 void ProcessWorksPrecondition(void);
-unsigned char EEPROM_ReadUnitData_Address0(void);
+void EEPROM_ReadUnitData_Address0(void);
 
 void ProcessRunsFlag(void);
 void LowVoltageBlink(void);
@@ -218,6 +218,7 @@ while(1)
 
                   adS.unit_2 =1;
                   adS.access_id_3s=1;
+
                   SetupUnitSelection();
                 }
             }
@@ -279,15 +280,16 @@ while(1)
                               PositivePressureWorks_Mode();
                       }
             }
-            if(adS.zeroPoint_Mode ==1){
+            if(adS.zeroPoint_Mode ==1 && adS.access_id_3s==0){
 
-  				    SetupZeroPoint_Mode();
+  				     SetupZeroPoint_Mode();
         
   			     }
-           // if(adS.unit_setMode ==1){
-              //  SetupUnit_Mode();
+            if(adS.unit_setMode ==1){
+                SetupUnit_Mode();
+
                       
-           // }
+            }
         }
 	   }
    }
@@ -316,23 +318,7 @@ void ProcessRunsFlag(void)
     adS.delayDisplay =0;
 
 }
-/******************************************************************************
-	*
-	*Function Name: EEPROM_ReadData(void);
-	*Input Reference : converter unit value,This is kgf value
-	*Return Reference :NO
-	*
-******************************************************************************/
-unsigned char EEPROM_ReadUnitData_Address0(void)
-{
-     unsigned char unitID ; //WT.EDIT 2020-06-09 EDIT cancel "static"
-     BIEARL=0;                                //addr=0
-	   BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-	   while((BIECN& 0x01)==1);
-   //  adS.eepromRead_UnitHigh_bit= BIEDRH;
-	   unitID=BIEDRL;
-     return unitID;
-}
+
 /**********************************************************************
   *
   *Function Name :void SetupUnitAndZeroPoint_Mode(void)
@@ -383,9 +369,10 @@ void SetupUnitSelection(void)
      adS.plus_uint=0;
     break;
   }
-  SetupUnit_Mode();//SetupSaveUnit_ID(adS.unitChoose);
+  
 
 }
+
 /**************************************************************
   *
   *Function Name: SetupUnit_Mode(void)
@@ -417,7 +404,7 @@ void SetupUnit_Mode(void)
 
   adS.unit_setMode =0 ;
   adS.testMode = 0;
- adS.reload_ADCInterrupt = 1;
+  adS.reload_ADCInterrupt = 1;
  
    //BIE Write
   HY17P52WR3(0,0x00,0x00);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -431,6 +418,23 @@ void SetupUnit_Mode(void)
 
 }
 /******************************************************************************
+  *
+  *Function Name: EEPROM_ReadData(void);
+  *Input Reference : converter unit value,This is kgf value
+  *Return Reference :NO
+  *
+******************************************************************************/
+void EEPROM_ReadUnitData_Address0(void)
+{
+     unsigned char unitID ; //WT.EDIT 2020-06-09 EDIT cancel "static"
+     BIEARL=0;                                //addr=0
+     BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+     while((BIECN& 0x01)==1);
+    adS.eepromRead_UnitHigh_bit= BIEDRH;
+    adS.eepromRead_UnitLow_bit =BIEDRL;
+    
+}
+/******************************************************************************
 	*
 	*Function Name: long UnitConverter_2V4(long data)
 	*Input Reference : converter unit value,This is kgf value
@@ -441,7 +445,7 @@ void SetupUnit_Mode(void)
 long UnitConverter(long data)
 {
   adS.reload_ADCInterrupt = 1;
-  adS.eepromRead_UnitLow_bit  =  EEPROM_ReadUnitData_Address0();
+  EEPROM_ReadUnitData_Address0();
   if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
 
          LCD_WriteData(&LCD4, seg_psi) ;
@@ -469,8 +473,13 @@ long UnitConverter(long data)
 
      return kgfTOmpa(data);
    }
-  
-  
+   else if(adS.eepromRead_UnitHigh_bit !=0xAA){
+        
+       
+          LCD_WriteData(&LCD4, seg_kgf) ;
+           DisplayNoPoint();
+           return data;
+      }
 }
 /******************************************************************************
   *
@@ -636,6 +645,7 @@ void SetupZeroPointSelection(void)
   adS.zeroPoint_Mode = 1;
   adS.unit_setMode = 0;
   adS.testMode =1;
+
   //display LCD "2Er"
   Display2Er();
   
@@ -654,15 +664,16 @@ void SetupZeroPoint_Mode(void)
     long  plusOffset_Value;
     adS.zeroPoint_Mode =0;
 		adS.testMode=0;
-		
-     adS.access_id_5s= 1;
-    if(GPIO_PT1GET(0)!=0){
+		Delay(20000);
+     
+    if(GPIO_PT1GET(0)==1){
+
      if(adS.WriteEepromTimes <5){
          if(MCUSTATUSbits.b_ADCdone==1){
               MCUSTATUSbits.b_ADCdone=0;
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
-
+                  adS.access_id_5s= 1;
     		          formula_Value =  0.0171 *ADC - 23;
                  
                   //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
@@ -681,6 +692,7 @@ void SetupZeroPoint_Mode(void)
 
                            while(1);    //fail
                             }
+                            adS.delayTimes_5s=0;
 
                           }
                           else{
@@ -694,11 +706,12 @@ void SetupZeroPoint_Mode(void)
                                while(1);    //fail
                                 }
 
+                                adS.delayTimes_5s=0;
                           
                            }
 
                      
-                  adS.delayTimes_5s=0;
+                  
                   
                  
   

@@ -65,7 +65,7 @@ struct _adc_works_
 {
    unsigned char save_mode: 1;
    unsigned char unit_setMode:1;
-   //unsigned char plus_uint;
+   unsigned char noMeasureSet:1;
    unsigned char unitChoose;
    unsigned char testMode:1;
    unsigned char zeroPoint_Mode:1;
