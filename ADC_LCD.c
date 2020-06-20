@@ -163,7 +163,7 @@ while(1)
 		{
 
             
-             Delay(20000);
+             Delay(10000);
              if(adS.unit_2 == 0){
             
               {
@@ -222,7 +222,7 @@ while(1)
                 }
             }
             else{
-                Delay(20000);
+                Delay(30000);
                 if(GPIO_PT1GET(0)==0 && adS.access_id_5s!=1){
 
                   adS.unit_2 =1;
@@ -237,7 +237,13 @@ while(1)
              
     }// GPIO_PT1GET(0)=0 END
   	else{
-          if(adS.testMode == 0){ /* measure mode */
+         if(adS.LowVoltage_flag==1){
+    
+            LCD_DisplayOff();
+            adS.unit_2=0;
+         }
+         else{
+         if(adS.testMode == 0){ /* measure mode */
               adS.unit_2 =0;
               ProcessRunsFlag();
 
@@ -272,7 +278,7 @@ while(1)
                 SetupUnit_Mode();
                       
             }
-
+        }
 	   }
    }
 }
@@ -373,10 +379,10 @@ void DisplaySelectionUintPoint(void)
 {
 
   if(adS.eepromRead_UnitLow_bit==psi){
-        DisplayPointP3(); //å°æ•°ç‚¹ä¸ï¿? 
+        DisplayPointP3(); //å°æ•°ç‚¹ä¸�? 
   }
   else if(adS.eepromRead_UnitLow_bit==bar){
-         DisplayPointP2();   //å°æ•°ç‚¹ä¸åŠ?* 
+         DisplayPointP2();   //å°æ•°ç‚¹ä¸�?* 
   }
   else if(adS.eepromRead_UnitLow_bit==mpa){
 
@@ -443,25 +449,32 @@ void LowVoltageBlink(void)
   if(adS.LowVoltage_flag==1){
 
   LCD_DisplayOff();
+
+
   adS.zeroTo60times=1;
 
   }
-  else{
-
-    DisplayBAT();
-    Delay(10000);
-    LCD_DisplayOff();
-    Delay(10000);
-    LCD_DisplayOn();
-    Delay(10000);
-    LCD_DisplayOff();
-    Delay(10000);
-    LCD_DisplayOn();
-    Delay(10000);
+  else {
 
     adS.LowVoltage_flag=1;
-    LCD_DisplayOff();
     adS.zeroTo60times=1;
+  
+    DisplayBAT();
+    Delay(20000);
+    LCD_DisplayOff();
+    Delay(20000);
+    LCD_DisplayOn();
+    Delay(20000);
+    LCD_DisplayOff();
+    Delay(20000);
+    LCD_DisplayOn();
+    Delay(20000);
+    LCD_DisplayOff();
+    Delay(20000);
+    LCD_DisplayOn();
+    adS.unit_2=0;
+   
+    
   }
 }
 /*****************************************************************************
@@ -475,29 +488,32 @@ void LowVoltageBlink(void)
 void LowVoltageDisplay(void)
 {
   
-	adS.LVD_3V_flag = LowVoltageDetect_3V();
-	if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
-      DisplayBatteryCapacityFull();
-	}
-  else{
 
-         DisplayBatteryCapacityHalf();
-         adS.LVD_2V4_flag = LowVoltageDetect_2V4();
-         if(adS.LVD_2V4_flag == 0){
+      adS.LVD_3V_flag = LowVoltageDetect_3V();
+    	if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
+          DisplayBatteryCapacityFull();
+    	}
+      else{
 
-              DisplayBatteryCapacityHalf();
-         }
-         else{
-        
-            DispalyBatteryCapacityLow();
-          #ifndef TEST
+             DisplayBatteryCapacityHalf();
+             adS.LVD_2V4_flag = LowVoltageDetect_2V4();
+             if(adS.LVD_2V4_flag == 0){
 
-            LowVoltageBlink();
-                
-            #endif  
+                  DisplayBatteryCapacityHalf();
+             }
+             else{
+            
+                  DispalyBatteryCapacityLow();
 
-         }
-      }
+               #ifndef TEST
+
+                 LowVoltageBlink();
+                    
+                #endif  
+
+             }
+          
+  }
 }
 /**********************************************************************
   *
