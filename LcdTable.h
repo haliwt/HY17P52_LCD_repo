@@ -2,10 +2,7 @@
 | 7-segment display for LCD0 ~ LCD5                                            |
 | ----------------------------------------------------------------------------*/
 
-#define BATTERY_LCD  1
 
-
-#if BATTERY_LCD 
                              //                a
 #define  seg_a  0x80          //            ---------
 #define  seg_b  0x08          //           |         |
@@ -24,12 +21,14 @@
 #define   symbol_c      0x02
 #define   symbol_b      0x04
 #define   symbol_g      0x08
-#define   symbol_t1     0x10     //battery value t1 
-#define   symbol_t3     0x20  
+#define   symbol_t1     0x10     //battery value t1
+#define   symbol_t3     0x20
 #define   symbol_t2     0x40
-#define   symbol_t0     0x80   //battery outline 
+#define   symbol_t0     0x80   //battery outline
 
-#else                          //                a
+#if 0
+
+                             //                a
 #define  seg_a 0x10          //            ---------
 #define  seg_b 0x20          //           |         |
 #define  seg_c 0x40          //         f |         | b
@@ -39,7 +38,9 @@
 #define  seg_g 0x02          //         e |         | c
 #define  seg_h 0x80          //           |    d    |
                              //            ---------   O <- h
-#endif 
+
+#endif
+
 const unsigned char seg[]={
          seg_a+seg_b+seg_c+seg_d+seg_e+seg_f,        // char "0"  0x00
          seg_b+seg_c,                                // char "1"  0x01
@@ -68,9 +69,7 @@ const unsigned char seg[]={
          seg_e+seg_g,                                // char "r"  0x18
          seg_d+seg_e+seg_f+seg_g,                    // char "t"  0x19
          seg_c+seg_e+seg_d,                          // char "u"  0x1a
-         seg_b+seg_c+seg_d+seg_f+seg_g,              // char "y"  0x1b
-         seg_b+seg_c+seg_e+seg_d+seg_f               // char "U"  0x1c    //WT.EDIT 2020-05-11
-
+         seg_b+seg_c+seg_d+seg_f+seg_g               // char "y"  0x1b
 };
 
 #define  Char_2  seg_a+seg_b+seg_d+seg_e+seg_g       // char "2"

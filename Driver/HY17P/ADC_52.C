@@ -71,7 +71,7 @@ void ADC_Open(unsigned char ck,    //Selector of SD18 peripheral operating clock
     ADC_VINSelect(inh,inl);             // Config ADC Input Channel
     ADC_VRINSelect(vrh,vrl);            // Config ADC Ref. Voltage Input Channel
     ADC_GainSelect(adgn,pgagn);         // Config PGA Gain and AD Gain
-    ADC_VRXSelect(vrgn);                // Config Ref. Gain and DC offset
+    ADC_VRXSelect(vrgn);             // Config Ref. Gain and DC offset
     ADC_DCSETSelect(dcset);             // Config Ref. Gain and DC offset
     ADC_OSRSelect(osr);                 // Config Over sampling ratio
     ADC_VCMSSelect(vcms); 

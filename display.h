@@ -1,3 +1,4 @@
+
 #ifndef __DISPLAY_H__
 #define __DISPLAY_H__
 
@@ -64,18 +65,18 @@ enum unit_t{psi=1,bar,kgf,mpa};
 struct _adc_works_
 {
    unsigned char save_mode: 1;
-   unsigned char unit_setMode:1;
+   unsigned char Main_unit_setMode:1;
    unsigned char noMeasureSet:1;
    unsigned char unitChoose;
-   unsigned char testMode:1;
-   unsigned char zeroPoint_Mode:1;
+   unsigned char Main_testMode:1;
+   unsigned char Main_zeroPoint_Mode:1;
    unsigned char error_mod:1;
 
    unsigned char negativeInPositive_flag: 1;
    unsigned char zeroTo60times : 2;
 
-   unsigned char  plus_revise_flag;
-   unsigned char  minus_revise_flag;
+    unsigned char eepromRead_UnitHigh_bit;
+    unsigned char eepromRead_UnitLow_bit;
 
    unsigned char  access_id_3s : 1;
    unsigned char  access_id_5s : 1;
@@ -87,20 +88,22 @@ struct _adc_works_
    unsigned char  unit_2;
 
    unsigned char  WriteEepromTimes ;
- 
+   unsigned char   ReadEepromID1  ;
 
-   unsigned char  eepromRead_PositiveDeltaLow_bit ;
+   unsigned char   ReadEepromID2  ;
 
-   unsigned char  eepromRead_NegativeDeltaLow_bit;
+   unsigned char   ReadEepromValue1;
+   unsigned char   ReadEepromValue2;
 
-   unsigned char  eepromRead_UnitHigh_bit ;
-   unsigned char  eepromRead_UnitLow_bit ;
+
+
    unsigned char  reload_ADCInterrupt :1;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
    unsigned long  setThreshold;
+   unsigned long  initialVoltage;
 
 };
 
@@ -138,5 +141,15 @@ void DisplayHighestByte_One(void);
 void DisplayNum4Bytes(long number);
 void DisplayZero(void);
 void DisplayNoPoint(void);
+
+
+void ClearLCD(void);
+void DisplayHycon(void);
+void DisplayNum(long Num);
+void DisplayHex(unsigned int Num);
+
+
+
+
 
 #endif
