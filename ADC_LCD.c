@@ -742,7 +742,8 @@ void PositivePressureWorks_Mode(void)
     long LCDDisplay,thelta ;
     unsigned long initialize_ADC[1] ;
     adS.unit_2 =0;
-    unitId= UnitConverter();
+    EEPROM_ReadUnitData_Address0();
+    
     adS.getSaveTimes++;
    
    
@@ -760,25 +761,99 @@ void PositivePressureWorks_Mode(void)
 
                   if(adS.ReadEepromID1== 0x11) {
 
-                              thelta= 0.0342 *ADC - 9.7  - adS.ReadEepromValue1; // y=0.0343x - 11.712
-                             if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                             adS.initialVoltage = 0;
+                              //thelta= 0.0342 *ADC - 9.7  - adS.ReadEepromValue1; // y=0.0343x - 11.712
+                              thelta= 0.0343 * ADC - 11.712  - adS.ReadEepromValue1;//y = 0.0342x - 9.3717R² = 1
+                              if(thelta >=400){
+
+                                  thelta= 0.0343 * ADC - 11.712  - adS.ReadEepromValue1;//y = 0.0343x - 11.712
+                                  if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                  adS.initialVoltage = 0;
+                              }
+                              else
+                              { //400 to 200 
+                                  thelta= 0.0344 * ADC - 11.757  - adS.ReadEepromValue1; //y = 0.0344x - 11.757
+                                  if(thelta < 400 && thelta >=200)
+                                  {
+                                      thelta= 0.0344 * ADC - 11.757   - adS.ReadEepromValue1;
+                                      if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                      adS.initialVoltage = 0;
+
+                                  }
+                                  else{//200 to 100 
+                                       thelta= 0.0343 * ADC - 11.369  - adS.ReadEepromValue1;   //y = 0.0343x - 11.369
+                                       if(thelta < 200 && thelta >=100){
+
+                                          thelta= 0.0343 * ADC - 11.369 - adS.ReadEepromValue1;
+                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                          adS.initialVoltage = 0;
+
+                                       }
+                                       else{//100 to 0
+                                          thelta= 0.0313* ADC - 4.5016  - adS.ReadEepromValue1; //y = 0.0313x - 4.5016
+                                          
+                                            thelta= 0.0313* ADC - 4.5016 - adS.ReadEepromValue1;
+                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                          adS.initialVoltage = 0;                               
+
+                                       }
+
+                                  }
+                                
+                              }
+                              
+
                            
                              
                   }
                   else if(adS.ReadEepromID1==0x22){
 
-                                          //delta = adS.eepromRead_PositiveDeltaLow_bit ;
-                                        thelta= 0.0342 *ADC - 9.7  + adS.ReadEepromValue1;
-                                        if(unitId==psi) thelta= kgfTOpsi(thelta) ;
-                                        adS.initialVoltage = 0;
-                                        
+                          //thelta= 0.0342 *ADC - 9.7  - adS.ReadEepromValue1; // y=0.0343x - 11.712
+                              thelta= 0.0343 * ADC - 11.712  + adS.ReadEepromValue1;//
+                              if(thelta >=400){
+
+                                  thelta= 0.0343 * ADC - 11.712  + adS.ReadEepromValue1;//y = 0.0343x - 11.712
+                                  if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                  adS.initialVoltage = 0;
+                              }
+                              else
+                              { //400 to 200 
+                                  thelta= 0.0344 * ADC - 18  + adS.ReadEepromValue1; //y = 0.0344x - 11.757
+                                  if(thelta < 400 && thelta >=200)
+                                  {
+                                      thelta= 0.0344 * ADC - 18   + adS.ReadEepromValue1;
+                                      if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                      adS.initialVoltage = 0;
+
+                                  }
+                                  else{//200 to 100 
+                                       thelta= 0.0343 * ADC - 21  + adS.ReadEepromValue1;   //y = 0.0343x - 11.369
+                                       if(thelta < 200 && thelta >=100){
+
+                                          thelta= 0.0343 * ADC - 21 + adS.ReadEepromValue1;
+                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                          adS.initialVoltage = 0;
+
+                                       }
+                                       else{//100 to 0
+                                          thelta= 0.0313* ADC - 14  + adS.ReadEepromValue1; //y = 0.0313x - 4.5016
+                                          
+                                            thelta= 0.0313* ADC - 14 + adS.ReadEepromValue1;
+                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                          adS.initialVoltage = 0;                               
+
+                                       }
+
+                                  }
+                                
+                              }
+                              
+                        
                                        
 
                   }else {
                    
                     adS.initialVoltage = 1;
-                    thelta= 0.0342 *ADC - 9.7 ;
+                    thelta= 0.0313* ADC - 4.5016 ;//thelta= 0.0342 *ADC - 9.7 ;
                     if(thelta <= 0) thelta =0 ;
                    
                 
