@@ -3,36 +3,10 @@
 #include "lcdTable.h"
 #include <LCD.h>
 #include "display.h"
-#include <GPIO.h>
+
 struct _adc_works_ adS; 
+//unsigned char n,count,*LCDAddr,LCDData;
 
-
-
-void GPIO_Iint(void) 
-{
-  #if 0
-  //GPIO Setting
-  GPIO_DIR_PT1xInput(PT15);
-  GPIO_DIR_PT10_INPUT() ;
-  GPIO_PT1SETPU(PT15);
-  GPIO_PT1SETPU(PT10);  
-  GPIO_PT1SETPU(PT16);
-  GPIO_PT16_OUTUT();  
-   #endif 
-   GPIO_PT1InputMode(0) ;
- 
-    GPIO_PT1SETPU(0);
-
-  
-  GPIO_PT1OutputMode(6);    //PT1.0
-}
-
-/************************************************************
- * 
- * unsigned char n,count,*LCDAddr,LCDData;
- * 
- * 
- ************************************************************/
 void ClearLCD(void)
 {
 	unsigned char count;
@@ -42,20 +16,62 @@ void ClearLCD(void)
 }
 
 
-/*---------------------------------------------------------------------------
-	*
-	* Function Name:DisplayNum(long Num)
-	* Function :LCD display 
-	* Input Reference: need display number
-	*
-	*
-*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* Display HYcon Char                                                         */
+/*----------------------------------------------------------------------------*/
+void DisplayHycon(void)
+{
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD1,Char_H);
+  LCD_WriteData(&LCD2,Char_Y);
+  LCD_WriteData(&LCD3,Char_C);
+  LCD_WriteData(&LCD4,Char_O);
+  LCD_WriteData(&LCD5,Char_N);
+  LCD_WriteData(&LCD6,0x00);
+}
+
+/*---------------------------------------------------------------------------*/
+/* LCD DISPLAY Number                                                        */
+/*---------------------------------------------------------------------------*/
 void DisplayNum(long Num)
 {
-  unsigned char count;
+  unsigned char count,MINUS;
   unsigned char *LCDAddr,LCDData;
-  
-  LCDAddr = &LCD1;//LCDAddr=&LCD3;
+
+  if((Num<0)||(Num>0x80000000))
+  {
+    Num=~Num;
+    Num++;
+    MINUS=1;
+  }
+  else
+  {
+    MINUS=0;
+  }
+
+  LCDAddr = &LCD1;
+  for(count=0;count<4;count++)
+  {
+        if(count == 3){
+                  if(Num %10 !=0)
+                    LCDData=seg[1];
+                  else
+                    LCDData=seg[0];
+                  count =5;
+            }
+            else{
+
+              LCDData=seg[Num%10];
+              LCD_WriteData(LCDAddr,LCDData);
+              Num=Num/10 ;
+              LCDAddr++;
+
+            }
+  }
+
+
+  #if 0
+  LCDAddr=&LCD1;
   for(count=0;count<3;count++)
   {
     LCDData=seg[Num%10];
@@ -63,12 +79,26 @@ void DisplayNum(long Num)
     Num=Num/10 ;
     LCDAddr++;
   }
- // LCD_WriteData(&LCD0,highest_bit_NotOne) ;  //WT.EDIT 2020-06-05
+ #endif
+#if 0
+  LCDAddr=&LCD5;
+  for(count=0;count<6;count++)
+  {
+    LCDData=seg[Num%10];
+    LCD_WriteData(LCDAddr,LCDData);
+    Num=Num/10 ;
+    LCDAddr--;
+  }
+  if(MINUS==1)
+    LCD_WriteData(&LCD6,S_Minus);
+  else
+    LCD_WriteData(&LCD6,0);
+#endif
 }
 /*---------------------------------------------------------------------------
   *
   * Function Name:DisplayNum(long Num)
-  * Function :LCD display 
+  * Function :LCD display
   * Input Reference: need display number
   *
   *
@@ -78,21 +108,21 @@ void DisplayNum4Bytes( long Num)
   unsigned char count;
   unsigned char *LCDAddr,LCDData;
 
-  
+
   LCDAddr = &LCD1;
   for(count=0;count<4;count++)
   {
-        
-           LCDData=seg[Num%10];
-          if(count == 3){
+        LCDData=seg[Num%10];
+        if(count == 3){
                   if(Num %10 !=0)
-                    LCD_WriteData(&LCD0,highest_bit_One) ; 
-                  else 
-                    LCD_WriteData(&LCD0,highest_bit_NotOne) ; 
-                  count =5;
+                    LCD_WriteData(&LCD0,highest_bit_One) ;
+                  else
+                    LCD_WriteData(&LCD0,highest_bit_NotOne) ;
+                   count =5;
             }
             else{
-             
+
+              
               LCD_WriteData(LCDAddr,LCDData);
               Num=Num/10 ;
               LCDAddr++;
@@ -101,11 +131,27 @@ void DisplayNum4Bytes( long Num)
   }
  // LCD_WriteData(&LCD0,highestPlus) ; //WT.EDIT 2020-06-05
 }
+/*---------------------------------------------------------------------------*/
+/* LCD DISPLAY Hexadecimal                                                   */
+/*---------------------------------------------------------------------------*/
+void DisplayHex(unsigned int Num)
+{
+  unsigned char count,*LCDAddr,LCDData;
+
+  LCDAddr=&LCD5;
+  for(count=0;count<6;count++)
+  {
+    LCDData=seg[Num%0x10];
+    LCD_WriteData(LCDAddr,LCDData);
+    Num=Num/0x10 ;
+    LCDAddr--;
+  }
+}
 /*---------------------------------------------------------------------------
 /*---------------------------------------------------------------------------
   *
   * Function Name:DisplayNum(long Num)
-  * Function :LCD display 
+  * Function :LCD display
   * Input Reference: need display number
   *
   *
@@ -114,7 +160,7 @@ void DisplayNum2Bit(int Num)
 {
   unsigned char count;
   unsigned char *LCDAddr,LCDData;
-  
+
   LCDAddr=&LCD2;
   for(count=2;count<4;count++)
   {
@@ -128,15 +174,15 @@ void DisplayNum2Bit(int Num)
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayNumOneByte(int number);
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayNumOneByte(int Num)
 {
-  
+
   unsigned char count;
   unsigned char *LCDAddr,LCDData;
-  
+
 LCDAddr = &LCD1;//LCDAddr=&LCD3;
 for(count=0;count<3;count++)
 {
@@ -149,7 +195,7 @@ for(count=0;count<3;count++)
     Num=Num/10 ;
     LCDAddr++;
   }
-  
+
 }
 /*---------------------------------------------------------------------------*/
 /* LCD DISPLAY Hexadecimal                                                   */
@@ -166,10 +212,10 @@ void DisplayHex(unsigned int Num)
     LCD_WriteData(LCDAddr,LCDData);
     Num=Num/0x10 ;
     LCDAddr--;
-  } 
- 
+  }
+
 }
-#endif 
+#endif
 /*****************************************************************************
   *
   *Function Name :void Display2Er(void)
@@ -182,8 +228,8 @@ void Display2Er(void)
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD3,Char_2);
   LCD_WriteData(&LCD2,Char_E);
-  LCD_WriteData(&LCD1,Char_R);   
- 
+  LCD_WriteData(&LCD1,Char_R);
+
 
 }
 /*****************************************************************************
@@ -198,8 +244,8 @@ void Display2ErP3(void)
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD3,Char_2);
   LCD_WriteData(&LCD2,Char_E);
-  LCD_WriteData(&LCD1,Char_R);   
-  LCD_WriteData(&LCD2,POINT_P3);  
+  LCD_WriteData(&LCD1,Char_R);
+  LCD_WriteData(&LCD2,POINT_P3);
 
 }
 
@@ -216,7 +262,7 @@ void DisplayUnit(void)
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD1,Char_I);
   LCD_WriteData(&LCD2,Char_N);
-  LCD_WriteData(&LCD3,Char_CAP_U); 
+  LCD_WriteData(&LCD3,Char_CAP_U);
 }
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
@@ -229,27 +275,27 @@ void Delay(unsigned int ms)
 
 /*----------------------------------------------------------------------------
   *
-  *Function Name :void DisplayHHH(void) 
-  * 
-  *                                               
+  *Function Name :void DisplayHHH(void)
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayHHH(void)
 {
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD1,Char_H );
   LCD_WriteData(&LCD2,Char_H );
-  LCD_WriteData(&LCD3,Char_H ); 
+  LCD_WriteData(&LCD3,Char_H );
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name :DisplayLLL(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayLLL(void)
 {
- 
+
   LCD_WriteData(&LCD0,0x00);
   LCD_WriteData(&LCD1,Char_L);
   LCD_WriteData(&LCD2,Char_L);
@@ -260,7 +306,7 @@ void DisplayLLL(void)
   *
   *Function Name :DisplayBAT(void)
   *Function :LCD display "bAt"
-  *                                               
+  *
 ----------------------------------------------------------------------------*/
 void DisplayBAT(void)
 {
@@ -273,8 +319,8 @@ void DisplayBAT(void)
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayBatteryCapacityFull(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayBatteryCapacityFull(void)
 {
@@ -283,116 +329,115 @@ void DisplayBatteryCapacityFull(void)
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayBatteryCapacityFull(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayBatteryCapacityHalf(void)
 {
   LCD_WriteData(&LCD0, symbol_battery_half);
- 
+
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayBatteryCapacityFull(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DispalyBatteryCapacityLow(void)
 {
   LCD_WriteData(&LCD0,symbol_battery_low);
- 
+
 }
 
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayPointP3(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayPointP3(void)
 {
-  LCD_WriteData(&LCD2,POINT_P3);  
+  LCD_WriteData(&LCD2,POINT_P3);
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayPointP2(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayPointP2(void)
 {
-  LCD_WriteData(&LCD3,POINT_P2);  
+  LCD_WriteData(&LCD3,POINT_P2);
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayPointP1(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayPointP1(void)
 {
-  LCD_WriteData(&LCD0,POINT_P1);  
+  LCD_WriteData(&LCD0,POINT_P1);
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplaySignMinus(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplaySignMinus(void)
 {
 
-  LCD_WriteData(&LCD0,symbol_minus);  
+  LCD_WriteData(&LCD0,symbol_minus);
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplaySignPlus(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplaySignPlus(void)
 {
-     LCD_WriteData(&LCD0,symbol_plus);                
+     LCD_WriteData(&LCD0,symbol_plus);
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplaySignPlus(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayHighestByte_One(void)
 {
-   LCD_WriteData(&LCD0,highest_bit_One);       
+   LCD_WriteData(&LCD0,highest_bit_One);
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplaySignPlus(void)
-  * 
-  *                                               
+  *
+  *
 ----------------------------------------------------------------------------*/
 void DisplayZero(void)
 {
-   LCD_WriteData(&LCD1,Zero_LCD1);  
-  //LCD_WriteData(&LCD2,Zero_LCD2); 
-   //  LCD_WriteData(&LCD3,Zero_LCD3);      
+   LCD_WriteData(&LCD1,Zero_LCD1);
+  //LCD_WriteData(&LCD2,Zero_LCD2);
+   //  LCD_WriteData(&LCD3,Zero_LCD3);
 
 }
 /*----------------------------------------------------------------------------
   *
   *Function Name : void DisplayNoPoint(void)
-  * 
-  *                                               
-----------------------------------------------------------------------------*/    
+  *
+  *
+----------------------------------------------------------------------------*/
 void DisplayNoPoint(void)
 {
-   LCD_WriteData(&LCD0,NOPOINT_P1);  
-   LCD_WriteData(&LCD3,NOPOINT_P2); 
-   LCD_WriteData(&LCD2,NOPOINT_P3);   
+   LCD_WriteData(&LCD0,NOPOINT_P1);
+   LCD_WriteData(&LCD3,NOPOINT_P2);
+   LCD_WriteData(&LCD2,NOPOINT_P3);
 
-}    
-
+}
