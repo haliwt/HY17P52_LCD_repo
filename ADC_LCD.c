@@ -490,19 +490,19 @@ void DisplaySelectionUintPoint(void)
 {
 
   if(adS.eepromRead_UnitLow_bit==psi){
-        LCD_WriteData(&LCD4, seg_psi) ;
+       
         DisplayPointP3(); //
   }
   else if(adS.eepromRead_UnitLow_bit==bar){
-        LCD_WriteData(&LCD4, seg_bar) ;
+      
          DisplayPointP2();   //
   }
   else if(adS.eepromRead_UnitLow_bit==kgf){
-        LCD_WriteData(&LCD4, seg_kgf) ;
+      
         DisplayNoPoint();
   }
   else if(adS.eepromRead_UnitLow_bit==mpa){
-        LCD_WriteData(&LCD4, seg_mpa) ;
+      
          DisplayPointP1();
   }
 
