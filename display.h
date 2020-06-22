@@ -82,10 +82,13 @@ struct _adc_works_
    unsigned char  access_id_5s : 1;
    unsigned char  workstation_flag:1;
    unsigned char  LowVoltage_flag : 1;
-   unsigned char  plus_uint;
+   unsigned char  initialVoltage :1;
+   
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
    unsigned char  unit_2;
+   unsigned char  plus_uint;
+   unsigned char  zeroTo120s ;
 
    unsigned char  WriteEepromTimes ;
    unsigned char   ReadEepromID1  ;
@@ -97,13 +100,14 @@ struct _adc_works_
 
 
 
+
    unsigned char  reload_ADCInterrupt :1;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
    unsigned long  setThreshold;
-   unsigned long  initialVoltage;
+   
 
 };
 
