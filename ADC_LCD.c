@@ -784,8 +784,9 @@ void PositivePressureWorks_Mode(void)
                 
                   }
                
-              
+                     
                      UnitConverter();
+                     if(thelta <= 0x02) thelta =0;
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
