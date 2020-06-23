@@ -738,8 +738,8 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    unsigned char unitId;
-    long LCDDisplay,thelta ;
+    int unitId,iot;
+    long LCDDisplay,thelta;
     unsigned long initialize_ADC[1] ;
     adS.unit_2 =0;
     EEPROM_ReadUnitData_Address0();
@@ -752,6 +752,9 @@ void PositivePressureWorks_Mode(void)
                   while((BIECN& 0x01)==1);
                   adS.ReadEepromID1 = BIEDRH ;
                   adS.ReadEepromValue1= BIEDRL;
+                if(adS.ReadEepromID1== 0x11)iot = - adS.ReadEepromValue1;
+                    
+                 else if(adS.ReadEepromID1== 0x22)iot =  adS.ReadEepromValue1;
                   
 
         if(MCUSTATUSbits.b_ADCdone==1){
@@ -759,109 +762,74 @@ void PositivePressureWorks_Mode(void)
                 ADC = ADC >>6;
                  
 
-                  if(adS.ReadEepromID1== 0x11) {
+                 //thelta= 0.0342 *ADC - 9.7  - adS.ReadEepromValue1; // y=0.0343x - 11.712
+                  thelta= 0.0343 * ADC - 11.712  + iot;//
+                  if(thelta >=400){
 
-                              //thelta= 0.0342 *ADC - 9.7  - adS.ReadEepromValue1; // y=0.0343x - 11.712
-                              thelta= 0.0343 * ADC - 11.712  - adS.ReadEepromValue1;//y = 0.0342x - 9.3717R² = 1
-                              if(thelta >=400){
-
-                                  thelta= 0.0343 * ADC - 11.712  - adS.ReadEepromValue1;//y = 0.0343x - 11.712
-                                  if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                  adS.initialVoltage = 0;
-                              }
-                              else
-                              { //400 to 200 
-                                  thelta= 0.0344 * ADC - 11.757  - adS.ReadEepromValue1; //y = 0.0344x - 11.757
-                                  if(thelta < 400 && thelta >=200)
-                                  {
-                                      thelta= 0.0344 * ADC - 11.757   - adS.ReadEepromValue1;
-                                      if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                      adS.initialVoltage = 0;
-
-                                  }
-                                  else{//200 to 100 
-                                       thelta= 0.0343 * ADC - 11.369  - adS.ReadEepromValue1;   //y = 0.0343x - 11.369
-                                       if(thelta < 200 && thelta >=100){
-
-                                          thelta= 0.0343 * ADC - 11.369 - adS.ReadEepromValue1;
-                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                          adS.initialVoltage = 0;
-
-                                       }
-                                       else{//100 to 0
-                                          thelta= 0.0313* ADC - 4.5016  - adS.ReadEepromValue1; //y = 0.0313x - 4.5016
-                                          
-                                            thelta= 0.0313* ADC - 4.5016 - adS.ReadEepromValue1;
-                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                          adS.initialVoltage = 0;                               
-
-                                       }
-
-                                  }
-                                
-                              }
-                              
-
-                           
-                             
+                      
+                      if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                      adS.initialVoltage = 0;
                   }
-                  else if(adS.ReadEepromID1==0x22){
+                  else
+                  { //400 to 200 
+                      thelta= 0.0344 * ADC - 18  + iot; //y = 0.0344x - 11.757
+                      if(thelta < 400 && thelta >=200)
+                      {
+                          
+                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                          adS.initialVoltage = 0;
 
-                          //thelta= 0.0342 *ADC - 9.7  - adS.ReadEepromValue1; // y=0.0343x - 11.712
-                              thelta= 0.0343 * ADC - 11.712  + adS.ReadEepromValue1;//
-                              if(thelta >=400){
+                      }
+                      else{//200 to 100 
+                              thelta= 0.0343 * ADC - 21  + iot;   //y = 0.0343x - 11.369
+                              if(thelta < 200 && thelta >=100){
 
-                                  thelta= 0.0343 * ADC - 11.712  + adS.ReadEepromValue1;//y = 0.0343x - 11.712
                                   if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
                                   adS.initialVoltage = 0;
+
                               }
-                              else
-                              { //400 to 200 
-                                  thelta= 0.0344 * ADC - 18  + adS.ReadEepromValue1; //y = 0.0344x - 11.757
-                                  if(thelta < 400 && thelta >=200)
-                                  {
-                                      thelta= 0.0344 * ADC - 18   + adS.ReadEepromValue1;
-                                      if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                      adS.initialVoltage = 0;
-
-                                  }
-                                  else{//200 to 100 
-                                       thelta= 0.0343 * ADC - 21  + adS.ReadEepromValue1;   //y = 0.0343x - 11.369
-                                       if(thelta < 200 && thelta >=100){
-
-                                          thelta= 0.0343 * ADC - 21 + adS.ReadEepromValue1;
+                              else{//100 to 70  //y = 0.0342x - 10.972
+                                        thelta= 0.0342* ADC - 10.972 + iot; //
+                                          if(thelta <100 && thelta >=70){
                                           if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                          adS.initialVoltage = 0;
+                                          adS.initialVoltage = 0; 
+                                        } 
+                                        else{//70 to  20   y = 0.0348x - 12.115
 
-                                       }
-                                       else{//100 to 0
-                                          thelta= 0.0313* ADC - 14  + adS.ReadEepromValue1; //y = 0.0313x - 4.5016
-                                          
-                                            thelta= 0.0313* ADC - 14 + adS.ReadEepromValue1;
-                                          if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
-                                          adS.initialVoltage = 0;                               
+                                                      thelta=0.0348 * ADC - 12.115  + iot; //
+                                                      if(thelta <70 && thelta >=20){
+                                                  
+                                                        if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                                        adS.initialVoltage = 0; 
 
-                                       }
+                                                  }
+                                                  else{ //20 to 0  y = 0.0331x - 10.861
 
-                                  }
-                                
-                              }
-                              
+                                                            thelta=0.0331 * ADC - 10.861  + iot; //
+                                                            if(thelta <20){
+
+                                                                if(thelta <9){
+
+                                                                  adS.initialVoltage = 1;
+                                                                 
+
+                                                                }
+                                                            
+                                                                if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
+                                                                adS.initialVoltage = 0; 
+
+                                                          }                          
+
+                                                      }
+
+                                            }
                         
-                                       
-
-                  }else {
-                   
-                    adS.initialVoltage = 1;
-                    thelta= 0.0313* ADC - 4.5016 ;//thelta= 0.0342 *ADC - 9.7 ;
-                    if(thelta <= 0) thelta =0 ;
-                   
-                
+                                        
+                                    }//100 TO 0
+                            }//200 to 100
                   }
-               
-                     
-                     UnitConverter();
-                     if(thelta <= 0x02) thelta =0;
+                                                  
+                    UnitConverter();
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
