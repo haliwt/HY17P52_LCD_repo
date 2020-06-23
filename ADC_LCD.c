@@ -669,7 +669,7 @@ void SetupZeroPoint_Mode(void)
               ADC =ADC >>6;
                   adS.access_id_5s= 1;
     		         // formula_Value =  0.0171 *ADC - 23; thelta= 0.0343 * ADC - 12 
-                  formula_Value= 0.0342 *ADC - 9.7 - 500;//be changed hardware
+                  formula_Value= 0.0342 *ADC - 510;//be changed hardware
                   //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
                       plusOffset_Value= formula_Value ;
                         
@@ -681,7 +681,7 @@ void SetupZeroPoint_Mode(void)
                          if(plusOffset_Value >=0){
 
                            HY17P52WR3(1,0x11,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                           GPIO_PT16_HIGH();
+                         //  GPIO_PT16_HIGH();
                            if(Flag== 1){
 
                            while(1);    //fail
@@ -695,7 +695,7 @@ void SetupZeroPoint_Mode(void)
 
                                plusOffset_Value  = abs(plusOffset_Value);
                                HY17P52WR3(1,0x22,plusOffset_Value); //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
-                               GPIO_PT16_HIGH();
+                              // GPIO_PT16_HIGH();
 
                                if(Flag== 1){
 
@@ -708,13 +708,9 @@ void SetupZeroPoint_Mode(void)
 
                            }
                          adS.WriteEepromTimes++ ;
-
-
-        }
+          }
     }
-
-
-  else {
+    else {
 
           Display2ErP3();
            adS.zeroTo120s =1;
@@ -724,14 +720,9 @@ void SetupZeroPoint_Mode(void)
           adS.WriteEepromTimes++ ;
           adS.Main_zeroPoint_Mode =0;
           adS.unit_2 =0;
-
-  }
+        }
 
 }
-
-
-
-
 /**********************************************************************
 	*
 	*Function Name :void PositivePressureWorks_Mode(void)
@@ -755,9 +746,17 @@ void PositivePressureWorks_Mode(void)
                   while((BIECN& 0x01)==1);
                   adS.ReadEepromID1 = BIEDRH ;
                   adS.ReadEepromValue1= BIEDRL;
-                if(adS.ReadEepromID1== 0x11)iot = - adS.ReadEepromValue1;
-                    
-                 else if(adS.ReadEepromID1== 0x22)iot =  adS.ReadEepromValue1;
+                if(adS.ReadEepromID1== 0x11){
+                       iot = - adS.ReadEepromValue1;
+                     // GPIO_PT16_HIGH();
+                     GPIO_PT16_LOW();
+                }  
+                 else if(adS.ReadEepromID1== 0x22){  // less than zero
+                       iot =  adS.ReadEepromValue1;
+                       //GPIO_PT16_LOW();
+
+                        GPIO_PT16_HIGH();
+                 }
                   
 
         if(MCUSTATUSbits.b_ADCdone==1){
@@ -769,46 +768,52 @@ void PositivePressureWorks_Mode(void)
                   thelta= 0.0343 * ADC - 12  + iot;//
                   if(thelta >=400){
 
-                      
                       if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                      adS.initialVoltage = 0;
+                      adS.initialVoltage = 0; 
                   }
                   else
                   { //400 to 300 //y = 0.0344x - 11.853
-                      thelta= 0.0344 * ADC - 15  + iot; //y = 0.0344x - 11.757
+                      if(adS.ReadEepromID1== 0x22)thelta= 0.0344 * ADC - 15  + iot;
+                      else thelta= 0.0344 * ADC - 15  + iot; //y = 0.0344x - 11.757
                       if(thelta < 400 && thelta >=300)
                       {
                           
                           if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                          adS.initialVoltage = 0;
+                         adS.initialVoltage = 0; 
 
                       }
                       else{ //300 to 200  //y = 0.0343x - 11.261
-                            thelta= 0.0343* ADC - 16 + iot; //y = 0.0344x - 11.757
+                            if(adS.ReadEepromID1== 0x22)thelta= 0.0343* ADC - 17 + iot; //y = 0.0344x - 11.757
+                            else thelta= 0.0343* ADC - 16 + iot; //y = 0.0344x - 11.757
                             if(thelta < 300 && thelta >=200)
                             {
                                 
                                 if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                                adS.initialVoltage = 0;
+                               adS.initialVoltage = 0; 
 
                            }
                            else{//200 to 100 
-                              thelta= 0.0343 * ADC - 18  + iot;   //y = 0.0343x - 11.369
+                              if(adS.ReadEepromID1== 0x22)thelta= 0.0343 * ADC - 21  + iot;
+                              else thelta= 0.0343 * ADC - 18  + iot;   //y = 0.0343x - 11.369
+
                               if(thelta < 200 && thelta >=100){
 
                                   if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                                  adS.initialVoltage = 0;
+                                 adS.initialVoltage = 0; 
 
                               }
                               else{//100 to 70  //y = 0.0342x - 10.972
-                                        thelta= 0.0342* ADC - 18 + iot; //
-                                          if(thelta <100 && thelta >=70){
+                                        if(adS.ReadEepromID1== 0x22)thelta= 0.0342* ADC - 22 + iot; 
+                                        else thelta= 0.0342* ADC - 18 + iot; //
+
+                                        if(thelta <100 && thelta >=70){
                                               if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                                          adS.initialVoltage = 0; 
+                                              adS.initialVoltage = 0; 
+                                         
                                         } 
                                         else{//70 to  20   y = 0.0348x - 12.115
-
-                                                      thelta=0.0348 * ADC - 22  + iot; //
+                                                      if(adS.ReadEepromID1== 0x22)thelta=0.0348 * ADC - 27  + iot;
+                                                      else thelta=0.0348 * ADC - 22  + iot; //
                                                       if(thelta <70 && thelta >=20){
                                                   
                                                         if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
@@ -816,14 +821,14 @@ void PositivePressureWorks_Mode(void)
 
                                                   }
                                                   else{ //20 to 0  y = 0.0331x - 10.861
-
-                                                            thelta=0.0331 * ADC - 19  + iot; //
+                                                            if(adS.ReadEepromID1== 0x22)thelta=0.0331 * ADC - 24  + iot;
+                                                            else thelta=0.0331 * ADC - 19  + iot; //
                                                             if(thelta <20){
 
-                                                                if(thelta <9){
+                                                                if(thelta <=6){
 
-                                                                  adS.initialVoltage = 1;
-                                                                 
+                                                                 adS.initialVoltage = 1; 
+                                                                 adS.workstation_flag =0;
 
                                                                 }
                                                             
@@ -843,6 +848,8 @@ void PositivePressureWorks_Mode(void)
                   }
                                                   
                    // UnitConverter();
+                     if(adS.initialVoltage ==1) DisplayNum4Bytes(0);
+                     else
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
