@@ -122,6 +122,7 @@ void DisplayNum(long Num);
 void main(void)
 {
  unsigned char onpower =0 ;
+ adS.Main_testMode =0;
 //CLK Setting
 	CLK_CPUCKSelect(CPUS_DHSCK) ;
 //GPIO Setting
@@ -178,7 +179,7 @@ GPIO_Iint();
 
 	while(1)
 	{
-        if(GPIO_PT1GET(0)==0 && onpower !=0)
+      if(GPIO_PT1GET(0)==0 && onpower !=0)
 		  {
 
 
@@ -351,7 +352,6 @@ void SetupUnitSelection(void)
      adS.unitChoose = mpa;
      LCD_WriteData(&LCD4,seg_mpa);
      
-     adS.plus_uint=0;
     break;
   }
 
@@ -431,30 +431,28 @@ void EEPROM_ReadUnitData_Address0(void)
 unsigned char  UnitConverter(void)
 {
 
-  
   EEPROM_ReadUnitData_Address0();
-  if(adS.eepromRead_UnitLow_bit==psi){ /*psi*/
+  if(adS.eepromRead_UnitLow_bit==psi && adS.eepromRead_UnitHigh_bit ==0xAA){ /*psi*/
 
          LCD_WriteData(&LCD4, seg_psi) ;
           DisplayPointP3();
 
-        // return  kgfTOpsi(data) ;
         return psi;
      }
-   else if(adS.eepromRead_UnitLow_bit==bar){ /*unit bar*/
+   else if(adS.eepromRead_UnitLow_bit==bar && adS.eepromRead_UnitHigh_bit ==0xAA){ /*unit bar*/
         LCD_WriteData(&LCD4, seg_bar) ;
          DisplayPointP2();
 
        return bar;
    }
-   else if(adS.eepromRead_UnitLow_bit==kgf){ /* unit kgf*/
+   else if(adS.eepromRead_UnitLow_bit==kgf && adS.eepromRead_UnitHigh_bit ==0xAA){ /* unit kgf*/
 
          LCD_WriteData(&LCD4, seg_kgf) ;
          DisplayNoPoint();
 
           return kgf;
    }
-   else if(adS.eepromRead_UnitLow_bit==mpa){ /*uint mpa*/
+   else if(adS.eepromRead_UnitLow_bit==mpa && adS.eepromRead_UnitHigh_bit ==0xAA){ /*uint mpa*/
 
      LCD_WriteData(&LCD4, seg_mpa) ;
       DisplayPointP1();
@@ -479,19 +477,19 @@ unsigned char  UnitConverter(void)
 void DisplaySelectionUintPoint(void)
 {
 
-  if(adS.eepromRead_UnitLow_bit==psi){
+  if(adS.eepromRead_UnitLow_bit==psi && adS.eepromRead_UnitHigh_bit ==0xAA){
         LCD_WriteData(&LCD4, seg_psi) ;
         DisplayPointP3(); //
   }
-  else if(adS.eepromRead_UnitLow_bit==bar){
+  else if(adS.eepromRead_UnitLow_bit==bar && adS.eepromRead_UnitHigh_bit ==0xAA){
          LCD_WriteData(&LCD4, seg_bar) ;
          DisplayPointP2();   //
   }
-  else if(adS.eepromRead_UnitLow_bit==kgf){
+  else if(adS.eepromRead_UnitLow_bit==kgf && adS.eepromRead_UnitHigh_bit ==0xAA){
         LCD_WriteData(&LCD4, seg_kgf) ;
         DisplayNoPoint();
   }
-  else if(adS.eepromRead_UnitLow_bit==mpa){
+  else if(adS.eepromRead_UnitLow_bit==mpa && adS.eepromRead_UnitHigh_bit ==0xAA){
         LCD_WriteData(&LCD4, seg_mpa) ;
          DisplayPointP1();
   }
@@ -639,7 +637,8 @@ void SetupZeroPointSelection(void)
   adS.Main_zeroPoint_Mode = 1;
   adS.Main_unit_setMode = 0;
   adS.Main_testMode =1;
-  adS.zeroTo60times=2;
+  adS.zeroTo120s =1;
+  LCD_DisplayOn();
   //display LCD "2Er"
   Display2Er();
 
@@ -659,7 +658,7 @@ void SetupZeroPoint_Mode(void)
     adS.Main_zeroPoint_Mode =1;
 		adS.Main_testMode=0;
     adS.Main_unit_setMode = 0;
-    adS.zeroTo60times=2;
+    adS.zeroTo120s =1;
 
     //if(GPIO_PT1GET(0)==1){
 
@@ -669,8 +668,8 @@ void SetupZeroPoint_Mode(void)
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
                   adS.access_id_5s= 1;
-    		         // formula_Value =  0.0171 *ADC - 23;
-                formula_Value= 0.0342 *ADC - 9.7 - 500;//be changed hardware
+    		         // formula_Value =  0.0171 *ADC - 23; thelta= 0.0343 * ADC - 12 
+                  formula_Value= 0.0342 *ADC - 9.7 - 500;//be changed hardware
                   //ADC = ADC * 0.1; //WT.EDIT 2020-06-03 modify
                       plusOffset_Value= formula_Value ;
                         
@@ -688,7 +687,7 @@ void SetupZeroPoint_Mode(void)
                            while(1);    //fail
                             }
                             adS.delayTimes_5s=0;
-                            adS.Main_zeroPoint_Mode =0;
+                            adS.zeroTo120s =1;
                             adS.unit_2 =0;
 
                           }
@@ -704,7 +703,7 @@ void SetupZeroPoint_Mode(void)
                                 }
 
                                 adS.delayTimes_5s=0;
-                                adS.Main_zeroPoint_Mode =0;
+                                adS.zeroTo120s =1;
                                 adS.unit_2 =0;
 
                            }
@@ -718,6 +717,7 @@ void SetupZeroPoint_Mode(void)
   else {
 
           Display2ErP3();
+           adS.zeroTo120s =1;
           Delay(20000);
           GPIO_PT16_LOW();
           adS.delayTimes_5s=0;
@@ -747,7 +747,6 @@ void PositivePressureWorks_Mode(void)
     unsigned long initialize_ADC[1] ;
     adS.unit_2 =0;
     EEPROM_ReadUnitData_Address0();
-    
     adS.getSaveTimes++;
    
    
