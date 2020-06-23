@@ -772,7 +772,7 @@ void PositivePressureWorks_Mode(void)
                   }
                   else
                   { //400 to 200 
-                      thelta= 0.0344 * ADC - 18  + iot; //y = 0.0344x - 11.757
+                      thelta= 0.0344 * ADC - 15  + iot; //y = 0.0344x - 11.757
                       if(thelta < 400 && thelta >=200)
                       {
                           
@@ -781,7 +781,7 @@ void PositivePressureWorks_Mode(void)
 
                       }
                       else{//200 to 100 
-                              thelta= 0.0343 * ADC - 21  + iot;   //y = 0.0343x - 11.369
+                              thelta= 0.0343 * ADC - 16  + iot;   //y = 0.0343x - 11.369
                               if(thelta < 200 && thelta >=100){
 
                                   if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
@@ -789,14 +789,14 @@ void PositivePressureWorks_Mode(void)
 
                               }
                               else{//100 to 70  //y = 0.0342x - 10.972
-                                        thelta= 0.0342* ADC - 10.972 + iot; //
+                                        thelta= 0.0342* ADC - 17 + iot; //
                                           if(thelta <100 && thelta >=70){
                                           if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
                                           adS.initialVoltage = 0; 
                                         } 
                                         else{//70 to  20   y = 0.0348x - 12.115
 
-                                                      thelta=0.0348 * ADC - 12.115  + iot; //
+                                                      thelta=0.0348 * ADC - 20  + iot; //
                                                       if(thelta <70 && thelta >=20){
                                                   
                                                         if(unitId==psi) thelta= kgfTOpsi(thelta)     ;
@@ -805,7 +805,7 @@ void PositivePressureWorks_Mode(void)
                                                   }
                                                   else{ //20 to 0  y = 0.0331x - 10.861
 
-                                                            thelta=0.0331 * ADC - 10.861  + iot; //
+                                                            thelta=0.0331 * ADC - 19  + iot; //
                                                             if(thelta <20){
 
                                                                 if(thelta <9){
