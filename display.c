@@ -346,7 +346,7 @@ void DisplayBatteryCapacityHalf(void)
 void DispalyBatteryCapacityLow(void)
 {
   LCD_WriteData(&LCD0,symbol_battery_low);
-
+ 
 }
 
 /*----------------------------------------------------------------------------
