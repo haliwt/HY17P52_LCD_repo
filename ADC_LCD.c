@@ -666,6 +666,10 @@ void SetupZeroPoint_Mode(void)
                       else{
                                thelta  =   0.036 * ADC  - 12;
                                adS.CorrectionValue[3]= 400 -thelta ;
+                               if(thelta<360){
+                                  
+                                    adS.CorrectionValue[2]= 200 -thelta ;
+                               }
                                GPIO_PT16_HIGH();
 
                      }
@@ -733,6 +737,17 @@ void PositivePressureWorks_Mode(void)
                         if(adS.CorrectionValue[3]>=0)
                           thelta = thelta  - adS.CorrectionValue[3] ;
                         else thelta = thelta  + adS.CorrectionValue[3] ;
+                         
+                         if(thelta <=360)//200 -correction
+                         {
+                             thelta  =   0.036 * ADC  - 12;
+                             if(adS.CorrectionValue[2]>=0)
+                              thelta = thelta  - adS.CorrectionValue[2] ;
+                              else thelta = thelta  + adS.CorrectionValue[2] ;
+                              
+
+                         }
+
 
                       }
                      
