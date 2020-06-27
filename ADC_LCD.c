@@ -312,6 +312,7 @@ void SetupUnitSelection(void)
   adS.access_id_5s=0;
   adS.reload_ADCInterrupt = 1;
   DisplayUnit();
+  Delay(20000);
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
    //BIE Write
@@ -833,8 +834,8 @@ void PositivePressureWorks_Mode(void)
                                       if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
 
                                       if(adS.CorrectionValue[10]==0)
-                                           lamda= adS.initialValue + 1 ;
-                                      else if( thelta <= adS.initialValue ){
+                                           adS.initialValue = lamda;
+                                      else if( thelta <= adS.initialValue +2){
 
                                             thelta =0;
                                        }
