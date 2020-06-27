@@ -98,6 +98,8 @@ struct _adc_works_
    unsigned char   ReadEepromValue1;
    unsigned char   ReadEepromValue2;
 
+   int   CorrectionValue[5];
+
 
 
 
