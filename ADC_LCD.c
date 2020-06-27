@@ -432,9 +432,7 @@ unsigned char  UnitConverter(void)
      return mpa;
    }
    else if(adS.eepromRead_UnitHigh_bit !=0xAA){
-
-
-          LCD_WriteData(&LCD4, seg_kgf) ;
+         LCD_WriteData(&LCD4, seg_kgf) ;
            DisplayNoPoint();
            return kgf;
       }
@@ -639,7 +637,7 @@ void SetupZeroPoint_Mode(void)
      GPIO_PT16_LOW();
     //if(GPIO_PT1GET(0)==1){
 
-     if(adS.WriteEepromTimes <6){
+     if(adS.WriteEepromTimes  ==0){
          if(MCUSTATUSbits.b_ADCdone==1){
               MCUSTATUSbits.b_ADCdone=0;
               adS.reload_ADCInterrupt = 1;
@@ -649,55 +647,65 @@ void SetupZeroPoint_Mode(void)
 
                     lamda  =   0.036 * ADC  - 12 ;
 
-                  if(lamda >=980 && lamda <1100){
+                  if(lamda >=980 && lamda <1100 && adS.fact_check_10==0){
 
                         GPIO_PT16_HIGH();
+                        adS.fact_check_10 =1;
                         adS.CorrectionValue[9]= 1000 - lamda ;
                   }
-                  else if(lamda >=880 && lamda <980){
+                  else if(lamda >=880 && lamda <980 && adS.fact_check_9 ==0){
 
-                       GPIO_PT16_HIGH();
+                        GPIO_PT16_HIGH();
+                        adS.fact_check_9 =1;
                         adS.CorrectionValue[8]= 900 - lamda ;
                   } 
-                  else if(lamda >=780 && lamda <880){
+                  else if(lamda >=780 && lamda <880 && adS.fact_check_8 ==0){
 
                        GPIO_PT16_HIGH();
+                         adS.fact_check_8=1;
                         adS.CorrectionValue[7]= 800 - lamda ;
                   }
-                  else if(lamda >=680 && lamda <780){
+                  else if(lamda >=680 && lamda <780 && adS.fact_check_7 ==0){
 
                        GPIO_PT16_HIGH();
+                        adS.fact_check_7 =1;
                         adS.CorrectionValue[6]= 700 - lamda ;
                   }
-                  else if(lamda >= 580 && lamda <680 ){
+                  else if(lamda >= 580 && lamda <680 && adS.fact_check_6 ==0){
 
+                         adS.fact_check_6 =1;
                          GPIO_PT16_HIGH();
                          adS.CorrectionValue[5]= 600 - lamda ;
 
                     }
-    		            else if(lamda >= 460 && lamda < 580 ){
+    		            else if(lamda >= 460 && lamda < 580 && adS.fact_check_5 ==0 ){
 
                          GPIO_PT16_HIGH();
                          adS.CorrectionValue[4]= 500 - lamda ;
+                         adS.fact_check_5=1;
 
                       }
                     else{
-                              if(lamda <= 460  && lamda >360){
+                              if(lamda <= 460  && lamda >360 && adS.fact_check_4 ==0){
 
+                                 adS.fact_check_4 =1;
                                  adS.CorrectionValue[3]= 400 -lamda ; //4000
                                }
-                               else if(lamda<360 && lamda >260){
+                               else if(lamda<360 && lamda >260 && adS.fact_check_3 ==0){
                                   
+                                    adS.fact_check_3 =1;
                                     adS.CorrectionValue[2]= 300 -lamda;
                                     
                                }
                              
-                              else if(lamda < 260 && lamda >=140){
+                              else if(lamda < 260 && lamda >=140 && adS.fact_check_2 ==0){
 
+                                        adS.fact_check_2 =1;
                                         adS.CorrectionValue[1]= 200 -lamda ;
                                        
                                     }
-                               else if(lamda <140){
+                               else if(lamda <140 && adS.fact_check_1 ==0){
+                                          adS.fact_check_1 =1;
                                           adS.CorrectionValue[0]= 100 -lamda;
 
                                }
@@ -707,10 +715,12 @@ void SetupZeroPoint_Mode(void)
                      }
 
                   
-
-             
-                  adS.WriteEepromTimes++;
-          }
+                }
+            if(adS.fact_check_1 ==1 && adS.fact_check_2==1 && adS.fact_check_3 ==1 && adS.fact_check_4 ==1 && adS.fact_check_5 ==1 
+                   && adS.fact_check_6 ==1 && adS.fact_check_7 ==1 && adS.fact_check_8 ==1 && adS.fact_check_9 ==1 && adS.fact_check_10 ==1){
+                     adS.WriteEepromTimes=1;
+                 }
+                   
           
         }
         else {
@@ -812,7 +822,7 @@ void PositivePressureWorks_Mode(void)
                                         else thelta = lamda  + adS.CorrectionValue[0] ;
 
                                       if(adS.CorrectionValue[10]==0)
-                                           lamda= adS.initialValue ;
+                                           lamda= adS.initialValue + 1 ;
                                       else if( thelta <= adS.initialValue ){
 
                                             thelta =0;
@@ -822,18 +832,6 @@ void PositivePressureWorks_Mode(void)
 
                                 }
                       }
-                              
-
-                         
-
-
-                      
-                     
-            
-
-                  
-
-                                                  
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
