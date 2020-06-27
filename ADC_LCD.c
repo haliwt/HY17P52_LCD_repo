@@ -630,7 +630,7 @@ void SetupZeroPointSelection(void)
 void SetupZeroPoint_Mode(void)
 {
     unsigned char i;
-    long  thelta,delta;
+    long  thelta,delta,lamda;
     long  plusOffset_Value;
     adS.Main_zeroPoint_Mode =1;
 		adS.Main_testMode=0;
@@ -645,37 +645,36 @@ void SetupZeroPoint_Mode(void)
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
                   adS.access_id_5s= 1;
-                  if(adS.CorrectionValue[4] >0)
+             
 
-                        thelta  =   0.036 * ADC  - 12 - adS.CorrectionValue[4] ;
-                  else if(adS.CorrectionValue[4] ==0){
-
-                    thelta  =   0.036 * ADC  - 12;
-                  }
-
-                  else thelta  =   0.036 * ADC  - 12 + adS.CorrectionValue[4] ;
+                    lamda  =   0.036 * ADC  - 12 ;
                  
-            
+                    
     		    
-                   if(thelta >= 460 ){
+                   if(lamda >= 460 ){
 
                          GPIO_PT16_HIGH();
-                         adS.CorrectionValue[4]= 500 - thelta ;
+                         adS.CorrectionValue[4]= 500 - lamda ;
 
                       }
-                      else{
-                               thelta  =   0.036 * ADC  - 12;
-                               adS.CorrectionValue[3]= 400 -thelta ;
-                               if(thelta<360 && thelta >260){
+                    else{
+                              if(lamda <= 460  && lamda >360){
+
+                                 adS.CorrectionValue[3]= 400 -lamda ; //4000
+                               }
+                               else if(lamda<360 && lamda >260){
                                   
-                                    adS.CorrectionValue[2]= 300 -thelta ;
+                                    adS.CorrectionValue[2]= 300 -lamda;
                                     
                                }
-                               else{
-                                    if(thelta < 260){
+                             
+                              else if(lamda < 260 && lamda >=140){
 
-                                      adS.CorrectionValue[1]= 200 -thelta ;
+                                        adS.CorrectionValue[1]= 200 -lamda ;
+                                       
                                     }
+                               else if(lamda <140){
+                                          adS.CorrectionValue[0]= 100 -lamda;
 
                                }
 
@@ -716,7 +715,7 @@ void PositivePressureWorks_Mode(void)
 {
     unsigned char i;
     int iot;
-    long LCDDisplay,thelta,delta;
+    long LCDDisplay,thelta,delta,lamda;
     unsigned long initialize_ADC[1] ;
     adS.unit_2 =0;
     EEPROM_ReadUnitData_Address0();
@@ -728,43 +727,52 @@ void PositivePressureWorks_Mode(void)
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
                   
-                  if(adS.CorrectionValue[4] >0)
-
-                        thelta  =   0.036 * ADC  - 12 - adS.CorrectionValue[4] ;
-                  else if(adS.CorrectionValue[4] ==0){
-
-                    thelta  =   0.036 * ADC  - 12;
-                  }
-
-                  else thelta  =   0.036 * ADC  - 12 + adS.CorrectionValue[4] ;
                  
-            
-            
-                   if(thelta < 460 ){
 
-                        thelta  =   0.036 * ADC  - 12;
-                        if(adS.CorrectionValue[3]>=0)
-                          thelta = thelta  - adS.CorrectionValue[3] ;
-                        else thelta = thelta  + adS.CorrectionValue[3] ;
-                         
-                         if(thelta <=360)//300 -correction
+                     lamda  =   0.036 * ADC  - 12;
+                
+                  if(lamda >= 460 ){
+
+                         if(adS.CorrectionValue[4]>=0)
+                              thelta = lamda  - adS.CorrectionValue[4] ;
+                           else thelta = lamda  + adS.CorrectionValue[4] ;
+                    }
+                    else{
+
+                         if(lamda >360 && lamda < 460){
+                            if(adS.CorrectionValue[3]>=0)
+                              thelta = lamda  - adS.CorrectionValue[3] ;
+                            else thelta = lamda  + adS.CorrectionValue[3] ;
+                         }
+                         else if(lamda <=360 && lamda > 260)//300 -correction
                          {
-                             thelta  =   0.036 * ADC  - 12;
+                             
+                            
                              if(adS.CorrectionValue[2]>=0)
-                              thelta = thelta  - adS.CorrectionValue[2] ;
-                              else thelta = thelta  + adS.CorrectionValue[2] ;
-                              if(thelta <=260){
-                                 thelta  =   0.036 * ADC  - 12;
-                                if(adS.CorrectionValue[1]>=0)
-                                  thelta = thelta  - adS.CorrectionValue[1] ;
-                                else thelta = thelta  + adS.CorrectionValue[1] ;
+                                 thelta = lamda  - adS.CorrectionValue[2] ;
+                              else thelta = lamda  + adS.CorrectionValue[2] ;
+                             }
+                             else if(lamda<=260 && lamda > 150 ){
+                                         
+                                        
+                                         if(adS.CorrectionValue[1]>=0)
+                                            thelta = lamda  - adS.CorrectionValue[1] ;
+                                          else thelta = lamda  + adS.CorrectionValue[1] ;
                               }
+                             else if(lamda <=150){
+                                        
+                                        if(adS.CorrectionValue[0]>=0)
+                                          thelta = lamda  - adS.CorrectionValue[0] ;
+                                        else thelta = lamda  + adS.CorrectionValue[0] ;
+
+                                }
+                      }
                               
 
-                         }
+                         
 
 
-                      }
+                      
                      
             
 
