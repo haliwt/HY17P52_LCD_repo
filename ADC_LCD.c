@@ -645,18 +645,37 @@ void SetupZeroPoint_Mode(void)
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
                   adS.access_id_5s= 1;
-                  adS.CorrectionValue[7]=1;
+                  adS.CorrectionValue[10]=1;
 
                     lamda  =   0.036 * ADC  - 12 ;
-                 
-                    if(lamda >= 580 ){
+
+                  if(lamda >=980 && lamda <1100){
+
+                        GPIO_PT16_HIGH();
+                        adS.CorrectionValue[9]= 1000 - lamda ;
+                  }
+                  else if(lamda >=880 && lamda <980){
+
+                       GPIO_PT16_HIGH();
+                        adS.CorrectionValue[8]= 900 - lamda ;
+                  } 
+                  else if(lamda >=780 && lamda <880){
+
+                       GPIO_PT16_HIGH();
+                        adS.CorrectionValue[7]= 800 - lamda ;
+                  }
+                  else if(lamda >=680 && lamda <780){
+
+                       GPIO_PT16_HIGH();
+                        adS.CorrectionValue[6]= 700 - lamda ;
+                  }
+                  else if(lamda >= 580 && lamda <680 ){
 
                          GPIO_PT16_HIGH();
                          adS.CorrectionValue[5]= 600 - lamda ;
 
                     }
-    		    
-                   else if(lamda >= 460 && lamda < 580 ){
+    		            else if(lamda >= 460 && lamda < 580 ){
 
                          GPIO_PT16_HIGH();
                          adS.CorrectionValue[4]= 500 - lamda ;
@@ -731,11 +750,29 @@ void PositivePressureWorks_Mode(void)
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
                   
-                 
+                lamda  =   0.036 * ADC  - 12;
 
-                     lamda  =   0.036 * ADC  - 12;
-
-                  if(lamda >580){
+                 if(lamda >980 && lamda <=1100){
+                           if(adS.CorrectionValue[9]>=0)
+                              thelta = lamda  - adS.CorrectionValue[9] ;
+                           else thelta = lamda  + adS.CorrectionValue[9] ;
+                  }
+                  else if(lamda >880 && lamda <=980){
+                           if(adS.CorrectionValue[8]>=0)
+                              thelta = lamda  - adS.CorrectionValue[8] ;
+                           else thelta = lamda  + adS.CorrectionValue[8] ;
+                  }
+                 else if(lamda >780 && lamda <=880){
+                           if(adS.CorrectionValue[7]>=0)
+                              thelta = lamda  - adS.CorrectionValue[7] ;
+                           else thelta = lamda  + adS.CorrectionValue[7] ;
+                  }
+                  else if(lamda >680 && lamda <=780){
+                           if(adS.CorrectionValue[6]>=0)
+                              thelta = lamda  - adS.CorrectionValue[6] ;
+                           else thelta = lamda  + adS.CorrectionValue[6] ;
+                  }
+                 else if(lamda >580 && lamda <=680){
                            if(adS.CorrectionValue[5]>=0)
                               thelta = lamda  - adS.CorrectionValue[5] ;
                            else thelta = lamda  + adS.CorrectionValue[5] ;
@@ -745,8 +782,8 @@ void PositivePressureWorks_Mode(void)
                          if(adS.CorrectionValue[4]>=0)
                               thelta = lamda  - adS.CorrectionValue[4] ;
                            else thelta = lamda  + adS.CorrectionValue[4] ;
-                    }
-                    else{
+                  }
+                 else{
 
                          if(lamda >360 && lamda < 460){
                             if(adS.CorrectionValue[3]>=0)
@@ -774,7 +811,7 @@ void PositivePressureWorks_Mode(void)
                                           thelta = lamda  - adS.CorrectionValue[0] ;
                                         else thelta = lamda  + adS.CorrectionValue[0] ;
 
-                                      if(adS.CorrectionValue[7]==0)
+                                      if(adS.CorrectionValue[10]==0)
                                            lamda= adS.initialValue ;
                                       else if( thelta <= adS.initialValue ){
 

@@ -110,7 +110,7 @@ struct _adc_works_
     unsigned int  initialValue;
 
    unsigned long  factor;
-   int   CorrectionValue[8];
+   int   CorrectionValue[11];
  
 
    
