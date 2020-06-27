@@ -645,7 +645,7 @@ void SetupZeroPoint_Mode(void)
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
                   adS.access_id_5s= 1;
-             
+                  adS.CorrectionValue[7]=1;
 
                     lamda  =   0.036 * ADC  - 12 ;
                  
@@ -721,7 +721,6 @@ void PositivePressureWorks_Mode(void)
     EEPROM_ReadUnitData_Address0();
     adS.getSaveTimes++;
 
- 
    
     if(MCUSTATUSbits.b_ADCdone==1){
                MCUSTATUSbits.b_ADCdone=0;
@@ -765,6 +764,15 @@ void PositivePressureWorks_Mode(void)
                                           thelta = lamda  - adS.CorrectionValue[0] ;
                                         else thelta = lamda  + adS.CorrectionValue[0] ;
 
+                                      if(adS.CorrectionValue[7]==0)
+                                           lamda= adS.initialValue ;
+                                      else if( thelta <= adS.initialValue ){
+
+                                            thelta =0;
+                                       }
+
+
+
                                 }
                       }
                               
@@ -799,7 +807,8 @@ void PositivePressureWorks_Mode(void)
                      adS.getSaveTimes++;
                      adS.workstation_flag =0;
          }
-
+        
+        
    
        //if(adS.getSaveTimes>270){
          if(adS.getSaveTimes>135 && adS.getSaveTimes!=2 ){

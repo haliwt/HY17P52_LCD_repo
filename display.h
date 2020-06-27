@@ -97,8 +97,7 @@ struct _adc_works_
 
    unsigned char   ReadEepromValue1;
    unsigned char   ReadEepromValue2;
-
-
+  
 
 
 
@@ -108,8 +107,10 @@ struct _adc_works_
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
+    unsigned int  initialValue;
+
    unsigned long  factor;
-   int   CorrectionValue[5];
+   int   CorrectionValue[8];
  
 
    
