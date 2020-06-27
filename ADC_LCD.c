@@ -629,52 +629,58 @@ void SetupZeroPointSelection(void)
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-    long  formula_Value;
+    unsigned char i;
+    long  thelta,delta;
     long  plusOffset_Value;
     adS.Main_zeroPoint_Mode =1;
 		adS.Main_testMode=0;
     adS.Main_unit_setMode = 0;
     adS.zeroTo120s =1;
-
+     GPIO_PT16_LOW();
     //if(GPIO_PT1GET(0)==1){
 
-     if(adS.WriteEepromTimes <5){
+     if(adS.WriteEepromTimes <6){
          if(MCUSTATUSbits.b_ADCdone==1){
               MCUSTATUSbits.b_ADCdone=0;
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
                   adS.access_id_5s= 1;
-    		         // y = 0.0344x - 11.46  only formula_Value seperate segment check .
-                 formula_Value  =   0.036 * ADC  - 12 ;//
+                  if(adS.CorrectionValue[4] >0)
 
-                  if(formula_Value >=495 && formula_Value <=505){ //500 correct value 
-                     
-                     adS.CorrectionValue[4] = 500 -  formula_Value;
+                        thelta  =   0.036 * ADC  - 12 - adS.CorrectionValue[4] ;
+                  else if(adS.CorrectionValue[4] ==0){
+
+                    thelta  =   0.036 * ADC  - 12;
                   }
-                  else if(formula_Value >=295 && formula_Value <=309){ //300 correct value
-                    
-                    adS.CorrectionValue[3] = 300 - formula_Value ;
-                  }
-                  else if(formula_Value >=195 && formula_Value <=209){//200 correct value
+
+                  else thelta  =   0.036 * ADC  - 12 + adS.CorrectionValue[4] ;
+                 
+            
+    		    
+                   if(thelta >= 460 ){
+
+                         GPIO_PT16_HIGH();
+                         adS.CorrectionValue[4]= 500 - thelta ;
+
+                      }
+                      else{
+                               thelta  =   0.036 * ADC  - 12;
+                               adS.CorrectionValue[3]= 400 -thelta ;
+                               GPIO_PT16_HIGH();
+
+                     }
+
                   
-                    adS.CorrectionValue[2] = 200 - formula_Value ;
-                  }
-                  else if(formula_Value >=95 && formula_Value <=109){ // 100 correct value
-                    
-                    adS.CorrectionValue[1] = 100-formula_Value ;
-                  }
-                  else if(formula_Value >=40 && formula_Value <=55){
 
-                    
-                    adS.CorrectionValue[0] = formula_Value - 50;
-                  }
-                        
-                        
+             
+                  adS.WriteEepromTimes++;
+          }
+          
         }
-    else {
+        else {
 
           Display2ErP3();
-           adS.zeroTo120s =1;
+          adS.zeroTo120s =1;
           Delay(20000);
           GPIO_PT16_LOW();
           adS.delayTimes_5s=0;
@@ -682,7 +688,7 @@ void SetupZeroPoint_Mode(void)
           adS.Main_zeroPoint_Mode =0;
           adS.unit_2 =0;
         }
-  }
+  
 
 }
 /**********************************************************************
@@ -695,58 +701,46 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
+    unsigned char i;
     int iot;
-    long LCDDisplay,thelta;
+    long LCDDisplay,thelta,delta;
     unsigned long initialize_ADC[1] ;
     adS.unit_2 =0;
     EEPROM_ReadUnitData_Address0();
     adS.getSaveTimes++;
-   
-   
-               
-                  
 
-        if(MCUSTATUSbits.b_ADCdone==1){
+ 
+   
+    if(MCUSTATUSbits.b_ADCdone==1){
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
-                 
-                  thelta=   0.036 * ADC  - 12  ;//y = 0.0343x - 11.712
+                  
+                  if(adS.CorrectionValue[4] >0)
 
-                  if(thelta >=400){
-                     thelta= thelta + adS.CorrectionValue[4] ;//
-                    
-                  }else{
-                       if(thelta <=300 && thelta >200){
-                        thelta= thelta + adS.CorrectionValue[3] ;//
-                      }
-                      else{
+                        thelta  =   0.036 * ADC  - 12 - adS.CorrectionValue[4] ;
+                  else if(adS.CorrectionValue[4] ==0){
 
-                          if(thelta <=200 && thelta >100){
-                          thelta= thelta + adS.CorrectionValue[2] ;//
-                          }
-                          else{
-                                if(thelta <=100 && thelta >50){
-                                    thelta= thelta + adS.CorrectionValue[1] ;//
-                                }
-                                else{
-                                      if(thelta <=50 ){
-                                        thelta= thelta+ adS.CorrectionValue[0] ;//
-                                        }
-
-                                }
-
-                          }
-                      }
-
-
-
-
+                    thelta  =   0.036 * ADC  - 12;
                   }
 
+                  else thelta  =   0.036 * ADC  - 12 + adS.CorrectionValue[4] ;
+                 
+            
+            
+                   if(thelta < 460 ){
+
+                        thelta  =   0.036 * ADC  - 12;
+                        if(adS.CorrectionValue[3]>=0)
+                          thelta = thelta  - adS.CorrectionValue[3] ;
+                        else thelta = thelta  + adS.CorrectionValue[3] ;
+
+                      }
+                     
+            
+
+                  
+
                                                   
-                   // UnitConverter();
-                     if(adS.initialVoltage ==1) DisplayNum4Bytes(0);
-                     else
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
