@@ -298,6 +298,7 @@ void ProcessRunsFlag(void)
     adS.access_id_3s=0;
     adS.delayDisplay =0;
     adS.unit_2 =0;
+    adS.setMode =0;
 
 }
 
@@ -366,8 +367,9 @@ void SetupUnitSelection(void)
   adS.Main_unit_setMode =1;
   adS.access_id_5s=0;
   adS.reload_ADCInterrupt = 1;
+  adS.setMode =1;
   DisplayUnit();
-  Delay(20000);
+ 
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
 
@@ -407,57 +409,10 @@ unsigned char EEPROM_ReadUnitData_Address0(void)
      while((BIECN& 0x01)==1);
     adS.eepromRead_UnitHigh_bit= BIEDRH;
     unitId = BIEDRL;
-  
-   return unitId;
+    return unitId;
 
 }
-/******************************************************************************
-	*
-	*Function Name: long UnitConverter_2V4(long data)
-	*Input Reference : converter unit value,This is kgf value
-	*Return Reference : NO
-	*
-	*
-******************************************************************************/
-#if 0
-void  UnitConverter(void)
-{
 
-  EEPROM_ReadUnitData_Address0();
-  if(adS.eepromRead_UnitLow_bit==psi ){ /*psi*/
-
-         LCD_WriteData(&LCD4, seg_psi) ;
-          DisplayPointP3();
-
-      
-     }
-   else if(adS.eepromRead_UnitLow_bit==bar ){ /*unit bar*/
-        LCD_WriteData(&LCD4, seg_bar) ;
-         DisplayPointP2();
-
-       
-   }
-   else if(adS.eepromRead_UnitLow_bit==kgf){ /* unit kgf*/
-
-         LCD_WriteData(&LCD4, seg_kgf) ;
-         DisplayNoPoint();
-
-         
-   }
-   else if(adS.eepromRead_UnitLow_bit==mpa ){ /*uint mpa*/
-
-     LCD_WriteData(&LCD4, seg_mpa) ;
-      DisplayPointP1();
-
-    
-   }
-   else if(adS.eepromRead_UnitHigh_bit !=0xAA && adS.CorrectionValue[10]==0){
-         LCD_WriteData(&LCD4, seg_kgf) ;
-           DisplayNoPoint();
-          
-      }
-}
-#endif 
 /******************************************************************************
   *
   *Function Name:DisplaySelectionUintPoint(void)
@@ -634,8 +589,8 @@ void SetupZeroPointSelection(void)
   adS.Main_unit_setMode = 0;
   adS.Main_testMode =1;
   adS.zeroTo120s =1;
-  LCD_DisplayOn();
-  //display LCD "2Er"
+  adS.setMode =1;
+
   Display2Er();
 
 }
@@ -656,12 +611,12 @@ void SetupZeroPoint_Mode(void)
 		adS.Main_testMode=0;
     adS.Main_unit_setMode = 0;
     adS.zeroTo120s =1;
-     GPIO_PT16_LOW();
-    //if(GPIO_PT1GET(0)==1){
+    adS.setMode =1;
+   
 
      if(adS.WriteEepromTimes  ==0){
          if(MCUSTATUSbits.b_ADCdone==1){
-            GPIO_PT16_HIGH();
+         
             adS.access_id_5s= 1;
             adS.CorrectionValue[10]=1;
               MCUSTATUSbits.b_ADCdone=0;
@@ -671,20 +626,7 @@ void SetupZeroPoint_Mode(void)
                     
                     lamda  =   0.0343 * ADC  - 12 ;
 
-                    if(lamda >= 580 && lamda <680 && adS.fact_check_6 ==0){
-
-                         adS.fact_check_6 =1;
-                    
-                         adS.CorrectionValue[5]= 600 - lamda ;
-
-                    }
-                    if(lamda < 260 && lamda >=140 && adS.fact_check_2 ==0){
-
-                                        adS.fact_check_2 =1;
-                                        adS.CorrectionValue[1]= 200 -lamda ;
-                                       
-                      }
-                  #if 0
+                   
                   if(lamda >=980 && lamda <1100 && adS.fact_check_10==0){
 
                        
@@ -751,7 +693,7 @@ void SetupZeroPoint_Mode(void)
                               
 
                      }
-                      #endif
+            
                   
                 }
              
@@ -760,7 +702,7 @@ void SetupZeroPoint_Mode(void)
                      adS.WriteEepromTimes=1;
               }
      
-                   
+              adS.setMode =0;   
           
         }
         else {
@@ -803,34 +745,7 @@ void PositivePressureWorks_Mode(void)
                 lamda  =   0.0343 * ADC  - 12;
 
 
-                if(lamda >260){
-
-                           if(adS.CorrectionValue[5]>=0)
-                              thelta = lamda  - adS.CorrectionValue[5] ;
-                           else thelta = lamda  + adS.CorrectionValue[5] ;
-                          if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-
-                }
-                else {
-                                         
-
-                            if(adS.CorrectionValue[1]>=0)
-                            thelta = lamda  - adS.CorrectionValue[1] ;
-                            else thelta = lamda  + adS.CorrectionValue[1] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-
-
-
-
-                            if(adS.CorrectionValue[10]==0)
-                            adS.initialValue = lamda;
-                            else if( thelta <= adS.initialValue ){
-
-                            thelta =0;
-                            }
-
-                }
-                #if 0
+         
                  if(lamda >980 && lamda <=1200){
                            if(adS.CorrectionValue[9]>=0)
                               thelta = lamda  - adS.CorrectionValue[9] ;
@@ -903,16 +818,16 @@ void PositivePressureWorks_Mode(void)
 
                                       if(adS.CorrectionValue[10]==0)
                                            adS.initialValue = lamda;
-                                      else if( thelta <= adS.initialValue ){
+                                      else if( thelta <= (adS.initialValue + 2) ){
 
-                                            thelta =0;
+                                            thelta =0; 
                                        }
 
                                       
 
                                 }
                       }
-                    #endif 
+                  
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
@@ -925,7 +840,7 @@ void PositivePressureWorks_Mode(void)
         }
        
       //if(adS.getSaveTimes>270){
-         if(adS.getSaveTimes>135 && adS.getSaveTimes!=2 ){
+         if(adS.getSaveTimes>135 && adS.setMode==0 ){
                          if(adS.zeroTo120s ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;

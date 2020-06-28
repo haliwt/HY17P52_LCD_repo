@@ -67,7 +67,7 @@ struct _adc_works_
    unsigned char save_mode: 1;
    unsigned char Main_unit_setMode:1;
    unsigned char noMeasureSet:1;
-   unsigned char unitChoose;
+  
    unsigned char Main_testMode:1;
    unsigned char Main_zeroPoint_Mode:1;
    unsigned char error_mod:1;
@@ -75,14 +75,14 @@ struct _adc_works_
    unsigned char negativeInPositive_flag: 1;
    unsigned char zeroTo60times : 2;
 
-    unsigned char eepromRead_UnitHigh_bit;
-    unsigned char eepromRead_UnitLow_bit;
+    
 
    unsigned char  access_id_3s : 1;
    unsigned char  access_id_5s : 1;
    unsigned char  workstation_flag:1;
    unsigned char  LowVoltage_flag : 1;
    unsigned char  initialVoltage :1;
+   unsigned char  setMode : 1;
    
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
@@ -103,6 +103,9 @@ struct _adc_works_
 
    unsigned char  WriteEepromTimes ;
    unsigned char   ReadEepromID1  ;
+   unsigned char eepromRead_UnitHigh_bit;
+    unsigned char eepromRead_UnitLow_bit;
+     unsigned char unitChoose;
 
 
    unsigned char   ReadEepromValue1;
