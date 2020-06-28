@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-#define TEST                    1
+//#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -95,13 +95,13 @@ volatile typedef union _MCUSTATUS
   struct
   {
     unsigned b_ADCdone:1;
-    unsigned b_TMAdone:1;
-    unsigned b_TMBdone:1;
-    unsigned b_TMCdone:1;
-    unsigned b_Ext0done:1;
-    unsigned b_Ext1done:1;
-    unsigned b_UART_TxDone:1;
-    unsigned b_UART_RxDone:1;
+    //unsigned b_TMAdone:1;
+    //unsigned b_TMBdone:1;
+    //unsigned b_TMCdone:1;
+    //unsigned b_Ext0done:1;
+    //unsigned b_Ext1done:1;
+    //unsigned b_UART_TxDone:1;
+    //unsigned b_UART_RxDone:1;
   };
 } MCUSTATUS;
 
@@ -191,6 +191,7 @@ GPIO_Iint();
                                   SYS_WAKEUP() ; //WT.EDTI 2020-06-13
                                   LCD_DisplayOn();
                                   adS.getSaveTimes=0;
+                                  adS.LowVoltage_flag=0;
                                   
                           }
                           if(adS.workstation_flag ==1){
@@ -198,6 +199,7 @@ GPIO_Iint();
                                   adS.zeroTo120s=1;
                                   SYS_WAKEUP() ; //WT.EDTI 2020-06-13
                                   LCD_DisplayOn();
+                                  adS.LowVoltage_flag=0;
                             }
 
                     }
