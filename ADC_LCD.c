@@ -946,7 +946,7 @@ void PositivePressureWorks_Mode(void)
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
                                 #if SAVEPOWER
-                                 Idle()   ; //Sleep();
+                                Sleep(); //Idle()   ; //Sleep();
                                 #endif
 
                           }
