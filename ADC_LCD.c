@@ -666,11 +666,11 @@ void SetupZeroPoint_Mode(void)
                     
                     lamda  =   0.0343 * ADC  - 12 ;
 
-                    if(lamda >= 580 && lamda <680 && adS.fact_check_6 ==0){
+                    if(lamda >= 470 && lamda <550 && adS.fact_check_5 ==0){
 
-                         adS.fact_check_6 =1;
+                         adS.fact_check_5 =1;
                     
-                         adS.CorrectionValue[5]= 600 - lamda ;
+                         adS.CorrectionValue[5]= 500 - lamda ;
 
                     }
                     if(lamda < 260 && lamda >=140 && adS.fact_check_2 ==0){
@@ -750,8 +750,7 @@ void SetupZeroPoint_Mode(void)
                   
                 }
              
-            if(adS.fact_check_1 ==1 && adS.fact_check_2==1 && adS.fact_check_3 ==1 && adS.fact_check_4 ==1 && adS.fact_check_5 ==1 
-                   && adS.fact_check_6 ==1 && adS.fact_check_7 ==1 && adS.fact_check_8 ==1 && adS.fact_check_9 ==1 && adS.fact_check_10 ==1){
+            if(adS.fact_check_2 ==1 && adS.fact_check_5==1 ){
                      adS.WriteEepromTimes=1;
               }
      
@@ -782,7 +781,7 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    unsigned char i;
+    
     int iot;
     long LCDDisplay,thelta,delta,lamda;
     unsigned long initialize_ADC[1] ;
@@ -814,14 +813,10 @@ void PositivePressureWorks_Mode(void)
                             else thelta = lamda  + adS.CorrectionValue[1] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
 
-
-
-
                             if(adS.CorrectionValue[10]==0)
-                            adS.initialValue = lamda;
+                                adS.initialValue = lamda;
                             else if( thelta <= adS.initialValue ){
-
-                            thelta =0;
+                                thelta =0;
                             }
 
                 }
