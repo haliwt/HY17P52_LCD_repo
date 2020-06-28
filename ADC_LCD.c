@@ -52,7 +52,8 @@ unsigned char LowVoltageDetect_2V4(void);
 void LowVoltageDisplay(void);
 void SetupZeroPoint_Mode(void);
 //void SetupUnit_Mode(void);
-void SetupSaveUnit_ID(unsigned char id);
+void SetupSaveUnit_ID(unsigned char *id);
+
 void PositivePressureWorks_Mode(void);
 void SetupUnitSelection(void);
 void SetupZeroPointSelection(void);
@@ -181,18 +182,15 @@ GPIO_Iint();
 	{
       if(GPIO_PT1GET(0)==0 && onpower !=0)
 		  {
-
-
-            Delay(1000);
+              Delay(1000);
              if(adS.unit_2 == 0){
 
-                  if(GPIO_PT1GET(0)==0){
+                  if(GPIO_PT1GET(0)==0 ){
 
                          if(adS.zeroTo60times==1){
                                   SYS_WAKEUP() ; //WT.EDTI 2020-06-13
                                   LCD_DisplayOn();
                                   adS.getSaveTimes=0;
-                                  adS.LowVoltage_flag=0;
                                   
                           }
                           if(adS.workstation_flag ==1){
@@ -200,7 +198,6 @@ GPIO_Iint();
                                   adS.zeroTo120s=1;
                                   SYS_WAKEUP() ; //WT.EDTI 2020-06-13
                                   LCD_DisplayOn();
-                                  adS.LowVoltage_flag=0;
                             }
 
                     }
@@ -227,15 +224,17 @@ GPIO_Iint();
                 }
             }
             else{
-                Delay(30000);
-                if(GPIO_PT1GET(0)==0 && adS.access_id_5s!=1){
+                Delay(50000);
+                if(GPIO_PT1GET(0)==0){
 
                   adS.unit_2 =1;
                   adS.access_id_3s=1;
                   SetupUnitSelection();
+
                 }
-            }
-        }else{
+           }
+        }
+        else{
 
           if(adS.Main_testMode == 0){
               if(onpower ==0){
@@ -270,7 +269,12 @@ GPIO_Iint();
 
   				     SetupZeroPoint_Mode();
 
-  			    } 
+  			   } 
+          else if(adS.Main_unit_setMode ==1){
+                SetupUnit_Mode();
+
+
+            }
     }
   }
 }
@@ -295,6 +299,54 @@ void ProcessRunsFlag(void)
 
 }
 
+
+/**************************************************************
+  *
+  *Function Name: SetupUnit_Mode(void)
+  *
+  *
+  *
+***************************************************************/
+void SetupUnit_Mode(void)
+{
+
+  adS.Main_unit_setMode =0 ;
+  adS.Main_testMode = 0;
+  adS.unit_2 =0;
+
+  //*pt = adS.unitChoose;
+ // adS.reload_ADCInterrupt = 1;
+
+   //BIE Write
+  HY17P52WR3(0,0x00,0x00);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+  if(Flag== 1)
+  {
+    GPIO_PT16_HIGH();
+    while(1);    //fail
+  }
+  SetupSaveUnit_ID(&adS.unitChoose);
+
+
+}
+/**************************************************************
+  *
+  *Function Name: SetupUnit_Mode(void)
+  *Function : setup unit and save
+  *
+  *
+***************************************************************/
+void SetupSaveUnit_ID( unsigned char *id)
+{
+   //BIE Write
+  HY17P52WR3(0,0xAA,*id);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
+  if(Flag== 1)
+  {
+  //  GPIO_PT16_HIGH();
+    while(1);    //fail
+  }
+}
+
+
 /**********************************************************************
   *
   *Function Name :void SetupUnitAndZeroPoint_Mode(void)
@@ -308,73 +360,83 @@ void SetupUnitSelection(void)
   adS.delayTimes_5s=0;
   adS.Main_unit_setMode =1;
   adS.Main_zeroPoint_Mode =0;
-  adS.Main_testMode =0;
+  adS.Main_testMode =1;
+  adS.Main_unit_setMode =1;
   adS.access_id_5s=0;
   adS.reload_ADCInterrupt = 1;
   DisplayUnit();
   Delay(20000);
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
-   //BIE Write
-  HY17P52WR3(0,0xAA,adS.plus_uint);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-  if(Flag== 1)
-  {
-  //  GPIO_PT16_HIGH();
-    while(1);    //fail
-  }
-
+ 
 
   switch(adS.plus_uint){
   case psi: //1
+      LCD_WriteData(&LCD4,0x00);
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
 
      adS.unitChoose = psi;
      LCD_WriteData(&LCD4,seg_psi);
-    Delay(10000);
+  
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
+     DisplayUnit();
+
          break;
   case bar: //2
-
+      LCD_WriteData(&LCD4,0x00);
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
+    
      adS.unitChoose = bar;
      LCD_WriteData(&LCD4,seg_bar);
-    Delay(10000);
+      
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
+     DisplayUnit();
+  
 
        break;
   case kgf://3
-
+      LCD_WriteData(&LCD4,0x00);
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
+     
     adS.unitChoose = kgf;
     LCD_WriteData(&LCD4,seg_kgf);
-    Delay(10000);
+    
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
+      DisplayUnit();
+
 
        break;
   case mpa://4
-
+      LCD_WriteData(&LCD4,0x00);
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
      adS.unitChoose = mpa;
      LCD_WriteData(&LCD4,seg_mpa);
-     Delay(10000);
+     
+      LCD_WriteData(&LCD1,0x00);
+      LCD_WriteData(&LCD2,0x00);
+      LCD_WriteData(&LCD3,0x00);
+      DisplayUnit();
+   
     break;
   }
 
 
 }
 
-/**************************************************************
-  *
-  *Function Name: SetupUnit_Mode(void)
-  *Function : setup unit and save
-  *
-  *
-***************************************************************/
-void SetupSaveUnit_ID( unsigned char id)
-{
-   //BIE Write
-  HY17P52WR3(0,0xAA,id);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
-  if(Flag== 1)
-  {
-  //  GPIO_PT16_HIGH();
-    while(1);    //fail
-  }
-
-
-}
 
 /******************************************************************************
   *
@@ -835,7 +897,7 @@ void PositivePressureWorks_Mode(void)
 
                                       if(adS.CorrectionValue[10]==0)
                                            adS.initialValue = lamda;
-                                      else if( thelta <= adS.initialValue +2){
+                                      else if( thelta <= adS.initialValue ){
 
                                             thelta =0;
                                        }
@@ -895,14 +957,6 @@ void PositivePressureWorks_Mode(void)
 /*----------------------------------------------------------------------------*/
 /* Subroutine Function                                                        */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*          LCD Show ADC                                                        */
-/*----------------------------------------------------------------------------*/
-void ShowADC (void)
-{
-	DisplayNum(ADC);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* Interrupt Service Routines                                                 */
