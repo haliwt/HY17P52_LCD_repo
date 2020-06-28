@@ -14,6 +14,7 @@
 /**************************************************************************************************|
 |*                               Peripheral Register Bits field                                   *|
 |**************************************************************************************************/
+#define HY17P52_IC           1   //WT.EDIT 2020-06-28
 // AD1CN0 //
 // Bit-field Struc Test for SDCC
 #define ENAD1                     7
@@ -51,9 +52,9 @@
 #define PGAGN                     3
 #define PGAGN_MSK                (3 << PGAGN)
 #define PGAGN_8                  (3 << PGAGN)
-//#define PGAGN_4                  (2 << PGAGN)    
-//#define PGAGN_2                  (1 << PGAGN)    
-#define PGAGN_1                  (0 << PGAGN) //WT.EDIT 2020-06-28
+#define PGAGN_4                  (2 << PGAGN)    
+#define PGAGN_2                  (1 << PGAGN)    
+#define PGAGN_1                   (0 << PGAGN) 
 
 
   // ADGN defined in main.c  //
@@ -66,11 +67,18 @@
 //#define ADGN_4                      (4 << ADGN)
 //#define ADGN_1                      (0 << ADGN)//(2 << ADGN) //WT.EDIT 2020-06-28 
 //FOR BODY
-#define ADGN_RSVD                (7 << ADGN)
-#define ADGN_16                  (6 << ADGN)
-#define ADGN_1                (5 << ADGN)
-#define ADGN_4                (4 << ADGN)
-
+#ifndef HY17P52_IC   
+  #define ADGN_RSVD                (7 << ADGN)
+  #define ADGN_16                  (6 << ADGN)
+  #define ADGN_1                (5 << ADGN)
+  #define ADGN_4                (4 << ADGN)
+#else
+//FOR ICE
+  #define ADGN_RSVD              (7 << ADGN)
+  #define ADGN_16                    (6 << ADGN)
+  #define ADGN_4                      (4 << ADGN)
+  #define ADGN_1                     (2 << ADGN) 
+#endif 
 
 #define DCSET                     0
 #define DCSET_MSK                (15 << DCSET)
