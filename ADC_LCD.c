@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-#define TEST                    1
+//#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -617,9 +617,9 @@ void LowVoltageDisplay(void)
 /**********************************************************************
   *
   *Function Name :SetupZeroPointSelection
-  *
-  *
-  *
+  *Function: setup the zero point of value
+  *Inpute Ref: NO
+  *Return Ref: NO
   *
 ***********************************************************************/
 void SetupZeroPointSelection(void)
@@ -655,48 +655,50 @@ void SetupZeroPoint_Mode(void)
 
      if(adS.WriteEepromTimes  ==0){
          if(MCUSTATUSbits.b_ADCdone==1){
+            GPIO_PT16_HIGH();
+            adS.access_id_5s= 1;
+            adS.CorrectionValue[10]=1;
               MCUSTATUSbits.b_ADCdone=0;
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
-                  adS.access_id_5s= 1;
-                  adS.CorrectionValue[10]=1;
-
+                  
+                    
                     lamda  =   0.036 * ADC  - 12 ;
 
                   if(lamda >=980 && lamda <1100 && adS.fact_check_10==0){
 
-                        GPIO_PT16_HIGH();
+                       
                         adS.fact_check_10 =1;
                         adS.CorrectionValue[9]= 1000 - lamda ;
                   }
                   else if(lamda >=880 && lamda <980 && adS.fact_check_9 ==0){
 
-                        GPIO_PT16_HIGH();
+                     
                         adS.fact_check_9 =1;
                         adS.CorrectionValue[8]= 900 - lamda ;
                   } 
                   else if(lamda >=780 && lamda <880 && adS.fact_check_8 ==0){
 
-                       GPIO_PT16_HIGH();
+                      
                          adS.fact_check_8=1;
                         adS.CorrectionValue[7]= 800 - lamda ;
                   }
                   else if(lamda >=680 && lamda <780 && adS.fact_check_7 ==0){
 
-                       GPIO_PT16_HIGH();
+                  
                         adS.fact_check_7 =1;
                         adS.CorrectionValue[6]= 700 - lamda ;
                   }
                   else if(lamda >= 580 && lamda <680 && adS.fact_check_6 ==0){
 
                          adS.fact_check_6 =1;
-                         GPIO_PT16_HIGH();
+                    
                          adS.CorrectionValue[5]= 600 - lamda ;
 
                     }
     		            else if(lamda >= 460 && lamda < 580 && adS.fact_check_5 ==0 ){
 
-                         GPIO_PT16_HIGH();
+                        
                          adS.CorrectionValue[4]= 500 - lamda ;
                          adS.fact_check_5=1;
 
@@ -726,7 +728,7 @@ void SetupZeroPoint_Mode(void)
 
                                }
 
-                               GPIO_PT16_HIGH();
+                              
 
                      }
 
@@ -735,7 +737,7 @@ void SetupZeroPoint_Mode(void)
             if(adS.fact_check_1 ==1 && adS.fact_check_2==1 && adS.fact_check_3 ==1 && adS.fact_check_4 ==1 && adS.fact_check_5 ==1 
                    && adS.fact_check_6 ==1 && adS.fact_check_7 ==1 && adS.fact_check_8 ==1 && adS.fact_check_9 ==1 && adS.fact_check_10 ==1){
                      adS.WriteEepromTimes=1;
-                 }
+              }
                    
           
         }
@@ -869,24 +871,10 @@ void PositivePressureWorks_Mode(void)
                      else adS.workstation_flag =1;
                     
         }
-        else{
-
-                    DisplayNum4Bytes(0);
-                    LowVoltageDisplay();
-                    DisplaySelectionUintPoint();
-                    
-                     Delay(20000);
-                     adS.getSaveTimes++;
-                     adS.workstation_flag =0;
-         }
-        
-        
-   
-       //if(adS.getSaveTimes>270){
+       
+      //if(adS.getSaveTimes>270){
          if(adS.getSaveTimes>135 && adS.getSaveTimes!=2 ){
-                        
-                      
-                        if(adS.zeroTo120s ==1 ){
+                         if(adS.zeroTo120s ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
@@ -899,16 +887,11 @@ void PositivePressureWorks_Mode(void)
                                 #if SAVEPOWER
                                 Idle()   ; //Sleep();
                                 Sleep();
-                                //SYS_WriteBOR();
-                               // SYS_WriteSleep();
+                               
                                 #endif
-
                           }
-                        
-                       
-                    }
-      
-
+                          
+          }
 }
 /*----------------------------------------------------------------------------*/
 /* Subroutine Function                                                        */
