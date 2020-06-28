@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-//#define TEST                    1
+#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -370,76 +370,27 @@ void SetupUnitSelection(void)
   Delay(20000);
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
- 
 
   switch(adS.plus_uint){
   case psi: //1
-      LCD_WriteData(&LCD4,0x00);
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
-
      adS.unitChoose = psi;
      LCD_WriteData(&LCD4,seg_psi);
-  
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
-     DisplayUnit();
-
-         break;
+  break;
   case bar: //2
-      LCD_WriteData(&LCD4,0x00);
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
-    
      adS.unitChoose = bar;
      LCD_WriteData(&LCD4,seg_bar);
-      
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
-     DisplayUnit();
-  
-
-       break;
+    break;
   case kgf://3
-      LCD_WriteData(&LCD4,0x00);
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
      
     adS.unitChoose = kgf;
     LCD_WriteData(&LCD4,seg_kgf);
-    
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
-      DisplayUnit();
-
-
-       break;
+  break;
   case mpa://4
-      LCD_WriteData(&LCD4,0x00);
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
      adS.unitChoose = mpa;
      LCD_WriteData(&LCD4,seg_mpa);
-     
-      LCD_WriteData(&LCD1,0x00);
-      LCD_WriteData(&LCD2,0x00);
-      LCD_WriteData(&LCD3,0x00);
-      DisplayUnit();
-   
-    break;
+  break;
   }
-
-
 }
-
-
 /******************************************************************************
   *
   *Function Name: EEPROM_ReadData(void);
@@ -946,7 +897,10 @@ void PositivePressureWorks_Mode(void)
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
                                 #if SAVEPOWER
-                                Sleep(); //Idle()   ; //Sleep();
+                                Idle()   ; //Sleep();
+                                Sleep();
+                                //SYS_WriteBOR();
+                               // SYS_WriteSleep();
                                 #endif
 
                           }
