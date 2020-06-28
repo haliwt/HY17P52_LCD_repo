@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-//#define TEST                    1
+#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -456,9 +456,10 @@ unsigned char  UnitConverter(void)
 /******************************************************************************
   *
   *Function Name:DisplaySelectionUintPoint(void)
-  *
-  *
-  *
+  *Function : be save unit value
+  *Input Ref:NO
+  *Return Ref:NO
+  * 
 ******************************************************************************/
 void DisplaySelectionUintPoint(void)
 {
@@ -663,8 +664,22 @@ void SetupZeroPoint_Mode(void)
               ADC =ADC >>6;
                   
                     
-                    lamda  =   0.036 * ADC  - 12 ;
+                    lamda  =   0.0343 * ADC  - 12 ;
 
+                    if(lamda >= 580 && lamda <680 && adS.fact_check_6 ==0){
+
+                         adS.fact_check_6 =1;
+                    
+                         adS.CorrectionValue[5]= 600 - lamda ;
+
+                    }
+                    if(lamda < 260 && lamda >=140 && adS.fact_check_2 ==0){
+
+                                        adS.fact_check_2 =1;
+                                        adS.CorrectionValue[1]= 200 -lamda ;
+                                       
+                      }
+                  #if 0
                   if(lamda >=980 && lamda <1100 && adS.fact_check_10==0){
 
                        
@@ -731,13 +746,15 @@ void SetupZeroPoint_Mode(void)
                               
 
                      }
-
+                      #endif
                   
                 }
+             
             if(adS.fact_check_1 ==1 && adS.fact_check_2==1 && adS.fact_check_3 ==1 && adS.fact_check_4 ==1 && adS.fact_check_5 ==1 
                    && adS.fact_check_6 ==1 && adS.fact_check_7 ==1 && adS.fact_check_8 ==1 && adS.fact_check_9 ==1 && adS.fact_check_10 ==1){
                      adS.WriteEepromTimes=1;
               }
+     
                    
           
         }
@@ -778,9 +795,38 @@ void PositivePressureWorks_Mode(void)
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
                   
-                lamda  =   0.036 * ADC  - 12;
+                lamda  =   0.0343 * ADC  - 12;
 
-                 if(lamda >980 && lamda <=1100){
+
+                if(lamda >260){
+
+                           if(adS.CorrectionValue[5]>=0)
+                              thelta = lamda  - adS.CorrectionValue[5] ;
+                           else thelta = lamda  + adS.CorrectionValue[5] ;
+                          if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+
+                }
+                else {
+                                         
+
+                            if(adS.CorrectionValue[1]>=0)
+                            thelta = lamda  - adS.CorrectionValue[1] ;
+                            else thelta = lamda  + adS.CorrectionValue[1] ;
+                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+
+
+
+
+                            if(adS.CorrectionValue[10]==0)
+                            adS.initialValue = lamda;
+                            else if( thelta <= adS.initialValue ){
+
+                            thelta =0;
+                            }
+
+                }
+                #if 0
+                 if(lamda >980 && lamda <=1200){
                            if(adS.CorrectionValue[9]>=0)
                               thelta = lamda  - adS.CorrectionValue[9] ;
                            else thelta = lamda  + adS.CorrectionValue[9] ;
@@ -861,6 +907,7 @@ void PositivePressureWorks_Mode(void)
 
                                 }
                       }
+                    #endif 
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
