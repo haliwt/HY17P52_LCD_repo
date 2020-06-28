@@ -247,6 +247,8 @@ void Display2ErP3(void)
   LCD_WriteData(&LCD1,Char_R);
   LCD_WriteData(&LCD2,POINT_P3);
 
+
+
 }
 
 
@@ -263,6 +265,9 @@ void DisplayUnit(void)
   LCD_WriteData(&LCD1,Char_I);
   LCD_WriteData(&LCD2,Char_N);
   LCD_WriteData(&LCD3,Char_CAP_U);
+  LCD_WriteData(&LCD0,0x00);
+
+
 }
 /*----------------------------------------------------------------------------*/
 /* Software Delay Subroutines                                                 */
@@ -346,7 +351,7 @@ void DisplayBatteryCapacityHalf(void)
 void DispalyBatteryCapacityLow(void)
 {
   LCD_WriteData(&LCD0,symbol_battery_low);
-
+ 
 }
 
 /*----------------------------------------------------------------------------

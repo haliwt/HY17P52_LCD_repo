@@ -86,6 +86,17 @@ struct _adc_works_
    
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
+   unsigned char  fact_check_1 :1;
+   unsigned char  fact_check_2 :1;
+   unsigned char  fact_check_3 :1;
+   unsigned char  fact_check_4 :1;
+   unsigned char  fact_check_5 :1;
+   unsigned char  fact_check_6 :1;
+   unsigned char  fact_check_7 :1;
+   unsigned char  fact_check_8 :1;
+   unsigned char  fact_check_9 :1;
+   unsigned char  fact_check_10 :1;
+
    unsigned char  unit_2;
    unsigned char  plus_uint;
    unsigned char  zeroTo120s ;
@@ -93,20 +104,21 @@ struct _adc_works_
    unsigned char  WriteEepromTimes ;
    unsigned char   ReadEepromID1  ;
 
-   unsigned char   ReadEepromID2  ;
 
    unsigned char   ReadEepromValue1;
-   unsigned char   ReadEepromValue2;
 
-
-
-
-   unsigned char  reload_ADCInterrupt :1;
+  
+  unsigned char  reload_ADCInterrupt :1;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
-   unsigned long  setThreshold;
+    unsigned int  initialValue;
+
+   unsigned long  factor;
+   int   CorrectionValue[11];
+ 
+
    
 
 };
