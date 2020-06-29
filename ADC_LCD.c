@@ -752,27 +752,27 @@ void PositivePressureWorks_Mode(void)
 
          
                  if(lamda >980 && lamda <=1200){
-                           if(adS.CorrectionValue[9]>=0)
-                              thelta = lamda  - adS.CorrectionValue[9] ;
-                           else thelta = lamda  + adS.CorrectionValue[9] ;
+                         if(adS.CorrectionValue[5]>=0)
+                              thelta = lamda  - adS.CorrectionValue[5] ;
+                           else thelta = lamda  + adS.CorrectionValue[5] ;
                            
                   }
                   else if(lamda >880 && lamda <=980){
-                           if(adS.CorrectionValue[8]>=0)
-                              thelta = lamda  - adS.CorrectionValue[8] ;
-                           else thelta = lamda  + adS.CorrectionValue[8] ;
+                           if(adS.CorrectionValue[5]>=0)
+                              thelta = lamda  - adS.CorrectionValue[5] ;
+                           else thelta = lamda  + adS.CorrectionValue[5] ;
                            
                   }
                  else if(lamda >780 && lamda <=880){
-                           if(adS.CorrectionValue[7]>=0)
-                              thelta = lamda  - adS.CorrectionValue[7] ;
-                           else thelta = lamda  + adS.CorrectionValue[7] ;
+                           if(adS.CorrectionValue[5]>=0)
+                              thelta = lamda  - adS.CorrectionValue[5] ;
+                           else thelta = lamda  + adS.CorrectionValue[5] ;
                             
                   }
                   else if(lamda >680 && lamda <=780){
-                           if(adS.CorrectionValue[6]>=0)
-                              thelta = lamda  - adS.CorrectionValue[6] ;
-                           else thelta = lamda  + adS.CorrectionValue[6] ;
+                           if(adS.CorrectionValue[5]>=0)
+                              thelta = lamda  - adS.CorrectionValue[5] ;
+                           else thelta = lamda  + adS.CorrectionValue[5] ;
                             
                   }
                  else if(lamda >580 && lamda <=680){
