@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-#define TEST                    1
+//#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -742,8 +742,9 @@ void PositivePressureWorks_Mode(void)
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
                   
-                  lamda  =   0.0343 * ADC  - 12;
-  
+                lamda  =   0.0343 * ADC  - 12;
+
+
          
                  if(lamda >980 && lamda <=1200){
                            if(adS.CorrectionValue[9]>=0)
@@ -816,9 +817,11 @@ void PositivePressureWorks_Mode(void)
                                       if(thelta <= 0x05) thelta =0;
                                    
                                     if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                                     } 
+                                     
 
-                                
+                                      
+
+                                }
                       }
                      DisplaySelectionUintPoint();//WT.EDIT 2020-06-28 
                      DisplayNum4Bytes(thelta);
