@@ -68,8 +68,9 @@
 //FOR BODY
 #define ADGN_RSVD                (7 << ADGN)
 #define ADGN_16                  (6 << ADGN)
-#define ADGN_1                (5 << ADGN)
+//#define ADGN_1                (5 << ADGN)
 #define ADGN_4                (4 << ADGN)
+#define ADGN_1                 (0 <<ADGN)  //WT.EDIT 2020-06-29
 
 
 #define DCSET                     0

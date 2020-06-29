@@ -746,73 +746,54 @@ void PositivePressureWorks_Mode(void)
 
          
                  if(lamda >980 && lamda <=1200){
-                           if(adS.CorrectionValue[9]>=0)
-                              thelta = lamda  - adS.CorrectionValue[9] ;
-                           else thelta = lamda  + adS.CorrectionValue[9] ;
+                           thelta = lamda  + adS.CorrectionValue[9] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                   }
                   else if(lamda >880 && lamda <=980){
-                           if(adS.CorrectionValue[8]>=0)
-                              thelta = lamda  - adS.CorrectionValue[8] ;
-                           else thelta = lamda  + adS.CorrectionValue[8] ;
+                           thelta = lamda  + adS.CorrectionValue[8] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                   }
                  else if(lamda >780 && lamda <=880){
-                           if(adS.CorrectionValue[7]>=0)
-                              thelta = lamda  - adS.CorrectionValue[7] ;
-                           else thelta = lamda  + adS.CorrectionValue[7] ;
+                           thelta = lamda  + adS.CorrectionValue[7] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                   }
                   else if(lamda >680 && lamda <=780){
-                           if(adS.CorrectionValue[6]>=0)
-                              thelta = lamda  - adS.CorrectionValue[6] ;
-                           else thelta = lamda  + adS.CorrectionValue[6] ;
+                           thelta = lamda  + adS.CorrectionValue[6] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                   }
                  else if(lamda >580 && lamda <=680){
-                           if(adS.CorrectionValue[5]>=0)
-                              thelta = lamda  - adS.CorrectionValue[5] ;
-                           else thelta = lamda  + adS.CorrectionValue[5] ;
+                          thelta = lamda  + adS.CorrectionValue[5] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                   }
                   else if(lamda >= 460 & lamda<=580 ){
 
-                         if(adS.CorrectionValue[4]>=0)
-                              thelta = lamda  - adS.CorrectionValue[4] ;
-                           else thelta = lamda  + adS.CorrectionValue[4] ;
+                         thelta = lamda  + adS.CorrectionValue[4] ;
                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                   }
                  else{
 
                          if(lamda >360 && lamda < 460){
-                            if(adS.CorrectionValue[3]>=0)
-                              thelta = lamda  - adS.CorrectionValue[3] ;
-                            else thelta = lamda  + adS.CorrectionValue[3] ;
+                               thelta = lamda  + adS.CorrectionValue[3] ;
                              if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                          }
                          else if(lamda <=360 && lamda > 260)//300 -correction
                          {
                              
                             
-                             if(adS.CorrectionValue[2]>=0)
-                                 thelta = lamda  - adS.CorrectionValue[2] ;
-                              else thelta = lamda  + adS.CorrectionValue[2] ;
+                              thelta = lamda  + adS.CorrectionValue[2] ;
                                if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                              }
                              else if(lamda<=260 && lamda > 150 ){
                                          
                                         
-                                         if(adS.CorrectionValue[1]>=0)
-                                            thelta = lamda  - adS.CorrectionValue[1] ;
-                                          else thelta = lamda  + adS.CorrectionValue[1] ;
+                                        
+                                           thelta = lamda  + adS.CorrectionValue[1] ;
                                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
                               }
                              else if(lamda <=150){
                                         
                                         
-                                     if(adS.CorrectionValue[0]>=0)
-                                          thelta = lamda  - adS.CorrectionValue[0] ;
-                                      else thelta = lamda  + adS.CorrectionValue[0] ;
+                                     thelta = lamda  + adS.CorrectionValue[0] ;
                                       if(thelta <= 0x05) thelta =0;
                                    
                                     if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
