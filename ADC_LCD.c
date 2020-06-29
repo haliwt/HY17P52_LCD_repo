@@ -742,9 +742,8 @@ void PositivePressureWorks_Mode(void)
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
                   
-                lamda  =   0.0343 * ADC  - 12;
-
-
+                  lamda  =   0.0343 * ADC  - 12;
+  
          
                  if(lamda >980 && lamda <=1200){
                            if(adS.CorrectionValue[9]>=0)
@@ -811,23 +810,17 @@ void PositivePressureWorks_Mode(void)
                              else if(lamda <=150){
                                         
                                         
-                                        if(adS.CorrectionValue[0]>=0)
+                                     if(adS.CorrectionValue[0]>=0)
                                           thelta = lamda  - adS.CorrectionValue[0] ;
-                                        else thelta = lamda  + adS.CorrectionValue[0] ;
-                                      if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                                      else thelta = lamda  + adS.CorrectionValue[0] ;
+                                      if(thelta <= 0x05) thelta =0;
+                                   
+                                    if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                                     } 
 
-                                      if(adS.CorrectionValue[10]==0)
-                                           adS.initialValue = lamda;
-                                      else if( thelta <= (adS.initialValue + 2) ){
-
-                                            thelta =0; 
-                                       }
-
-                                      
-
-                                }
+                                
                       }
-                  
+                     DisplaySelectionUintPoint();//WT.EDIT 2020-06-28 
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
