@@ -68,7 +68,7 @@
 #define ADGN_4                     (4 << ADGN)
 #define ADGN_1                     (2 << ADGN)
 #endif 
-#if 0
+#if 0   //WT.EDIT HY17P52 IC
 //FOR BODY
 #define ADGN_RSVD                (7 << ADGN)
 #define ADGN_16                  (6 << ADGN)
