@@ -86,6 +86,7 @@ struct _adc_works_
    
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
+    unsigned char  fact_check_0 :1;
    unsigned char  fact_check_1 :1;
    unsigned char  fact_check_2 :1;
    unsigned char  fact_check_3 :1;
@@ -119,7 +120,7 @@ struct _adc_works_
     unsigned int  initialValue;
 
    unsigned long  factor;
-   int   CorrectionValue[11];
+   int   CorrectionValue[13];
  
 
    

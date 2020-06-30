@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-#define TEST                    1
+//#define TEST                    1
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -67,21 +67,7 @@ void DisplaySelectionUintPoint(void);
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
-//#define  TPSTEST
-/*
-#define ADGN                      0
-#define ADGN_MSK                 (7 << ADGN)
-//FOR ICE
-#define ADGN_RSVD              (7 << ADGN)
-#define ADGN_16                    (6 << ADGN)
-#define ADGN_4                      (4 << ADGN)
-#define ADGN_1                      (2 << ADGN)
-//FOR BODY
-#define ADGN_RSVD        (7 << ADGN)
-#define ADGN_16              (6 << ADGN)
-#define ADGN_1                (5 << ADGN)
-#define ADGN_4                (4 << ADGN)
-*/
+
 /*----------------------------------------------------------------------------*/
 /* Global CONSTANTS                                                           */
 /*----------------------------------------------------------------------------*/
@@ -324,7 +310,6 @@ void SetupUnit_Mode(void)
   HY17P52WR3(0,0x00,0x00);  //addr=00,BIE_DataH=0xAA,BIE_DataL=0x11
   if(Flag== 1)
   {
-    GPIO_PT16_HIGH();
     while(1);    //fail
   }
   SetupSaveUnit_ID(adS.unitChoose);
@@ -369,7 +354,7 @@ void SetupUnitSelection(void)
   adS.reload_ADCInterrupt = 1;
   adS.setMode =1;
   DisplayUnit();
- 
+  Delay(10000);
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
 
@@ -377,21 +362,26 @@ void SetupUnitSelection(void)
   case psi: //1
      adS.unitChoose = psi;
      LCD_WriteData(&LCD4,seg_psi);
+     //DisplayPointP3(); //
   break;
   case bar: //2
      adS.unitChoose = bar;
      LCD_WriteData(&LCD4,seg_bar);
+     // DisplayPointP2();   //
     break;
   case kgf://3
      
     adS.unitChoose = kgf;
     LCD_WriteData(&LCD4,seg_kgf);
+    // DisplayNoPoint();
   break;
   case mpa://4
      adS.unitChoose = mpa;
      LCD_WriteData(&LCD4,seg_mpa);
+     // DisplayPointP1();
   break;
   }
+ // SetupSaveUnit_ID(adS.unitChoose);//WT.EDIT 2020-06-29
 }
 /******************************************************************************
   *
@@ -440,12 +430,13 @@ void DisplaySelectionUintPoint(void)
         LCD_WriteData(&LCD4, seg_mpa) ;
          DisplayPointP1();
   }
-  else if(adS.eepromRead_UnitHigh_bit !=0xAA && adS.CorrectionValue[10]==0){
+  else if(adS.eepromRead_UnitHigh_bit !=0xAA && adS.CorrectionValue[12]==0){
           LCD_WriteData(&LCD4, seg_kgf) ;
           DisplayNoPoint();
   }
 
 }
+
 /******************************************************************************
 	*
 	*Function Name: long UnitConverter_3V(long data)
@@ -457,7 +448,8 @@ unsigned char LowVoltageDetect_3V(void)
 {
     unsigned char flag;
     LVD_VolSelect(VLDX_30);
-    LVD_PWRSelect(PWRS_VDD);
+    LVD_PWRSelect(PWRS_VDD); //WT.EDIT
+
     Delay(10);
   if(LVD_GetLVDO())
   {
@@ -481,7 +473,7 @@ unsigned char LowVoltageDetect_2V4(void)
 {
     unsigned char flag;
     LVD_VolSelect(VLDX_24);
-    LVD_PWRSelect(PWRS_VDD);
+    LVD_PWRSelect(PWRS_VDD);//WT.EDIT 2020-06-29
     Delay(10);
   if(LVD_GetLVDO())
   {
@@ -548,7 +540,6 @@ void LowVoltageBlink(void)
 void LowVoltageDisplay(void)
 {
 
-
       adS.LVD_3V_flag = LowVoltageDetect_3V();
       if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
           DisplayBatteryCapacityFull();
@@ -605,7 +596,7 @@ void SetupZeroPointSelection(void)
 void SetupZeroPoint_Mode(void)
 {
    
-    long  lamda;
+    long lamda;
     adS.Main_zeroPoint_Mode =1;
 		adS.Main_testMode=0;
     adS.Main_unit_setMode = 0;
@@ -617,7 +608,7 @@ void SetupZeroPoint_Mode(void)
          if(MCUSTATUSbits.b_ADCdone==1){
          
             adS.access_id_5s= 1;
-            adS.CorrectionValue[10]=1;
+            adS.CorrectionValue[12]=1; //flag 
               MCUSTATUSbits.b_ADCdone=0;
               adS.reload_ADCInterrupt = 1;
               ADC =ADC >>6;
@@ -683,10 +674,15 @@ void SetupZeroPoint_Mode(void)
                                         adS.CorrectionValue[1]= 200 -lamda ;
                                        
                                     }
-                               else if(lamda <140 && adS.fact_check_1 ==0){
+                               else if(lamda <140 && lamda >= 70 && adS.fact_check_1 ==0){
                                           adS.fact_check_1 =1;
                                           adS.CorrectionValue[0]= 100 -lamda;
 
+                               }
+                               else if(lamda <70 && adS.fact_check_0 ==0){
+
+                                          adS.fact_check_0 =1;
+                                          adS.CorrectionValue[10]= 50 -lamda;
                                }
 
                               
@@ -722,15 +718,15 @@ void SetupZeroPoint_Mode(void)
 	*
 	*Function Name :void PositivePressureWorks_Mode(void)
 	*Funciton: positive pressure measure
-	*
-	*
+	*Input Ref: NO
+	*Return Ref:NO
 	*
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-
+     float  lamda,thelta;
      int  UnitValue=0;
-    long thelta,lamda;
+     
 
     adS.unit_2 =0;
     adS.eepromRead_UnitLow_bit=EEPROM_ReadUnitData_Address0();
@@ -738,72 +734,162 @@ void PositivePressureWorks_Mode(void)
 
    
     if(MCUSTATUSbits.b_ADCdone==1){
+               adS.workstation_flag =1;
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
                   
                 lamda  =   0.0343 * ADC  - 12;
+                if(lamda >980 && lamda <=1200){
 
+                         if(adS.fact_check_10==1)UnitValue = adS.CorrectionValue[9];
+                         else if(adS.fact_check_9 ==1)UnitValue = adS.CorrectionValue[8];
+                            
+                          else if(adS.fact_check_8 ==1)UnitValue = adS.CorrectionValue[7];
+                            
+                          else if(adS.fact_check_7==1)UnitValue = adS.CorrectionValue[6];
+                          else if(adS.fact_check_6==1) UnitValue = adS.CorrectionValue[5];
+                           else if(adS.fact_check_5==1) UnitValue = adS.CorrectionValue[4];
 
-         
-                 if(lamda >980 && lamda <=1200){
-                           thelta = lamda  + adS.CorrectionValue[9] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                         
+                              thelta = lamda  + UnitValue;
+                         adS.getSaveTimes++;
+                           
                   }
                   else if(lamda >880 && lamda <=980){
-                           thelta = lamda  + adS.CorrectionValue[8] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                           if(adS.fact_check_9 ==1){
+                              UnitValue = adS.CorrectionValue[8];
+                            }
+                           else if(adS.fact_check_8 ==1)UnitValue = adS.CorrectionValue[7];
+                            
+                            else if(adS.fact_check_7==1)UnitValue = adS.CorrectionValue[6];
+                            else if(adS.fact_check_6==1) UnitValue = adS.CorrectionValue[5];
+                             else if(adS.fact_check_5==1) UnitValue = adS.CorrectionValue[4];
+
+                          
+                              thelta = lamda  + UnitValue;
+                           adS.getSaveTimes++;
+                           
                   }
                  else if(lamda >780 && lamda <=880){
-                           thelta = lamda  + adS.CorrectionValue[7] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+
+                            if(adS.fact_check_8 ==1){
+
+                                UnitValue = adS.CorrectionValue[7];
+                            }
+                            else if(adS.fact_check_7==1)UnitValue = adS.CorrectionValue[6];
+                            else if(adS.fact_check_6==1) UnitValue = adS.CorrectionValue[5];
+                             else if(adS.fact_check_5==1) UnitValue = adS.CorrectionValue[4];
+                           
+                              thelta = lamda  + UnitValue;
+                             adS.getSaveTimes++;
+                          
+                            
                   }
                   else if(lamda >680 && lamda <=780){
-                           thelta = lamda  + adS.CorrectionValue[6] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                  }
-                 else if(lamda >580 && lamda <=680){
-                          thelta = lamda  + adS.CorrectionValue[5] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                  }
-                  else if(lamda >= 460 & lamda<=580 ){
 
-                         thelta = lamda  + adS.CorrectionValue[4] ;
-                            if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                            if(adS.fact_check_7 ==1){
+
+                                UnitValue = adS.CorrectionValue[6];
+                            }
+                            else if(adS.fact_check_6==1) UnitValue = adS.CorrectionValue[5];
+                            else if(adS.fact_check_5==1) UnitValue = adS.CorrectionValue[4];
+
+                          
+                              thelta = lamda  + UnitValue;
+                         adS.getSaveTimes++;
+                            
+                  }
+                 else if(lamda >580 && lamda <=680){//600
+
+                              if(adS.fact_check_6==1)  UnitValue = adS.CorrectionValue[5];
+                              else if(adS.fact_check_5==1) UnitValue = adS.CorrectionValue[4];
+
+                              thelta = lamda  + UnitValue;
+                            
+                           adS.getSaveTimes++;
+                    }
+                  else if(lamda >= 460 & lamda<=580 ){//500
+
+                         
+                              thelta = lamda  + adS.CorrectionValue[4] ;
+                           
+                           adS.getSaveTimes++;
                   }
                  else{
+                          if(lamda >360 && lamda < 460){//400
+                            if(adS.fact_check_4==1) UnitValue = adS.CorrectionValue[3];
 
-                         if(lamda >360 && lamda < 460){
-                               thelta = lamda  + adS.CorrectionValue[3] ;
-                             if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                            else if(adS.fact_check_5==1)UnitValue = adS.CorrectionValue[4];
+                             
+
+                          
+                              thelta = lamda  + UnitValue;
+                             adS.getSaveTimes++;
+                            
                          }
                          else if(lamda <=360 && lamda > 260)//300 -correction
                          {
-                             
+                              if(adS.fact_check_3==1) UnitValue = adS.CorrectionValue[2];
+                              else if(adS.fact_check_4==1)UnitValue = adS.CorrectionValue[3];
+                              else if(adS.fact_check_5==1)UnitValue = adS.CorrectionValue[4];
+
                             
-                              thelta = lamda  + adS.CorrectionValue[2] ;
-                               if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                              thelta = lamda  + UnitValue;
+                             adS.getSaveTimes++;
+                             
                              }
                              else if(lamda<=260 && lamda > 150 ){
                                          
-                                        
-                                        
-                                           thelta = lamda  + adS.CorrectionValue[1] ;
-                                           if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
-                              }
-                             else if(lamda <=150){
-                                        
-                                        
-                                     thelta = lamda  + adS.CorrectionValue[0] ;
-                                      if(thelta <= 0x05) thelta =0;
-                                   
-                                    if(adS.eepromRead_UnitLow_bit==psi) thelta= kgfTOpsi(thelta)     ;
+                                    if(adS.fact_check_2==1)UnitValue =adS.CorrectionValue[1] ;
+                                    else if(adS.fact_check_3==1) UnitValue = adS.CorrectionValue[2];
+                                    else if(adS.fact_check_4==1)UnitValue = adS.CorrectionValue[3];
+                                    else if(adS.fact_check_5==1)UnitValue = adS.CorrectionValue[4];
+                                             
                                      
+                                        thelta = lamda  + UnitValue;
+                                   adS.getSaveTimes++;
+                                       
+                              }
+                             else if(lamda <=150 && lamda >=70){
+                                   
+                                    if(adS.fact_check_1==1)UnitValue =adS.CorrectionValue[0] ; 
+                                    else if(adS.fact_check_2==1)UnitValue =adS.CorrectionValue[1] ;
+                                    else if(adS.fact_check_3==1) UnitValue = adS.CorrectionValue[2];
+                                    else if(adS.fact_check_4==1)UnitValue = adS.CorrectionValue[3];
+                                    else if(adS.fact_check_5==1)UnitValue = adS.CorrectionValue[4];
 
-                                      
-
+                                    
+                                      thelta = lamda  + UnitValue;
+                                    adS.getSaveTimes++;
                                 }
+                             else if(lamda <70 ){
+                                      
+                                          if(adS.CorrectionValue[12]==0){
+                                             adS.CorrectionValue[11]= lamda;
+                                             thelta = lamda ;
+                                             adS.getSaveTimes++;
+                                          }
+                                          else{
+                                                if(lamda <= (adS.CorrectionValue[11] +1) ){//if(thelta <= (adS.CorrectionValue[11] +1) ){
+                                                  thelta =0;
+                                                  adS.workstation_flag =0;
+                                                  adS.getSaveTimes++;
+                                                }
+                                                else{
+                                                      if(adS.fact_check_0==1)UnitValue =adS.CorrectionValue[10] ;
+                                                      else if(adS.fact_check_1==1) UnitValue =adS.CorrectionValue[0] ;
+
+                                                       thelta = lamda  + UnitValue;
+                                                       adS.getSaveTimes++;
+                                                }
+                                          
+                                            }
+                                        }
+                                  
                       }
-                     DisplaySelectionUintPoint();//WT.EDIT 2020-06-28 
+                                 
+        
+                     if(adS.eepromRead_UnitLow_bit==psi || adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
@@ -815,9 +901,9 @@ void PositivePressureWorks_Mode(void)
                     
         }
        
-      //if(adS.getSaveTimes>270){
-         if(adS.getSaveTimes>135 && adS.setMode==0 ){
-                         if(adS.zeroTo120s ==1 ){
+      
+         if(adS.getSaveTimes>98){
+                         if(adS.zeroTo120s ==1 || adS.setMode ==1){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
