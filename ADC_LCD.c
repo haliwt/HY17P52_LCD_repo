@@ -454,7 +454,7 @@ void DisplaySelectionUintPoint(void)
         LCD_WriteData(&LCD4, seg_mpa) ;
          DisplayPointP1();
   }
-  else if(adS.eepromRead_UnitHigh_bit !=0xAA && adS.CorrectionValue[12]==0){
+  else if(adS.eepromRead_UnitHigh_bit !=0xAA && adS.initialize!=3){
           LCD_WriteData(&LCD4, seg_kgf) ;
           DisplayNoPoint();
   }
@@ -635,7 +635,7 @@ void SetupZeroPoint_Mode(void)
      if(adS.WriteEepromTimes  < 6 && adS.TheSecondWriteTimes==1){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
-            adS.initialize=1; //flag 
+            adS.initialize=3; //flag 
               MCUSTATUSbits.b_ADCdone=0;
               adS.reload_ADCInterrupt = 1;
               
@@ -746,27 +746,37 @@ void PositivePressureWorks_Mode(void)
                     GPIO_PT16_HIGH();
                   }
                 else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
-                    
-                lamda  =   0.0343 * ADC  + adS.factor ;
+                    lamda  =   0.0343 * ADC  + adS.factor ;
               
-                if(adS.initialize==0 && ADC <1000)
+              
+               if(adS.initialize==0)
                 {
-                    
-                    adS.CorrectionValue[0] = ADC ;
+                    adS.CorrectionValue[0] =ADC;
                     thelta = adS.CorrectionValue[0];
-                    adS.getSaveTimes++;
+                    adS.initialize++;
+                }
+                else if(adS.initialize == 1 || adS.initialize ==2){
+                    if(adS.initialize == 1){
+                        adS.CorrectionValue[0]  =ADC;
+                        thelta = adS.CorrectionValue[0];
+                        adS.initialize++ ;
+                     }
+                     else{
+
+                           lamda  =   0.0343 * ADC  - 12 ;
+                           thelta = lamda ;
+                           adS.getSaveTimes++;
+                          }
                 }
                 else{
-                     
-                      if(ADC <= (adS.CorrectionValue[0] +50) ){//if(thelta <= (adS.CorrectionValue[11] +1) ){
-                        thelta =0;
-                        adS.workstation_flag =0;
-                        adS.getSaveTimes++;
+                      
+                      if(ADC<=(adS.CorrectionValue[0] + 5)){
+
+                          thelta =0;
+                          adS.workstation_flag =0;
+                          adS.getSaveTimes++;
                       }
                       else{
-                            
-                            
-                            
                               thelta = lamda  ;
                               if(thelta <= 0x03) thelta = 0;
                               adS.getSaveTimes++;
