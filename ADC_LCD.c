@@ -386,23 +386,23 @@ void SetupUnitSelection(void)
   case psi: //1
      adS.unitChoose = psi;
      LCD_WriteData(&LCD4,seg_psi);
-     //DisplayPointP3(); //
+     DisplayPointP3(); //
   break;
   case bar: //2
      adS.unitChoose = bar;
      LCD_WriteData(&LCD4,seg_bar);
-     // DisplayPointP2();   //
+      DisplayPointP2();   //
     break;
   case kgf://3
      
     adS.unitChoose = kgf;
     LCD_WriteData(&LCD4,seg_kgf);
-    // DisplayNoPoint();
+     DisplayNoPoint();
   break;
   case mpa://4
      adS.unitChoose = mpa;
      LCD_WriteData(&LCD4,seg_mpa);
-     // DisplayPointP1();
+     DisplayPointP1();
   break;
   }
  // SetupSaveUnit_ID(adS.unitChoose);//WT.EDIT 2020-06-29
@@ -795,7 +795,7 @@ void PositivePressureWorks_Mode(void)
                      else adS.workstation_flag =1;
                     
         }
-       #if 0
+   
       
          if(adS.getSaveTimes>98 && adS.setMode == 0){
                          if(adS.zeroTo120s ==1){
@@ -816,7 +816,7 @@ void PositivePressureWorks_Mode(void)
                           }
                           
           }
-          #endif 
+          
 }
 /*----------------------------------------------------------------------------*/
 /* Subroutine Function                                                        */
