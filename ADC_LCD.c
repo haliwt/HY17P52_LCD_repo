@@ -878,8 +878,9 @@ void PositivePressureWorks_Mode(void)
                                                 else{
                                                       if(adS.fact_check_0==1)UnitValue =adS.CorrectionValue[10] ;
                                                       else if(adS.fact_check_1==1) UnitValue =adS.CorrectionValue[0] ;
-
+ 
                                                        thelta = lamda  + UnitValue;
+													   if(thelta <=0x03)thelta =0; //WT.EDIT 2020-07-01
                                                        adS.getSaveTimes++;
                                                 }
                                           
