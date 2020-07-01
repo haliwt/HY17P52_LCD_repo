@@ -766,6 +766,7 @@ void PositivePressureWorks_Mode(void)
                            lamda  =   0.0343 * ADC  - 12 ;
                            thelta = lamda ;
                            adS.getSaveTimes++;
+                           if(adS.Sign == 0x11 || adS.Sign == 0x22)adS.initialize++;
                           }
                 }
                 else{
