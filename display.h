@@ -74,6 +74,7 @@ struct _adc_works_
 
    unsigned char negativeInPositive_flag: 1;
    unsigned char zeroTo60times : 2;
+   unsigned char initialize:2;
 
     
 
@@ -86,42 +87,34 @@ struct _adc_works_
    
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
-    unsigned char  fact_check_0 :1;
-   unsigned char  fact_check_1 :1;
-   unsigned char  fact_check_2 :1;
-   unsigned char  fact_check_3 :1;
-   unsigned char  fact_check_4 :1;
-   unsigned char  fact_check_5 :1;
-   unsigned char  fact_check_6 :1;
-   unsigned char  fact_check_7 :1;
-   unsigned char  fact_check_8 :1;
-   unsigned char  fact_check_9 :1;
-   unsigned char  fact_check_10 :1;
+   unsigned char  TheSecondWriteTimes:1;
 
+ 
+   unsigned char  Sign;
    unsigned char  unit_2;
    unsigned char  plus_uint;
    unsigned char  zeroTo120s ;
 
    unsigned char  WriteEepromTimes ;
    unsigned char   ReadEepromID1  ;
-   unsigned char eepromRead_UnitHigh_bit;
+   unsigned char  eepromRead_UnitHigh_bit;
     unsigned char eepromRead_UnitLow_bit;
-     unsigned char unitChoose;
+    unsigned char unitChoose;
 
 
-   unsigned char   ReadEepromValue1;
+   
 
   
-  unsigned char  reload_ADCInterrupt :1;
+   unsigned char  reload_ADCInterrupt :1;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
-    unsigned int  initialValue;
+   
 
-   unsigned long  factor;
-   int   CorrectionValue[13];
- 
+   
+   int   CorrectionValue[3];
+   float  factor;
 
    
 

@@ -37,6 +37,7 @@
 #define P48_PT12_MSK                 (1 << P48_PT12)
 #define P48_PT12_H                   (1 << P48_PT12)
 #define P48_PT12_L                   (0 << P48_PT12)
+
 #else /*HY17P52_2M*/
 #define PT12                      2               //FOR other serials
 #define PT12_MSK                 (1 << PT12)
