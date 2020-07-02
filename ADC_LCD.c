@@ -645,7 +645,7 @@ readData:   if(MCUSTATUSbits.b_ADCdone==1){
      
       adS.dError = 1;
       DisplayErr();
-      Delay(20000);
+      Delay(10000);
      adS.access_id_3s=0;
      adS.Main_zeroPoint_Mode =1;
      goto readData;
@@ -658,7 +658,6 @@ readData:   if(MCUSTATUSbits.b_ADCdone==1){
          DisplayNum4Bytes(0);
          LowVoltageDisplay();
          DisplaySelectionUintPoint();
-         Delay(20000);
          adS.Main_zeroPoint_Mode =0;
          adS.Main_testMode=0;
 
@@ -698,7 +697,7 @@ void SetupZeroPoint_Mode(void)
                       
             prevalue = 0.0343 * ADC; 
 
-            if(prevalue >300 && prevalue<= 560){
+            if(prevalue >320 ){
          
                         temp =prevalue - 400 +0.5  ;
 
@@ -743,7 +742,7 @@ void SetupZeroPoint_Mode(void)
                        }
                      #endif 
                      }
-                    else if(prevalue < 300 && prevalue >=50 ){
+                    else if(prevalue < 260 && prevalue >150 ){
 
                                adS.checkValue_1 =1;
                                adS.CheckValue[0]= 200  - prevalue ;
@@ -842,7 +841,7 @@ void PositivePressureWorks_Mode(void)
                           else{
                                  highp =0;
 
-                                 if(lamda <=270 && adS.checkValue_1==1){
+                                 if(lamda <=280 && adS.checkValue_1==1){
 
                                      lamda =  0.0343 * ADC + adS.CheckValue[0];
 
@@ -851,7 +850,7 @@ void PositivePressureWorks_Mode(void)
                                 if(adS.MapZero == 1){
 
                                      
-                                      thelta = lamda - MapZeroPint -1 ;
+                                      thelta = lamda - MapZeroPint;
                                      if(thelta<=0) thelta =0;
 
                                  }
@@ -871,7 +870,11 @@ void PositivePressureWorks_Mode(void)
                 
                     }
                     if(adS.eepromRead_UnitLow_bit==psi || adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
-                     if(highp==1) DisplayHHH();
+                     if(highp==1){
+                        if(lamda >=1006)
+                         DisplayHHH();
+                        else highp =0;
+                    }
                      else
                         DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
