@@ -620,6 +620,20 @@ void SetupZeroPointSelection(void)
 void ZeroPointReset_Function(void)
 {
   
+readData:   if(MCUSTATUSbits.b_ADCdone==1){
+          adS.workstation_flag =1;
+          MCUSTATUSbits.b_ADCdone=0;
+          ADC = ADC >>6;
+          if(adS.Sign == 0x11){ 
+
+            FS30_Display  =   0.0343 * ADC  - adS.factor ;
+
+          }
+          else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
+          FS30_Display  =   0.0343 * ADC  + adS.factor ;
+    }
+
+
   if(FS30_Display >301){
      
       adS.dError = 1;
@@ -627,19 +641,7 @@ void ZeroPointReset_Function(void)
       Delay(20000);
      adS.access_id_3s=0;
      adS.Main_zeroPoint_Mode =1;
-     if(MCUSTATUSbits.b_ADCdone==1){
-               adS.workstation_flag =1;
-               MCUSTATUSbits.b_ADCdone=0;
-                ADC = ADC >>6;
-                if(adS.Sign == 0x11){ 
-
-                   FS30_Display  =   0.0343 * ADC  - adS.factor ;
-                   
-                    GPIO_PT16_HIGH();
-                  }
-                else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
-                    FS30_Display  =   0.0343 * ADC  + adS.factor ;
-      }
+     goto readData;
   }
   else if(FS30_Display<=300){
          adS.MapZero = 1;
@@ -737,15 +739,8 @@ void SetupZeroPoint_Mode(void)
 
                        }
                      #endif 
-
-                       
-                      
                         adS.WriteEepromTimes++;
-                         
-                    
-                  
-     
-              adS.setMode =0;   
+                        adS.setMode =0;   
           
         }
     }
@@ -798,7 +793,7 @@ void PositivePressureWorks_Mode(void)
 
                    lamda  =   0.0343 * ADC  - adS.factor ;
                    
-                    GPIO_PT16_HIGH();
+               
                   }
                 else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
                     lamda  =   0.0343 * ADC  + adS.factor ;
