@@ -75,7 +75,7 @@ void ZeroPointReset_Function(void);
 unsigned char ADCData,ADCData1,ADCData2;
 unsigned char Flag;
 long	ADC;
-float FS30_Display,MapZeroPint;
+float MapZeroPint;
 
 volatile typedef union _MCUSTATUS
 {
@@ -619,7 +619,8 @@ void SetupZeroPointSelection(void)
 ***********************************************************************/
 void ZeroPointReset_Function(void)
 {
-  
+
+  float FS30_Display;
 readData:   if(MCUSTATUSbits.b_ADCdone==1){
           adS.workstation_flag =1;
           MCUSTATUSbits.b_ADCdone=0;
@@ -631,10 +632,16 @@ readData:   if(MCUSTATUSbits.b_ADCdone==1){
           }
           else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
           FS30_Display  =   0.0343 * ADC  + adS.factor ;
+
+           if(ADC<=(adS.CorrectionValue[0] + 6)){
+
+                      FS30_Display =0;
+                             
+            }
     }
 
 
-  if(FS30_Display >301){
+  if(FS30_Display >=301){
      
       adS.dError = 1;
       DisplayErr();
@@ -834,9 +841,7 @@ void PositivePressureWorks_Mode(void)
                           }
                           else{
                                   
-                                  FS30_Display = lamda;
-                                 
-                                  if(adS.MapZero == 1){
+                                if(adS.MapZero == 1){
 
                                      thelta = lamda - MapZeroPint ;
                                      if(thelta<=0) thelta =0;
