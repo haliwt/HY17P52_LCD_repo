@@ -843,14 +843,14 @@ void PositivePressureWorks_Mode(void)
                                   
                                 if(adS.MapZero == 1){
 
-                                     thelta = lamda - MapZeroPint ;
+                                     thelta = lamda - MapZeroPint -1 ;
                                      if(thelta<=0) thelta =0;
 
                                   }
                                   else{
                                        thelta = lamda  ;
                                   }
-                                  if(thelta <= 0x03) thelta = 0;
+                                  if(thelta <= 0x05) thelta = 0;
                                   adS.getSaveTimes++;
                                   adS.workstation_flag =1;
                            }
@@ -873,7 +873,7 @@ void PositivePressureWorks_Mode(void)
                      
                     
         }
-      if(adS.getSaveTimes>98 && adS.setMode == 0){
+      if(adS.getSaveTimes>198 && adS.setMode == 0){
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
