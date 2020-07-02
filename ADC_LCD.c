@@ -36,7 +36,7 @@ void HY17P52WR3Delay(char ms);
 //#define STD_NEGATIVE_VOLTAGE      69620//6962 WT.EDIT 2020-06-03
 #define DEGUG     				0
 
-#define TEST                    1
+//#define TEST                    1 //MASK has Be save power
 #define SAVEPOWER               1
 #define NEGAIVE_PRESSURE        0
 /*----------------------------------------------------------------------------*/
@@ -247,7 +247,6 @@ GPIO_Iint();
               				ADIF_ClearFlag();
               				ADIE_Enable();
               				GIE_Enable();
-                      Delay(1000);
           			    }
           
         
@@ -284,8 +283,8 @@ void PowerOnToChange(void)
     BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
     while((BIECN& 0x01)==1);
     adS.Sign =BIEDRH ;
-    if((GPIO_PT1GET(PT15)==0)||adS.Sign ==0){
-      adS.TheSecondWriteTimes =1;
+    if((GPIO_PT1GET(PT15)==0)|| (adS.Sign !=0x11 && adS.Sign !=0x22)){ //WT.EDIT 2020-07-02
+        adS.TheSecondWriteTimes =1;
       }
 }
 /******************************************************************************
@@ -376,7 +375,7 @@ void SetupUnitSelection(void)
   adS.reload_ADCInterrupt = 1;
   adS.setMode =1;
   DisplayUnit();
-  Delay(10000);
+  //Delay(10000);
   adS.plus_uint++;
   if(adS.plus_uint >4)adS.plus_uint=1;
 
@@ -530,19 +529,19 @@ void LowVoltageBlink(void)
     adS.zeroTo60times=2;
 
     DisplayBAT();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOff();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOn();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOff();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOn();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOff();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOn();
-    Delay(20000);
+    Delay(10000);
     LCD_DisplayOff();
     Idle()   ; //Sleep();
 
@@ -562,15 +561,15 @@ void LowVoltageBlink(void)
 void LowVoltageDisplay(void)
 {
 
-      adS.LVD_3V_flag = LowVoltageDetect_3V();
-      if(adS.LVD_3V_flag==0){ /* battery capacity is full*/
-          DisplayBatteryCapacityFull();
-      }
-      else{
+   //  adS.LVD_3V_flag = LowVoltageDetect_3V();
+    // if(adS.LVD_3V_flag==1){ /* battery capacity is full*/
+    //      DisplayBatteryCapacityFull();
+     // }
+     // else{
 
-             DisplayBatteryCapacityHalf();
+            DisplayBatteryCapacityFull(); // DisplayBatteryCapacityHalf();
              adS.LVD_2V4_flag = LowVoltageDetect_2V4();
-             if(adS.LVD_2V4_flag == 0){
+             if(adS.LVD_2V4_flag == 1){
 
                   DisplayBatteryCapacityHalf();
              }
@@ -586,7 +585,7 @@ void LowVoltageDisplay(void)
 
              }
 
-  }
+ // }
 }
 /**********************************************************************
   *
@@ -633,7 +632,7 @@ readData:   if(MCUSTATUSbits.b_ADCdone==1){
           else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
           FS30_Display  =   0.0343 * ADC  + adS.factor ;
 
-           if(ADC<=(adS.CorrectionValue[0] + 6)){
+           if(ADC<=(adS.CorrectionValue[0] + 40)){
 
                       FS30_Display =0;
                              
@@ -645,19 +644,20 @@ readData:   if(MCUSTATUSbits.b_ADCdone==1){
      
       adS.dError = 1;
       DisplayErr();
-      Delay(10000);
      adS.access_id_3s=0;
      adS.Main_zeroPoint_Mode =1;
      goto readData;
   }
-  else if(FS30_Display<=300){
-         adS.MapZero = 1;
+  else {
+         
          adS.dError =0;
          MapZeroPint=FS30_Display ;
          
          DisplayNum4Bytes(0);
          LowVoltageDisplay();
          DisplaySelectionUintPoint();
+         if(FS30_Display ==0)adS.MapZero =0; //WT.EDIT 2020-07-02
+         else adS.MapZero = 1;
          adS.Main_zeroPoint_Mode =0;
          adS.Main_testMode=0;
 
@@ -765,7 +765,7 @@ void SetupZeroPoint_Mode(void)
             adS.access_id_5s= 0;
             Display2ErP3();
             adS.setMode =0;          
-            Delay(20000);
+            Delay(10000);
       }
 
     }
@@ -826,7 +826,7 @@ void PositivePressureWorks_Mode(void)
                 }
                 else{
                       
-                         if(ADC<=(adS.CorrectionValue[0] + 5)){
+                         if(ADC<=(adS.CorrectionValue[0] + 30)){
 
                               thelta =0;
                               adS.workstation_flag =0;
@@ -850,7 +850,7 @@ void PositivePressureWorks_Mode(void)
                                 if(adS.MapZero == 1){
 
                                      
-                                      thelta = lamda - MapZeroPint;
+                                     thelta = lamda - MapZeroPint;
                                      if(thelta<=0) thelta =0;
 
                                  }
@@ -863,7 +863,7 @@ void PositivePressureWorks_Mode(void)
 
 
                                
-                                if(thelta <= 0x05) thelta = 0;
+                                if(thelta <= 0x08) thelta = 0;
                                   adS.getSaveTimes++;
                                   adS.workstation_flag =1;
                            }
@@ -880,7 +880,7 @@ void PositivePressureWorks_Mode(void)
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
                      Delay(20000);
-                     Delay(20000);
+                     Delay(10000);
                      adS.getSaveTimes++;
                      if(adS.workstation_flag==1){
                        if(adS.zeroTo120s==1){

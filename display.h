@@ -92,6 +92,7 @@ struct _adc_works_
    unsigned char  MapZero:1;
    unsigned char  dError:1;
    unsigned char  checkValue_1:1;
+   unsigned char  reload_ADCInterrupt :2;
 
  
    unsigned char  Sign;
@@ -103,12 +104,6 @@ struct _adc_works_
    unsigned char  eepromRead_UnitHigh_bit;
     unsigned char eepromRead_UnitLow_bit;
     unsigned char unitChoose;
-
-
-   
-
-  
-   unsigned char  reload_ADCInterrupt :1;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
