@@ -91,6 +91,7 @@ struct _adc_works_
    unsigned char  TheSecondWriteTimes:1;
    unsigned char  MapZero:1;
    unsigned char  dError:1;
+   unsigned char  checkValue_1:1;
 
  
    unsigned char  Sign;
@@ -114,7 +115,7 @@ struct _adc_works_
    unsigned int   getSaveTimes ;
    
 
-   
+   int   CheckValue[2];
    int   CorrectionValue[3];
    float  factor;
 

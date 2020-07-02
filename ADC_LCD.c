@@ -685,21 +685,24 @@ void SetupZeroPoint_Mode(void)
     adS.Main_unit_setMode = 0;
     adS.zeroTo120s =1;
     adS.setMode =1;
-    LCD_DisplayOn();
+   
 
      if(adS.WriteEepromTimes  < 5 && adS.TheSecondWriteTimes==1){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
             adS.initialize=3; //flag 
-              MCUSTATUSbits.b_ADCdone=0;
-              adS.reload_ADCInterrupt = 1;
+            MCUSTATUSbits.b_ADCdone=0;
+            adS.reload_ADCInterrupt = 1;
               
-              ADC =ADC >>6;
+            ADC =ADC >>6;
                       
-                        prevalue = 0.0343 * ADC; 
+            prevalue = 0.0343 * ADC; 
+
+            if(prevalue >300 && prevalue<= 560){
+         
                         temp =prevalue - 400 +0.5  ;
 
-
+                       
                         if(temp>=0)signflag=1;
                         else signflag =0;
 
@@ -723,10 +726,7 @@ void SetupZeroPoint_Mode(void)
                            
                             while(1);    //fail
                             }
-                              LCD_DisplayOn();
-                           DisplayNum4Bytes(temp);
-                  
-                            Delay(20000);
+                         
 
                        }
                        else{
@@ -738,14 +738,18 @@ void SetupZeroPoint_Mode(void)
                                
                                while(1);    //fail
                             }
-                               LCD_DisplayOn();
-                             DisplayNum4Bytes(temp);
-                  
-                            Delay(20000);
-
+                          
 
                        }
                      #endif 
+                     }
+                    else if(prevalue < 300 && prevalue >=50 ){
+
+                               adS.checkValue_1 =1;
+                               adS.CheckValue[0]= 200  - prevalue ;
+                                       
+                            }
+
                         adS.WriteEepromTimes++;
                         adS.setMode =0;   
           
@@ -778,9 +782,7 @@ void SetupZeroPoint_Mode(void)
 void PositivePressureWorks_Mode(void)
 {
      float  lamda,thelta;
-    
-     
-
+    unsigned char highp=0;
     adS.unit_2 =0;
     adS.eepromRead_UnitLow_bit=EEPROM_ReadUnitData_Address0();
     adS.getSaveTimes++;
@@ -796,14 +798,11 @@ void PositivePressureWorks_Mode(void)
                adS.workstation_flag =1;
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
-                if(adS.Sign == 0x11){ 
-
-                   lamda  =   0.0343 * ADC  - adS.factor ;
+                if(adS.Sign == 0x11)
+                     lamda  =   0.0343 * ADC  - adS.factor ;
                    
-               
-                  }
                 else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
-                    lamda  =   0.0343 * ADC  + adS.factor ;
+                     lamda  =   0.0343 * ADC  + adS.factor ;
              
               
                if(adS.initialize==0)
@@ -836,43 +835,56 @@ void PositivePressureWorks_Mode(void)
                               adS.workstation_flag =0;
                           }
                           else if(lamda >=1004){
-                               DisplayHHH();
-                               Delay(20000);
+                               
+                               highp =1;  
+                             
                           }
                           else{
-                                  
+                                 highp =0;
+
+                                 if(lamda <=270 && adS.checkValue_1==1){
+
+                                     lamda =  0.0343 * ADC + adS.CheckValue[0];
+
+                                    }
+
                                 if(adS.MapZero == 1){
 
-                                     thelta = lamda - MapZeroPint -1 ;
+                                     
+                                      thelta = lamda - MapZeroPint -1 ;
                                      if(thelta<=0) thelta =0;
 
-                                  }
-                                  else{
+                                 }
+                                 else{
+                                       
+                                      
                                        thelta = lamda  ;
+                                  
                                   }
-                                  if(thelta <= 0x05) thelta = 0;
+
+
+                               
+                                if(thelta <= 0x05) thelta = 0;
                                   adS.getSaveTimes++;
                                   adS.workstation_flag =1;
                            }
                 
                     }
                     if(adS.eepromRead_UnitLow_bit==psi || adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
-                     DisplayNum4Bytes(thelta);
+                     if(highp==1) DisplayHHH();
+                     else
+                        DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
                      DisplaySelectionUintPoint();
                      Delay(20000);
                      Delay(20000);
                      adS.getSaveTimes++;
                      if(adS.workstation_flag==1){
-                           if(adS.zeroTo120s==1){
-
-                              adS.BeSureflag =1;
-                           }
+                       if(adS.zeroTo120s==1){
+                            adS.BeSureflag =1;
+                       }
                      }
-                    
-                     
-                    
-        }
+        }       
       if(adS.getSaveTimes>198 && adS.setMode == 0){
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
