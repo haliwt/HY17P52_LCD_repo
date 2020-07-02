@@ -529,21 +529,22 @@ void LowVoltageBlink(void)
     adS.zeroTo60times=2;
 
     DisplayBAT();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOff();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOn();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOff();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOn();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOff();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOn();
-    Delay(10000);
+    Delay(5000);
     LCD_DisplayOff();
-    Idle()   ; //Sleep();
+    Idle()   ; 
+    Sleep();
 
     adS.unit_2=0;
 
@@ -632,7 +633,7 @@ readData:   if(MCUSTATUSbits.b_ADCdone==1){
           else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
           FS30_Display  =   0.0343 * ADC  + adS.factor ;
 
-           if(ADC<=(adS.CorrectionValue[0] + 40)){
+           if(ADC<=(adS.CorrectionValue[0] + 100)){
 
                       FS30_Display =0;
                              
@@ -826,7 +827,7 @@ void PositivePressureWorks_Mode(void)
                 }
                 else{
                       
-                         if(ADC<=(adS.CorrectionValue[0] + 30)){
+                         if(ADC<=(adS.CorrectionValue[0] + 100)){
 
                               thelta =0;
                               adS.workstation_flag =0;
@@ -863,7 +864,7 @@ void PositivePressureWorks_Mode(void)
 
 
                                
-                                if(thelta <= 0x08) thelta = 0;
+                                if(thelta <= 0x06) thelta = 0;
                                   adS.getSaveTimes++;
                                   adS.workstation_flag =1;
                            }
