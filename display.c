@@ -38,62 +38,16 @@ void DisplayNum(long Num)
   unsigned char count,MINUS;
   unsigned char *LCDAddr,LCDData;
 
-  if((Num<0)||(Num>0x80000000))
-  {
-    Num=~Num;
-    Num++;
-    MINUS=1;
-  }
-  else
-  {
-    MINUS=0;
-  }
 
   LCDAddr = &LCD1;
-  for(count=0;count<4;count++)
-  {
-        if(count == 3){
-                  if(Num %10 !=0)
-                    LCDData=seg[1];
-                  else
-                    LCDData=seg[0];
-                  count =5;
-            }
-            else{
-
-              LCDData=seg[Num%10];
-              LCD_WriteData(LCDAddr,LCDData);
-              Num=Num/10 ;
-              LCDAddr++;
-
-            }
-  }
-
-
-  #if 0
-  LCDAddr=&LCD1;
   for(count=0;count<3;count++)
   {
-    LCDData=seg[Num%10];
-    LCD_WriteData(LCDAddr,LCDData);
-    Num=Num/10 ;
-    LCDAddr++;
+        
+        LCDData=seg[Num%10];
+        LCD_WriteData(LCDAddr,LCDData);
+        Num=Num/10 ;
+        LCDAddr++;
   }
- #endif
-#if 0
-  LCDAddr=&LCD5;
-  for(count=0;count<6;count++)
-  {
-    LCDData=seg[Num%10];
-    LCD_WriteData(LCDAddr,LCDData);
-    Num=Num/10 ;
-    LCDAddr--;
-  }
-  if(MINUS==1)
-    LCD_WriteData(&LCD6,S_Minus);
-  else
-    LCD_WriteData(&LCD6,0);
-#endif
 }
 /*---------------------------------------------------------------------------
   *
@@ -216,6 +170,7 @@ void DisplayHex(unsigned int Num)
 
 }
 #endif
+
 /*****************************************************************************
   *
   *Function Name :void Display2Er(void)
@@ -230,6 +185,21 @@ void Display2Er(void)
   LCD_WriteData(&LCD2,Char_E);
   LCD_WriteData(&LCD1,Char_R);
 
+
+}
+/*****************************************************************************
+  *
+  *Function Name :void Display2Er(void)
+  *Function :LCD display "2Er"
+  *
+  *
+******************************************************************************/
+void DisplayErr(void)
+{
+  LCD_WriteData(&LCD0,0x00);
+  LCD_WriteData(&LCD3,Char_E);
+  LCD_WriteData(&LCD2,Char_R);
+  LCD_WriteData(&LCD1,Char_R);
 
 }
 /*****************************************************************************

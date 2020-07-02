@@ -84,10 +84,13 @@ struct _adc_works_
    unsigned char  LowVoltage_flag : 1;
    unsigned char  initialVoltage :1;
    unsigned char  setMode : 1;
+   unsigned char  BeSureflag:1; 
    
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  LVD_3V_flag :1;
    unsigned char  TheSecondWriteTimes:1;
+   unsigned char  MapZero:1;
+   unsigned char  dError:1;
 
  
    unsigned char  Sign;
@@ -96,7 +99,6 @@ struct _adc_works_
    unsigned char  zeroTo120s ;
 
    unsigned char  WriteEepromTimes ;
-   unsigned char   ReadEepromID1  ;
    unsigned char  eepromRead_UnitHigh_bit;
     unsigned char eepromRead_UnitLow_bit;
     unsigned char unitChoose;
@@ -130,6 +132,7 @@ void DisplayHycon(void);
 void DisplayNum(long Num);
 void DisplayHex(unsigned int Num);
 void Display2Er(void);
+void DisplayErr(void);
 void Display2ErP3(void);
 
 void DisplayUnit(void);

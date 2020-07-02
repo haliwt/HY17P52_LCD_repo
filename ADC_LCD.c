@@ -64,7 +64,7 @@ void ProcessRunsFlag(void);
 void LowVoltageBlink(void);
 void DisplaySelectionUintPoint(void);
 void PowerOnToChange(void);
-
+void ZeroPointReset_Function(void);
 /*----------------------------------------------------------------------------*/
 /* DEFINITIONS                                                                */
 /*----------------------------------------------------------------------------*/
@@ -75,6 +75,7 @@ void PowerOnToChange(void);
 unsigned char ADCData,ADCData1,ADCData2;
 unsigned char Flag;
 long	ADC;
+float FS30_Display,MapZeroPint;
 
 volatile typedef union _MCUSTATUS
 {
@@ -101,8 +102,6 @@ void PGAandADCAccuracyMode(void);
 void AccuracyModeADCOFF(void);
 void ADCAccuracyMode(void);
 
-void ShowADC (void);
-void DisplayNum(long Num);
 /*----------------------------------------------------------------------------*/
 /* Main Function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -264,7 +263,6 @@ GPIO_Iint();
   			   } 
           else if(adS.Main_unit_setMode ==1){
                 SetupUnit_Mode();
-
 
             }
     }
@@ -611,6 +609,54 @@ void SetupZeroPointSelection(void)
   adS.zeroTo120s =1;
     adS.setMode =1;
 }
+/**********************************************************************
+  *
+  *Function Name :SetupZeroPointSelection
+  *Function: setup the zero point of value
+  *Inpute Ref: NO
+  *Return Ref: NO
+  *
+***********************************************************************/
+void ZeroPointReset_Function(void)
+{
+  
+  if(FS30_Display >301){
+     
+      adS.dError = 1;
+      DisplayErr();
+      Delay(20000);
+     adS.access_id_3s=0;
+     adS.Main_zeroPoint_Mode =1;
+     if(MCUSTATUSbits.b_ADCdone==1){
+               adS.workstation_flag =1;
+               MCUSTATUSbits.b_ADCdone=0;
+                ADC = ADC >>6;
+                if(adS.Sign == 0x11){ 
+
+                   FS30_Display  =   0.0343 * ADC  - adS.factor ;
+                   
+                    GPIO_PT16_HIGH();
+                  }
+                else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
+                    FS30_Display  =   0.0343 * ADC  + adS.factor ;
+      }
+  }
+  else if(FS30_Display<=300){
+         adS.MapZero = 1;
+         adS.dError =0;
+         MapZeroPint=FS30_Display ;
+         
+         DisplayNum4Bytes(0);
+         LowVoltageDisplay();
+         DisplaySelectionUintPoint();
+         Delay(20000);
+         adS.Main_zeroPoint_Mode =0;
+         adS.Main_testMode=0;
+
+  }
+   
+
+}
 /****************************************************************************
   *
   *Function Name : unsigned char LowVoltageDisplay(void)
@@ -630,9 +676,9 @@ void SetupZeroPoint_Mode(void)
     adS.Main_unit_setMode = 0;
     adS.zeroTo120s =1;
     adS.setMode =1;
-   LCD_DisplayOn();
+    LCD_DisplayOn();
 
-     if(adS.WriteEepromTimes  < 6 && adS.TheSecondWriteTimes==1){
+     if(adS.WriteEepromTimes  < 5 && adS.TheSecondWriteTimes==1){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
             adS.initialize=3; //flag 
@@ -695,6 +741,7 @@ void SetupZeroPoint_Mode(void)
                        
                       
                         adS.WriteEepromTimes++;
+                         
                     
                   
      
@@ -703,10 +750,18 @@ void SetupZeroPoint_Mode(void)
         }
     }
     else{
-      adS.access_id_5s= 0;
-      Display2ErP3();
-       adS.setMode =0;          
-       Delay(20000);
+      adS.Main_zeroPoint_Mode =1;
+      adS.Main_testMode=1;
+      ZeroPointReset_Function();
+      if(adS.dError == 1){
+          DisplayErr();
+      }
+      else{
+            adS.access_id_5s= 0;
+            Display2ErP3();
+            adS.setMode =0;          
+            Delay(20000);
+      }
 
     }
 }
@@ -721,7 +776,7 @@ void SetupZeroPoint_Mode(void)
 void PositivePressureWorks_Mode(void)
 {
      float  lamda,thelta;
-     int  UnitValue=0;
+    
      
 
     adS.unit_2 =0;
@@ -747,7 +802,7 @@ void PositivePressureWorks_Mode(void)
                   }
                 else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
                     lamda  =   0.0343 * ADC  + adS.factor ;
-              
+             
               
                if(adS.initialize==0)
                 {
@@ -771,19 +826,36 @@ void PositivePressureWorks_Mode(void)
                 }
                 else{
                       
-                      if(ADC<=(adS.CorrectionValue[0] + 5)){
+                         if(ADC<=(adS.CorrectionValue[0] + 5)){
 
-                          thelta =0;
-                          adS.workstation_flag =0;
-                          adS.getSaveTimes++;
-                      }
-                      else{
-                              thelta = lamda  ;
-                              if(thelta <= 0x03) thelta = 0;
+                              thelta =0;
+                              adS.workstation_flag =0;
                               adS.getSaveTimes++;
-                      }
+                              adS.workstation_flag =0;
+                          }
+                          else if(lamda >=1004){
+                               DisplayHHH();
+                               Delay(20000);
+                          }
+                          else{
+                                  
+                                  FS30_Display = lamda;
+                                 
+                                  if(adS.MapZero == 1){
+
+                                     thelta = lamda - MapZeroPint ;
+                                     if(thelta<=0) thelta =0;
+
+                                  }
+                                  else{
+                                       thelta = lamda  ;
+                                  }
+                                  if(thelta <= 0x03) thelta = 0;
+                                  adS.getSaveTimes++;
+                                  adS.workstation_flag =1;
+                           }
                 
-                  }
+                    }
                     if(adS.eepromRead_UnitLow_bit==psi || adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
                      DisplayNum4Bytes(thelta);
                      LowVoltageDisplay();
@@ -791,20 +863,25 @@ void PositivePressureWorks_Mode(void)
                      Delay(20000);
                      Delay(20000);
                      adS.getSaveTimes++;
-                     if(adS.initialVoltage ==1)adS.workstation_flag =0;
-                     else adS.workstation_flag =1;
+                     if(adS.workstation_flag==1){
+                           if(adS.zeroTo120s==1){
+
+                              adS.BeSureflag =1;
+                           }
+                     }
+                    
+                     
                     
         }
-   
-      
-         if(adS.getSaveTimes>98 && adS.setMode == 0){
-                         if(adS.zeroTo120s ==1){
+      if(adS.getSaveTimes>98 && adS.setMode == 0){
+                         if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
+                              adS.BeSureflag =0;
                               LCD_DisplayOn();
                           }
-                          else{
+                          else if(adS.zeroTo120s==0){
                                  LCD_DisplayOff();
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
