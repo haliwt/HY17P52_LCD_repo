@@ -87,11 +87,13 @@ struct _adc_works_
    unsigned char  BeSureflag:1; 
    
    unsigned char  LVD_2V4_flag : 1;
-   unsigned char  LVD_3V_flag :1;
    unsigned char  TheSecondWriteTimes:1;
    unsigned char  MapZero:1;
    unsigned char  dError:1;
+   unsigned char  checkValue_2:1;
    unsigned char  checkValue_1:1;
+   unsigned char  zeroSetzero :1;
+   unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
 
  
@@ -101,19 +103,19 @@ struct _adc_works_
    unsigned char  zeroTo120s ;
 
    unsigned char  WriteEepromTimes ;
-   unsigned char  eepromRead_UnitHigh_bit;
-    unsigned char eepromRead_UnitLow_bit;
-    unsigned char unitChoose;
+
+   unsigned char unitChoose;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
    
 
-   int   CheckValue[2];
+   int   CheckValue[3];
    int   CorrectionValue[3];
    float  factor;
-
+   float  coefficient;
+   float   set2ErData;
    
 
 };
