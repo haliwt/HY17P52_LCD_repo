@@ -578,11 +578,11 @@ void LowVoltageDisplay(void)
 
                  // DispalyBatteryCapacityLow();
 
-               #ifndef TEST
+              // #ifndef TEST
 
                  LowVoltageBlink();
 
-                #endif
+             //   #endif
 
              }
 
