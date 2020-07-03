@@ -493,7 +493,7 @@ unsigned char LowVoltageDetect_3V(void)
 unsigned char LowVoltageDetect_2V4(void)
 {
     unsigned char flag;
-    LVD_VolSelect(VLDX_24);
+    LVD_VolSelect(VLDX_23);//LVD_VolSelect(VLDX_24);//WT.EDIT 2020-07-03
     LVD_PWRSelect(PWRS_VDD);//WT.EDIT 2020-06-29
     Delay(10);
   if(LVD_GetLVDO())
@@ -544,7 +544,7 @@ void LowVoltageBlink(void)
     Delay(5000);
     LCD_DisplayOff();
     Idle()   ; 
-    Sleep();
+  //  Sleep(); //WT.EDIT 2020-07-02
 
     adS.unit_2=0;
 
@@ -576,7 +576,7 @@ void LowVoltageDisplay(void)
              }
              else{
 
-                  DispalyBatteryCapacityLow();
+                 // DispalyBatteryCapacityLow();
 
                #ifndef TEST
 
@@ -834,7 +834,7 @@ void PositivePressureWorks_Mode(void)
                               adS.getSaveTimes++;
                               adS.workstation_flag =0;
                           }
-                          else if(lamda >=1004){
+                          else if(lamda >=1005){
                                
                                highp =1;  
                              
@@ -872,8 +872,8 @@ void PositivePressureWorks_Mode(void)
                     }
                     if(adS.eepromRead_UnitLow_bit==psi || adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
                      if(highp==1){
-                        if(lamda >=1006)
-                         DisplayHHH();
+                        if(lamda >=1007)
+                          DisplayHHH();
                         else highp =0;
                     }
                      else
@@ -889,7 +889,7 @@ void PositivePressureWorks_Mode(void)
                        }
                      }
         }       
-      if(adS.getSaveTimes>198 && adS.setMode == 0){
+      if(adS.getSaveTimes>266 && adS.setMode == 0){
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
