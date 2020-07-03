@@ -260,10 +260,10 @@ GPIO_Iint();
   				     SetupZeroPoint_Mode();
 
   			   } 
-         // else if(adS.Main_unit_setMode ==1){
-               // SetupUnit_Mode();
+         //else if(adS.Main_unit_setMode ==1){
+              // SetupUnit_Mode();
 
-          //  }
+         // }
     }
   }
 }
@@ -377,7 +377,6 @@ void SetupUnitSelection(void)
 
  // adS.Main_unit_setMode =0 ;
   adS.Main_testMode = 0;
-  adS.unit_2 =0;
   DisplayUnit();
   //Delay(10000);
   adS.plus_uint++;
@@ -820,7 +819,7 @@ void PositivePressureWorks_Mode(void)
                               adS.zeroSetzero =1;
                               if(adS.MapZero == 1 && adS.EEr_flag==0){
                                   adS.set2ErData=0;
-                                
+                                  adS.MapZero =0;
                               }
                           }
                           else if(lamda >=1005){
