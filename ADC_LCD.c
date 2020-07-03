@@ -861,10 +861,14 @@ void PositivePressureWorks_Mode(void)
                                           thelta = lamda  ;
                                     }
                                       
-                                      if(thelta <= 0x06) thelta = 0;
+                                      if(thelta <= 0x06) {
+                                        thelta = 0;
+                                        adS.workstation_flag =0;
+                                      }
+                                      else adS.workstation_flag =1;
                                       adS.zeroSetzero =0;
                                       adS.getSaveTimes++;
-                                      adS.workstation_flag =1;
+                                      
                            }
                         
                     }
