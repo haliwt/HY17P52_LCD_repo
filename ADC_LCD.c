@@ -764,6 +764,7 @@ void PositivePressureWorks_Mode(void)
 {
      float  lamda,thelta;
     unsigned char highp=0;
+    int checkValue;
     adS.unit_2 =0;
   //  adS.eepromRead_UnitLow_bit=EEPROM_ReadUnitData_Address0();
     adS.getSaveTimes++;
@@ -817,9 +818,9 @@ void PositivePressureWorks_Mode(void)
                               adS.getSaveTimes++;
                               adS.workstation_flag =0;
                               adS.zeroSetzero =1;
-                              if(adS.MapZero == 1){
-                                adS.set2ErData=0;
-                                adS.EEr_flag =1;
+                              if(adS.MapZero == 1 && adS.EEr_flag==0){
+                                  adS.set2ErData=0;
+                                
                               }
                           }
                           else if(lamda >=1005){
@@ -831,19 +832,25 @@ void PositivePressureWorks_Mode(void)
                                  highp =0;
                                  
                               
-                                 
-                                 
-                                 if(lamda <=300 && adS.checkValue_2==1){//WT.EDIT 2020-07-03.
+                                 if(lamda <=300  && (adS.checkValue_2==1|| adS.checkValue_1 ==1)){//WT.EDIT 2020-07-03.
 
-                                      lamda =  0.0342 * ADC + adS.CheckValue[1];
+                                          if(adS.checkValue_2==1)   checkValue = adS.CheckValue[1];
 
-                                  }
+                                          if(lamda <= 160){
+                                            if(adS.checkValue_1==1)  
+                                                checkValue = adS.CheckValue[0];
+                                            }
+
+                                              lamda = 0.0342 *ADC + checkValue ;
+                                    }
+                                
                                
                                   if(adS.MapZero == 1 || adS.dError == 1){
 
                                           MapZeroPint = lamda;
                                          if(adS.EEr_flag ==0 || adS.dError ==1){
                                               ZeroPointReset_Function();
+                                             
                                          }
                                          thelta = lamda - adS.set2ErData;
                                          if(thelta<=0) thelta =0;
