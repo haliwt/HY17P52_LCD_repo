@@ -84,7 +84,8 @@ struct _adc_works_
    unsigned char  LowVoltage_flag : 1;
    unsigned char  initialVoltage :1;
    unsigned char  setMode : 1;
-   unsigned char  BeSureflag:1; 
+   unsigned char  BeSureflag:1;
+   unsigned char  getSaveflag:1; 
    
    unsigned char  LVD_2V4_flag : 1;
    unsigned char  TheSecondWriteTimes:1;
@@ -92,7 +93,6 @@ struct _adc_works_
    unsigned char  dError:1;
    unsigned char  checkValue_2:1;
    unsigned char  checkValue_1:1;
-   unsigned char  zeroSetzero :1;
    unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
 
@@ -105,6 +105,7 @@ struct _adc_works_
    unsigned char  WriteEepromTimes ;
 
    unsigned char unitChoose;
+   unsigned char  tmes120svalue;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
    unsigned int   delayDisplay ;
