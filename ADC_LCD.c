@@ -644,7 +644,7 @@ void SetupZeroPoint_Mode(void)
     adS.setMode =1;
    
 
-     if(adS.WriteEepromTimes  < 5 && adS.TheSecondWriteTimes==1){
+     if(adS.WriteEepromTimes  < 8 && adS.TheSecondWriteTimes==1){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
             adS.initialize=3; //flag 
@@ -871,31 +871,38 @@ void PositivePressureWorks_Mode(void)
                        if(adS.workstation_flag==1){
                          if(adS.zeroTo120s==1){
                             adS.BeSureflag =1;
+							adS.second120s=10;
                           }
                        }
                      }
-        }   
-      
-      if(adS.getSaveTimes>290 && adS.setMode == 0){ //WT.EDIT 2020-07-03
+
+                 
+
+					 if(adS.getSaveTimes>(310 - adS.second120s) && adS.setMode == 0){ //WT.EDIT 2020-07-03
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
                               adS.BeSureflag =0;
-                              LCD_DisplayOn();
+							  adS.second120s=10;
+                              
                           }
                           else if(adS.zeroTo120s==0){
                                  LCD_DisplayOff();
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
-                                #if SAVEPOWER
+                              
                                 Idle()   ; //Sleep();
                                 Sleep();
                                
-                                #endif
+                              
                           }
                           
-          }
+        			}
+					
+      }   
+      
+     
           
 }                 
 /*----------------------------------------------------------------------------*/

@@ -71,6 +71,7 @@ struct _adc_works_
    unsigned char Main_testMode:1;
    unsigned char Main_zeroPoint_Mode:1;
    unsigned char error_mod:1;
+   unsigned char BeSaveTimes: 1;
 
    unsigned char negativeInPositive_flag: 1;
    unsigned char zeroTo60times : 2;
@@ -99,6 +100,7 @@ struct _adc_works_
 
  
    unsigned char  Sign;
+   unsigned char second120s;
    unsigned char  unit_2;
    unsigned char  plus_uint;
    unsigned char  zeroTo120s ;

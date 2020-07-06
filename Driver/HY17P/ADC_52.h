@@ -60,7 +60,7 @@
 #define ADGN                      0
 #define ADGN_MSK                 (7 << ADGN)
 
-#if 1
+#if 0
 //FOR ICE
 #define ADGN_RSVD                 (7 << ADGN)
 #define ADGN_16                   (6 << ADGN)
@@ -69,7 +69,7 @@
 #endif 
 
  //WT.EDIT HY17P52 IC
-#if 0
+#if 1
 //FOR BODY
 #define ADGN_RSVD                (7 << ADGN)
 #define ADGN_16                  (6 << ADGN)
