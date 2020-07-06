@@ -691,7 +691,6 @@ void SetupZeroPoint_Mode(void)
                      }
                     else if(prevalue < 260 && prevalue >150 ){
 
-                              
                                adS.checkValue_2 =1;
                                adS.CheckValue[1]= 200  - prevalue ;
                                        
@@ -856,7 +855,7 @@ void PositivePressureWorks_Mode(void)
                         
                     }
                     if(adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
-                     if(highp==1){
+                    if(highp==1){
                         if(lamda >=1007)
                           DisplayHHH();
                         else highp =0;
