@@ -638,7 +638,7 @@ void SetupZeroPoint_Mode(void)
     float temp ;
     float prevalue;
     adS.Main_zeroPoint_Mode =0;
-		adS.Main_testMode=0;
+    adS.Main_testMode=0;
     adS.Main_unit_setMode = 0;
     adS.zeroTo120s =1;
     adS.setMode =1;
@@ -655,11 +655,12 @@ void SetupZeroPoint_Mode(void)
                       
            prevalue = 0.0344 * ADC;  //WT.EDIT 20200703
 
-            if(prevalue >320 ){
+            if(prevalue >350 ){
          
-                       temp =prevalue - 400   ;
+                         temp =prevalue - 400 +0.5  ;
 
-                       if(temp>=0)signflag=1;
+                       
+                        if(temp>=0)signflag=1;
                         else signflag =0;
 
                         temp = abs(temp);
@@ -671,31 +672,42 @@ void SetupZeroPoint_Mode(void)
                            index++;
                         }
                           hex =data[1] << 4 | data[0];
-                     if(signflag==1){
+                       // adS.factor =prevalue - 400 + 0.5 ;
+                   
+                       
+                        if(signflag==1){
                             GPIO_PT16_LOW();
                             HY17P52WR3(1,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
-                                while(1);    //fail
+                           
+                            while(1);    //fail
                             }
-                         }
+                         
+
+                       }
                        else{
+                         
+                         
                             HY17P52WR3(1,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
                                
                                while(1);    //fail
                             }
-                          }
+                          
+
+                       }
                    
                      }
                     else if(prevalue < 260 && prevalue >150 ){
 
+                              
                                adS.checkValue_2 =1;
                                adS.CheckValue[1]= 200  - prevalue ;
                                        
                       }
-                      else if(prevalue <160 ){
+                      else if(prevalue <150 ){
                                adS.checkValue_1 =1;
                                adS.CheckValue[0]= 100  - prevalue ;
                       }
@@ -708,8 +720,8 @@ void SetupZeroPoint_Mode(void)
     else{
       adS.Main_zeroPoint_Mode =0;
       adS.Main_testMode=0;
-      adS.EEr_flag =0; //set zero point voltage value flag
-      adS.MapZero = 1; //set zero point flag 
+      adS.EEr_flag =0;
+      adS.MapZero = 1;
        Display2ErP3();
        Delay(20000);
        adS.setMode =0;   
@@ -726,12 +738,12 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    float  lamda,thelta;
+     float  lamda,thelta;
     unsigned char highp=0;
     int checkValue;
     adS.unit_2 =0;
-    adS.setMode = 0 ;
-   adS.getSaveTimes++;
+  //  adS.eepromRead_UnitLow_bit=EEPROM_ReadUnitData_Address0();
+    adS.getSaveTimes++;
 #if 1 //BIE Read
         BIEARL=1;                        //addr=1
         BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
@@ -739,28 +751,7 @@ void PositivePressureWorks_Mode(void)
         adS.Sign =BIEDRH ;
         adS.factor=BIEDRL;
 #endif 
-
-    if((adS.getSaveTimes >(270- adS.tmes120svalue)) ||adS.getSaveflag==1){ //WT.EDIT 2020-07-03
-            
-            if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
-              adS.zeroTo60times =0 ;
-              adS.getSaveTimes=0;
-              adS.zeroTo120s=0;
-              adS.BeSureflag =0;
-              adS.tmes120svalue = 10;
-              adS.getSaveflag=0;
-            }
-            else {
-              LCD_DisplayOff();
-              adS.zeroTo60times=1;
-              adS.zeroTo120s = 0;
-              adS.tmes120svalue = 0;
-              adS.getSaveflag=0;
-              Idle()   ; //Sleep();
-              Sleep();
-            }
-    }    
-   else {
+   
     if(MCUSTATUSbits.b_ADCdone==1){
                adS.workstation_flag =1;
                MCUSTATUSbits.b_ADCdone=0;
@@ -786,7 +777,7 @@ void PositivePressureWorks_Mode(void)
                      }
                      else{
 
-                           lamda  =   0.0344 * ADC  - 11 ;
+                           lamda  =   0.0344 * ADC  - 12 ;
                            thelta = lamda ;
                            adS.getSaveTimes++;
                            if(adS.Sign == 0x11 || adS.Sign == 0x22){
@@ -795,14 +786,17 @@ void PositivePressureWorks_Mode(void)
                           }
                 }
                 else{
-                      if(ADC<=(adS.CorrectionValue[0] + 100)){
+                      
+                         if(ADC<=(adS.CorrectionValue[0] + 100)){
 
                               thelta =0;
                               adS.workstation_flag =0;
                               adS.getSaveTimes++;
-                              if(adS.MapZero == 1 && adS.EEr_flag==0){ //set zero voltage value flag
+                              adS.workstation_flag =0;
+                      
+                              if(adS.MapZero == 1 && adS.EEr_flag==0){
                                   adS.set2ErData=0;
-                                  adS.MapZero =0; //set zero point flag 
+                                  adS.MapZero =0;
                               }
                           }
                           else if(lamda >=1005){
@@ -812,35 +806,36 @@ void PositivePressureWorks_Mode(void)
                           }
                           else{
                                  highp =0;
+                                 
+                              
                                  if(lamda <=300  && (adS.checkValue_2==1|| adS.checkValue_1 ==1)){//WT.EDIT 2020-07-03.
 
-                                          if(adS.checkValue_2==1 && lamda > 160)  checkValue = adS.CheckValue[1];
+                                          if(adS.checkValue_2==1)   checkValue = adS.CheckValue[1];
 
+                                          if(lamda <= 160){
+                                            if(adS.checkValue_1==1)  
+                                                checkValue = adS.CheckValue[0];
+                                            }
 
-                                          else if(lamda <= 160){
-                                                if(adS.checkValue_1 ==1)
-                                                   checkValue = adS.CheckValue[0];
-                                                else checkValue = adS.CheckValue[1];
-                                           }
-
-                                           lamda = 0.0344 *ADC + checkValue ;
+                                              lamda = 0.0344 *ADC + checkValue ;
                                     }
                                 
                                
-                                  if(adS.MapZero == 1 || adS.dError == 1){ //set zero point voltage value function
+                                  if(adS.MapZero == 1 || adS.dError == 1){
 
                                           MapZeroPint = lamda;
                                          if(adS.EEr_flag ==0 || adS.dError ==1){
                                               ZeroPointReset_Function();
-                                         }  
-                                         
+                                             
+                                         }
                                          thelta = lamda - adS.set2ErData;
                                          if(thelta<=0) thelta =0;
 
                                     }
                                     else
                                     {
-                                      thelta = lamda  ;
+                                           
+                                          thelta = lamda  ;
                                     }
                                       
                                       if(thelta <= 0x06) {
@@ -848,14 +843,14 @@ void PositivePressureWorks_Mode(void)
                                         adS.workstation_flag =0;
                                       }
                                       else adS.workstation_flag =1;
-                                    
+                                
                                       adS.getSaveTimes++;
                                       
                            }
                         
                     }
                     if(adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
-                    if(highp==1){
+                     if(highp==1){
                         if(lamda >=1007)
                           DisplayHHH();
                         else highp =0;
@@ -876,16 +871,32 @@ void PositivePressureWorks_Mode(void)
                        if(adS.workstation_flag==1){
                          if(adS.zeroTo120s==1){
                             adS.BeSureflag =1;
-                            adS.tmes120svalue=10;
                           }
                        }
                      }
-
-            if(adS.getSaveTimes>(270- adS.tmes120svalue)) adS.getSaveflag=1;
-
-      }       
-     
-    }     
+        }   
+      
+      if(adS.getSaveTimes>290 && adS.setMode == 0){ //WT.EDIT 2020-07-03
+                         if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
+                              adS.zeroTo60times =0 ;
+                              adS.getSaveTimes=0;
+                              adS.zeroTo120s=0;
+                              adS.BeSureflag =0;
+                              LCD_DisplayOn();
+                          }
+                          else if(adS.zeroTo120s==0){
+                                 LCD_DisplayOff();
+                                adS.zeroTo60times=1;
+                                adS.zeroTo120s = 0;
+                                #if SAVEPOWER
+                                Idle()   ; //Sleep();
+                                Sleep();
+                               
+                                #endif
+                          }
+                          
+          }
+          
 }                 
 /*----------------------------------------------------------------------------*/
 /* Subroutine Function                                                        */
