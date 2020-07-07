@@ -638,12 +638,12 @@ void SetupZeroPoint_Mode(void)
             adS.MapZero =0;
             ADC =ADC >>6;
                       
-           prevalue = 0.0344 * ADC;  //WT.EDIT 20200703
+           prevalue = 0.0344 * ADC ;  //WT.EDIT 20200703
 
-		 if(adS.TheSecondWriteTimes==1 &&(prevalue >=300 && prevalue <=470)){
+		 if(adS.TheSecondWriteTimes==1 &&(prevalue >=300 && prevalue <=520)){
           
             
-                        temp =prevalue - 400 +0.5  ;
+                        temp =prevalue - 400   ;
 
                         if(temp ==0) signflag =0;
                         if(temp>0)signflag=1;
@@ -698,9 +698,9 @@ void SetupZeroPoint_Mode(void)
                    
                      
 		   	}
-		    if(prevalue >470){
+		    if(prevalue >520){
 				adS.checkValue_5 =1;
-                adS.CheckValue[2]= 500  - prevalue ;
+                adS.CheckValue[2]= 550  - prevalue ;
 
 			}
 	        if(prevalue < 280 && prevalue >150 ){
@@ -778,8 +778,6 @@ void PositivePressureWorks_Mode(void)
                         adS.initialize++ ;
                      }
                      else{
-
-                          // lamda  =   0.0344 * ADC  - 12 ;
                            thelta = lamda ;
                            adS.getSaveTimes++;
                            if(adS.Sign == 0x11 || adS.Sign == 0x22||adS.Sign==0x33 ){
@@ -810,23 +808,23 @@ void PositivePressureWorks_Mode(void)
                                  highp =0;
                                  
                               
-                                 if(lamda <=300 && (adS.checkValue_2==1 || adS.checkValue_1 ==1) || (lamda >= 470 && adS.checkValue_5==1))
+                                 if(lamda <300 && (adS.checkValue_2==1 || adS.checkValue_1 ==1) || (lamda >= 520 && adS.checkValue_5==1))
 								 {
 
-										  if(adS.checkValue_5 ==1){
+										  if(adS.checkValue_5 ==1&&lamda >= 520){
 										  	     checkValue = adS.CheckValue[2];
 										        
 										  }
 										 
-										  if(adS.checkValue_2==1){   
+										  if(adS.checkValue_2==1 && lamda <300){   
 										  	      checkValue = adS.CheckValue[1];
 
-		                                          if(lamda <= 160){
-		                                            if(adS.checkValue_1==1)  
+		                                          if(lamda <= 160 && adS.checkValue_1==1){
+		                                              
 		                                                checkValue = adS.CheckValue[0];
 		                                            }
 										  }
-										  lamda = 0.0344 *ADC + checkValue ;
+										  lamda = 0.0344 *ADC  + checkValue ;
 										  adS.workstation_flag =1;
                                    }
                                 
