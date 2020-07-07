@@ -279,7 +279,10 @@ GPIO_Iint();
 void PowerOnToChange(void)
 {
     SYS_WAKEUP() ; //WT.EDTI 2020-06-13
-    LCD_DisplayOn();
+    //LCD_DisplayOn();
+	adS.unitChoose=kgf;
+	//LCD_WriteData(&LCD4,seg_kgf);
+	//DisplayPointP2();
      //BIE Read
     BIEARL=1;                        //addr=1
     BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
@@ -399,7 +402,8 @@ void SetupUnitSelection(void)
      
     adS.unitChoose = kgf;
     LCD_WriteData(&LCD4,seg_kgf);
-     DisplayNoPoint();
+     //DisplayNoPoint();
+      DisplayPointP2();
   break;
   case mpa://4
      adS.unitChoose = mpa;
@@ -452,7 +456,8 @@ void DisplaySelectionUintPoint(void)
   }
   else if(adS.unitChoose==kgf){
         LCD_WriteData(&LCD4, seg_kgf) ;
-        DisplayNoPoint();
+        //DisplayNoPoint();
+        DisplayPointP2();
   }
   else if( adS.unitChoose==mpa){
         LCD_WriteData(&LCD4, seg_mpa) ;
@@ -634,8 +639,8 @@ void ZeroPointReset_Function(void)
 void SetupZeroPoint_Mode(void)
 {
     int signflag,a1;
-    int index ,data[2],hex;
-    float temp ;
+    int index=0 ,data[2],hex=0;
+    float temp=0 ;
     float prevalue;
     adS.Main_zeroPoint_Mode =0;
     adS.Main_testMode=0;
@@ -644,7 +649,7 @@ void SetupZeroPoint_Mode(void)
     adS.setMode =1;
    
 
-     if(adS.WriteEepromTimes  < 8 && adS.TheSecondWriteTimes==1){
+     if(adS.WriteEepromTimes  < 8){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
             adS.initialize=3; //flag 
@@ -655,13 +660,14 @@ void SetupZeroPoint_Mode(void)
                       
            prevalue = 0.0344 * ADC;  //WT.EDIT 20200703
 
-            if(prevalue >350 ){
-         
+		 if(adS.TheSecondWriteTimes==1 &&(prevalue >320 && prevalue <=490)){
+            //if(prevalue >350 && prevalue <=490){
+            	{
                          temp =prevalue - 400 +0.5  ;
 
-                       
-                        if(temp>=0)signflag=1;
-                        else signflag =0;
+                        if(temp ==0) signflag =0;
+                        if(temp>0)signflag=1;
+                        else  signflag = -1;
 
                         temp = abs(temp);
 
@@ -672,10 +678,21 @@ void SetupZeroPoint_Mode(void)
                            index++;
                         }
                           hex =data[1] << 4 | data[0];
-                       // adS.factor =prevalue - 400 + 0.5 ;
+                       adS.checkValue_4 =1;
                    
                        
-                        if(signflag==1){
+						 if(signflag ==0){
+
+						    
+                            HY17P52WR3(1,0x33,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                            if(Flag== 1)
+                            {
+                           
+                            while(1);    //fail
+                            }
+
+					    }
+						 else if(signflag==1){
                             GPIO_PT16_LOW();
                             HY17P52WR3(1,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
@@ -686,7 +703,7 @@ void SetupZeroPoint_Mode(void)
                          
 
                        }
-                       else{
+                       else if(signflag==-1){
                          
                          
                             HY17P52WR3(1,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
@@ -700,23 +717,28 @@ void SetupZeroPoint_Mode(void)
                        }
                    
                      }
-                    else if(prevalue < 260 && prevalue >150 ){
+		   	}
+		    if(prevalue >490){
+						adS.checkValue_5 =1;
+	                    adS.CheckValue[2]= 500  - prevalue ;
 
-                              
-                               adS.checkValue_2 =1;
-                               adS.CheckValue[1]= 200  - prevalue ;
-                                       
-                      }
-                      else if(prevalue <150 ){
-                               adS.checkValue_1 =1;
-                               adS.CheckValue[0]= 100  - prevalue ;
-                      }
+			}
+	        if(prevalue < 280 && prevalue >150 ){
 
-                        adS.WriteEepromTimes++;
-                        adS.setMode =0;   
-          
-        }
-    }
+	                              
+	                               adS.checkValue_2 =1;
+	                               adS.CheckValue[1]= 200  - prevalue ;
+	                                       
+	                   }
+	        else if(prevalue <150 ){
+	                               adS.checkValue_1 =1;
+	                               adS.CheckValue[0]= 100  - prevalue ;
+	             }
+
+				 adS.WriteEepromTimes++;
+                adS.setMode =1;  
+		 }
+     	}
     else{
       adS.Main_zeroPoint_Mode =0;
       adS.Main_testMode=0;
@@ -724,7 +746,7 @@ void SetupZeroPoint_Mode(void)
       adS.MapZero = 1;
        Display2ErP3();
        Delay(20000);
-       adS.setMode =0;   
+       adS.setMode =1;   
 
     }
 }
@@ -738,11 +760,11 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-     float  lamda,thelta;
+    float  lamda=0,thelta=0,eta=0;
     unsigned char highp=0;
-    int checkValue;
+    int checkValue=0;
     adS.unit_2 =0;
-  //  adS.eepromRead_UnitLow_bit=EEPROM_ReadUnitData_Address0();
+    
     adS.getSaveTimes++;
 #if 1 //BIE Read
         BIEARL=1;                        //addr=1
@@ -753,15 +775,17 @@ void PositivePressureWorks_Mode(void)
 #endif 
    
     if(MCUSTATUSbits.b_ADCdone==1){
-               adS.workstation_flag =1;
+               
+			   adS.setMode=0;
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
-                if(adS.Sign == 0x11)
-                  lamda  =    0.0344 * ADC  - adS.factor ;// lamda  =   0.0342 * ADC  - adS.factor ; //WT.EDIT 20200703  adS.coefficient
+				if(adS.Sign == 0x33)eta = 0;
+                else if(adS.Sign == 0x11) eta = -adS.factor;
+                 // lamda  =    0.0344 * ADC  - adS.factor ;// lamda  =   0.0342 * ADC  - adS.factor ; //WT.EDIT 20200703  adS.coefficient
                    
-                else if(adS.Sign == 0x22)  //adS.factor = - adS.factor;
-                  lamda  =    0.0344 * ADC  + adS.factor ;
-             
+                else if(adS.Sign == 0x22) eta = adS.factor; //adS.factor = - adS.factor;
+                 // lamda  =    0.0344 * ADC  + adS.factor ;
+                 lamda  =    0.0344 * ADC  + eta ;
               
                if(adS.initialize==0)
                 {
@@ -777,13 +801,13 @@ void PositivePressureWorks_Mode(void)
                      }
                      else{
 
-                           lamda  =   0.0344 * ADC  - 12 ;
+                          // lamda  =   0.0344 * ADC  - 12 ;
                            thelta = lamda ;
                            adS.getSaveTimes++;
-                           if(adS.Sign == 0x11 || adS.Sign == 0x22){
+                           if(adS.Sign == 0x11 || adS.Sign == 0x22||adS.Sign==0x33 ){
                                  adS.initialize++;
                             }
-                          }
+                     }
                 }
                 else{
                       
@@ -808,17 +832,25 @@ void PositivePressureWorks_Mode(void)
                                  highp =0;
                                  
                               
-                                 if(lamda <=300  && (adS.checkValue_2==1|| adS.checkValue_1 ==1)){//WT.EDIT 2020-07-03.
+                                 if(lamda <=300 && (adS.checkValue_2==1 || adS.checkValue_1 ==1) || (lamda >= 490 && adS.checkValue_5==1))
+								 {
 
-                                          if(adS.checkValue_2==1)   checkValue = adS.CheckValue[1];
+										  if(adS.checkValue_5 ==1){
+										  	     checkValue = adS.CheckValue[2];
+										        
+										  }
+										 
+										  if(adS.checkValue_2==1){   
+										  	      checkValue = adS.CheckValue[1];
 
-                                          if(lamda <= 160){
-                                            if(adS.checkValue_1==1)  
-                                                checkValue = adS.CheckValue[0];
-                                            }
-
-                                              lamda = 0.0344 *ADC + checkValue ;
-                                    }
+		                                          if(lamda <= 160){
+		                                            if(adS.checkValue_1==1)  
+		                                                checkValue = adS.CheckValue[0];
+		                                            }
+										  }
+										  lamda = 0.0344 *ADC + checkValue ;
+										  adS.workstation_flag =1;
+                                   }
                                 
                                
                                   if(adS.MapZero == 1 || adS.dError == 1){
@@ -831,11 +863,12 @@ void PositivePressureWorks_Mode(void)
                                          thelta = lamda - adS.set2ErData;
                                          if(thelta<=0) thelta =0;
 
-                                    }
+                                   }
                                     else
                                     {
                                            
                                           thelta = lamda  ;
+										  
                                     }
                                       
                                       if(thelta <= 0x06) {
@@ -858,6 +891,7 @@ void PositivePressureWorks_Mode(void)
                     }
                     else if( adS.dError ==1){
                           DisplayErr();
+						   adS.workstation_flag =0;
                           adS.getSaveTimes++;
                     }
                     else{
@@ -871,27 +905,26 @@ void PositivePressureWorks_Mode(void)
                        if(adS.workstation_flag==1){
                          if(adS.zeroTo120s==1){
                             adS.BeSureflag =1;
-							adS.second120s=10;
+							adS.second120s=60;
                           }
                        }
                      }
 
                  
 
-					 if(adS.getSaveTimes>(310 - adS.second120s) && adS.setMode == 0){ //WT.EDIT 2020-07-03
+					 if(adS.getSaveTimes>(350 - adS.second120s) && adS.setMode == 0){ //WT.EDIT 2020-07-03
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
                               adS.BeSureflag =0;
-							  adS.second120s=10;
+							  adS.second120s=60;
                               
                           }
                           else if(adS.zeroTo120s==0){
                                  LCD_DisplayOff();
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
-                              
                                 Idle()   ; //Sleep();
                                 Sleep();
                                

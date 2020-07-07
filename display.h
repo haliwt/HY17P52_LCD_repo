@@ -95,6 +95,7 @@ struct _adc_works_
    unsigned char  checkValue_2:1;
    unsigned char  checkValue_1:1;
    unsigned char  checkValue_4:1;
+   unsigned char  checkValue_5:1;
    unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
 
