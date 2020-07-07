@@ -896,34 +896,38 @@ void PositivePressureWorks_Mode(void)
                                  highp =0;
                                  
                               
-                                 if(lamda <300  || lamda >= 520 )
-								 {
+                              
 
-										  if(lamda >= 520){
+										  if(lamda >= 520 &&(ee550flag ==0x33 ||ee550flag ==0x11||ee550flag ==0x22)){
 										  	    if(ee550flag==0x33)checkValue=0;
 												else if(ee550flag == 0x11)
 												       checkValue = rho;
 												else if(ee550flag == 0x22)
 													   checkValue = - rho;
+												lamda = 0.0344 *ADC  + checkValue ;
+												 adS.workstation_flag =1;
 										        
 										  }
 										 
 										 
-										  if(lamda <300){   
+										  if(lamda <300 &&(ee200flag==0x33||ee200flag==0x11||ee200flag==0x22)){   
 
 												if(ee200flag==0x33)checkValue=0;
 												else if(ee200flag == 0x11)
 												       checkValue = zeta;
 												else if(ee200flag == 0x22)
 													   checkValue = - zeta;
+												
 		                                          if(lamda <= 160 && adS.checkValue_1==1){
 		                                              
 		                                                checkValue = adS.CheckValue[0];
 		                                            }
+												  lamda = 0.0344 *ADC  + checkValue ;
+												   adS.workstation_flag =1;
 										  }
-										  lamda = 0.0344 *ADC  + checkValue ;
-										  adS.workstation_flag =1;
-                                   }
+										 // lamda = 0.0344 *ADC  + checkValue ;
+										 
+                                
                                 
                                
                                   if(adS.MapZero == 1 || adS.dError == 1){
