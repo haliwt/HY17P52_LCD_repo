@@ -89,7 +89,7 @@ struct _adc_works_
    unsigned char  getSaveflag:1; 
    
    unsigned char  LVD_2V4_flag : 1;
-   unsigned char  TheSecondWriteTimes:1;
+  
    unsigned char  MapZero:1;
    unsigned char  dError:1;
    unsigned char  checkValue_2:1;
@@ -98,6 +98,7 @@ struct _adc_works_
    unsigned char  checkValue_5:1;
    unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
+    unsigned char  TheSecondWriteTimes:2;
    unsigned char  BeSaveFlag : 4;
 
  

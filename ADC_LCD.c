@@ -279,18 +279,17 @@ GPIO_Iint();
 void PowerOnToChange(void)
 {
     SYS_WAKEUP() ; //WT.EDTI 2020-06-13
-    //LCD_DisplayOn();
 	adS.unitChoose=kgf;
-	//LCD_WriteData(&LCD4,seg_kgf);
-	//DisplayPointP2();
-     //BIE Read
     BIEARL=1;                        //addr=1
     BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
     while((BIECN& 0x01)==1);
     adS.Sign =BIEDRH ;
     if((GPIO_PT1GET(PT15)==0)|| (adS.Sign !=0x11 && adS.Sign !=0x22 && adS.Sign != 0x33)){ //WT.EDIT 2020-07-02
         adS.TheSecondWriteTimes =1;
-      }
+      }else{
+		adS.TheSecondWriteTimes =2; //The second power on be changed battery 
+	  }
+      
 }
 /******************************************************************************
 	*
@@ -631,7 +630,7 @@ void SetupZeroPoint_Mode(void)
     adS.setMode =1;
    
 
-     if(adS.BeSaveFlag <=3){
+     if(adS.BeSaveFlag <=3 && adS.TheSecondWriteTimes != 2){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
             adS.initialize=3; //flag 
@@ -698,25 +697,27 @@ void SetupZeroPoint_Mode(void)
 
                        }
          }
-		    if(prevalue >520){
-				adS.checkValue_5 =1;
-                adS.CheckValue[2]= 550  - prevalue ;
+		
+		 if(prevalue >520){
+					adS.checkValue_5 =1;
+	                adS.CheckValue[2]= 550  - prevalue ;
 
-			}
-	        if(prevalue < 280 && prevalue >150 ){
-				adS.checkValue_2 =1;
-	            adS.CheckValue[1]= 200  - prevalue ;
-	                                       
-	        }
-	        else if(prevalue <150 ){
-	           adS.checkValue_1 =1;
-	           adS.CheckValue[0]= 100  - prevalue ;
-	        }
-
-			adS.WriteEepromTimes++;
-            adS.setMode =1;  
+		}
+		if(prevalue < 280 && prevalue >150 ){
+					adS.checkValue_2 =1;
+		            adS.CheckValue[1]= 200  - prevalue ;
+		                                       
 		 }
-     	}
+		 else if(prevalue <150 ){
+		           adS.checkValue_1 =1;
+		           adS.CheckValue[0]= 100  - prevalue ;
+		        }
+
+				adS.WriteEepromTimes++;
+	            adS.setMode =1;  
+			 
+	   }
+     }
     else{
 	      adS.Main_zeroPoint_Mode =0;
 	      adS.Main_testMode=0;
