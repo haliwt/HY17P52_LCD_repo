@@ -118,7 +118,7 @@ struct _adc_works_
    unsigned int   getSaveTimes ;
    
 
-   int   CheckValue[3];
+   int   CheckValue[1];
    int   CorrectionValue[3];
    float  factor;
    float  coefficient;
