@@ -98,6 +98,7 @@ struct _adc_works_
    unsigned char  checkValue_5:1;
    unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
+   unsigned char  BeSaveFlag : 4;
 
  
    unsigned char  Sign;

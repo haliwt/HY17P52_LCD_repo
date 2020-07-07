@@ -392,6 +392,8 @@ void SetupUnitSelection(void)
      adS.unitChoose = psi;
      LCD_WriteData(&LCD4,seg_psi);
      DisplayPointP3(); //
+     adS.BeSaveFlag ++ ;
+	 if(adS.BeSaveFlag >=3)adS.BeSaveFlag = 4;
   break;
   case bar: //2
      adS.unitChoose = bar;
@@ -629,7 +631,7 @@ void SetupZeroPoint_Mode(void)
     adS.setMode =1;
    
 
-     if(adS.WriteEepromTimes  < 8){
+     if(adS.BeSaveFlag <=3){
          if(MCUSTATUSbits.b_ADCdone==1){
             adS.access_id_5s= 1;
             adS.initialize=3; //flag 
@@ -695,9 +697,7 @@ void SetupZeroPoint_Mode(void)
                           
 
                        }
-                   
-                     
-		   	}
+         }
 		    if(prevalue >520){
 				adS.checkValue_5 =1;
                 adS.CheckValue[2]= 550  - prevalue ;
