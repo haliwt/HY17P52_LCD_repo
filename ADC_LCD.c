@@ -288,7 +288,7 @@ void PowerOnToChange(void)
     BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
     while((BIECN& 0x01)==1);
     adS.Sign =BIEDRH ;
-    if((GPIO_PT1GET(PT15)==0)|| (adS.Sign !=0x11 && adS.Sign !=0x22)){ //WT.EDIT 2020-07-02
+    if((GPIO_PT1GET(PT15)==0)|| (adS.Sign !=0x11 && adS.Sign !=0x22 && adS.Sign != 0x33)){ //WT.EDIT 2020-07-02
         adS.TheSecondWriteTimes =1;
       }
 }
@@ -413,27 +413,7 @@ void SetupUnitSelection(void)
   }
  // SetupSaveUnit_ID(adS.unitChoose);//WT.EDIT 2020-06-29
 }
-#if 0
-/******************************************************************************
-  *
-  *Function Name: EEPROM_ReadData(void);
-  *Input Reference : converter unit value,This is kgf value
-  *Return Reference :NO
-  *
-******************************************************************************/
-unsigned char EEPROM_ReadUnitData_Address0(void)
-{
-    //WT.EDIT 2020-06-09 EDIT cancel "static"
-     unsigned char unitId;
-     BIEARL=0;                                //addr=0
-     BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
-     while((BIECN& 0x01)==1);
-    adS.eepromRead_UnitHigh_bit= BIEDRH;
-    unitId = BIEDRL;
-    return unitId;
 
-}
-#endif 
 
 /******************************************************************************
   *
@@ -505,7 +485,7 @@ unsigned char LowVoltageDetect_3V(void)
 unsigned char LowVoltageDetect_2V4(void)
 {
     unsigned char flag;
-    LVD_VolSelect(VLDX_22);//LVD_VolSelect(VLDX_24);//WT.EDIT 2020-07-03
+    LVD_VolSelect(VLDX_21);//LVD_VolSelect(VLDX_24);//WT.EDIT 2020-07-03
     LVD_PWRSelect(PWRS_VDD);//WT.EDIT 2020-06-29
     Delay(10);
   if(LVD_GetLVDO())
@@ -660,10 +640,10 @@ void SetupZeroPoint_Mode(void)
                       
            prevalue = 0.0344 * ADC;  //WT.EDIT 20200703
 
-		 if(adS.TheSecondWriteTimes==1 &&(prevalue >320 && prevalue <=490)){
-            //if(prevalue >350 && prevalue <=490){
-            	{
-                         temp =prevalue - 400 +0.5  ;
+		 if(adS.TheSecondWriteTimes==1 &&(prevalue >=300 && prevalue <=470)){
+          
+            
+                        temp =prevalue - 400 +0.5  ;
 
                         if(temp ==0) signflag =0;
                         if(temp>0)signflag=1;
@@ -716,37 +696,35 @@ void SetupZeroPoint_Mode(void)
 
                        }
                    
-                     }
+                     
 		   	}
-		    if(prevalue >490){
-						adS.checkValue_5 =1;
-	                    adS.CheckValue[2]= 500  - prevalue ;
+		    if(prevalue >470){
+				adS.checkValue_5 =1;
+                adS.CheckValue[2]= 500  - prevalue ;
 
 			}
 	        if(prevalue < 280 && prevalue >150 ){
-
-	                              
-	                               adS.checkValue_2 =1;
-	                               adS.CheckValue[1]= 200  - prevalue ;
+				adS.checkValue_2 =1;
+	            adS.CheckValue[1]= 200  - prevalue ;
 	                                       
-	                   }
+	        }
 	        else if(prevalue <150 ){
-	                               adS.checkValue_1 =1;
-	                               adS.CheckValue[0]= 100  - prevalue ;
-	             }
+	           adS.checkValue_1 =1;
+	           adS.CheckValue[0]= 100  - prevalue ;
+	        }
 
-				 adS.WriteEepromTimes++;
-                adS.setMode =1;  
+			adS.WriteEepromTimes++;
+            adS.setMode =1;  
 		 }
      	}
     else{
-      adS.Main_zeroPoint_Mode =0;
-      adS.Main_testMode=0;
-      adS.EEr_flag =0;
-      adS.MapZero = 1;
-       Display2ErP3();
-       Delay(20000);
-       adS.setMode =1;   
+	      adS.Main_zeroPoint_Mode =0;
+	      adS.Main_testMode=0;
+	      adS.EEr_flag =0;
+	      adS.MapZero = 1;
+	      Display2ErP3();
+	      Delay(20000);
+	      adS.setMode =1;   
 
     }
 }
@@ -766,13 +744,13 @@ void PositivePressureWorks_Mode(void)
     adS.unit_2 =0;
     
     adS.getSaveTimes++;
-#if 1 //BIE Read
+ //BIE Read
         BIEARL=1;                        //addr=1
         BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
         while((BIECN& 0x01)==1);
         adS.Sign =BIEDRH ;
         adS.factor=BIEDRL;
-#endif 
+
    
     if(MCUSTATUSbits.b_ADCdone==1){
                
@@ -832,7 +810,7 @@ void PositivePressureWorks_Mode(void)
                                  highp =0;
                                  
                               
-                                 if(lamda <=300 && (adS.checkValue_2==1 || adS.checkValue_1 ==1) || (lamda >= 490 && adS.checkValue_5==1))
+                                 if(lamda <=300 && (adS.checkValue_2==1 || adS.checkValue_1 ==1) || (lamda >= 470 && adS.checkValue_5==1))
 								 {
 
 										  if(adS.checkValue_5 ==1){
