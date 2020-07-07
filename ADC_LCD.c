@@ -646,12 +646,11 @@ void SetupZeroPoint_Mode(void)
             
                         temp =prevalue - 400   ;
 
-                        if(temp ==0) signflag =0;
-                        if(temp>0)signflag=1;
-                        else  signflag = -1;
+                       
 
                         temp = abs(temp);
-
+						hex =temp;
+					#if 0
                        while(temp!=0) {
                           a1=temp;
                           temp=temp/16;
@@ -661,10 +660,11 @@ void SetupZeroPoint_Mode(void)
                           hex =data[1] << 4 | data[0];
                        adS.checkValue_4 =1;
                    
-                       
-						 if(signflag ==0){
+                     #endif 
+						 if(temp ==0){
 
-						    
+						     
+					        hex =0x00;
                             HY17P52WR3(1,0x33,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
@@ -673,8 +673,9 @@ void SetupZeroPoint_Mode(void)
                             }
 
 					    }
-						 else if(signflag==1){
-                            GPIO_PT16_LOW();
+						 else if(temp > 0){
+						 	 hex =temp;
+                           
                             HY17P52WR3(1,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
@@ -684,9 +685,10 @@ void SetupZeroPoint_Mode(void)
                          
 
                        }
-                       else if(signflag==-1){
+                       else if(temp< 0){
                          
-                         
+                            temp = abs(temp);
+						    hex =temp;
                             HY17P52WR3(1,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
@@ -704,8 +706,46 @@ void SetupZeroPoint_Mode(void)
 
 		}
 		if(prevalue < 280 && prevalue >150 ){
-					adS.checkValue_2 =1;
-		            adS.CheckValue[1]= 200  - prevalue ;
+					//adS.checkValue_2 =1;
+		             //adS.CheckValue[1]= 200  - prevalue ;
+					 temp = 200  - prevalue ;
+					 if(temp ==0){
+
+						     
+					        hex =0x00;
+                            HY17P52WR3(0,0x33,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                            if(Flag== 1)
+                            {
+                           
+                            while(1);    //fail
+                            }
+
+					    }
+						 else if(temp > 0){
+						 	 hex =temp;
+                           
+                            HY17P52WR3(0,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                            if(Flag== 1)
+                            {
+                           
+                            while(1);    //fail
+                            }
+                         
+
+                       }
+                       else if(temp< 0){
+                         
+                            temp = abs(temp);
+						    hex =temp;
+                            HY17P52WR3(0,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                            if(Flag== 1)
+                            {
+                               
+                               while(1);    //fail
+                            }
+                          
+
+                       }
 		                                       
 		 }
 		 else if(prevalue <150 ){
@@ -739,9 +779,9 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    float  lamda=0,thelta=0,eta=0;
-    unsigned char highp=0;
-    int checkValue=0;
+    float  lamda=0,thelta=0,eta=0,zeta=0;
+    unsigned char highp=0,ee200flag=0;
+    float checkValue=0;
     adS.unit_2 =0;
     
     adS.getSaveTimes++;
@@ -751,6 +791,12 @@ void PositivePressureWorks_Mode(void)
         while((BIECN& 0x01)==1);
         adS.Sign =BIEDRH ;
         adS.factor=BIEDRL;
+
+		BIEARL=0;                        //addr=1
+        BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+        while((BIECN& 0x01)==1);
+        ee200flag =BIEDRH ;
+        zeta=BIEDRL;
 
    
     if(MCUSTATUSbits.b_ADCdone==1){
@@ -809,7 +855,7 @@ void PositivePressureWorks_Mode(void)
                                  highp =0;
                                  
                               
-                                 if(lamda <300 && (adS.checkValue_2==1 || adS.checkValue_1 ==1) || (lamda >= 520 && adS.checkValue_5==1))
+                                 if(lamda <300  || (lamda >= 520 && adS.checkValue_5==1))
 								 {
 
 										  if(adS.checkValue_5 ==1&&lamda >= 520){
@@ -817,9 +863,14 @@ void PositivePressureWorks_Mode(void)
 										        
 										  }
 										 
-										  if(adS.checkValue_2==1 && lamda <300){   
-										  	      checkValue = adS.CheckValue[1];
+										 
+										  if(lamda <300){   
 
+												if(ee200flag==0x33)checkValue=0;
+												else if(ee200flag == 0x11)
+												       checkValue = zeta;
+												else if(ee200flag == 0x22)
+													   checkValue = - zeta;
 		                                          if(lamda <= 160 && adS.checkValue_1==1){
 		                                              
 		                                                checkValue = adS.CheckValue[0];
