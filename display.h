@@ -92,13 +92,10 @@ struct _adc_works_
   
    unsigned char  MapZero:1;
    unsigned char  dError:1;
-   unsigned char  checkValue_2:1;
-   unsigned char  checkValue_1:1;
-   unsigned char  checkValue_4:1;
-   unsigned char  checkValue_5:1;
+ 
    unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
-    unsigned char  TheSecondWriteTimes:2;
+   unsigned char  TheSecondWriteTimes:2;
    unsigned char  BeSaveFlag : 4;
 
  
@@ -114,14 +111,13 @@ struct _adc_works_
    unsigned char  tmes120svalue;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
-   unsigned int   delayDisplay ;
+  // unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
    
 
-   int   CheckValue[1];
    int   CorrectionValue[3];
    float  factor;
-   float  coefficient;
+ //  float  coefficient;
    float   set2ErData;
    
 

@@ -35,7 +35,7 @@ void DisplayHycon(void)
 /*---------------------------------------------------------------------------*/
 void DisplayNum(long Num)
 {
-  unsigned char count,MINUS;
+  unsigned char count;
   unsigned char *LCDAddr,LCDData;
 
 
