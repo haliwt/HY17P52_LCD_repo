@@ -895,7 +895,7 @@ void PositivePressureWorks_Mode(void)
                     }
                     else if( adS.dError ==1){
                           DisplayErr();
-						   adS.workstation_flag =0;
+						              adS.workstation_flag =0;
                           adS.getSaveTimes++;
                     }
                     else{
@@ -905,13 +905,13 @@ void PositivePressureWorks_Mode(void)
                        DisplaySelectionUintPoint();
                        Delay(20000);
                        adS.getSaveTimes++;
-                       if(adS.workstation_flag==1){
-                         if(adS.zeroTo120s==1){
+                       if(adS.zeroTo120s==1){
+                        
                             adS.BeSureflag =1;
-							adS.second120s=60;
+						                adS.second120s=100;
                           }
                        }
-                     }
+             
 
                  
 
@@ -921,7 +921,7 @@ void PositivePressureWorks_Mode(void)
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
                               adS.BeSureflag =0;
-							  adS.second120s=60;
+							                 adS.second120s=100;
                               
                           }
                           else if(adS.zeroTo120s==0){
@@ -935,12 +935,8 @@ void PositivePressureWorks_Mode(void)
                           }
                           
         			}
-					
-      }   
-      
-     
-          
-}                 
+    	}
+}   
 /*----------------------------------------------------------------------------*/
 /* Subroutine Function                                                        */
 /*----------------------------------------------------------------------------*/
