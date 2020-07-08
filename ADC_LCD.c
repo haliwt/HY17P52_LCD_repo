@@ -619,7 +619,7 @@ void ZeroPointReset_Function(void)
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-    int signflag,a1;
+    int signflag=0,a1;
     int index=0 ,data[2],hex=0;
     float temp=0 ;
     float prevalue;
@@ -646,11 +646,7 @@ void SetupZeroPoint_Mode(void)
                     adS.checkValue_4 =1;
                     temp =prevalue - 400   ;
                     if(temp >=0)signflag=1;
-       
-      
-                       
-
-                        temp = abs(temp);
+                      temp = abs(temp);
 						
 					            #if 1
                        while(temp!=0) {
@@ -802,8 +798,11 @@ void PositivePressureWorks_Mode(void)
                         adS.initialize++ ;
                      }
                      else{
-						   if(lamda <=0)thelta=0;
-						   else thelta = lamda ;
+            						   if(lamda <=0){
+                              thelta=0;
+                             adS.workstation_flag =0;
+                           }
+            						   else thelta = lamda ;
 						   
                            adS.getSaveTimes++;
                            if(adS.Sign == 0x11 || adS.Sign == 0x22){
@@ -865,7 +864,10 @@ void PositivePressureWorks_Mode(void)
                                              
                                          }
                                          thelta = lamda - adS.set2ErData;
-                                         if(thelta<=0) thelta =0;
+                                         if(thelta<=0) {
+                                            thelta =0;
+                                            adS.workstation_flag =0;
+                                         }
 
                                    }
                                     else
@@ -908,26 +910,24 @@ void PositivePressureWorks_Mode(void)
                        if(adS.zeroTo120s==1){
                         
                             adS.BeSureflag =1;
-						                adS.second120s=100;
+						                adS.second120s=0;
                           }
+
                        }
-             
-
-                 
-
-					 if(adS.getSaveTimes>(530 - adS.second120s) && adS.setMode == 0){ //WT.EDIT 2020-07-03
+               if(adS.getSaveTimes>(450 -adS.second120s) && adS.setMode == 0){ //60s = 380 WT.EDIT 2020-07-03
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
                               adS.BeSureflag =0;
-							                 adS.second120s=100;
+                              adS.second120s=0;
                               
                           }
                           else if(adS.zeroTo120s==0){
                                  LCD_DisplayOff();
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
+                                adS.second120s=0;
                                 Idle()   ; //Sleep();
                                 Sleep();
                                
