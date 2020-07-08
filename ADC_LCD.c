@@ -697,7 +697,7 @@ void SetupZeroPoint_Mode(void)
                        }
          }
 		
-		 if(prevalue >510){
+		 if(prevalue >520){
 					//adS.checkValue_5 =1;
 	                //adS.CheckValue[2]= 550  - prevalue ;
 		 			temp = 550  - prevalue ;
@@ -740,7 +740,7 @@ void SetupZeroPoint_Mode(void)
                        }
 
 		}
-		if(prevalue < 280 && prevalue >150 ){
+		if(prevalue < 300 && prevalue >150 ){
 					//adS.checkValue_2 =1;
 		             //adS.CheckValue[1]= 200  - prevalue ;
 					 temp = 200  - prevalue ;
@@ -784,9 +784,46 @@ void SetupZeroPoint_Mode(void)
 		                                       
 		 }
 		 else if(prevalue <150 ){
-		           adS.checkValue_1 =1;
-		           adS.CheckValue[0]= 100  - prevalue ;
-		        }
+		        
+           temp = 100  - prevalue ;
+           if(temp ==0){
+
+                 
+                  hex =0x00;
+                  HY17P52WR3(3,0x33,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                  if(Flag== 1)
+                  {
+                 
+                  while(1);    //fail
+                  }
+
+              }
+             else if(temp > 0){
+                    hex =temp;
+                   
+                    HY17P52WR3(3,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                    if(Flag== 1)
+                    {
+                   
+                    while(1);    //fail
+                    }
+                         
+
+            }
+            else if(temp< 0){
+                         
+                  temp = abs(temp);
+                  hex =temp;
+                  HY17P52WR3(3,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                  if(Flag== 1)
+                  {
+                     
+                     while(1);    //fail
+                  }
+                          
+
+              }
+		      }
 
 				adS.WriteEepromTimes++;
 	            adS.setMode =1;  
@@ -814,8 +851,8 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    float  lamda=0,thelta=0,eta=0,zeta=0,rho=0;
-    unsigned char highp=0,ee200flag=0,ee550flag=0;
+    float  lamda=0,thelta=0,eta=0,zeta=0,rho=0,omega=0;
+    unsigned char highp=0,ee200flag=0,ee550flag=0,ee100flag=0;
     float checkValue=0;
     adS.unit_2 =0;
     
@@ -839,6 +876,11 @@ void PositivePressureWorks_Mode(void)
         ee550flag =BIEDRH ;
         rho=BIEDRL;
 
+    BIEARL=3;                        //addr=1
+        BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+        while((BIECN& 0x01)==1);
+        ee100flag =BIEDRH ;
+        omega=BIEDRL;
    
     if(MCUSTATUSbits.b_ADCdone==1){
                
@@ -875,30 +917,27 @@ void PositivePressureWorks_Mode(void)
                 }
                 else{
                       
-                         if(ADC<=(adS.CorrectionValue[0] + 100)){
+                   if(ADC<=(adS.CorrectionValue[0] + 100)){
 
-                              thelta =0;
-                              adS.workstation_flag =0;
-                              adS.getSaveTimes++;
-                              adS.workstation_flag =0;
-                      
-                              if(adS.MapZero == 1 && adS.EEr_flag==0){
-                                  adS.set2ErData=0;
-                                  adS.MapZero =0;
-                              }
-                          }
-                          else if(lamda >=1005){
-                               
-                               highp =1;  
-                             
-                          }
-                          else{
-                                 highp =0;
+                        thelta =0;
+                        adS.workstation_flag =0;
+                        adS.getSaveTimes++;
+                        adS.workstation_flag =0;
+                
+                        if(adS.MapZero == 1 && adS.EEr_flag==0){
+                            adS.set2ErData=0;
+                            adS.MapZero =0;
+                        }
+                    }
+                    else if(lamda >=1005){
+                         
+                         highp =1;  
+                       
+                    }
+                    else{
+                        highp =0;
                                  
-                              
-                              
-
-										  if(lamda >= 520 &&(ee550flag ==0x33 ||ee550flag ==0x11||ee550flag ==0x22)){
+                        if(lamda >= 520 &&(ee550flag ==0x33 ||ee550flag ==0x11||ee550flag ==0x22)){
 										  	    if(ee550flag==0x33)checkValue=0;
 												else if(ee550flag == 0x11)
 												       checkValue = rho;
@@ -912,25 +951,26 @@ void PositivePressureWorks_Mode(void)
 										 
 										  if(lamda <300 &&(ee200flag==0x33||ee200flag==0x11||ee200flag==0x22)){   
 
-												if(ee200flag==0x33)checkValue=0;
-												else if(ee200flag == 0x11)
-												       checkValue = zeta;
-												else if(ee200flag == 0x22)
-													   checkValue = - zeta;
-												
-		                                          if(lamda <= 160 && adS.checkValue_1==1){
-		                                              
-		                                                checkValue = adS.CheckValue[0];
-		                                            }
+  												if(ee200flag==0x33)checkValue=0;
+  												else if(ee200flag == 0x11)
+  												       checkValue = zeta;
+  												else if(ee200flag == 0x22)
+  													   checkValue = - zeta;
+                             lamda = 0.0344 *ADC  + checkValue ;
+                             adS.workstation_flag =1;
+												}
+                        if(lamda <= 150 && (ee100flag==0x33||ee100flag==0x11||ee100flag==0x22)){
+                            
+                              if(ee100flag==0x33)checkValue=0;
+                              else if(ee100flag == 0x11)
+                                     checkValue = omega;
+                              else if(ee100flag == 0x22)
+                                   checkValue = - omega;
+                          
 												  lamda = 0.0344 *ADC  + checkValue ;
 												   adS.workstation_flag =1;
 										  }
-										 // lamda = 0.0344 *ADC  + checkValue ;
-										 
-                                
-                                
-                               
-                                  if(adS.MapZero == 1 || adS.dError == 1){
+									    if(adS.MapZero == 1 || adS.dError == 1){
 
                                           MapZeroPint = lamda;
                                          if(adS.EEr_flag ==0 || adS.dError ==1){
@@ -956,7 +996,7 @@ void PositivePressureWorks_Mode(void)
                                 
                                       adS.getSaveTimes++;
                                       
-                           }
+                      }
                         
                     }
                     if(adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
@@ -982,14 +1022,14 @@ void PositivePressureWorks_Mode(void)
                        if(adS.workstation_flag==1){
                          if(adS.zeroTo120s==1){
                             adS.BeSureflag =1;
-							adS.second120s=60;
+							             adS.second120s=80;
                           }
                        }
                      }
 
                  
 
-					 if(adS.getSaveTimes>(350 - adS.second120s) && adS.setMode == 0){ //WT.EDIT 2020-07-03
+					 if(adS.getSaveTimes>(380 - adS.second120s) && adS.setMode == 0){ //WT.EDIT 2020-07-03
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
