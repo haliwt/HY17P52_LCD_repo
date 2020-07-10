@@ -89,21 +89,22 @@ struct _adc_works_
    unsigned char  getSaveflag:1; 
    
    unsigned char  LVD_2V4_flag : 1;
+   unsigned char  checkValue_1:1; 
+   unsigned char  checkValue_2:1; 
+   
+   unsigned char  checkValue_4:1; 
+    unsigned char  checkValue_5:1; 
   
    unsigned char  MapZero:1;
    unsigned char  dError:1;
-   unsigned char  checkValue_2:1;
-   unsigned char  checkValue_1:1;
-   unsigned char  checkValue_4:1;
-   unsigned char  checkValue_5:1;
+ 
    unsigned char  EEr_flag:2;
    unsigned char  reload_ADCInterrupt :2;
-    unsigned char  TheSecondWriteTimes:2;
+   unsigned char  TheSecondWriteTimes:2;
    unsigned char  BeSaveFlag : 4;
 
  
    unsigned char  Sign;
-   unsigned char second120s;
    unsigned char  unit_2;
    unsigned char  plus_uint;
    unsigned char  zeroTo120s ;
@@ -114,14 +115,12 @@ struct _adc_works_
    unsigned char  tmes120svalue;
    unsigned int   delayTimes_5s;
    unsigned int   delayTimes_3s;
-   unsigned int   delayDisplay ;
+  // unsigned int   delayDisplay ;
    unsigned int   getSaveTimes ;
    
-
-   int   CheckValue[3];
-   int   CorrectionValue[3];
-   float  factor;
-   float  coefficient;
+   int   CheckValue[5];
+   int   CorrectionValue[2];
+   int  factor;
    float   set2ErData;
    
 

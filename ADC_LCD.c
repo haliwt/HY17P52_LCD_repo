@@ -307,7 +307,7 @@ void ProcessRunsFlag(void)
     adS.delayTimes_5s=0;
     adS.access_id_5s=0;
     adS.access_id_3s=0;
-    adS.delayDisplay =0;
+   // adS.delayDisplay =0;
     adS.unit_2 =0;
     adS.setMode =0;
 
@@ -582,7 +582,7 @@ void SetupZeroPointSelection(void)
   Display2Er();
   LCD_DisplayOn();
   adS.zeroTo120s =1;
-  adS.setMode =1;
+  adS.getSaveTimes--;
 }
 /**********************************************************************
   *
@@ -594,7 +594,7 @@ void SetupZeroPointSelection(void)
 ***********************************************************************/
 void ZeroPointReset_Function(void)
 {
-  if(MapZeroPint>=301){
+  if(MapZeroPint>=31){
      
       adS.dError = 1;
   }
@@ -603,10 +603,10 @@ void ZeroPointReset_Function(void)
          adS.dError =0;
 
          if(adS.EEr_flag ==0){
-              
-           adS.set2ErData=MapZeroPint;
-           adS.EEr_flag ++ ;
+              adS.set2ErData=MapZeroPint;
+              adS.EEr_flag ++ ;
          }
+
        }
 }
 /****************************************************************************
@@ -619,51 +619,42 @@ void ZeroPointReset_Function(void)
 ******************************************************************************/
 void SetupZeroPoint_Mode(void)
 {
-    int signflag=0,a1;
-    int index=0 ,data[2],hex=0;
-    float temp=0 ;
+  //   int a1;
+  //  int index ,data[2],hex;
+    int hex ;
+    float temp ;
     float prevalue;
     adS.Main_zeroPoint_Mode =0;
     adS.Main_testMode=0;
     adS.Main_unit_setMode = 0;
     adS.zeroTo120s =1;
     adS.setMode =1;
-   
+    adS.getSaveTimes--;
 
-     if(adS.BeSaveFlag <=3 && adS.TheSecondWriteTimes==1){
-         if(MCUSTATUSbits.b_ADCdone==1){
-            adS.access_id_5s= 1;
+    if(adS.BeSaveFlag <=3 && adS.TheSecondWriteTimes == 1){
+		    adS.access_id_5s= 1;
             adS.initialize=3; //flag 
+            adS.MapZero =0;
+          if(MCUSTATUSbits.b_ADCdone==1){
+            
             MCUSTATUSbits.b_ADCdone=0;
             adS.reload_ADCInterrupt = 1;
-            adS.MapZero =0;
+            
             ADC =ADC >>6;
                       
-           prevalue = 0.0343 * ADC -14 ;  //WT.EDIT 20200703
+           prevalue = 0.0344 * ADC -14 ;  //WT.EDIT 20200703
 
-		 if(prevalue >=300 && prevalue <=520){
+		      if(prevalue >=300 && prevalue <=520){
           
-                    adS.checkValue_4 =1;
-                    temp =prevalue - 400   ;
-                    if(temp >=0)signflag=1;
-                      temp = abs(temp);
-						
-					            #if 1
-                       while(temp!=0) {
-                          a1=temp;
-                          temp=temp/16;
-                          data[index]=a1%16;
-                           index++;
-                        }
-                          hex =data[1] << 4 | data[0];
-                      
-                   
-                     #endif
-         
-          
-						 if(signflag==1){
+            			adS.checkValue_4 =1;
 
-						             HY17P52WR3(1,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+						    temp = prevalue - 400  ;
+                adS.CheckValue[3]=temp;
+
+            	if(temp >= 0){
+						 	 hex =temp;
+                           
+                            HY17P52WR3(1,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
                            
@@ -672,9 +663,10 @@ void SetupZeroPoint_Mode(void)
                          
 
                        }
-                       else {
+                       else if(temp< 0){
                          
-             
+                            temp = abs(temp);
+						    hex =temp;
                             HY17P52WR3(1,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
@@ -684,13 +676,16 @@ void SetupZeroPoint_Mode(void)
                           
 
                        }
-         }
-    #if 0
-		 if(adS.checkValue_2 ==1){
-       adS.checkValue_2 =0;
-       if(signflag==1){
-
-                         HY17P52WR3(0,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+			  
+		      }
+			  if(prevalue >520){
+					adS.checkValue_5 =1;
+		 			temp = 550  - prevalue ;
+          adS.CheckValue[4]=temp;
+           if(temp >= 0){
+						 	 hex =temp;
+                           
+                            HY17P52WR3(2,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
                            
@@ -699,8 +694,42 @@ void SetupZeroPoint_Mode(void)
                          
 
                        }
-                       else {
+                       else if(temp< 0){
                          
+                            temp = abs(temp);
+						                 hex =temp;
+                            HY17P52WR3(2,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                            if(Flag== 1)
+                            {
+                               
+                               while(1);    //fail
+                            }
+                          
+
+                       }
+			  }
+
+			  if(prevalue < 300 && prevalue >150 ){
+					 adS.checkValue_2 =1;
+		             
+					 temp = 200  - prevalue ;
+           adS.CheckValue[1]=temp;
+            if(temp >= 0){
+						 	 hex =temp;
+                           
+                            HY17P52WR3(0,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                            if(Flag== 1)
+                            {
+                           
+                            while(1);    //fail
+                            }
+                         
+
+                      }
+                       else if(temp< 0){
+                         
+                            temp = abs(temp);
+						                hex =temp;
                             HY17P52WR3(0,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
                             if(Flag== 1)
                             {
@@ -710,31 +739,40 @@ void SetupZeroPoint_Mode(void)
                           
 
                        }
-
-
-         }
-         #endif 
-      		if(prevalue >520){
-      					adS.checkValue_5 =1;
-      	       adS.CheckValue[2]= 550  - prevalue ;
-
-      		}
-          if(prevalue < 280 && prevalue >150 ){
-                  adS.checkValue_2 =1;
-                   temp = 200  - prevalue ;
-                   adS.CheckValue[1]= 200  - prevalue ;
+			  	}
+			 if(prevalue <150 ){
+			        
+				adS.checkValue_1 =1;
+			   temp = 100  - prevalue ;
+         adS.CheckValue[0]=temp;
+        if(temp >= 0){
+                    hex =temp;
                    
-          }
-          if(prevalue <150 ){
-      		           adS.checkValue_1 =1;
-      		           adS.CheckValue[0]= 100  - prevalue ;
-      		        }
+                    HY17P52WR3(3,0x11,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                    if(Flag== 1)
+                    {
+                   
+                    while(1);    //fail
+                    }
+                         
 
-      				
-      	       adS.setMode =1;  
-      			 
-      	   }
-     }
+            }
+            else if(temp< 0){
+                         
+                  temp = abs(temp);
+                  hex =temp;
+                  HY17P52WR3(3,0x22,hex);  //addr=02,BIE_DataH=0xAA,BIE_DataL=0x11
+                  if(Flag== 1)
+                  {
+                     
+                     while(1);    //fail
+                  }
+                          
+
+              }
+			 }
+      }
+    } 
     else{
 	      adS.Main_zeroPoint_Mode =0;
 	      adS.Main_testMode=0;
@@ -742,7 +780,7 @@ void SetupZeroPoint_Mode(void)
 	      adS.MapZero = 1;
 	      Display2ErP3();
 	      Delay(20000);
-	      adS.setMode =1;   
+	   
 
     }
 }
@@ -756,8 +794,8 @@ void SetupZeroPoint_Mode(void)
 ***********************************************************************/
 void PositivePressureWorks_Mode(void)
 {
-    float  lamda=0,thelta=0,eta=0,zeta=0;
-    unsigned char highp=0,ee200flag=0;
+    float  lamda=0,thelta=0,eta=0,zeta=0,rho=0,omega=0;
+    unsigned char highp=0,ee200flag=0,ee550flag=0,ee100flag=0;
     float checkValue=0;
     adS.unit_2 =0;
     
@@ -769,21 +807,35 @@ void PositivePressureWorks_Mode(void)
         adS.Sign =BIEDRH ;
         adS.factor=BIEDRL;
 
-		 
+		BIEARL=0;                        //addr=1
+        BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+        while((BIECN& 0x01)==1);
+        ee200flag =BIEDRH ;
+        zeta=BIEDRL;
 
+		BIEARL=2;                        //addr=1
+        BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+        while((BIECN& 0x01)==1);
+        ee550flag =BIEDRH ;
+        rho=BIEDRL;
+
+        BIEARL=3;                        //addr=1
+        BIECN=BIECN | 0x01;              //BIE_DataH=0xAA,BIE_DataL=0x11
+        while((BIECN& 0x01)==1);
+        ee100flag =BIEDRH ;
+        omega=BIEDRL;
    
     if(MCUSTATUSbits.b_ADCdone==1){
                
 			   adS.setMode=0;
                MCUSTATUSbits.b_ADCdone=0;
                 ADC = ADC >>6;
-			
-                 if(adS.Sign == 0x11) eta = -adS.factor;
-                 // lamda  =    0.0344 * ADC  - adS.factor ;// lamda  =   0.0342 * ADC  - adS.factor ; //WT.EDIT 20200703  adS.coefficient
-                   
+		
+                if(adS.Sign == 0x11) eta = -adS.factor;
                 else if(adS.Sign == 0x22) eta = adS.factor; //adS.factor = - adS.factor;
-                 // lamda  =    0.0344 * ADC  + adS.factor ;
-                 lamda  =    0.0343 * ADC  -14 + eta ;
+                else eta = adS.CheckValue[3];
+               
+                 lamda  =    0.0344 * ADC -14 + eta ;
               
                if(adS.initialize==0)
                 {
@@ -798,94 +850,100 @@ void PositivePressureWorks_Mode(void)
                         adS.initialize++ ;
                      }
                      else{
-            						   if(lamda <=0){
-                              thelta=0;
-                             adS.workstation_flag =0;
-                           }
-            						   else thelta = lamda ;
-						   
+                           thelta = lamda ;
                            adS.getSaveTimes++;
-                           if(adS.Sign == 0x11 || adS.Sign == 0x22){
+                           if(adS.Sign == 0x11 || adS.Sign == 0x22 ){
                                  adS.initialize++;
                             }
                      }
                 }
                 else{
                       
-                         if(ADC<=(adS.CorrectionValue[0] + 100)){
+                   if(ADC<=(adS.CorrectionValue[0] + 100)){
 
-                              thelta =0;
-                              adS.workstation_flag =0;
-                              adS.getSaveTimes++;
-                              adS.workstation_flag =0;
-                      
-                              if(adS.MapZero == 1 && adS.EEr_flag==0){
-                                  adS.set2ErData=0;
-                                  adS.MapZero =0;
-                              }
-                          }
-                          else if(lamda >=1005){
-                               
-                               highp =1;  
-                             
-                          }
-                          else{
-                                 highp =0;
-                                 
-                              
-                                 if(lamda <300  || (lamda >= 520 && adS.checkValue_5==1)){
+                        thelta =0;
+                        adS.workstation_flag =0;
+                        adS.getSaveTimes++;
+                        adS.workstation_flag =0;
+                
+                        if(adS.MapZero == 1 && adS.EEr_flag==0){
+                            adS.set2ErData=0;
+                            adS.MapZero =0;
+                        }
+                    }
+                    else if(lamda >=1005){
+                         
+                         highp =1;  
+                       
+                    }
+                    else{
+                        highp =0;
 
-              										  if(adS.checkValue_5 ==1&&lamda >= 520){
-              										  	     checkValue = adS.CheckValue[2];
-              										        
-              										  }
-										 
-										 
-                    									if(lamda <300 &&(adS.checkValue_2==1)){   
+                        if(lamda >=520 || lamda <300){     
+                            if(lamda >= 520 &&(ee550flag ==0x11||ee550flag ==0x22)){
+                                          if(ee550flag == 0x11)
+                                                  checkValue = rho;
+                                            else if(ee550flag == 0x22)
+                                                checkValue = - rho;
+                                            else checkValue = adS.CheckValue[4];
+                                          
+                                  }       
+                                      
+                                    
+                                 if(lamda <300 &&(ee200flag==0x11||ee200flag==0x22)){   
 
-                    											
-                    												checkValue = adS.CheckValue[1];
-                    													   
-                                          if(lamda <= 160 && adS.checkValue_1==1){
-                                              
-                                                checkValue = adS.CheckValue[0];
-                                            }
-                    										  }
-                    										  lamda = 0.0343 *ADC -14 + checkValue ;
-                    										  adS.workstation_flag =1;
-                                }
-                                
-                               
-                                  if(adS.MapZero == 1 || adS.dError == 1){
-
-                                          MapZeroPint = lamda;
-                                         if(adS.EEr_flag ==0 || adS.dError ==1){
-                                              ZeroPointReset_Function();
-                                             
-                                         }
-                                         thelta = lamda - adS.set2ErData;
-                                         if(thelta<=0) {
-                                            thelta =0;
-                                            adS.workstation_flag =0;
-                                         }
-
-                                   }
-                                    else
-                                    {
+                                          if(ee200flag == 0x11)
+                                                checkValue = zeta;
+                                          else if(ee200flag == 0x22)
+                                              checkValue = - zeta;
+                                          else checkValue = adS.CheckValue[2];
                                            
-                                          thelta = lamda  ;
-										  
-                                    }
+                                        
+                                        if(lamda <= 150 && (ee100flag==0x11||ee100flag==0x22)){
+                                            
+                                              if(ee100flag == 0x11)
+                                                    checkValue = omega;
+                                              else if(ee100flag == 0x22)
+                                                  checkValue = - omega;
+                                              else checkValue =  adS.CheckValue[0];
+                                                  
+                                         
+                                           }
+                                 }
+                              if(ee550flag ==0x11||ee550flag ==0x22||ee200flag==0x11||ee200flag==0x22||ee100flag==0x11||ee100flag==0x22){
+                                  lamda = 0.0344 *ADC -14 + checkValue ;
+                                  adS.workstation_flag =1;
+                                  adS.getSaveTimes++;
+                                }
+                        
+                            }
+						                if(adS.MapZero == 1 || adS.dError == 1){
+
+                                 MapZeroPint = lamda;
+                                if(adS.EEr_flag ==0 || adS.dError ==1){
+                                  ZeroPointReset_Function();
+                                 
+                                 }
+                                thelta = lamda - adS.set2ErData;
+                                if(thelta<=0) thelta =0;
+
+                              }
+                            else
+                            {
+                               
+                              thelta = lamda  ;
+							  
+                            }
+                          
+                            if(thelta <= 0x08) {
+                                thelta = 0;
+                                adS.workstation_flag =0;
+                              }
+                              else adS.workstation_flag =1;
+                        
+                              adS.getSaveTimes++;
                                       
-                                      if(thelta <= 0x06) {
-                                        thelta = 0;
-                                        adS.workstation_flag =0;
-                                      }
-                                      else adS.workstation_flag =1;
-                                
-                                      adS.getSaveTimes++;
-                                      
-                           }
+                      }
                         
                     }
                     if(adS.unitChoose ==psi ) thelta= kgfTOpsi(thelta)  ;//WT.EDIT IC75 but psi
@@ -902,32 +960,32 @@ void PositivePressureWorks_Mode(void)
                     }
                     else{
                         
+                       
                        DisplayNum4Bytes(thelta);
                        LowVoltageDisplay();
                        DisplaySelectionUintPoint();
                        Delay(20000);
                        adS.getSaveTimes++;
-                       if(adS.zeroTo120s==1){
-                        
+                      if(adS.zeroTo120s==1){
                             adS.BeSureflag =1;
-						                adS.second120s=0;
+							              
                           }
+                       
+                    }
 
-                       }
-               if(adS.getSaveTimes>(450 -adS.second120s) && adS.setMode == 0){ //60s = 380 WT.EDIT 2020-07-03
+                if(adS.getSaveTimes>380 ){ //WT.EDIT 2020-07-03
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
                               adS.zeroTo120s=0;
                               adS.BeSureflag =0;
-                              adS.second120s=0;
+							               //adS.second120s=0;
                               
                           }
                           else if(adS.zeroTo120s==0){
                                  LCD_DisplayOff();
                                 adS.zeroTo60times=1;
                                 adS.zeroTo120s = 0;
-                                adS.second120s=0;
                                 Idle()   ; //Sleep();
                                 Sleep();
                                
@@ -935,8 +993,12 @@ void PositivePressureWorks_Mode(void)
                           }
                           
         			}
-    	}
-}   
+					
+      }   
+      
+     
+          
+}                 
 /*----------------------------------------------------------------------------*/
 /* Subroutine Function                                                        */
 /*----------------------------------------------------------------------------*/
