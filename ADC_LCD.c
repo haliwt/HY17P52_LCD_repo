@@ -641,7 +641,6 @@ void SetupZeroPoint_Mode(void)
             adS.reload_ADCInterrupt = 1;
             
             ADC =ADC >>6;
-                      
            prevalue = 0.0344 * ADC -14 ;  //WT.EDIT 20200703
 
 		      if(prevalue >=300 && prevalue <=520){
@@ -834,8 +833,8 @@ void PositivePressureWorks_Mode(void)
                 if(adS.Sign == 0x11) eta = -adS.factor;
                 else if(adS.Sign == 0x22) eta = adS.factor; //adS.factor = - adS.factor;
                 else eta = adS.CheckValue[3];
-               
-                 lamda  =    0.0344 * ADC -14 + eta ;
+                
+                 lamda  = 0.0344 * ADC -14 + eta ;
               
                if(adS.initialize==0)
                 {
@@ -973,7 +972,7 @@ void PositivePressureWorks_Mode(void)
                        
                     }
 
-                if(adS.getSaveTimes>380 ){ //WT.EDIT 2020-07-03
+                if(adS.getSaveTimes>450 ){ //WT.EDIT 2020-07-03
                          if(adS.zeroTo120s ==1 && adS.BeSureflag ==1 ){
                               adS.zeroTo60times =0 ;
                               adS.getSaveTimes=0;
